@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"sourceMap": true,
+		"outDir": "./dist/",
+		"noImplicitAny": true,
+		"module": "esnext",
+		"target": "es6",
+		"allowJs": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"lib": [
+			"DOM",
+			"ESNext",
+		],
+	}
+}

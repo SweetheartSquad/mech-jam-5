@@ -1,0 +1,1076 @@
+::start
+// some info for if you want to mod it:
+//
+// basic syntax examples:
+// 	::passage title
+// 	[[basic link]]
+// 	[[link with different label>passage title]]
+// 	[[link with different action|this.something=true;this.goto('passage title');]]
+// 	<<if this.something>><<elseif this.somethingElse>><<endif>>
+// 	<<do this.something=true;>>
+// 	<<print this.something>>
+// 	>passage break
+//
+// js examples:
+// 	this.goto('passage')
+// 	this.show('texture', { duration, x, y, scale, animate, freq })
+// 	this.scrim(amount, duration)
+// 	this.tween(object, 'property', to, duration, from, ease)
+// 	this.gameObject - npc/interrupt that triggered the dialog
+// 	this.scene      - game scene
+// 	this.voice      - audio to play as letters tick in
+// 	this.ease       - easing functions
+//
+// game object stuff:
+// 	this.Area(name, [objects])
+// 	this.Npc({ passage, x, y )
+// 	this.Goto({ area, x, y }, { x, y, width, height })
+// 	this.Prop({ texture, x, y, alpha, scale, flip, blur, animate, offset })
+// 	this.PropParallax({ texture, alpha, scale, flip, blur, mult, animate, offset }),
+// 	this.Block({ x, y, width, height, type, radius })
+// 	this.Poly({ x, y, width, verts })
+// 	this.Interrupt({ passage, x, y, width, height })
+
+<<if !this.started>>
+<<do
+	// save location on refresh when debugging
+	if (this.debug && !window.debugUnload) {
+		window.debugUnload = true;
+		window.addEventListener('beforeunload', () => {
+			// if (window.scene.strand.cleared) return;
+			// window.scene.strand.savestate.area = window.scene.strand.scene.area;
+			// window.scene.strand.savestate.x = window.scene.strand.scene.player.transform.x;
+			// window.scene.strand.savestate.y = window.scene.strand.scene.player.transform.y;
+			// window.scene.strand.save();
+		});
+	}
+	// middle mouse click to go back in debug
+	if (this.debug && !window.debugBack) {
+		window.debugBack = true;
+		window.addEventListener('pointerdown', (event) => {
+			if (event.button === 1) {
+				window.scene.strand.back();
+			}
+		});
+	}
+
+	const PropParallaxAuto = (options) => {
+		const start = Date.now();
+		const gameObject = this.PropParallax(options);
+		gameObject.scripts.push({
+			gameObject,
+			update() {
+				gameObject.spr.tilePosition.x = (Date.now()-start)/1000 * options.speed;
+			},
+		});
+		return gameObject;
+	};
+
+	this.Item = ({ passage, ...options}) => {
+		const prop = this.Prop(options);
+		const interrupt = this.Interrupt({ passage: 'take-item', type: 'rectangle', width: 30, height: 5, ...options});
+		interrupt.body.body.plugin.interrupt.prop = prop;
+		interrupt.body.body.plugin.interrupt.itemPassage = passage;
+		return [prop, interrupt];
+	};
+
+
+	// blinking and lip flaps
+	this.blinking = false;
+	this.timeoutBlinking;
+	this.scene.dialogue.scripts.push({
+		gameObject: this.scene.dialogue,
+		update: () => {
+			if (!this.character) return;
+			if (!this.timeoutBlinking) {
+				this.timeoutBlinking = setTimeout(() => {
+					this.blinking = !this.blinking;
+					this.timeoutBlinking = null;
+				}, this.blinking ? 100 : 2000+Math.random()*4000);
+			};
+
+			const letter = this.scene.dialogue.strText[scene.dialogue.pos];
+			const isLetter = letter && letter.replace(/[^\w]/, '');
+			if (isLetter) {
+				this.scene.dialogue.toggler.active.setAnimation(`portrait_${this.character}_${this.face}_open`);
+			} else if (this.blinking && this.character !== 'tsade') {
+				this.scene.dialogue.toggler.active.setAnimation(`portrait_${this.character}_${this.face}_blink`);
+			} else {
+				this.scene.dialogue.toggler.active.setAnimation(`portrait_${this.character}_${this.face}`);
+			}
+		},
+	});
+
+	// portrait helper
+	this.portrait = (character, face, options) => {
+		this.character = character;
+		this.face = (face || 'normal')
+			.trim()
+			.replace(':)', 'normal')
+			.replace(':O', 'o')
+			.replace('>_>', 'side')
+			.replace(':(', 'sad');
+		const result = this.show(character ? `portrait_${this.character}_${this.face}` : character, { scale: 2, x: -128+47, y: 63, duration: 500, ...options });
+	};
+
+	// automatically hide portrait on close
+	// and stop roam during dialogues
+	this.scene.dialogue.openo = this.scene.dialogue.open;
+	this.scene.dialogue.open = () => {
+		if (this.scene.areas.main) {
+			this.scene.areas.main.filter(i => i.roam).forEach(i => i.roam.active = false);
+		}
+		this.scene.dialogue.openo();
+	};
+	this.scene.dialogue.closeo = this.scene.dialogue.close;
+	this.scene.dialogue.close = () => {
+		this.portrait();
+		if (this.scene.areas.main) {
+			this.scene.areas.main.filter(i => i.roam).forEach(i => i.roam.active = true);
+		}
+		this.scene.dialogue.closeo();
+	};
+
+	// add syntax sugar for passages like `Daydiem :O : "Blah blah"`
+	const check = /(Daydiem|Rexty|Tsade|MC)\s*(.*?)\s*:\s*"/;
+	this.scene.dialogue.sayo = this.scene.dialogue.say;
+	this.scene.dialogue.say = (text, actions) => {
+		const match = check.exec(text);
+		if (match) {
+			this.portrait(match[1].toLowerCase(), match[2]);
+			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
+			this.scene.dialogue.sayo(`${match[1]}:\n"${text.substring(match[0].length)}`, actions);
+		} else {
+			this.scene.dialogue.sayo(text, actions);
+		}
+	};
+
+
+	// text helper
+	this.texttimeouts = [];
+	this.PText = (text, delay = 0, offset = 0) => {
+		const timeout = setTimeout(() => {
+			this.sfx('voiceDefault');
+			const t = this.Text(text, { x: player.transform.x, y: player.transform.y - 20 + offset, offset: this.texttimeouts.length * 100 });
+			t.scripts[1].container.children[0].anchor.x = 0.5;
+			this.add(t);
+		}, delay);
+		this.texttimeouts.push(timeout);
+	};
+
+	this.Area('empty', []);
+	this.Area('intro', [
+		this.Prop({ texture: 'bg_ship', scale: 2, y: 110, offset: -1000000 }),
+		this.Prop({ texture: 'hive', scale: 1, offset: -100000 }),
+		this.Poly({ width: 4, verts: [72,-108, -66,-109, -68,-93, -105,-92, -114,-82, -114,15, -105,27, -78,26, -70,40, -60,58, 62,59, 77,44, 79,17, 93,10, 109,-6, 110,-82, 100,-93, 80,-95, 72,-108] }),
+		this.Goto({ area: 'intro2' }, { x: 50, y: -104, width: 8, height: 5 }),
+
+		this.Npc({ body: 'npc', passage: 'supply-done', x: 40, y: 40, roam: 50 }),
+	]);
+	this.Area('intro2', [
+		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
+		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
+		this.Interrupt({ passage: 'skip', y: -90 }),
+		this.Text('After a long journey\naboard the Resolute Ruse...', { y: -75 }),
+		this.Goto({ area: 'intro3' }, { y: -150, width: 8, height: 5 }),
+	]);
+	this.Area('intro3', [
+		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
+		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
+		this.Text(`Finally, ${this.npc ? 'we' : 'I'} found a planet with air...`, { y: -75 }),
+		this.Goto({ area: 'intro4' }, { y: -150, width: 8, height: 5 }),
+	]);
+	this.Area('intro4', [
+		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
+		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
+		this.Text(`But I\'ve got to get supplies or ${this.npc ? 'we' : 'I'} will die!!`, { y: -75 }),
+		this.Goto({ area: 'main' }, { y: -150, width: 8, height: 5 }),
+	]);
+
+	// start
+	this.started=true;
+	this.scene.goto({ area: 'intro' });
+	requestAnimationFrame(() => {
+		this.scrim(1, 3000);
+		this.scene.dialogue.sprBg.alpha = 0;
+	});
+>>
+<<endif>>
+<<do
+	this.scene.dialogue.textText.style.fill = 0xffd20a;
+	this.show('img_cheryl', { scale: 1, duration: 0 });
+>>
+LANDING SEQUENCE ON PLANET 54XE COMPLETE
+>OPEN AIRLOCK
+<<do
+	this.scene.dialogue.textText.style.fill = 0xffffff;
+	this.music('bgm');
+	this.show('').then(() => {this.goto('start2')});
+>>
+
+::start2
+<<do
+	this.tween(this.scene.border.display.container, 'alpha', 1, 5000);
+	this.tween(this.scene.dialogue.sprBg, 'alpha', 1, 5000, 0);;
+	this.goto('main');
+>>
+
+::close
+this should never render
+
+::choiceDefault
+( • )
+
+::interact
+interact
+
+::talk
+talk
+
+::take-item
+<<do
+	const p = this.gameObject.body.body.plugin.interrupt.itemPassage;
+	this.destroy(this.gameObject.body.body.plugin.interrupt.prop);
+	this.destroy(this.gameObject);
+	this.goto(p);
+>>
+
+
+::The End
+Rexty :O : "Day, I think I heard your parents at the door?"
+>
+Daydiem :O : "Okay okay gimme a sec... I'll shut it down..."
+>
+Tsade :( : "Will our game still be here next time?"
+>
+Daydiem :O : "Yeah don't worry it's all saved..."
+>
+Tsade :) : "Okay, because I have a few more ideas..."
+>
+Rexty :) : "Yeah me too, I think after our fight... we get even closer with the co-pilot..."
+>
+MC :) : "When wolfy howls they bring you a whole pack of wolves!"
+>
+Daydiem >_> : "Please I gotta focus on resetting the terminal..."
+>
+Rexty :) : "Oh yeah Day they're definitely at the door, you should hurry."
+>
+Daydiem :( : "I'm trying!"
+>
+Tsade >_> : "I didn't get to say my idea though..."
+>
+Daydiem >_> : "No shush you gotta let me focus right now..."
+>
+<<do
+	this.character = '';
+	this.show('black', { scale: 512 });
+	this.tween(this.scene.border.display.container, 'alpha', 0, 1000);
+	this.tween(this.scene.dialogue.sprBg, 'alpha', 0, 1000);
+	this.tween(scene.camera.display.container, 'alpha', 0, 1000);
+	
+>>
+"But we'll have plenty of time to figure out what happens next."
+>
+<<do
+	this.character = '';
+	this.show('title', { scale: 2 });
+>>
+<<print new Array(60).fill('\u200B').join('')>>
+The End
+
+[[Restart|this.restart()]]
+
+::debug menu
+<<do
+	this.scene.strand.passages['area warp'] = { title: 'area warp', body: Object.keys(this.scene.areas).filter(i => i !== 'root').map(i => '[['+i+'|this.scene.goto({ area: "'+i+'" }); this.goto("close")]]').concat('[[back|this.back()]]').join('\n') };
+>>
+[[passage select>passage select]]
+[[language select]]
+[[area warp]]
+[[teleport|
+	const canvas = window.game.app.renderer.context.gl.canvas;
+	const verts = [];
+	const onClick = (event) => {
+		if (event.button !== 0) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this.scene.player.canMove = false;
+		setTimeout(() => this.scene.player.canMove = true, 100);
+		const p = this.mousePos(event);
+		this.scene.player.setPosition(p.x, p.y);
+	};
+	const onContextMenu = (event) => {
+		event.preventDefault();
+		canvas.removeEventListener('pointerdown', onClick);
+		canvas.parentElement.style.cursor = 'inherit';
+	};
+	requestAnimationFrame(() => {
+		canvas.addEventListener('pointerdown', onClick);
+		canvas.addEventListener('contextmenu', onContextMenu, { once: true });
+	});
+	canvas.parentElement.style.cursor = 'crosshair';
+	this.goto('close');
+]]
+[[toggle debugPhysics|window.debugPhysics=!window.debugPhysics]]
+[[toggle player collision|this.scene.player.bodyCollision.body.isSensor = !this.scene.player.bodyCollision.body.isSensor]]
+[[drawing tools]]
+[[close]]
+[[back|this.back()]]
+
+::drawing tools
+[[toggle coords|
+	this.coordsShown = !this.coordsShown;
+	if (this.coordsShown) {
+		this.elDebugText = document.createElement('div');
+		this.elDebugText.style.lineHeight = '1rem';
+		this.elDebugText.style.pointerEvents = 'none';
+
+		const elPlayerCoordsLabel = document.createElement('label');
+		elPlayerCoordsLabel.style.backgroundColor = '#000';
+		const elPlayerCoordsInput = document.createElement('input');
+		elPlayerCoordsInput.style.pointerEvents = 'initial';
+		elPlayerCoordsInput.readOnly = true;
+		elPlayerCoordsLabel.textContent = 'player ';
+		elPlayerCoordsLabel.style.fontSize = '1rem';
+		elPlayerCoordsLabel.appendChild(elPlayerCoordsInput);
+		this.elDebugText.appendChild(elPlayerCoordsLabel);
+
+		this.elDebugText.appendChild(document.createElement('br'));
+
+		const elMouseCoordsLabel = document.createElement('label');
+		elMouseCoordsLabel.style.backgroundColor = '#000';
+		const elMouseCoordsInput = document.createElement('input');
+		elMouseCoordsInput.style.pointerEvents = 'initial';
+		elMouseCoordsInput.readOnly = true;
+		elMouseCoordsLabel.textContent = 'mouse ';
+		elMouseCoordsLabel.style.fontSize = '1rem';
+		elMouseCoordsLabel.appendChild(elMouseCoordsInput);
+		this.elDebugText.appendChild(elMouseCoordsLabel);
+		
+		document.querySelector('.resizerChild').appendChild(this.elDebugText);
+		this.debugCoordsUpdater = this.Updater(() => {
+			elPlayerCoordsInput.value = `${this.scene.player.transform.x.toFixed(2)}, ${this.scene.player.transform.y.toFixed(2)}`;
+			const p = this.relativeMouse();
+			elMouseCoordsInput.value = `${Math.floor(p.x)}, ${Math.floor(p.y)}`;
+		});
+	} else {
+		this.elDebugText.remove();
+		this.debugCoordsUpdater.destroy();
+	}
+	this.goto('close');
+]]
+[[get coords|
+	const canvas = window.game.app.renderer.context.gl.canvas;
+	const onClick = (event) => {
+		if (event.button !== 0) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this.scene.player.canMove = false;
+		setTimeout(() => this.scene.player.canMove = true, 100);
+		const p = this.mousePos(event);
+		navigator.clipboard.writeText(`x: ${Math.floor(p.x)}, y: ${Math.floor(p.y)}`);
+		console.log(`x: ${Math.floor(p.x)}, y: ${Math.floor(p.y)}`);
+	};
+	const onContextMenu = (event) => {
+		event.preventDefault();
+		canvas.removeEventListener('pointerdown', onClick);
+		canvas.parentElement.style.cursor = 'inherit';
+	};
+	requestAnimationFrame(() => {
+		canvas.addEventListener('pointerdown', onClick);
+		canvas.addEventListener('contextmenu', onContextMenu, { once: true });
+	});
+	canvas.parentElement.style.cursor = 'crosshair';
+	this.goto('close');
+]]
+[[place props|
+	const canvas = window.game.app.renderer.context.gl.canvas;
+
+	const textures = () => Object.entries(resources).filter(([k,r]) => !k.match(/\.[2-9]\d*?$/) && !k.match(/^https?:/) && r?.baseTexture);
+
+	let tex = 0;
+	const spr = new this.PIXI.Sprite();
+	spr.anchor.x = 0.5;
+	spr.anchor.y = 1.0;
+	this.scene.container.addChild(spr);
+	const onWheel = (event) => {
+		if (!event.deltaY) return;
+		const d = Math.sign(event.deltaY);
+		tex += d;
+		const ts = textures();
+		if (tex < 0) tex = ts.length - 1;
+		tex %= ts.length;
+		console.log(ts[tex][0]);
+		spr.texture = ts[tex][1];
+	};
+	const onMove = (event) => {
+		const p = this.mousePos(event);
+		spr.x = Math.floor(p.x);
+		spr.y = Math.floor(p.y);
+	};
+	const placed = [];
+	let flip = false;
+	const onClick = (event) => {
+		if (event.button !== 0) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this.scene.player.canMove = false;
+		setTimeout(() => this.scene.player.canMove = true, 100);
+		if (event.ctrlKey) {
+			if (placed.length) {
+				const p = placed.pop();
+				this.remove(p);
+			}
+			return;
+		}
+		if (event.shiftKey) {
+			flip = !flip;
+			spr.scale.x = flip ? -1 : 1;
+			return;
+		}
+		const p = this.mousePos(event);
+		const prop = this.Prop({ texture: textures()[tex][0], x: Math.floor(p.x), y: Math.floor(p.y), flip });
+		placed.push(prop);
+		this.add(prop);
+	};
+	const onContextMenu = (event) => {
+		event.preventDefault();
+		canvas.removeEventListener('wheel', onWheel);
+		canvas.removeEventListener('pointerdown', onClick);
+		canvas.removeEventListener('pointermove', onMove);
+		canvas.parentElement.style.cursor = 'inherit';
+		spr.destroy();
+		const str = placed.map(p => `this.Prop({ texture: '${p.spr.texture.label}', x: ${Math.floor(p.transform.x)}, y: ${Math.floor(p.transform.y)}${p.spr.scale.x < 0 ? ', flip: true' : ''} }),`).join('\n');
+		navigator.clipboard.writeText(str);
+		console.log(str);
+	};
+	requestAnimationFrame(() => {
+		canvas.addEventListener('wheel', onWheel);
+		canvas.addEventListener('pointerdown', onClick);
+		canvas.addEventListener('pointermove', onMove);
+		canvas.addEventListener('contextmenu', onContextMenu, { once: true });
+	});
+	canvas.parentElement.style.cursor = 'crosshair';
+	this.goto('close');
+]]
+[[draw walls|
+	if (!window.debugPhysics) window.debugPhysics=true;
+	const canvas = window.game.app.renderer.context.gl.canvas;
+	const verts = [];
+	let poly;
+
+	const getPos = (event) => {
+		const p = this.mousePos(event);
+		return [Math.round(p.x),Math.round(p.y)];
+	};
+	const makePoly = () => {
+		if (poly) {
+			this.destroy(poly);
+		}
+		if (verts.length > 0) {
+			poly = this.Poly({ verts: verts.flat(), width }, { plugin: { interactive: true }});
+			// this.add(poly);
+		} else {
+			poly = null;
+		}
+	};
+
+	let width = 20;
+	const onWheel = (event) => {
+		if (!event.deltaY) return;
+		const d = Math.sign(event.deltaY);
+		width += d;
+		width = Math.max(1, width);
+		makePoly();
+	};
+	const onMove = (event) => {
+		if (event.ctrlKey) return;
+		event.preventDefault();
+		event.stopPropagation();
+		verts.pop();
+		verts.push(getPos(event));
+		makePoly();
+	};
+	const onClick = (event) => {
+		if (event.button !== 0) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this.scene.player.canMove = false;
+		setTimeout(() => this.scene.player.canMove = true, 100);
+		if (event.ctrlKey) {
+			verts.pop();
+		} else {
+			verts.push(getPos(event));
+		}
+		makePoly();
+		canvas.addEventListener('pointermove', onMove);
+		canvas.addEventListener('pointerup', () => {
+			canvas.removeEventListener('pointermove', onMove);
+		}, { once: true });
+	};
+	const onContextMenu = (event) => {
+		event.preventDefault();
+		canvas.removeEventListener('wheel', onWheel);
+		canvas.removeEventListener('pointerdown', onClick);
+		canvas.removeEventListener('pointermove', onMove);
+		canvas.parentElement.style.cursor = 'inherit';
+		if (poly) {
+			navigator.clipboard.writeText(`this.Poly({ verts: [${verts.map(i => i.join(',')).join(', ')}]${width === 20 ? '' : `, width: ${width}`} }),`);
+			console.log(`this.Poly({ verts: [${verts.map(i => i.join(',')).join(', ')}]${width === 20 ? '' : `, width: ${width}`} }),`);
+			this.scene.drop(poly);
+		}
+	};
+	requestAnimationFrame(() => {
+		canvas.addEventListener('wheel', onWheel);
+		canvas.addEventListener('pointerdown', onClick);
+		canvas.addEventListener('contextmenu', onContextMenu, { once: true });
+	});
+	canvas.parentElement.style.cursor = 'crosshair';
+	this.goto('close');
+]]
+[[back|this.back()]]
+
+::main
+<<do
+	this.sfx('voiceDefault');
+	this.talkednpc = 0;
+	this.supply = 0;
+
+	this.texttimeouts.forEach((t) => clearTimeout(t));
+	this.texttimeouts.length = 0;
+
+	if (this.scene.areas.main) {
+		this.scene.areas.main.forEach(i => {
+			this.destroy(i);
+		});
+		if (this.scene.area === 'main') {
+			this.scene.goto({ area: 'empty' });
+		}
+	}
+	const objects = [
+		this.PropParallax({ texture: 'bg_parallax', offset: -1000000, mult: 1 }),
+		this.Interrupt({ passage: 'out-of-bounds', width: 2000, y: 1000 }),
+		this.Interrupt({ passage: 'out-of-bounds', width: 2000, y: -1000 }),
+		this.Interrupt({ passage: 'out-of-bounds', height: 2000, x: 1000 }),
+		this.Interrupt({ passage: 'out-of-bounds', height: 2000, x: -1000 }),
+	];
+	if (this.npc) {
+		objects.push(
+			this.Npc({ body: 'npc', passage: 'npc', x: 50, y: 50, roam: 50 }),
+		);
+	}
+	if (this.moremonsters) {
+		objects.push(
+			...new Array(30).fill(0).flatMap((_, idx, arr) => this.Item({ texture: 'supply', x: Math.sin((idx+1)/arr.length*Math.PI*2)*120, y: Math.cos((idx+1)/arr.length*Math.PI*2)*120, passage: 'supply' })),
+		);
+	} else {
+		objects.push(
+			...this.Item({ texture: 'supply', x: 120, y: 30, passage: 'supply' }),
+			...this.Item({ texture: 'supply', x: 120+30, y: 30+50, passage: 'supply' }),
+			...this.Item({ texture: 'supply', x: 120+80, y: 30-10, passage: 'supply' }),
+			...this.Item({ texture: 'supply', x: 120+120, y: 30+70, passage: 'supply' }),
+		);
+	}
+	if (this.wolfy) {
+		objects.push(
+			this.Npc({ body: 'wolfy', passage: 'wolfy', x: -25, y: 50, roam: 50 }),
+		);
+	}
+	this.Area('main', objects);
+	if (this.skipped) {
+		this.scene.goto({ area: 'main' });
+	} else {
+		this.scene.goto({ area: 'intro' });
+	}
+	this.goto('close');
+>>
+
+
+
+::out-of-bounds
+<<if this.oob>>
+	<<do this.goto('out-of-bounds2')>>
+<<else>>
+<<do this.oob=true>>
+Daydiem :O : "No, you're doing it wrong!"
+<<endif>>
+>
+Daydiem :O : "There's nothing out there yet."
+>
+Daydiem :) : "Here, let me just restart..."
+[[>main]]
+
+::out-of-bounds2
+Daydiem :( : "No, you're going the wrong way again!"
+>
+Daydiem :O : "Here, let me just restart..."
+[[>main]]
+
+
+::skip
+<<if !this.supplyrun>>
+	<<do
+		this.goto('close');
+		this.scene.dialogue.close();
+	>>
+<<else>>
+	<<do this.goto('skip2')>>
+<<endif>>
+
+::skip2
+<<do this.skipped=true>>
+Tsade :( : "Can we skip this bit?"
+>
+Tsade >_> : "...No offense."
+[[Rexty: "I don't mind reading it again."]]
+[[MC: "Yeah, let's skip."]]
+
+::MC: "Yeah, let's skip."
+Daydiem: "Sure, I added some debug stuff for that already."
+>
+Daydiem :O : "Watch this!"
+[[>main]]
+
+::Rexty: "I don't mind reading it again."
+Daydiem >_> : "Really? Okay..."
+[[>close]]
+
+
+::supply
+<<do
+	if (this.moremonsters) {
+		this.PText('Oh no! A monster!');
+		this.goto('more-monsters');
+	} else if (this.monsters && !this.donemonsters && this.supply === 3) {
+		this.donemonsters=true;
+		this.PText('Oh no! A monster!');
+		this.goto('first-monster');
+	} else {
+		++this.supply;
+		this.PText(`+1\nSupplies: ${this.supply}`);
+		this.goto('close');
+		this.scene.dialogue.close();
+	}
+	if (!this.supplyrun && this.supply >= 4) {
+		setTimeout(() => {
+			this.goto('supply-done');
+		}, 3500);
+	}
+>>
+
+::supply-done
+<<do this.supplyrun=true>>
+Daydiem: "So that's what I've got so far."
+>
+Daydiem: "You'll use the stuff to like, build buildings, and hunt for food-"
+>
+Tsade: "Wow!! And your parents aren't mad at you for messing with their flight sim terminal?"
+>
+Daydiem: "Uh, well..."
+>
+Rexty: "Haha nice. Can't get in trouble if you don't get caught."
+>
+Rexty >_>: "Remember that, MC."
+>
+MC: "Huh?"
+>
+Daydiem >_> : "MC, don't listen to Rexty."
+>
+MC: "Kay."
+>
+[[Tsade: "What if there are also monsters on the planet!">add-monsters]]
+[[Rexty: "So are there... any other characters?">add-npc]]
+[[MC: "Put Wolfy on the screen!">add-wolfy]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::add-monsters
+<<if !this.monsters>>
+<<do this.goto('add-monsters1')>>
+<<else>>
+<<do this.goto('add-monsters2')>>
+<<endif>>
+
+::add-monsters1
+<<do this.monsters=true>>
+Daydiem: "No, but, the idea is the planet is empty-"
+>
+Tsade: "Except for monsters!"
+>
+Tsade :O : "Which you have to kick in the face or they'll eat you."
+>
+Daydiem :( : "Okay, I guess... I can just make some of these blocks monsters...?"
+[[>main]]
+
+::add-monsters2
+<<do this.moremonsters=true>>
+Tsade :) : "They've got you surrounded!"
+>
+Tsade :O : "And you have to fight a whole bunch of them at once!"
+>
+Rexty >_> : "Why are the monsters teaming up?"
+>
+Tsade :O : "Because you stole their planet and you're kicking them in the face!"
+>
+Daydiem :( : "That's why the planet was supposed to be empty..."
+>
+Tsade :) : "Well you thought it was empty because all the monsters look like supplies, obviously."
+[[>main]]
+
+
+::add-npc
+<<do this.npc=true>>
+Daydiem :) : "No, it's just the one."
+>
+Rexty >_> : "Well that doesn't make sense. You just flew here all by yourself?"
+>
+Daydiem :) : "I guess you're right. You should have a co-pilot."
+[[>main]]
+
+
+::add-wolfy
+<<do this.wolfy=true>>
+Tsade :( : "Who's Wolfy?"
+>
+Daydiem :) : "Oh, that's their favorite wolf plush."
+>
+Tsade >_> : "Well it sounds like you'd better add them to the game, Day."
+>
+MC :O : "Yeah!"
+[[>main]]
+
+
+
+
+
+
+
+
+
+
+
+::wolfy
+<<do
+	this.PText('Awoooo!', 0, 0);
+	this.PText('I\'m a wolf!', 250, 20);
+	this.PText('I love you MC.', 1000, 40);
+>>
+>
+MC :O : "Wow!!"
+>
+MC :) : "I love you too Wolfy!"
+<<if !this.metwolfy>>
+[[>wolfy-done]]
+<<else>>
+[[>close]]
+<<endif>>
+
+::wolfy-done
+<<do this.metwolfy=true>>
+Rexty :) : "They were right. That made the game better."
+>
+Rexty >_> : "Nice job, Day."
+>
+<<if !this.monsters>>
+[[Tsade: "You know what else would make the game better.... monsters!">add-monsters]]
+<<elseif !this.moremonsters>>
+[[Tsade: "You know what else would make the game better.... more monsters!">add-monsters]]
+<<endif>>
+<<if !this.npc>>
+[[Rexty: "So where are the other characters?">add-npc]]
+<<endif>>
+<<if this.moremonsters && this.npc>>
+MC :) : "Hee hee."
+[[>close]]
+<<endif>>
+
+
+
+::npc
+<<do
+	if (!this.flatnpcs && this.talkednpc >= 3) {
+		this.goto('flatnpcs');
+	} else if (this.moremonsters) {
+		this.PText([
+			`"Oh no!\nThese monsters surrounded us!"`,
+			`"Captain! What will we do!"`,
+			`"Captain! Save us!"`,
+		][this.talkednpc%3]);
+		this.goto('close');
+		this.scene.dialogue.close();
+	} else if (this.monsters) {
+		this.PText([
+			`"You're alive!"`,
+			`"You saved me!"`,
+			`"Those monsters had me surrounded."`,
+		][this.talkednpc%3]);
+		this.goto('close');
+		this.scene.dialogue.close();
+	}
+	else {
+		this.PText([
+			`"It was a really long journey\naboard the Resolute Ruse."`,
+			`"Captain! You finally found\na planet with air."`,
+			`"Captain! We've got to get more supplies\nor we'll all die!"`,
+		][this.talkednpc%3]);
+		this.goto('close');
+		this.scene.dialogue.close();
+	}
+	++this.talkednpc;
+>>
+
+::flatnpcs
+<<do this.flatnpcs=true>>
+Rexty :( : "Hm."
+>
+Daydiem >_> : "What?"
+>
+Rexty :( : "I don't know..."
+>
+Daydiem >_> : "No, seriously, what?"
+>
+Rexty :( : "The characters just seem a little... flat."
+>
+<<if !this.moremonsters>>
+[[Tsade: "They'll be flatter after they've been crushed by monsters!!"]]
+<<endif>>
+<<if !this.wolfy>>
+[[MC: "On the planet... everyone gets a pet wolf."]]
+<<endif>>
+<<if this.moremonsters && this.wolfy>>
+[[Rexty: "Can we add more dialogue?"]]
+<<endif>>
+
+::Rexty: "Can we add more dialogue?"
+Rexty :) : "What if you had a proper conversation?"
+>
+Rexty :) : "Maybe you could ask them why they chose to follow you on this planet?"
+>
+Rexty :) : "And they could ask about your mysterious past?"
+>
+Rexty >_> : "...Or something like that."
+>
+Daydiem :O : "I don't know if I know how to do that..."
+>
+Daydiem :) : "Maybe we can figure that one out later."
+[[>close]]
+
+::Tsade: "They'll be flatter after they've been crushed by monsters!!"
+Rexty :O : "Hey!"
+>
+Tsade :) : "Hehehehe."
+>
+Rexty :O : "You can't just kill them."
+>
+Rexty :O : "We have a chance to fight them off together!"
+[[>add-monsters]]
+
+
+::MC: "On the planet... everyone gets a pet wolf."
+MC :) : "That way they'll be happy and not flat!"
+>
+MC: "Like me and Wolfy!"
+[[>add-wolfy]]
+
+
+
+
+::first-monster
+Daydiem: "There's one!"
+
+[[Tsade: "Kick it in the face!"]]
+[[MC: "Don't kick it!"]]
+
+::Tsade: "Kick it in the face!"
+<<do
+	this.PText('WHAM!');
+	this.PText('+1 monster corpse', 1000, 20);
+>>
+>
+Tsade :O : "YEAH!!"
+>
+Tsade :O : "That's so cool."
+>
+Rexty >_> : "Does it really just die after being kicked once?"
+>
+Tsade :) : "Your kicks are REALLY POWERFUL, because of the planet gravity!"
+[[>first-monster2]]
+
+::MC: "Don't kick it!"
+<<do
+	this.PText('CHOMP!', 0, -10);
+	this.PText('The monster ate you\nand you\'re dead.', 1000, 25);
+>>
+>
+Tsade :O : "YEAH!!"
+>
+Tsade :O : "That's so cool."
+>
+Rexty >_> : "Do you really just die in one bite?"
+>
+Tsade :) : "Its teeth are REALLY POWERFUL, because of the planet gravity!"
+[[>first-monster2]]
+
+::first-monster2
+Daydiem >_> : "I'm not sure that's how it works..."
+>
+Tsade :) : "Yeah it is!! My mom's a scientist."
+>
+Daydiem >_> : "Okay, if you're sure."
+>
+[[Tsade: "Now what if the monsters team up...">add-monsters]]
+<<if !this.npc>>
+[[Rexty: "Maybe you meet someone else who's fighting monsters too."]]
+<<endif>>
+<<if !this.wolfy>>
+[[MC: "That's scary."]]
+<<endif>>
+
+::Rexty: "Maybe you meet someone else who's fighting monsters too."
+<<do this.npc=true>>
+Rexty :O : "And they're really cool and powerful and you team up!"
+>
+Daydiem >_> : "Wait, why's someone else here now?"
+>
+Rexty :) : "They... came on another ship. You're meeting them there."
+>
+Rexty :O : "You haven't seen them in a long time, and you weren't sure they would make it."
+>
+Rexty :O : "But then you find them again, fighting monsters."
+[[>main]]
+
+::MC: "That's scary."
+MC :( : "Will there be monsters on the planet when we get there?"
+>
+MC :( : "And they'll all attack us?"
+>
+Tsade :( : "Oh, no... we're just pretending, I promise. There won't be monsters."
+>
+MC :( : "How do you know?"
+>
+Daydiem :( : "Why don't you ask AMMT?"
+>
+MC :( : "AMMT? Will there be monsters on the planet when we get there?"
+>
+<<do this.portrait('')>>
+AMMT: "..."
+>
+AMMT: "The chance of our destination planet being inhabited is less than one-one hundredth of a percent."
+>
+MC :( : "What does that mean?"
+>
+<<do this.portrait('')>>
+AMMT: "There will not be monsters on the planet."
+>
+Rexty :) : "Besides, even if there were, your wolf could howl at them and scare them away."
+>
+MC :O : "Yeah! Wolfy could do that!"
+>
+MC :) : "Day, will you add Wolfy to chase the monsters away?"
+>
+Daydiem :) : "Sure, MC."
+[[>add-wolfy]]
+
+
+
+
+
+
+
+
+::more-monsters
+Daydiem: "Now what?"
+
+[[Tsade: "Kick them all!"]]
+<<if this.npc>>
+[[Rexty: "Stand together with your partner!!"]]
+<<endif>>
+<<if !this.wolfy>>
+[[MC: "No!! Don't kick it!"]]
+<<else>>
+[[MC: "Scare them away, Wolfy!"]]
+<<endif>>
+
+::MC: "No!! Don't kick it!"
+<<do
+	this.PText('CHOMP!');
+	this.PText('The monster ate you\nand you\'re dead.', 1000, 20);
+>>
+[[>dead]]
+
+::Tsade: "Kick them all!"
+<<do
+	this.PText('CHOMP!');
+	this.PText('The monster\'s friends\ntook vengeance\nand you\'re dead.', 1000, 20);
+>>
+[[>dead]]
+
+::dead
+Tsade :( : "Aw, they got us..."
+
+[[Tsade: "Let's try again!">main]]
+<<if !this.npc>>
+[[Rexty: "Maybe you meet someone else who's fighting monsters too."]]
+<<endif>>
+<<if !this.wolfy>>
+[[MC: "That's scary."]]
+<<endif>>
+
+
+::Rexty: "Stand together with your partner!!"
+<<do
+	this.sfx('voiceDefault');
+	this.PText('WHAM');
+	this.PText('We\'re gonna get you... together!', 1000, 20);
+	this.PText('It\'s over for you, monsters!', 1500, 40);
+	this.PText('Oh no! I\'m a monster and I\'m dead!', 2000, 60);
+>>
+>
+Tsade :) : "WOOO!!!"
+>
+Rexty :) : "Hand in hand... Watching each other's backs..."
+>
+Daydiem :) : "This turned out pretty good, actually."
+>
+<<if this.metwolfy>>
+MC :) : "And Wolfy's there!"
+<<endif>>
+[[>The End]]
+
+::MC: "Scare them away, Wolfy!"
+<<do
+	this.sfx('voiceDefault');
+	this.PText('Awooooo!');
+	this.PText('Aaah a scary wolf!', 1000, 20);
+	this.PText('This wolf is going to get me!', 1500, 40);
+	this.PText('Oh no! Get me outta here!', 2000, 60);
+>>
+>
+MC :) : "Wolfy is the best!!"
+>
+MC :) : "Wolves can do anything because they have big teeth and also friends."
+>
+Daydiem :) : "This turned out pretty good, actually."
+>
+Tsade :) : "What do you mean actually? Of course it's good!"
+[[>The End]]

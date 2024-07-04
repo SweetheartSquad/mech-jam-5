@@ -1,0 +1,48 @@
+name: release
+
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}
+
+env:
+  ITCH_USER: seansleblanc
+  ITCH_GAME: js-walkaround-template
+  DISCORD_USERNAME: ${{ github.repository }}
+  DISCORD_AVATAR: https://raw.githubusercontent.com/${{ github.repository }}/main/src/assets/icon.png
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{ "color": 16426275, "title": "deploying...", "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]'
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.1.0
+      - uses: josephbmanley/butler-publish-itchio-action@v1.0.3
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCH_API_KEY }}
+          CHANNEL: web
+          ITCH_GAME: ${{ env.ITCH_GAME }}
+          ITCH_USER: ${{ env.ITCH_USER }}
+          PACKAGE: dist
+          VERSION: ${{ steps.package-version.outputs.current-version }}
+      - uses: Ilshidur/action-discord@0.3.2
+        if: ${{ success() }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{ "color": 2357925, "title": "v${{ steps.package-version.outputs.current-version }} deployed", "url": "https://${{ env.ITCH_USER }}.itch.io/${{ env.ITCH_GAME }}" }]'
+      - uses: Ilshidur/action-discord@0.3.2
+        if: ${{ failure() }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: '[{ "color": 16393080, "title": "failed", "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]'
