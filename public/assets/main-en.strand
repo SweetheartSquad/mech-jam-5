@@ -23,13 +23,8 @@
 //
 // game object stuff:
 // 	this.Area(name, [objects])
-// 	this.Npc({ passage, x, y )
-// 	this.Goto({ area, x, y }, { x, y, width, height })
 // 	this.Prop({ texture, x, y, alpha, scale, flip, blur, animate, offset })
 // 	this.PropParallax({ texture, alpha, scale, flip, blur, mult, animate, offset }),
-// 	this.Block({ x, y, width, height, type, radius })
-// 	this.Poly({ x, y, width, verts })
-// 	this.Interrupt({ passage, x, y, width, height })
 
 <<if !this.started>>
 <<do
@@ -64,14 +59,6 @@
 			},
 		});
 		return gameObject;
-	};
-
-	this.Item = ({ passage, ...options}) => {
-		const prop = this.Prop(options);
-		const interrupt = this.Interrupt({ passage: 'take-item', type: 'rectangle', width: 30, height: 5, ...options});
-		interrupt.body.body.plugin.interrupt.prop = prop;
-		interrupt.body.body.plugin.interrupt.itemPassage = passage;
-		return [prop, interrupt];
 	};
 
 
@@ -162,29 +149,18 @@
 	this.Area('intro', [
 		this.Prop({ texture: 'bg_ship', scale: 2, y: 110, offset: -1000000 }),
 		this.Prop({ texture: 'hive', scale: 1, offset: -100000 }),
-		this.Poly({ width: 4, verts: [72,-108, -66,-109, -68,-93, -105,-92, -114,-82, -114,15, -105,27, -78,26, -70,40, -60,58, 62,59, 77,44, 79,17, 93,10, 109,-6, 110,-82, 100,-93, 80,-95, 72,-108] }),
-		this.Goto({ area: 'intro2' }, { x: 50, y: -104, width: 8, height: 5 }),
-
-		this.Npc({ body: 'npc', passage: 'supply-done', x: 40, y: 40, roam: 50 }),
 	]);
 	this.Area('intro2', [
 		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
-		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
-		this.Interrupt({ passage: 'skip', y: -90 }),
 		this.Text('After a long journey\naboard the Resolute Ruse...', { y: -75 }),
-		this.Goto({ area: 'intro3' }, { y: -150, width: 8, height: 5 }),
 	]);
 	this.Area('intro3', [
 		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
-		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
 		this.Text(`Finally, ${this.npc ? 'we' : 'I'} found a planet with air...`, { y: -75 }),
-		this.Goto({ area: 'intro4' }, { y: -150, width: 8, height: 5 }),
 	]);
 	this.Area('intro4', [
 		this.Prop({ texture: 'bg_ship2', scale: 2, y: 55, offset: -1000000 }),
-		this.Poly({ width: 4, verts: [25,-154, -23,-153, -27,-139, -54,-128, -57,-45, -45,-32, -28,-27, -25,4, -12,19, 15,14, 26,1, 28,-26, 36,-33, 47,-37, 58,-54, 56,-126, 48,-136, 32,-139, 24,-155] }),
 		this.Text(`But I\'ve got to get supplies or ${this.npc ? 'we' : 'I'} will die!!`, { y: -75 }),
-		this.Goto({ area: 'main' }, { y: -150, width: 8, height: 5 }),
 	]);
 
 	// start
@@ -311,8 +287,6 @@ The End
 	canvas.parentElement.style.cursor = 'crosshair';
 	this.goto('close');
 ]]
-[[toggle debugPhysics|window.debugPhysics=!window.debugPhysics]]
-[[toggle player collision|this.scene.player.bodyCollision.body.isSensor = !this.scene.player.bodyCollision.body.isSensor]]
 [[drawing tools]]
 [[close]]
 [[back|this.back()]]
@@ -453,81 +427,6 @@ The End
 	canvas.parentElement.style.cursor = 'crosshair';
 	this.goto('close');
 ]]
-[[draw walls|
-	if (!window.debugPhysics) window.debugPhysics=true;
-	const canvas = window.game.app.renderer.context.gl.canvas;
-	const verts = [];
-	let poly;
-
-	const getPos = (event) => {
-		const p = this.mousePos(event);
-		return [Math.round(p.x),Math.round(p.y)];
-	};
-	const makePoly = () => {
-		if (poly) {
-			this.destroy(poly);
-		}
-		if (verts.length > 0) {
-			poly = this.Poly({ verts: verts.flat(), width }, { plugin: { interactive: true }});
-			// this.add(poly);
-		} else {
-			poly = null;
-		}
-	};
-
-	let width = 20;
-	const onWheel = (event) => {
-		if (!event.deltaY) return;
-		const d = Math.sign(event.deltaY);
-		width += d;
-		width = Math.max(1, width);
-		makePoly();
-	};
-	const onMove = (event) => {
-		if (event.ctrlKey) return;
-		event.preventDefault();
-		event.stopPropagation();
-		verts.pop();
-		verts.push(getPos(event));
-		makePoly();
-	};
-	const onClick = (event) => {
-		if (event.button !== 0) return;
-		event.preventDefault();
-		event.stopPropagation();
-		this.scene.player.canMove = false;
-		setTimeout(() => this.scene.player.canMove = true, 100);
-		if (event.ctrlKey) {
-			verts.pop();
-		} else {
-			verts.push(getPos(event));
-		}
-		makePoly();
-		canvas.addEventListener('pointermove', onMove);
-		canvas.addEventListener('pointerup', () => {
-			canvas.removeEventListener('pointermove', onMove);
-		}, { once: true });
-	};
-	const onContextMenu = (event) => {
-		event.preventDefault();
-		canvas.removeEventListener('wheel', onWheel);
-		canvas.removeEventListener('pointerdown', onClick);
-		canvas.removeEventListener('pointermove', onMove);
-		canvas.parentElement.style.cursor = 'inherit';
-		if (poly) {
-			navigator.clipboard.writeText(`this.Poly({ verts: [${verts.map(i => i.join(',')).join(', ')}]${width === 20 ? '' : `, width: ${width}`} }),`);
-			console.log(`this.Poly({ verts: [${verts.map(i => i.join(',')).join(', ')}]${width === 20 ? '' : `, width: ${width}`} }),`);
-			this.scene.drop(poly);
-		}
-	};
-	requestAnimationFrame(() => {
-		canvas.addEventListener('wheel', onWheel);
-		canvas.addEventListener('pointerdown', onClick);
-		canvas.addEventListener('contextmenu', onContextMenu, { once: true });
-	});
-	canvas.parentElement.style.cursor = 'crosshair';
-	this.goto('close');
-]]
 [[back|this.back()]]
 
 ::main
@@ -549,33 +448,7 @@ The End
 	}
 	const objects = [
 		this.PropParallax({ texture: 'bg_parallax', offset: -1000000, mult: 1 }),
-		this.Interrupt({ passage: 'out-of-bounds', width: 2000, y: 1000 }),
-		this.Interrupt({ passage: 'out-of-bounds', width: 2000, y: -1000 }),
-		this.Interrupt({ passage: 'out-of-bounds', height: 2000, x: 1000 }),
-		this.Interrupt({ passage: 'out-of-bounds', height: 2000, x: -1000 }),
 	];
-	if (this.npc) {
-		objects.push(
-			this.Npc({ body: 'npc', passage: 'npc', x: 50, y: 50, roam: 50 }),
-		);
-	}
-	if (this.moremonsters) {
-		objects.push(
-			...new Array(30).fill(0).flatMap((_, idx, arr) => this.Item({ texture: 'supply', x: Math.sin((idx+1)/arr.length*Math.PI*2)*120, y: Math.cos((idx+1)/arr.length*Math.PI*2)*120, passage: 'supply' })),
-		);
-	} else {
-		objects.push(
-			...this.Item({ texture: 'supply', x: 120, y: 30, passage: 'supply' }),
-			...this.Item({ texture: 'supply', x: 120+30, y: 30+50, passage: 'supply' }),
-			...this.Item({ texture: 'supply', x: 120+80, y: 30-10, passage: 'supply' }),
-			...this.Item({ texture: 'supply', x: 120+120, y: 30+70, passage: 'supply' }),
-		);
-	}
-	if (this.wolfy) {
-		objects.push(
-			this.Npc({ body: 'wolfy', passage: 'wolfy', x: -25, y: 50, roam: 50 }),
-		);
-	}
 	this.Area('main', objects);
 	if (this.skipped) {
 		this.scene.goto({ area: 'main' });

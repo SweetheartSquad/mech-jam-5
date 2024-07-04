@@ -1,8 +1,5 @@
-import { Composite } from 'matter-js';
 import { Container } from 'pixi.js';
 import { GameObject } from './GameObject';
-import { world } from './Physics';
-import { Body } from './Scripts/Body';
 import { Display } from './Scripts/Display';
 import { removeFromArray } from './utils';
 
@@ -11,9 +8,6 @@ export class Area {
 		area.forEach((i) => {
 			i.getScripts(Display).forEach((d) => {
 				container.addChild(d.container);
-			});
-			i.getScripts(Body).forEach((b) => {
-				Composite.add(world, b.body);
 			});
 			GameObject.gameObjects.push(i);
 			i.resume();
@@ -24,9 +18,6 @@ export class Area {
 		area.forEach((i) => {
 			i.getScripts(Display).forEach((d) => {
 				d.container.parent?.removeChild(d.container);
-			});
-			i.getScripts(Body).forEach((b) => {
-				Composite.remove(world, b.body);
 			});
 			removeFromArray(GameObject.gameObjects, i);
 			i.pause();

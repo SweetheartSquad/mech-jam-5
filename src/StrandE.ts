@@ -6,16 +6,10 @@ import { Sprite, TextStyle } from 'pixi.js';
 import Strand from 'strand-core';
 import { Area } from './Area';
 import { music, sfx } from './Audio';
-import { AudioSpatial } from './AudioSpatial';
-import { Block } from './Block';
 import { Emitter } from './Emitter';
 import { resource, resources } from './Game';
 import { GameObject } from './GameObject';
 import { GameScene } from './GameScene';
-import { Goto } from './Goto';
-import { Interrupt } from './Interrupt';
-import { NPC } from './NPC';
-import { Poly } from './Poly';
 import { Poof } from './Poof';
 import { Prop } from './Prop';
 import { PropParallax } from './PropParallax';
@@ -197,14 +191,6 @@ export class StrandE extends Strand {
 		Area.unmount(a);
 	}
 
-	Npc(...args: ConstructorParameters<typeof NPC>) {
-		return new NPC(...args);
-	}
-
-	Goto(...args: ConstructorParameters<typeof Goto>) {
-		return new Goto(...args);
-	}
-
 	Prop(...args: ConstructorParameters<typeof Prop>) {
 		return new Prop(...args);
 	}
@@ -310,22 +296,6 @@ export class StrandE extends Strand {
 		text.anchor.x = 0.5;
 		text.y -= offset;
 		return go;
-	}
-
-	Block(...args: ConstructorParameters<typeof Block>) {
-		return new Block(...args);
-	}
-
-	Poly(...args: ConstructorParameters<typeof Poly>) {
-		return new Poly(...args);
-	}
-
-	Interrupt(...args: ConstructorParameters<typeof Interrupt>) {
-		return new Interrupt(...args);
-	}
-
-	Audio(...args: ConstructorParameters<typeof AudioSpatial>) {
-		return new AudioSpatial(...args);
 	}
 
 	Updater(cb: ConstructorParameters<typeof Updater>[1]) {

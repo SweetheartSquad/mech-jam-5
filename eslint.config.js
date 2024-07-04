@@ -33,7 +33,6 @@ export default [
 			'max-len': 'off', // just apply common-sense
 			'no-param-reassign': 'off',
 			'import/no-extraneous-dependencies': ['error', { devDependencies: true }], // all dev deps
-			'no-bitwise': 'off', // for physics masks
 
 			// prefer named
 			'import/prefer-default-export': 'off',

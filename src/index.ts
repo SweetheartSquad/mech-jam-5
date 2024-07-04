@@ -80,6 +80,5 @@ async function play() {
 
 playEl.onclick = play;
 if (DEBUG) {
-	window.debugPhysics = false;
 	playEl.click();
 }
