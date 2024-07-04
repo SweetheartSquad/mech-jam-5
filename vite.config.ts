@@ -6,7 +6,7 @@ const htmlReplaceTitlePlugin: Plugin = {
 	transformIndexHtml: {
 		order: 'pre',
 		handler(html: string) {
-			return html.replace('<title>TITLE</title>', `<title>${pkg.name}</title>`);
+			return html.replace('<title>TITLE</title>', `<title>${pkg.description}</title>`);
 		},
 	},
 };

@@ -6,8 +6,8 @@ concurrency:
   group: ${{ github.workflow }}
 
 env:
-  ITCH_USER: seansleblanc
-  ITCH_GAME: js-walkaround-template
+  ITCH_USER: sweetheartsquad
+  ITCH_GAME: mech-jam-5
   DISCORD_USERNAME: ${{ github.repository }}
   DISCORD_AVATAR: https://raw.githubusercontent.com/${{ github.repository }}/main/src/assets/icon.png
 

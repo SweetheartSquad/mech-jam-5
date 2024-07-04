@@ -1,9 +1,9 @@
 {
 	"private": true,
-	"name": "js-walkaround-template",
+	"name": "mech-jam-5",
 	"version": "1.0.0",
-	"description": "Template for a js walkaround game",
-	"author": "Sean S. LeBlanc <sean.s.leblanc@gmail.com>",
+	"description": "TODO: title",
+	"author": "SweetHeart Squad <sweetheartsquad@gmail.com>",
 	"type": "module",
 	"scripts": {
 		"start": "vite",

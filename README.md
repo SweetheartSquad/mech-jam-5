@@ -1,4 +1,4 @@
-# js-walkaround-template
+# mech-jam-5
 
 ![icon](./public/assets/icon.png)
 
