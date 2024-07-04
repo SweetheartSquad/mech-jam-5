@@ -68,7 +68,7 @@ float vignette(vec2 uv, float amount){
 void main(void) {
 	// get pixels
 	vec2 uv = vTextureCoord;
-	float t = sin(mod(uCurTime/10.0,1.0)*PI);
+	float t = sin(mod(uCurTime/10.0,1.0)*PI2);
 	
 	vec2 coord = gl_FragCoord.xy;
 	coord -= mod(coord, scale);
@@ -80,7 +80,7 @@ void main(void) {
 
 	vec2 noiseT1 = vec2(rand(vec2(0.0, t)), rand(vec2(t, 0.0)));
 	vec2 noiseT = vec2(rand(vec2(0.0, t - mod(t, 0.4))), rand(vec2(t - mod(t, 0.4), 0.0)));
-	uv += (noise(uv*10.0 + noiseT)-0.5)*0.01*uNoise;
+	// uv += (noise(uv*10.0 + noiseT)-0.5)*uNoise;
 
 	vec3 col = chrAbb(uv, abs(uv.x-0.5)*2.0, 0.0);
 

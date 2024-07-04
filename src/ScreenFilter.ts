@@ -10,6 +10,7 @@ import { contrastDiff, reduceGrayscale } from './utils';
 type Uniforms = {
 	uWhiteout: number;
 	uInvert: number;
+	uNoise: number;
 	uCurTime: number;
 	uCamPos: [number, number];
 	uFg: [number, number, number];
@@ -26,6 +27,7 @@ export class ScreenFilter extends CustomFilter<Uniforms> {
 		const frag = resource<string>('postprocess.frag') || '';
 		super(frag, {
 			uWhiteout: 0,
+			uNoise: 0.5,
 			uInvert: 0,
 			uCurTime: 0,
 			uCamPos: [0, 0],
