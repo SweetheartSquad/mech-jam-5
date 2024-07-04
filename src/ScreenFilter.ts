@@ -21,7 +21,7 @@ export class ScreenFilter extends CustomFilter<Uniforms> {
 	constructor(uniforms?: Partial<Uniforms>) {
 		const texDitherGrid = resource<Texture>('ditherGrid');
 		if (!texDitherGrid) throw new Error('Could not find ditherGrid');
-		texDitherGrid.source.wrapMode = 'repeat';
+		texDitherGrid.source.addressMode = 'repeat';
 
 		const frag = resource<string>('postprocess.frag') || '';
 		super(frag, {
