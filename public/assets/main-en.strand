@@ -285,3 +285,66 @@ this should never render
 	}
 	this.goto('close');
 >>
+
+
+::head Block
+OOO
+OOO
+CCC
+
+::head Tee
+OOOOO
+ OOO
+ CCC
+  C
+
+::head Small
+OO
+CO
+
+::head Smaller
+C
+
+::chest 1
+OOHOO
+AOOOA
+OOOOO
+OLOLO
+
+::chest 2
+AOHOA
+ OOO 
+ OOO 
+OLOLO
+
+::chest 3
+AHA
+L L
+
+::arm 1
+OOC
+
+::arm 2
+OC
+OC
+
+::arm 3
+   OO
+OOOOC
+O
+OO
+
+::leg 1
+C
+O
+O
+
+::leg 2
+OC
+OC
+
+::leg 3
+OO 
+OOC
+ O 
+OO 

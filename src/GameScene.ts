@@ -9,9 +9,11 @@ import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
+import { cellGap, cellSize } from './config';
 import { DEBUG } from './debug';
 import { error, warn } from './logger';
 import { getInput } from './main';
+import { makePiece, mechPieceParse } from './mech-piece';
 
 function depthCompare(
 	a: Container & { offset?: number },
@@ -132,6 +134,73 @@ export class GameScene {
 
 		this.border.display.container.alpha = 0;
 		this.strand.goto('start');
+
+		const getPieces = (type: string) =>
+			Object.keys(this.strand.passages)
+				.filter((i) => i.startsWith(type))
+				.map((i) =>
+					mechPieceParse(type, i, this.strand.getPassageWithTitle(i).body)
+				)
+				.reduce<{
+					[key: string]: ReturnType<typeof mechPieceParse>;
+				}>((acc, i) => {
+					acc[i.name] = i;
+					return acc;
+				}, {});
+
+		const heads = getPieces('head');
+		const arms = getPieces('arm');
+		const legs = getPieces('leg');
+		const chests = getPieces('chest');
+
+		const headD = Object.values(heads)[1];
+		const chestD = Object.values(chests)[1];
+		const legD = Object.values(legs)[2];
+		const armD = Object.values(arms)[2];
+		const [sprHead, cellsHead] = makePiece(headD);
+		const [sprChest, cellsChest] = makePiece(chestD);
+		const [sprArmR, cellsArmR] = makePiece(armD);
+		const [sprArmL, cellsArmL] = makePiece(armD);
+		const [sprLegR, cellsLegR] = makePiece(legD);
+		const [sprLegL, cellsLegL] = makePiece(legD);
+		const pairs = [
+			[sprHead, cellsHead],
+			[sprChest, cellsChest],
+			[sprArmR, cellsArmR],
+			[sprArmL, cellsArmL],
+			[sprLegR, cellsLegR],
+			[sprLegL, cellsLegL],
+		];
+		this.container.addChild(sprHead);
+		this.container.addChild(sprChest);
+		this.container.addChild(sprArmR);
+		this.container.addChild(sprArmL);
+		this.container.addChild(sprLegR);
+		this.container.addChild(sprLegL);
+		this.container.addChild(cellsHead);
+		this.container.addChild(cellsChest);
+		this.container.addChild(cellsArmR);
+		this.container.addChild(cellsArmL);
+		this.container.addChild(cellsLegR);
+		this.container.addChild(cellsLegL);
+		sprLegL.scale.x *= -1;
+		sprArmL.scale.x *= -1;
+
+		sprHead.y -= ((headD.h + chestD.h) / 2) * (cellSize + cellGap);
+
+		sprLegR.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
+		sprLegL.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
+		sprLegR.x -= ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprLegL.x += ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
+
+		sprArmR.x -= ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprArmL.x += ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
+
+		pairs.forEach(([spr, cells]) => {
+			cells.scale.x = spr.scale.x;
+			cells.position.x = spr.position.x;
+			cells.position.y = spr.position.y;
+		});
 	}
 
 	destroy(): void {
@@ -170,8 +239,6 @@ export class GameScene {
 
 		const curTime = game.app.ticker.lastTime;
 
-		// depth sort
-		this.sortScene();
 		this.container.addChild(this.graphics);
 
 		this.screenFilter.update();
@@ -183,10 +250,6 @@ export class GameScene {
 			this.camera.display.container.pivot.x,
 			-this.camera.display.container.pivot.y,
 		];
-	}
-
-	sortScene() {
-		this.container.children.sort(depthCompare);
 	}
 
 	take(gameObject: GameObject) {

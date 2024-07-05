@@ -24,3 +24,11 @@ textures/title2.png
 textures/bg_parallax.png
 textures/bg_ship.png
 
+textures/cell empty.png
+textures/cell joint.png
+
+textures/head Block.png
+textures/head Tee.png
+textures/head Small.png
+textures/head Smaller.png
+

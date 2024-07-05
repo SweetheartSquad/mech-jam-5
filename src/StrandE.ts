@@ -175,7 +175,6 @@ export class StrandE extends Strand {
 		objs.forEach((i) => {
 			i.getScript(Display)?.updatePosition();
 		});
-		this.scene.sortScene();
 	}
 
 	remove(obj: GameObject) {
