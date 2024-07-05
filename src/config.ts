@@ -10,3 +10,4 @@ export const fps = 60;
 
 export const cellSize = 8;
 export const cellGap = 1;
+export const csg = cellSize + cellGap;
