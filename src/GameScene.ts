@@ -183,18 +183,18 @@ export class GameScene {
 		this.container.addChild(cellsArmL);
 		this.container.addChild(cellsLegR);
 		this.container.addChild(cellsLegL);
-		sprLegL.scale.x *= -1;
-		sprArmL.scale.x *= -1;
+		sprLegR.scale.x *= -1;
+		sprArmR.scale.x *= -1;
 
 		sprHead.y -= ((headD.h + chestD.h) / 2) * (cellSize + cellGap);
 
-		sprLegR.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
 		sprLegL.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
-		sprLegR.x -= ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
-		sprLegL.x += ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprLegR.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
+		sprLegL.x -= ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprLegR.x += ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
 
-		sprArmR.x -= ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
-		sprArmL.x += ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprArmL.x -= ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
+		sprArmR.x += ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
 
 		pairs.forEach(([spr, cells]) => {
 			cells.scale.x = spr.scale.x;
