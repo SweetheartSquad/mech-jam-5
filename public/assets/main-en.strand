@@ -287,63 +287,64 @@ this should never render
 
 
 ::head Block
-OOO
-OOO
-CCC
+000
+000
+.=.
 
 ::head Tee
-OOOOO
- OOO
- CCC
-  C
+00000
+.000.
+.===.
+..=..
 
 ::head Small
-OO
-CO
+00
+=0
 
 ::head Smaller
-C
+=
 
 ::chest 1
-OOHOO
-AOOOA
-OOOOO
-OLOLO
+00==00
+=0000=
+000000
+0=00=0
 
 ::chest 2
-AOHOA
- OOO 
- OOO 
-OLOLO
+..=..
+=0=0=
+.000.
+.000.
+0=0=0
 
 ::chest 3
-AHA
-L L
+===
+=.=
 
 ::arm 1
-OOC
+00=
 
 ::arm 2
-OC
-OC
+0=
+0=
 
 ::arm 3
-   OO
-OOOOC
-O
-OO
+...0=
+0000=
+0....
+00...
 
 ::leg 1
-C
-O
-O
+=
+0
+0
 
 ::leg 2
-OC
-OC
+0=
+00
 
 ::leg 3
-OO 
-OOC
- O 
-OO 
+0=.
+000
+.0.
+00.

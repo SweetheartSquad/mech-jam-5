@@ -9,11 +9,12 @@ import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
-import { cellGap, cellSize } from './config';
+import { csg } from './config';
 import { DEBUG } from './debug';
 import { error, warn } from './logger';
 import { getInput } from './main';
 import { makePiece, mechPieceParse } from './mech-piece';
+import { randItem } from './utils';
 
 function depthCompare(
 	a: Container & { offset?: number },
@@ -136,33 +137,41 @@ export class GameScene {
 		this.strand.goto('start');
 
 		const getPieces = (type: string) =>
-			Object.keys(this.strand.passages)
-				.filter((i) => i.startsWith(type))
-				.map((i) =>
-					mechPieceParse(type, i, this.strand.getPassageWithTitle(i).body)
-				)
-				.reduce<{
-					[key: string]: ReturnType<typeof mechPieceParse>;
-				}>((acc, i) => {
-					acc[i.name] = i;
-					return acc;
-				}, {});
+			Object.keys(this.strand.passages).filter((i) => i.startsWith(type));
 
 		const heads = getPieces('head');
 		const arms = getPieces('arm');
 		const legs = getPieces('leg');
 		const chests = getPieces('chest');
+		const pieces = {
+			...heads,
+			...arms,
+			...legs,
+			...chests,
+		};
 
-		const headD = Object.values(heads)[1];
-		const chestD = Object.values(chests)[1];
-		const legD = Object.values(legs)[2];
-		const armD = Object.values(arms)[2];
+		const getPiece = (key: string, flip?: boolean) =>
+			mechPieceParse(
+				key.split(' ')[0],
+				key,
+				this.strand.getPassageWithTitle(key).body,
+				flip
+			);
+
+		const leg = randItem(legs);
+		const arm = randItem(arms);
+		const headD = getPiece(randItem(heads));
+		const chestD = getPiece(randItem(chests));
+		const legLD = getPiece(leg);
+		const armLD = getPiece(arm);
+		const legRD = getPiece(leg, true);
+		const armRD = getPiece(arm, true);
 		const [sprHead, cellsHead] = makePiece(headD);
 		const [sprChest, cellsChest] = makePiece(chestD);
-		const [sprArmR, cellsArmR] = makePiece(armD);
-		const [sprArmL, cellsArmL] = makePiece(armD);
-		const [sprLegR, cellsLegR] = makePiece(legD);
-		const [sprLegL, cellsLegL] = makePiece(legD);
+		const [sprArmR, cellsArmR] = makePiece(armRD);
+		const [sprArmL, cellsArmL] = makePiece(armLD);
+		const [sprLegR, cellsLegR] = makePiece(legRD);
+		const [sprLegL, cellsLegL] = makePiece(legLD);
 		const pairs = [
 			[sprHead, cellsHead],
 			[sprChest, cellsChest],
@@ -183,23 +192,47 @@ export class GameScene {
 		this.container.addChild(cellsArmL);
 		this.container.addChild(cellsLegR);
 		this.container.addChild(cellsLegL);
-		sprLegR.scale.x *= -1;
-		sprArmR.scale.x *= -1;
 
-		sprHead.y -= ((headD.h + chestD.h) / 2) * (cellSize + cellGap);
+		[cellsChest, cellsArmL, cellsArmR, cellsLegL, cellsLegR, cellsHead].forEach(
+			(i) => {
+				i.x -= cellsChest.width / 2;
+				i.y -= cellsChest.height / 2;
+			}
+		);
 
-		sprLegL.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
-		sprLegR.y += ((legD.h + chestD.h) / 2) * (cellSize + cellGap);
-		sprLegL.x -= ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
-		sprLegR.x += ((legD.w + chestD.w) / 2) * (cellSize + cellGap);
+		// connect head
+		cellsHead.x -=
+			(headD.connections.chest[0] - chestD.connections.head[0]) * csg;
+		cellsHead.y -=
+			(headD.connections.chest[1] - chestD.connections.head[1] + 1) * csg;
 
-		sprArmL.x -= ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
-		sprArmR.x += ((armD.w + chestD.w) / 2) * (cellSize + cellGap);
+		// connect legL
+		cellsLegL.x -=
+			(legLD.connections.chest[0] - chestD.connections.legL[0]) * csg;
+		cellsLegL.y -=
+			(legLD.connections.chest[1] - chestD.connections.legL[1] - 1) * csg;
+
+		// connect legR
+		cellsLegR.x -=
+			(legRD.connections.chest[0] - chestD.connections.legR[0]) * csg;
+		cellsLegR.y -=
+			(legRD.connections.chest[1] - chestD.connections.legR[1] - 1) * csg;
+
+		// connect armL
+		cellsArmL.x -=
+			(armLD.connections.chest[0] - chestD.connections.armL[0] + 1) * csg;
+		cellsArmL.y -=
+			(armLD.connections.chest[1] - chestD.connections.armL[1]) * csg;
+
+		// connect armR
+		cellsArmR.x -=
+			(armRD.connections.chest[0] - chestD.connections.armR[0] - 1) * csg;
+		cellsArmR.y -=
+			(armRD.connections.chest[1] - chestD.connections.armR[1]) * csg;
 
 		pairs.forEach(([spr, cells]) => {
-			cells.scale.x = spr.scale.x;
-			cells.position.x = spr.position.x;
-			cells.position.y = spr.position.y;
+			spr.x = cells.x + cells.width / 2;
+			spr.y = cells.y + cells.height / 2;
 		});
 	}
 
