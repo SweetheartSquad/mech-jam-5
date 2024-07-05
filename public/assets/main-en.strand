@@ -49,38 +49,6 @@
 		});
 	}
 
-	// automatically hide portrait on close
-	// and stop roam during dialogues
-	this.scene.dialogue.openo = this.scene.dialogue.open;
-	this.scene.dialogue.open = () => {
-		if (this.scene.areas.main) {
-			this.scene.areas.main.filter(i => i.roam).forEach(i => i.roam.active = false);
-		}
-		this.scene.dialogue.openo();
-	};
-	this.scene.dialogue.closeo = this.scene.dialogue.close;
-	this.scene.dialogue.close = () => {
-		this.portrait();
-		if (this.scene.areas.main) {
-			this.scene.areas.main.filter(i => i.roam).forEach(i => i.roam.active = true);
-		}
-		this.scene.dialogue.closeo();
-	};
-
-	// add syntax sugar for passages like `Daydiem :O : "Blah blah"`
-	const check = /(Daydiem|Rexty|Tsade|MC)\s*(.*?)\s*:\s*"/;
-	this.scene.dialogue.sayo = this.scene.dialogue.say;
-	this.scene.dialogue.say = (text, actions) => {
-		const match = check.exec(text);
-		if (match) {
-			this.portrait(match[1].toLowerCase(), match[2]);
-			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
-			this.scene.dialogue.sayo(`${match[1]}:\n"${text.substring(match[0].length)}`, actions);
-		} else {
-			this.scene.dialogue.sayo(text, actions);
-		}
-	};
-
 	this.Area('empty', []);
 	this.Area('intro', [
 		this.Prop({ texture: 'bg_ship', scale: 2, y: 110, offset: -1000000 }),
