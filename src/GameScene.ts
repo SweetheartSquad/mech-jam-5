@@ -10,7 +10,7 @@ import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
 import { DEBUG } from './debug';
-import { error, log, warn } from './logger';
+import { error, warn } from './logger';
 import { getInput } from './main';
 
 function depthCompare(
@@ -71,7 +71,7 @@ export class GameScene {
 				resource<string>('main-en') ||
 				'::start\nNo "main-en.strand" found! [[close]]\n::close\nclose',
 			logger: {
-				log: (...args) => this.strand.debug && log(...args),
+				log: (...args) => false,
 				warn: (...args) => warn(...args),
 				error: (...args) => error(...args),
 			},
