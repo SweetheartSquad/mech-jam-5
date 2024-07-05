@@ -13,7 +13,6 @@ textures/shadows.png
 font/bmfont.fnt
 
 textures/img_cheryl.jpg
-textures/hive.1.webp
 
 audio/bgm.mp3
 audio/voiceDefault.mp3
