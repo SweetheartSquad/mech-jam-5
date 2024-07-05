@@ -280,3 +280,8 @@ export function relativeMouse() {
 export function firstCoalesce<T>(value: T | T[]): T {
 	return Array.isArray(value) ? value[0] : value;
 }
+
+/** @returns reversed copy of the string */
+export function strReverse(str: string) {
+	return [...str].reverse().join('');
+}
