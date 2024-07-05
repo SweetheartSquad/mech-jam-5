@@ -174,11 +174,6 @@ export class GameScene {
 		this.sortScene();
 		this.container.addChild(this.graphics);
 
-		// adjust camera based on dialogue state
-		const p = this.dialogue.progress();
-		this.camera.display.container.scale.x =
-			this.camera.display.container.scale.y = 1 + p * 2;
-
 		this.screenFilter.update();
 
 		GameObject.update();
