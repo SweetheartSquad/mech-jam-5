@@ -7,7 +7,7 @@ concurrency:
 
 env:
   ITCH_USER: sweetheartsquad
-  ITCH_GAME: mech-jam-5
+  ITCH_GAME: fleetwood-mech
   DISCORD_USERNAME: ${{ github.repository }}
   DISCORD_AVATAR: https://raw.githubusercontent.com/${{ github.repository }}/main/src/assets/icon.png
 
