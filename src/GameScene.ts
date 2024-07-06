@@ -149,7 +149,27 @@ export class GameScene {
 		this.mechinfo.y -= size.y / 2;
 		this.mechinfo.x += 50;
 		this.mechinfo.y += 50;
-		this.pickParts();
+
+		// TODO: loop
+		(async () => {
+			await this.scenePrebuild();
+			await this.buildMech();
+			await this.scenePrefight();
+			await this.fight();
+			await this.scenePostfight();
+		})();
+	}
+
+	scenePrebuild() {
+		// TODO
+	}
+
+	scenePrefight() {
+		// TODO
+	}
+
+	scenePostfight() {
+		// TODO
 	}
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
@@ -195,6 +215,15 @@ SPACE: ${freeCells
 	}
 
 	mech!: ReturnType<GameScene['assembleParts']>;
+
+	async buildMech(): Promise<void> {
+		await this.pickParts();
+		try {
+			await this.placeModules();
+		} catch {
+			return this.buildMech();
+		}
+	}
 
 	pickParts() {
 		return new Promise<void>((r) => {
@@ -294,6 +323,10 @@ SPACE: ${freeCells
 		});
 	}
 
+	placeModules() {
+		// TOOD
+	}
+
 	assembleParts(
 		headKey: string,
 		chestKey: string,
@@ -384,6 +417,10 @@ SPACE: ${freeCells
 			spr.y = cells.y + cells.height / 2;
 		});
 		return { container, headD, chestD, armLD, armRD, legLD, legRD };
+	}
+
+	fight() {
+		// TODO
 	}
 
 	destroy(): void {
