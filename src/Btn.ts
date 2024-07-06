@@ -47,5 +47,6 @@ export class Btn extends GameObject {
 		spr.on('pointerout', () => {
 			spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
 		});
+		this.init();
 	}
 }
