@@ -132,7 +132,9 @@ export function mechPartParse(
 
 export function makePart(piece: ReturnType<typeof mechPartParse>) {
 	const sprBase = new Sprite(piece.tex);
+	sprBase.label = `${piece.name} sprite`;
 	const containerCells = new Container();
+	containerCells.label = `${piece.name} cells`;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	forCells(piece.cells, (x, y, cell) => {
 		const sprCell = new Sprite(
