@@ -2,13 +2,16 @@ import { Sprite } from 'pixi.js';
 import { sfx } from './Audio';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
+import { Transform } from './Scripts/Transform';
 import { tex } from './utils';
 
 export class Btn extends GameObject {
 	display: Display;
+	transform: Transform;
 
 	constructor(public onClick: () => void, texture: string) {
 		super();
+		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 
 		const spr = new Sprite(tex(`${texture}_normal`));
