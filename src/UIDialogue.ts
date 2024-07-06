@@ -364,7 +364,7 @@ export class UIDialogue extends GameObject {
 			return t;
 		});
 		this.containerChoices.y =
-			this.textText.height - this.containerChoices.height;
+			this.textText.height - this.containerChoices.height - this.padding.bottom;
 
 		this.containerChoices.alpha = 0.0;
 		if (this.choices.length > 0) {
