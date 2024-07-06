@@ -2,7 +2,7 @@
 import browserLang from 'browser-lang';
 import ease from 'eases';
 import * as PIXI from 'pixi.js';
-import { Sprite, TextStyle } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import Strand from 'strand-core';
 import { Area } from './Area';
 import { music, sfx } from './Audio';
@@ -254,47 +254,6 @@ export class StrandE extends Strand {
 
 	PropParallax(...args: ConstructorParameters<typeof PropParallax>) {
 		return new PropParallax(...args);
-	}
-
-	Text(
-		str: string,
-		{
-			x = 0,
-			y = 0,
-			offset = 0,
-			font,
-		}: {
-			x?: number;
-			y?: number;
-			font?: Partial<TextStyle>;
-			offset?: number;
-		} = {}
-	) {
-		const go = new GameObject();
-		const transform = new Transform(go);
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		go.transform = transform;
-		transform.x = x;
-		transform.y = y + offset;
-		go.scripts.push(transform);
-		const display = new Display(go);
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		go.display = display;
-		go.scripts.push(display);
-		const text = new PIXI.BitmapText({
-			text: str,
-			style: { ...fontIngame, ...font },
-		});
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		go.text = text;
-		display.container.addChild(text);
-		go.init();
-		text.anchor.x = 0.5;
-		text.y -= offset;
-		return go;
 	}
 
 	Updater(cb: ConstructorParameters<typeof Updater>[1]) {
