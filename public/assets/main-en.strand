@@ -64,8 +64,11 @@
 >>
 <<endif>>
 <<do
-	this.scene.dialogue.textText.style.fill = 0xffd20a;
-	this.show('img_cheryl', { scale: 1, duration: 0 });
+	if (this.debug) this.show('').then(() => {this.goto('start2')});
+	else {
+		this.scene.dialogue.textText.style.fill = 0xffd20a;
+		this.show('img_cheryl', { scale: 1, duration: 0 });
+	}
 >>
 LANDING SEQUENCE ON PLANET 54XE COMPLETE
 >OPEN AIRLOCK
