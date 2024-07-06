@@ -53,10 +53,6 @@ export class GameScene {
 		);
 	}
 
-	onCollisionStart: (e: Matter.IEventCollision<Matter.Engine>) => void;
-
-	onCollisionEnd: (e: Matter.IEventCollision<Matter.Engine>) => void;
-
 	focusAmt = 0.8;
 
 	constructor() {
