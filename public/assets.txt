@@ -31,3 +31,7 @@ textures/head Tee.png
 textures/head Small.png
 textures/head Smaller.png
 
+textures/button_normal.png
+textures/button_over.png
+textures/button_down.png
+
