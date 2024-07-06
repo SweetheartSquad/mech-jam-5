@@ -22,19 +22,27 @@ export class Btn extends GameObject {
 		spr.eventMode = 'dynamic';
 		spr.cursor = 'pointer';
 		spr.tabIndex = 0;
-		spr.on('pointerdown', onClick);
-		spr.on('mouseover', () => {
-			spr.texture = tex(`${texture}_over`);
+
+		let down = false;
+		spr.on('click', onClick);
+		spr.on('pointerover', () => {
+			spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
 		});
 		spr.on('mousedown', () => {
+			down = true;
 			spr.texture = tex(`${texture}_down`);
-			setTimeout(() => {
-				spr.texture = tex(`${texture}_normal`);
-			}, 100);
+			document.addEventListener(
+				'pointerup',
+				() => {
+					down = false;
+					spr.texture = tex(`${texture}_normal`);
+				},
+				{ once: true }
+			);
 			sfx(texture, { rate: Math.random() * 0.2 + 0.9 });
 		});
-		spr.on('mouseout', () => {
-			spr.texture = tex(`${texture}_normal`);
+		spr.on('pointerout', () => {
+			spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
 		});
 	}
 }
