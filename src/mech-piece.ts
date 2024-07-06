@@ -1,5 +1,5 @@
 import { Container, Sprite } from 'pixi.js';
-import { cellGap, cellSize } from './config';
+import { cellSize } from './config';
 import { strReverse, tex } from './utils';
 
 export function mechPieceParse(
@@ -159,8 +159,8 @@ export function makePiece(piece: ReturnType<typeof mechPieceParse>) {
 			cell === '0' ? tex('cell empty') : tex('cell joint')
 		);
 		sprCell.anchor.x = sprCell.anchor.y = 0;
-		sprCell.x = x * (cellSize + cellGap);
-		sprCell.y = y * (cellSize + cellGap);
+		sprCell.x = x * cellSize;
+		sprCell.y = y * cellSize;
 		sprCell.width = cellSize;
 		sprCell.height = cellSize;
 		// sprCell.tint = tint;

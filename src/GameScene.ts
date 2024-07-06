@@ -11,7 +11,7 @@ import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
-import { csg } from './config';
+import { cellSize } from './config';
 import { DEBUG } from './debug';
 import { error, warn } from './logger';
 import { getInput } from './main';
@@ -238,33 +238,33 @@ export class GameScene {
 
 		// connect head
 		cellsHead.x -=
-			(headD.connections.chest[0] - chestD.connections.head[0]) * csg;
+			(headD.connections.chest[0] - chestD.connections.head[0]) * cellSize;
 		cellsHead.y -=
-			(headD.connections.chest[1] - chestD.connections.head[1] + 1) * csg;
+			(headD.connections.chest[1] - chestD.connections.head[1] + 1) * cellSize;
 
 		// connect legL
 		cellsLegL.x -=
-			(legLD.connections.chest[0] - chestD.connections.legL[0]) * csg;
+			(legLD.connections.chest[0] - chestD.connections.legL[0]) * cellSize;
 		cellsLegL.y -=
-			(legLD.connections.chest[1] - chestD.connections.legL[1] - 1) * csg;
+			(legLD.connections.chest[1] - chestD.connections.legL[1] - 1) * cellSize;
 
 		// connect legR
 		cellsLegR.x -=
-			(legRD.connections.chest[0] - chestD.connections.legR[0]) * csg;
+			(legRD.connections.chest[0] - chestD.connections.legR[0]) * cellSize;
 		cellsLegR.y -=
-			(legRD.connections.chest[1] - chestD.connections.legR[1] - 1) * csg;
+			(legRD.connections.chest[1] - chestD.connections.legR[1] - 1) * cellSize;
 
 		// connect armL
 		cellsArmL.x -=
-			(armLD.connections.chest[0] - chestD.connections.armL[0] + 1) * csg;
+			(armLD.connections.chest[0] - chestD.connections.armL[0] + 1) * cellSize;
 		cellsArmL.y -=
-			(armLD.connections.chest[1] - chestD.connections.armL[1]) * csg;
+			(armLD.connections.chest[1] - chestD.connections.armL[1]) * cellSize;
 
 		// connect armR
 		cellsArmR.x -=
-			(armRD.connections.chest[0] - chestD.connections.armR[0] - 1) * csg;
+			(armRD.connections.chest[0] - chestD.connections.armR[0] - 1) * cellSize;
 		cellsArmR.y -=
-			(armRD.connections.chest[1] - chestD.connections.armR[1]) * csg;
+			(armRD.connections.chest[1] - chestD.connections.armR[1]) * cellSize;
 
 		pairs.forEach(([spr, cells]) => {
 			spr.x = cells.x + cells.width / 2;
@@ -272,8 +272,8 @@ export class GameScene {
 		});
 
 		const test = new Prop({ texture: 'module Cockpit' });
-		test.transform.x += csg / 2;
-		test.transform.y += csg / 2;
+		test.transform.x += cellSize / 2;
+		test.transform.y += cellSize / 2;
 		this.container.addChild(test.display.container);
 	}
 
