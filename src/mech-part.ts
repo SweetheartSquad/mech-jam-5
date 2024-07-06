@@ -12,8 +12,9 @@ export function mechPartParse(
 		.split('\n')
 		.reduce((max, row) => Math.max(max, row.trimEnd().length), 0);
 	const rows = source
+		.replaceAll(' ', '.')
 		.split('\n')
-		.map((i) => i.substring(0, w).padEnd(w, ' '))
+		.map((i) => i.substring(0, w).padEnd(w, '.'))
 		.map((i) => (flip ? strReverse(i) : i).split(''));
 	const h = rows.length;
 	const joints: [number, number][] = [];
@@ -22,7 +23,7 @@ export function mechPartParse(
 			joints.push([x, y]);
 		} else if (cell === '0') {
 			// basic cell
-		} else if (!cell.trim() || cell === '.') {
+		} else if (cell === '.') {
 			// empty
 		} else {
 			throw new Error(`invalid cell type "${cell}" in "${key}"`);
@@ -154,7 +155,7 @@ export function makePart(piece: ReturnType<typeof mechPartParse>) {
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	forCells(piece.cells, (x, y, cell) => {
 		const sprCell = new Sprite(
-			cell === '0' ? tex('cell empty') : tex('cell joint')
+			tex({ 0: 'cell empty', '=': 'cell joint' }[cell] || cell)
 		);
 		sprCell.anchor.x = sprCell.anchor.y = 0;
 		sprCell.x = x * cellSize;
