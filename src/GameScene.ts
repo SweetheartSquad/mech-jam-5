@@ -1,4 +1,4 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Camera } from './Camera';
@@ -16,17 +16,8 @@ import { getInput } from './main';
 import { makePiece, mechPieceParse } from './mech-piece';
 import { randItem } from './utils';
 
-function depthCompare(
-	a: Container & { offset?: number },
-	b: Container & { offset?: number }
-): number {
-	return a.y + (a.offset || 0) - (b.y + (b.offset || 0));
-}
-
 export class GameScene {
 	container = new Container();
-
-	graphics = new Graphics();
 
 	camera = new Camera();
 
@@ -271,8 +262,6 @@ export class GameScene {
 		}
 
 		const curTime = game.app.ticker.lastTime;
-
-		this.container.addChild(this.graphics);
 
 		this.screenFilter.update();
 
