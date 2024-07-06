@@ -52,6 +52,16 @@ export function getInput() {
 			keys.isJustDown(KEYS.ESCAPE) ||
 			gamepads.isJustDown(Buttons.START) ||
 			gamepads.isJustDown(Buttons.BACK),
+		rotateR:
+			keys.isJustDown(KEYS.E) ||
+			gamepads.isJustDown(Buttons.RB) ||
+			mouse.wheelY > 0,
+		rotateL:
+			keys.isJustDown(KEYS.Q) ||
+			gamepads.isJustDown(Buttons.LB) ||
+			mouse.wheelY < 0,
+		flipH: keys.isJustDown(KEYS.H),
+		flipV: keys.isJustDown(KEYS.F) || keys.isJustDown(KEYS.V),
 	};
 
 	if (
@@ -120,6 +130,8 @@ export function getInput() {
 
 	res.move.x = clamp(-1.0, res.move.x, 1.0);
 	res.move.y = clamp(-1.0, res.move.y, 1.0);
+	res.flipV = res.flipV || Math.abs(res.justMoved.y) > 0.5;
+	res.flipH = res.flipH || Math.abs(res.justMoved.x) > 0.5;
 
 	return res;
 }

@@ -6,6 +6,7 @@ import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
 import { ScreenFilter } from './ScreenFilter';
+import { Updater } from './Scripts/Updater';
 import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
@@ -14,9 +15,10 @@ import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
 import { error, warn } from './logger';
-import { getInput } from './main';
+import { getInput, mouse } from './main';
+import { makeModule, mechModuleParse } from './mech-module';
 import { makePart, mechPartParse } from './mech-part';
-import { randItem } from './utils';
+import { buttonify, randItem, relativeMouse, removeFromArray } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -118,6 +120,7 @@ export class GameScene {
 		this.take(this.camera);
 
 		this.screenFilter = new ScreenFilter();
+		this.containerUI.label = 'UI container';
 
 		this.camera.display.container.addChild(this.container);
 		this.camera.display.container.addChild(this.containerUI);
@@ -220,15 +223,12 @@ SPACE: ${freeCells
 
 	async buildMech(): Promise<void> {
 		await this.pickParts();
-		try {
-			await this.placeModules();
-		} catch {
-			return this.buildMech();
-		}
+		const done = await this.placeModules();
+		if (!done) return this.buildMech();
 	}
 
 	pickParts() {
-		return new Promise<void>((r) => {
+		return new Promise<void>((donePickingParts) => {
 			const cycler = <T>(
 				update: (item: T) => void,
 				items: T[],
@@ -315,7 +315,7 @@ SPACE: ${freeCells
 					i.container.destroy({ children: true });
 				});
 				btnDone.destroy();
-				r();
+				donePickingParts();
 			}, 'button');
 			this.containerUI.addChild(headBtns.container);
 			this.containerUI.addChild(chestBtns.container);
@@ -339,7 +339,71 @@ SPACE: ${freeCells
 	}
 
 	placeModules() {
-		// TOOD
+		return new Promise<boolean>((donePlacingModules) => {
+			// TODO: UI for showing all modules
+			this.pieces.modules.forEach((i, idx) => {
+				const moduleD = mechModuleParse(
+					i,
+					this.strand.getPassageWithTitle(i).body
+				);
+				const containerModule = makeModule(moduleD);
+				this.container.addChild(containerModule);
+				buttonify(containerModule, moduleD.name);
+				containerModule.y += idx * 100;
+				containerModule.x += size.x / 4;
+				containerModule.addEventListener('pointerdown', (event) => {
+					if (event && event.button !== mouse.LEFT) return;
+					// TODO: clone then drag
+					let rm = relativeMouse();
+					const x = rm.x - containerModule.x;
+					const y = rm.y - containerModule.y;
+					const dragger = new Updater(this.camera, () => {
+						const input = getInput();
+						rm = relativeMouse();
+						containerModule.x = Math.floor(rm.x - x);
+						containerModule.y = Math.floor(rm.y - y);
+						if (input.flipH) containerModule.scale.x *= -1;
+						if (input.flipV) containerModule.scale.y *= -1;
+						if (input.rotateR) containerModule.rotation += Math.PI / 2;
+						if (input.rotateL) containerModule.rotation -= Math.PI / 2;
+					});
+					this.camera.scripts.push(dragger);
+					document.addEventListener(
+						'pointerup',
+						() => {
+							removeFromArray(this.camera.scripts, dragger);
+							// TODO: drop
+						},
+						{ once: true }
+					);
+				});
+			});
+			const destroy = () => {
+				btnDone.destroy();
+				btnBack.destroy();
+				// TODO: destroy modules too
+			};
+			const btnBack = new Btn(() => {
+				destroy();
+				donePlacingModules(false);
+			}, 'button');
+			btnBack.display.container.addChild(
+				new BitmapText({ text: 'back', style: fontMechInfo })
+			);
+			const btnDone = new Btn(() => {
+				destroy();
+				donePlacingModules(true);
+			}, 'button');
+			btnDone.display.container.addChild(
+				new BitmapText({ text: 'done', style: fontMechInfo })
+			);
+			this.containerUI.addChild(btnDone.display.container);
+			this.containerUI.addChild(btnBack.display.container);
+			btnDone.transform.y -= btnDone.display.container.height;
+			btnBack.transform.y -= btnBack.display.container.height;
+			btnDone.transform.x += size.x / 4;
+			btnBack.transform.x += size.x / 4 - btnBack.display.container.width;
+		});
 	}
 
 	assembleParts(
