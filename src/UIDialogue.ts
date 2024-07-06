@@ -19,7 +19,7 @@ import { Toggler } from './Scripts/Toggler';
 import { Transform } from './Scripts/Transform';
 import { Tween, TweenManager } from './Tweens';
 import { size } from './config';
-import { fontDialogue, fontPrompt } from './font';
+import { fontDialogue } from './font';
 import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
 import { buttonify, clamp, lerp, smartify, tex } from './utils';
@@ -32,10 +32,10 @@ const exclamationInflectionRange = 10;
 
 export class UIDialogue extends GameObject {
 	padding = {
-		top: 28,
-		bottom: 4,
+		top: (size.y * 3) / 4,
+		bottom: 20,
 		left: 94,
-		right: 4,
+		right: 94,
 	};
 
 	sprScrim: Sprite;

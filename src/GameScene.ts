@@ -154,27 +154,44 @@ export class GameScene {
 		this.mechinfo.y -= size.y / 2;
 		this.mechinfo.x += 50;
 		this.mechinfo.y += 50;
+	}
 
-		// TODO: loop
-		(async () => {
+	async start() {
+		do {
 			await this.scenePrebuild();
 			await this.buildMech();
 			await this.scenePrefight();
 			await this.fight();
 			await this.scenePostfight();
-		})();
+		} while (true);
+	}
+
+	waitForClose() {
+		return new Promise<void>((r) => {
+			const o = this.strand.renderer.displayPassage;
+			this.strand.renderer.displayPassage = (passage) => {
+				o(passage);
+				if (passage.title === 'close') {
+					this.strand.renderer.displayPassage = o;
+					r();
+				}
+			};
+		});
 	}
 
 	scenePrebuild() {
-		// TODO
+		this.strand.goto(`${this.strand.next} prebuild`);
+		return this.waitForClose();
 	}
 
 	scenePrefight() {
-		// TODO
+		this.strand.goto(`${this.strand.next} prefight`);
+		return this.waitForClose();
 	}
 
 	scenePostfight() {
-		// TODO
+		this.strand.goto(`${this.strand.next} postfight`);
+		return this.waitForClose();
 	}
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests' | 'modules', string[]>;

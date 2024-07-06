@@ -289,9 +289,65 @@ this should never render
 		this.scene.goto({ area: 'intro' });
 	}
 	this.goto('close');
+
+	this.next = 'diplomat';
+	this.scene.start();
 >>
 
 
+
+
+
+
+
+
+::scenes
+actual written scenes below
+
+
+
+::diplomat prebuild
+todo diplomat prebuild stuff
+[[>close]]
+
+::diplomat prefight
+todo diplomat prefight stuff
+[[>close]]
+
+::diplomat postfight
+todo diplomat postfight stuff
+<<if !this.won>>
+lol you lost
+[[>close]]
+<<else>>
+<<do this.next = 'signal failure'>>
+wow you won
+[[>close]]
+<<endif>>
+
+
+::signal failure prebuild
+todo signal failure prebuild stuff
+[[>close]]
+
+::signal failure prefight
+todo signal failure prefight stuff
+[[>close]]
+
+::signal failure postfight
+todo signal failure postfight stuff
+<<if !this.won>>
+lol you lost
+[[>close]]
+<<else>>
+<<do this.next = 'end'>>
+wow you won
+[[>close]]
+<<endif>>
+
+
+::end prefight
+todo ending
 
 
 

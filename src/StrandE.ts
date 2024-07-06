@@ -50,6 +50,7 @@ export class StrandE extends Strand {
 	language?: string;
 
 	lastChoice?: string;
+	next!: string;
 
 	delay = delay;
 
