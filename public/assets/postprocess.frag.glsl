@@ -90,7 +90,9 @@ void main(void) {
 	col = mix(col, vec3(1.0) - col, uInvert);
 	vec3 limit = texture2D(uDitherGridMap, uvDither).rgb;
 	// col = mix(uBg, uFg, col) / 255.0;
-	if (fract(uv.y * size.y * 0.5) > 0.5) col*= 0.5;
+
+	// scanlines
+	if (fract(uv.y * size.y * 0.5) > 0.75) col*= 0.5;
 
 	// soft vignette
 	float haze = 0.02;
