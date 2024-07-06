@@ -88,6 +88,9 @@ LANDING SEQUENCE ON PLANET 54XE COMPLETE
 ::close
 this should never render
 
+::choiceDefault
+->
+
 
 ::debug menu
 <<do
