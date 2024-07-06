@@ -322,6 +322,11 @@ SPACE: ${freeCells
 			legBtns.container.y += armBtns.container.height;
 			legBtns.container.y += legBtns.container.height;
 			btnDone.transform.y -= btnDone.display.container.height;
+			headBtns.container.x += size.x / 4;
+			chestBtns.container.x += size.x / 4;
+			armBtns.container.x += size.x / 4;
+			legBtns.container.x += size.x / 4;
+			btnDone.transform.x += size.x / 4;
 		});
 	}
 
