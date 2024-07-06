@@ -58,10 +58,6 @@ export class UIDialogue extends GameObject {
 
 	textText: BitmapText;
 
-	textPrompt: BitmapText & EventEmitter;
-
-	fnPrompt?: () => void;
-
 	choices: (BitmapText & EventEmitter)[];
 
 	selected: number | undefined;
@@ -71,8 +67,6 @@ export class UIDialogue extends GameObject {
 	sprChoices: Sprite;
 
 	strText: string;
-
-	strPrompt: string;
 
 	strand: Strand;
 
@@ -132,26 +126,11 @@ export class UIDialogue extends GameObject {
 		this.toggler.container.y = size.y / 2;
 
 		this.strText = '';
-		this.strPrompt = '';
 		this.pos = 0;
 		this.posTime = 0;
 		this.posDelay = 2;
 		this.selected = undefined;
 		this.textText = new BitmapText({ text: this.strText, style: fontDialogue });
-		this.textPrompt = new BitmapText({
-			text: this.strPrompt,
-			style: fontPrompt,
-		});
-		this.textPrompt.alpha = 0;
-		this.textPrompt.x = size.x / 2;
-		this.textPrompt.y = 10;
-		this.textPrompt.anchor.x = 0.5;
-		this.textPrompt.accessible = true;
-		this.textPrompt.on('pointerdown', (event) => {
-			if (event && event.button !== mouse.LEFT) return;
-			if (!this.isOpen) this.fnPrompt?.();
-		});
-		this.display.container.addChild(this.textPrompt);
 		this.display.container.accessible = true;
 		this.display.container.on('pointerdown', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
@@ -202,22 +181,8 @@ export class UIDialogue extends GameObject {
 		this.containerChoices.pivot.x = -this.sprBg.x;
 		this.containerChoices.pivot.y = -this.sprBg.y;
 		this.textText.alpha = this.sprBg.alpha;
-		const shouldPrompt = !this.isOpen && !!this.fnPrompt;
-		this.textPrompt.alpha = lerp(
-			this.textPrompt.alpha,
-			shouldPrompt ? 1 : 0,
-			0.1
-		);
 		this.display.container.interactive = this.isOpen;
-		this.textPrompt.interactive = shouldPrompt;
-		this.textPrompt.cursor = shouldPrompt ? 'pointer' : 'auto';
-		this.textPrompt.tabIndex = shouldPrompt ? 0 : undefined;
-		this.textPrompt.eventMode = shouldPrompt ? 'dynamic' : 'auto';
 		const input = getInput();
-
-		if (!this.isOpen && input.interact) {
-			this.textPrompt.emit('pointerdown');
-		}
 
 		if (this.isOpen) {
 			this.sprBg.alpha = this.progress();
@@ -427,15 +392,6 @@ export class UIDialogue extends GameObject {
 
 	show(...args: Parameters<Toggler['show']>) {
 		return this.toggler.show(...args);
-	}
-
-	prompt(
-		label: string = this.strPrompt,
-		action: (() => void) | undefined = undefined
-	) {
-		this.strPrompt = label;
-		this.textPrompt.text = this.textPrompt.accessibleHint = label;
-		this.fnPrompt = action;
 	}
 
 	complete() {

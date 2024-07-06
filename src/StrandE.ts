@@ -14,12 +14,10 @@ import { Poof } from './Poof';
 import { Prop } from './Prop';
 import { PropParallax } from './PropParallax';
 import { Display } from './Scripts/Display';
-import { Transform } from './Scripts/Transform';
 import { Updater } from './Scripts/Updater';
 import { storage } from './Storage';
 import { TweenManager } from './Tweens';
 import { size } from './config';
-import { fontIngame } from './font';
 import { setScene } from './main';
 import { Prompt } from './prompt';
 import {
