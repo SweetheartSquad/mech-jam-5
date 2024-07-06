@@ -35,5 +35,9 @@ textures/button_normal.png
 textures/button_over.png
 textures/button_down.png
 
+textures/buttonArrow_normal.png
+textures/buttonArrow_over.png
+textures/buttonArrow_down.png
+
 textures/module Cockpit.png
 
