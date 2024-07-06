@@ -15,6 +15,7 @@ import { DEBUG } from './debug';
 import { error, warn } from './logger';
 import { getInput } from './main';
 import { makePiece, mechPieceParse } from './mech-piece';
+import { randItem } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -147,13 +148,12 @@ export class GameScene {
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
 
 	async pickParts() {
-		let head = '';
-		let chest = '';
-		let arm = '';
-		let leg = '';
-
-		const cycler = <T>(update: (item: T) => void, items: T[] = []) => {
-			let index = 0;
+		const cycler = <T>(
+			update: (item: T) => void,
+			items: T[],
+			selected: T = items[0]
+		) => {
+			let index = items.indexOf(selected);
 			const btnPrev = new Btn(() => {
 				--index;
 				if (index < 0) index = items.length - 1;
@@ -174,35 +174,50 @@ export class GameScene {
 			return [container, btnPrev, btnNext] as const;
 		};
 
-		let mech = this.assembleParts('', '', '', '');
-		const [containerHeadBtns] = cycler((newHead) => {
-			head = newHead;
-			if (mech) mech.container.destroy({ children: true });
+		let head = randItem(this.pieces.heads);
+		let chest = randItem(this.pieces.chests);
+		let arm = randItem(this.pieces.arms);
+		let leg = randItem(this.pieces.legs);
+		let mech = this.assembleParts(head, chest, arm, leg);
+
+		const updateMech = () => {
+			mech.container.destroy({ children: true });
 			mech = this.assembleParts(head, chest, arm, leg);
-			if (!mech) return;
 			this.container.addChild(mech.container);
-		}, this.pieces.heads);
-		const [containerChestBtns] = cycler((newChest) => {
-			chest = newChest;
-			if (mech) mech.container.destroy({ children: true });
-			mech = this.assembleParts(head, chest, arm, leg);
-			if (!mech) return;
-			this.container.addChild(mech.container);
-		}, this.pieces.chests);
-		const [containerArmBtns] = cycler((newArm) => {
-			arm = newArm;
-			if (mech) mech.container.destroy({ children: true });
-			mech = this.assembleParts(head, chest, arm, leg);
-			if (!mech) return;
-			this.container.addChild(mech.container);
-		}, this.pieces.arms);
-		const [containerLegBtns] = cycler((newLeg) => {
-			leg = newLeg;
-			if (mech) mech.container.destroy({ children: true });
-			mech = this.assembleParts(head, chest, arm, leg);
-			if (!mech) return;
-			this.container.addChild(mech.container);
-		}, this.pieces.legs);
+		};
+
+		const [containerHeadBtns] = cycler(
+			(newHead) => {
+				head = newHead;
+				updateMech();
+			},
+			this.pieces.heads,
+			head
+		);
+		const [containerChestBtns] = cycler(
+			(newChest) => {
+				chest = newChest;
+				updateMech();
+			},
+			this.pieces.chests,
+			chest
+		);
+		const [containerArmBtns] = cycler(
+			(newArm) => {
+				arm = newArm;
+				updateMech();
+			},
+			this.pieces.arms,
+			arm
+		);
+		const [containerLegBtns] = cycler(
+			(newLeg) => {
+				leg = newLeg;
+				updateMech();
+			},
+			this.pieces.legs,
+			leg
+		);
 		this.containerUI.addChild(containerHeadBtns);
 		this.containerUI.addChild(containerChestBtns);
 		this.containerUI.addChild(containerArmBtns);
@@ -222,7 +237,6 @@ export class GameScene {
 		armKey: string,
 		legKey: string
 	) {
-		if (!headKey || !chestKey || !armKey || !legKey) return;
 		const container = new Container();
 		const getPiece = (key: string, flip?: boolean) =>
 			mechPieceParse(
