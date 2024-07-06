@@ -128,7 +128,7 @@ export class GameScene {
 		this.strand.goto('start');
 
 		const getPieces = (type: string) =>
-			Object.keys(this.strand.passages).filter((i) => i.startsWith(type));
+			Object.keys(this.strand.passages).filter((i) => i.startsWith(`${type} `));
 
 		const heads = getPieces('head');
 		const arms = getPieces('arm');
