@@ -41,7 +41,7 @@
 		"localforage": "^1.10.0",
 		"pixi-filters": "^6.0.0",
 		"pixi.js": "^8.0.1",
-		"strand-core": "^3.0.0",
+		"strand-core": "^3.0.1",
 		"typescript": "^5.4.2",
 		"vite": "^5.1.5"
 	}
