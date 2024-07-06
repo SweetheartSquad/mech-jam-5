@@ -82,7 +82,7 @@ void main(void) {
 	vec2 noiseT = vec2(rand(vec2(0.0, t - mod(t, 0.4))), rand(vec2(t - mod(t, 0.4), 0.0)));
 	// uv += (noise(uv*10.0 + noiseT)-0.5)*uNoise;
 
-	vec3 col = chrAbb(uv, abs(uv.x-0.5)*2.0, 0.0);
+	vec3 col = chrAbb(uv, abs(uv.x-0.5)*0.5, 0.0);
 
 	// fx
 	col = (col - 0.5 + (brightness - 1.0)) * contrast + 0.5;
