@@ -340,39 +340,58 @@ SPACE: ${freeCells
 
 	placeModules() {
 		return new Promise<boolean>((donePlacingModules) => {
+			const containerModules = new Container();
+			this.containerUI.addChild(containerModules);
 			// TODO: UI for showing all modules
 			this.pieces.modules.forEach((i, idx) => {
 				const moduleD = mechModuleParse(
 					i,
 					this.strand.getPassageWithTitle(i).body
 				);
-				const containerModule = makeModule(moduleD);
-				this.container.addChild(containerModule);
-				buttonify(containerModule, moduleD.name);
-				containerModule.y += idx * 100;
-				containerModule.x += size.x / 4;
-				containerModule.addEventListener('pointerdown', (event) => {
+				const uiModule = makeModule(moduleD);
+				this.containerUI.addChild(uiModule);
+				buttonify(uiModule, moduleD.name);
+				uiModule.y += idx * 100;
+				uiModule.x += size.x / 4;
+				uiModule.addEventListener('pointerover', () => {
+					// TODO: show module info
+				});
+				uiModule.addEventListener('pointerdown', (event) => {
 					if (event && event.button !== mouse.LEFT) return;
-					// TODO: clone then drag
-					let rm = relativeMouse();
-					const x = rm.x - containerModule.x;
-					const y = rm.y - containerModule.y;
+					const dragModule = makeModule(moduleD);
+					dragModule.rotation = uiModule.rotation;
+					this.containerUI.addChild(dragModule);
+
 					const dragger = new Updater(this.camera, () => {
 						const input = getInput();
-						rm = relativeMouse();
-						containerModule.x = Math.floor(rm.x - x);
-						containerModule.y = Math.floor(rm.y - y);
-						if (input.flipH) containerModule.scale.x *= -1;
-						if (input.flipV) containerModule.scale.y *= -1;
-						if (input.rotateR) containerModule.rotation += Math.PI / 2;
-						if (input.rotateL) containerModule.rotation -= Math.PI / 2;
+						const rm = relativeMouse();
+						dragModule.x = rm.x - size.x / 2;
+						dragModule.y = rm.y - size.y / 2;
+						if (input.flipH) dragModule.scale.x *= -1;
+						if (input.flipV) dragModule.scale.y *= -1;
+						if (input.rotateR) dragModule.rotation += Math.PI / 2;
+						if (input.rotateL) dragModule.rotation -= Math.PI / 2;
 					});
 					this.camera.scripts.push(dragger);
 					document.addEventListener(
 						'pointerup',
 						() => {
 							removeFromArray(this.camera.scripts, dragger);
-							// TODO: drop
+							const placedModule = makeModule(moduleD);
+							placedModule.x = dragModule.x;
+							placedModule.y = dragModule.y;
+							placedModule.rotation = dragModule.rotation;
+							containerModules.addChild(placedModule);
+							buttonify(placedModule);
+							placedModule.addEventListener('pointerdown', (event) => {
+								if (event && event.button !== mouse.LEFT) return;
+								uiModule.rotation = placedModule.rotation;
+								uiModule.dispatchEvent(event);
+								uiModule.rotation = 0;
+								placedModule.destroy({ children: true });
+							});
+							// TODO: grid checks
+							dragModule.destroy({ children: true });
 						},
 						{ once: true }
 					);
