@@ -82,7 +82,7 @@ void main(void) {
 	vec2 noiseT = vec2(rand(vec2(0.0, t - mod(t, 0.4))), rand(vec2(t - mod(t, 0.4), 0.0)));
 	// uv += (noise(uv*10.0 + noiseT)-0.5)*uNoise;
 
-	vec3 col = chrAbb(uv, abs(uv.x-0.5)*0.5, 0.0);
+	vec3 col = chrAbb(uv, abs(uv.x-0.5)*0.5, 0.5);
 
 	// fx
 	col = (col - 0.5 + (brightness - 1.0)) * contrast + 0.5;
@@ -94,7 +94,7 @@ void main(void) {
 
 	// soft vignette
 	float haze = 0.02;
-	col *= (vignette(uv + noise(uv*5.0+t)*haze, 1.0)*0.75+0.25);
+	col *= vignette(uv + noise(uv*5.0+t)*haze, 1.0)*0.25+0.75;
 	// noise
 	col += ((noise((uv+noiseT1)*size.xy*vec2(0.01, 1.0)) * noise((uv+noiseT1)*size.xy)) - 0.25)*(1.0-vignette(uv,1.0)*0.75)*uNoise;
 	// hard edge vignette
