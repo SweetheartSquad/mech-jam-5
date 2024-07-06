@@ -12,6 +12,7 @@ export class Display extends Script {
 		super(gameObject);
 		this.container = new Container();
 		this.container.interactiveChildren = false;
+		this.container.accessibleChildren = false;
 	}
 
 	init(): void {

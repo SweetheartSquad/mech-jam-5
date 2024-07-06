@@ -142,6 +142,7 @@ export class GameScene {
 		};
 
 		this.camera.display.container.interactiveChildren = true;
+		this.camera.display.container.accessibleChildren = true;
 
 		this.containerUI.addChild(this.mechinfo);
 		this.mechinfo.x -= size.x / 2;

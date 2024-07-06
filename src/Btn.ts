@@ -9,7 +9,7 @@ export class Btn extends GameObject {
 	display: Display;
 	transform: Transform;
 
-	constructor(public onClick: () => void, texture: string) {
+	constructor(public onClick: () => void, texture: string, title?: string) {
 		super();
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
@@ -18,9 +18,11 @@ export class Btn extends GameObject {
 		spr.label = 'button';
 		this.display.container.addChild(spr);
 		this.display.container.interactiveChildren = true;
+		this.display.container.accessibleChildren = true;
 		spr.anchor.x = spr.anchor.y = 0.5;
 		spr.accessible = true;
-		spr.accessibleHint = texture;
+		spr.accessibleTitle = title;
+		spr.accessibleHint = title || texture;
 		spr.interactive = true;
 		spr.eventMode = 'dynamic';
 		spr.cursor = 'pointer';

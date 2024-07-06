@@ -112,6 +112,7 @@ export class UIDialogue extends GameObject {
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 		this.display.container.interactiveChildren = true;
+		this.display.container.accessibleChildren = true;
 		this.sprScrim = new Sprite(Texture.WHITE);
 		this.sprScrim.label = 'scrim';
 		this.sprScrim.tint = 0x000000;
