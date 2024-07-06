@@ -22,7 +22,7 @@ import { size } from './config';
 import { fontDialogue, fontPrompt } from './font';
 import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
-import { clamp, lerp, smartify, tex } from './utils';
+import { buttonify, clamp, lerp, smartify, tex } from './utils';
 
 const rateQuestionMultiplier = 1.4;
 const questionInflectionRange = 6;
@@ -350,17 +350,12 @@ export class UIDialogue extends GameObject {
 					wordWrapWidth: (this.textText.style.wordWrapWidth || 0) - 2,
 				},
 			});
-			t.accessible = true;
-			t.accessibleHint = strText;
-			if (a.length === 1) {
-				t.accessibleTitle = 'continue';
-			} else {
-				t.accessibleTitle = (idx + 1).toString(10);
-			}
-			t.interactive = true;
-			t.eventMode = 'dynamic';
-			t.cursor = 'pointer';
-			t.tabIndex = 0;
+			buttonify(
+				t,
+				`${a.length === 1 ? '' : (idx + 1).toString(10)} ${
+					strText || 'continue'
+				}`
+			);
 
 			t.on('pointerover', () => {
 				t.alpha = 0.75;

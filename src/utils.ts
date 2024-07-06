@@ -1,4 +1,4 @@
-import { Point, Texture } from 'pixi.js';
+import { Container, Point, Texture } from 'pixi.js';
 import { resizer } from '.';
 import { resource } from './Game';
 import { size } from './config';
@@ -284,4 +284,14 @@ export function firstCoalesce<T>(value: T | T[]): T {
 /** @returns reversed copy of the string */
 export function strReverse(str: string) {
 	return [...str].reverse().join('');
+}
+
+export function buttonify(obj: Container, title?: string) {
+	obj.accessible = true;
+	obj.accessibleTitle = title;
+	obj.accessibleHint = title;
+	obj.interactive = true;
+	obj.eventMode = 'dynamic';
+	obj.cursor = 'pointer';
+	obj.tabIndex = 0;
 }

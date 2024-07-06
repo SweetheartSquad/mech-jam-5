@@ -4,7 +4,7 @@ import { GameObject } from './GameObject';
 import { mouse } from './main';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
-import { tex } from './utils';
+import { buttonify, tex } from './utils';
 
 export class Btn extends GameObject {
 	display: Display;
@@ -21,13 +21,7 @@ export class Btn extends GameObject {
 		this.display.container.interactiveChildren = true;
 		this.display.container.accessibleChildren = true;
 		spr.anchor.x = spr.anchor.y = 0.5;
-		spr.accessible = true;
-		spr.accessibleTitle = title;
-		spr.accessibleHint = title || texture;
-		spr.interactive = true;
-		spr.eventMode = 'dynamic';
-		spr.cursor = 'pointer';
-		spr.tabIndex = 0;
+		buttonify(spr, title || texture);
 
 		let down = false;
 		spr.on('pointerup', (event) => {
