@@ -15,7 +15,6 @@ export function mechPieceParse(
 		.split('\n')
 		.map((i) => i.substring(0, w).padEnd(w, ' '))
 		.map((i) => (flip ? strReverse(i) : i).split(''));
-	console.log(source, rows);
 	const h = rows.length;
 	const joints: [number, number][] = [];
 	forCells(rows, (x, y, cell) => {
