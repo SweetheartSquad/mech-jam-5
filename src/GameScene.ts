@@ -5,6 +5,7 @@ import { Btn } from './Btn';
 import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
+import { Prop } from './Prop';
 import { ScreenFilter } from './ScreenFilter';
 import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
@@ -140,7 +141,13 @@ export class GameScene {
 
 		this.camera.display.container.interactiveChildren = true;
 		const btn = new Btn(() => {
-			this.assembleParts();
+			randItem(this.pieces.heads);
+			this.assembleParts(
+				randItem(this.pieces.heads),
+				randItem(this.pieces.chests),
+				randItem(this.pieces.arms),
+				randItem(this.pieces.legs)
+			);
 		}, 'button');
 		btn.transform.x = 0;
 		btn.transform.y -= 50;
@@ -149,7 +156,38 @@ export class GameScene {
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
 
-	assembleParts() {
+	// async pickParts() {
+	// 	let head = 0;
+	// 	let chest = 0;
+	// 	let arm = 0;
+	// 	let leg = 0;
+
+	// 	const cycler = (prev: () => void, next: () => void) => {
+	// 		const btnNext = new Btn(() => {
+	// 			next();
+	// 		}, 'button');
+	// 		const btnPrev = new Btn(() => {
+	// 			next();
+	// 		}, 'button');
+	// 	};
+
+	// 	const btnHeadNext = new Btn(() => {
+	// 		randItem(this.pieces.heads);
+	// 		this.assembleParts(
+	// 			randItem(this.pieces.heads),
+	// 			randItem(this.pieces.chests),
+	// 			randItem(this.pieces.arms),
+	// 			randItem(this.pieces.legs)
+	// 		);
+	// 	}, 'button');
+	// }
+
+	assembleParts(
+		headKey: string,
+		chestKey: string,
+		armKey: string,
+		legKey: string
+	) {
 		const getPiece = (key: string, flip?: boolean) =>
 			mechPieceParse(
 				key.split(' ')[0],
@@ -158,14 +196,12 @@ export class GameScene {
 				flip
 			);
 
-		const leg = randItem(this.pieces.legs);
-		const arm = randItem(this.pieces.arms);
-		const headD = getPiece(randItem(this.pieces.heads));
-		const chestD = getPiece(randItem(this.pieces.chests));
-		const legLD = getPiece(leg);
-		const armLD = getPiece(arm);
-		const legRD = getPiece(leg, true);
-		const armRD = getPiece(arm, true);
+		const headD = getPiece(headKey);
+		const chestD = getPiece(chestKey);
+		const legLD = getPiece(legKey);
+		const armLD = getPiece(armKey);
+		const legRD = getPiece(legKey, true);
+		const armRD = getPiece(armKey, true);
 		const [sprHead, cellsHead] = makePiece(headD);
 		const [sprChest, cellsChest] = makePiece(chestD);
 		const [sprArmR, cellsArmR] = makePiece(armRD);
@@ -234,6 +270,11 @@ export class GameScene {
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
 		});
+
+		const test = new Prop({ texture: 'module Cockpit' });
+		test.transform.x += csg / 2;
+		test.transform.y += csg / 2;
+		this.container.addChild(test.display.container);
 	}
 
 	destroy(): void {

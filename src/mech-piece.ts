@@ -161,7 +161,9 @@ export function makePiece(piece: ReturnType<typeof mechPieceParse>) {
 		sprCell.anchor.x = sprCell.anchor.y = 0;
 		sprCell.x = x * (cellSize + cellGap);
 		sprCell.y = y * (cellSize + cellGap);
-		sprCell.tint = tint;
+		sprCell.width = cellSize;
+		sprCell.height = cellSize;
+		// sprCell.tint = tint;
 		containerCells.addChild(sprCell);
 	});
 	return [sprBase, containerCells];

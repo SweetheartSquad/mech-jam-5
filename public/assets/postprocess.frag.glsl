@@ -23,7 +23,7 @@ const vec2 size = vec2(256.0);
 const vec2 ditherSize = vec2(8.0);
 uniform float uNoise;
 const float scale = 1.0;
-const float posterize = 16.0;
+const float posterize = 4.0;
 const float brightness = 1.0;
 const float contrast = 1.0;
 const float PI = 3.14159;
