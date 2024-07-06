@@ -1,6 +1,7 @@
 import { Container } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
+import { Btn } from './Btn';
 import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
@@ -130,13 +131,25 @@ export class GameScene {
 		const arms = getPieces('arm');
 		const legs = getPieces('leg');
 		const chests = getPieces('chest');
-		const pieces = {
-			...heads,
-			...arms,
-			...legs,
-			...chests,
+		this.pieces = {
+			heads,
+			arms,
+			legs,
+			chests,
 		};
 
+		this.camera.display.container.interactiveChildren = true;
+		const btn = new Btn(() => {
+			this.assembleParts();
+		}, 'button');
+		btn.transform.x = 0;
+		btn.transform.y -= 50;
+		this.container.addChild(btn.display.container);
+	}
+
+	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
+
+	assembleParts() {
 		const getPiece = (key: string, flip?: boolean) =>
 			mechPieceParse(
 				key.split(' ')[0],
@@ -145,10 +158,10 @@ export class GameScene {
 				flip
 			);
 
-		const leg = randItem(legs);
-		const arm = randItem(arms);
-		const headD = getPiece(randItem(heads));
-		const chestD = getPiece(randItem(chests));
+		const leg = randItem(this.pieces.legs);
+		const arm = randItem(this.pieces.arms);
+		const headD = getPiece(randItem(this.pieces.heads));
+		const chestD = getPiece(randItem(this.pieces.chests));
 		const legLD = getPiece(leg);
 		const armLD = getPiece(arm);
 		const legRD = getPiece(leg, true);
