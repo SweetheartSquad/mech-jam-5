@@ -15,7 +15,7 @@ import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
 import { error, warn } from './logger';
 import { getInput } from './main';
-import { makePiece, mechPieceParse } from './mech-piece';
+import { makePart, mechPartParse } from './mech-part';
 import { randItem } from './utils';
 
 export class GameScene {
@@ -335,7 +335,7 @@ SPACE: ${freeCells
 	) {
 		const container = new Container();
 		const getPiece = (key: string, flip?: boolean) =>
-			mechPieceParse(
+			mechPartParse(
 				key.split(' ')[0],
 				key,
 				this.strand.getPassageWithTitle(key).body,
@@ -348,12 +348,12 @@ SPACE: ${freeCells
 		const armLD = getPiece(armKey);
 		const legRD = getPiece(legKey, true);
 		const armRD = getPiece(armKey, true);
-		const [sprHead, cellsHead] = makePiece(headD);
-		const [sprChest, cellsChest] = makePiece(chestD);
-		const [sprArmR, cellsArmR] = makePiece(armRD);
-		const [sprArmL, cellsArmL] = makePiece(armLD);
-		const [sprLegR, cellsLegR] = makePiece(legRD);
-		const [sprLegL, cellsLegL] = makePiece(legLD);
+		const [sprHead, cellsHead] = makePart(headD);
+		const [sprChest, cellsChest] = makePart(chestD);
+		const [sprArmR, cellsArmR] = makePart(armRD);
+		const [sprArmL, cellsArmL] = makePart(armLD);
+		const [sprLegR, cellsLegR] = makePart(legRD);
+		const [sprLegL, cellsLegL] = makePart(legLD);
 		const pairs = [
 			[sprHead, cellsHead],
 			[sprChest, cellsChest],

@@ -2,7 +2,7 @@ import { Container, Sprite } from 'pixi.js';
 import { cellSize } from './config';
 import { strReverse, tex } from './utils';
 
-export function mechPieceParse(
+export function mechPartParse(
 	type: string,
 	key: string,
 	source: string,
@@ -148,10 +148,9 @@ export function forCells(
 	);
 }
 
-export function makePiece(piece: ReturnType<typeof mechPieceParse>) {
+export function makePart(piece: ReturnType<typeof mechPartParse>) {
 	const sprBase = new Sprite(piece.tex);
 	const containerCells = new Container();
-	const tint = Math.random() * 0xffffff;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	forCells(piece.cells, (x, y, cell) => {
 		const sprCell = new Sprite(
@@ -162,7 +161,6 @@ export function makePiece(piece: ReturnType<typeof mechPieceParse>) {
 		sprCell.y = y * cellSize;
 		sprCell.width = cellSize;
 		sprCell.height = cellSize;
-		// sprCell.tint = tint;
 		containerCells.addChild(sprCell);
 	});
 	return [sprBase, containerCells];
