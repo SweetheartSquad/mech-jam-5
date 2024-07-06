@@ -289,6 +289,25 @@ this should never render
 >>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::parts
+part definitions below
+
+
+
 ::head Block
 000
 000
@@ -368,3 +387,39 @@ this should never render
 000
 .0.
 00.
+
+
+
+
+
+
+
+
+
+
+
+::modules
+module definitions below
+
+
+
+::module Cockpit
+A standard cockpit.
+---
+500
+cockpit
+---
+00
+00
+
+::module Tee
+A weirdly shaped cockpit.
+
+Some more text.
+---
+750
+cockpit
+---
+000
+.0.
+.0.

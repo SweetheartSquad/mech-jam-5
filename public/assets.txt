@@ -40,4 +40,5 @@ textures/buttonArrow_over.png
 textures/buttonArrow_down.png
 
 textures/module Cockpit.png
+textures/module Tee.png
 
