@@ -255,10 +255,18 @@ SPACE: ${freeCells
 				return { container, btnPrev, btnNext };
 			};
 
-			let head = randItem(this.pieces.heads);
-			let chest = randItem(this.pieces.chests);
-			let arm = randItem(this.pieces.arms);
-			let leg = randItem(this.pieces.legs);
+			let head = this.mech
+				? `head ${this.mech.headD.name}`
+				: randItem(this.pieces.heads);
+			let chest = this.mech
+				? `chest ${this.mech.chestD.name}`
+				: randItem(this.pieces.chests);
+			let arm = this.mech
+				? `arm ${this.mech.armLD.name}`
+				: randItem(this.pieces.arms);
+			let leg = this.mech
+				? `leg ${this.mech.legLD.name}`
+				: randItem(this.pieces.legs);
 			this.mech = this.assembleParts(head, chest, arm, leg);
 
 			const updateMech = () => {
