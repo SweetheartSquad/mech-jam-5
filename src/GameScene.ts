@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { BitmapText, Container } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
@@ -10,8 +10,9 @@ import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
-import { cellSize } from './config';
+import { cellSize, size } from './config';
 import { DEBUG } from './debug';
+import { fontMechInfo } from './font';
 import { error, warn } from './logger';
 import { getInput } from './main';
 import { makePiece, mechPieceParse } from './mech-piece';
@@ -142,10 +143,57 @@ export class GameScene {
 
 		this.camera.display.container.interactiveChildren = true;
 
+		this.containerUI.addChild(this.mechinfo);
+		this.mechinfo.x -= size.x / 2;
+		this.mechinfo.y -= size.y / 2;
+		this.mechinfo.x += 50;
+		this.mechinfo.y += 50;
 		this.pickParts();
 	}
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
+
+	mechinfo = new BitmapText({ style: fontMechInfo });
+	costMax = 1000;
+
+	updateMechInfo() {
+		const allCells = [
+			this.mech.headD,
+			this.mech.chestD,
+			this.mech.armLD,
+			this.mech.armRD,
+			this.mech.legLD,
+			this.mech.legRD,
+		].reduce(
+			(acc, i) =>
+				acc +
+				i.cells
+					.join('')
+					.replaceAll(',', '')
+					.replaceAll(' ', '')
+					.replaceAll('.', '').length,
+			0
+		);
+		const freeCells = [
+			this.mech.headD,
+			this.mech.chestD,
+			this.mech.armLD,
+			this.mech.armRD,
+			this.mech.legLD,
+			this.mech.legRD,
+		].reduce((acc, i) => acc + i.cells.join('').replace(/[^0]/g, '').length, 0); // TODO: minus placed modules
+		const cost = allCells * 1; // TODO: plus placed module costs
+		this.mechinfo.text = `
+PRICE: ${cost.toString(10).padStart(this.costMax.toString(10).length, '0')}/${
+			this.costMax
+		} ${cost > this.costMax ? '!!!' : ''}
+SPACE: ${freeCells
+			.toString(10)
+			.padStart(freeCells.toString(10).length, '0')}/${allCells}
+`.trim();
+	}
+
+	mech!: ReturnType<GameScene['assembleParts']>;
 
 	async pickParts() {
 		const cycler = <T>(
@@ -178,12 +226,13 @@ export class GameScene {
 		let chest = randItem(this.pieces.chests);
 		let arm = randItem(this.pieces.arms);
 		let leg = randItem(this.pieces.legs);
-		let mech = this.assembleParts(head, chest, arm, leg);
+		this.mech = this.assembleParts(head, chest, arm, leg);
 
 		const updateMech = () => {
-			mech.container.destroy({ children: true });
-			mech = this.assembleParts(head, chest, arm, leg);
-			this.container.addChild(mech.container);
+			this.mech.container.destroy({ children: true });
+			this.mech = this.assembleParts(head, chest, arm, leg);
+			this.container.addChild(this.mech.container);
+			this.updateMechInfo();
 		};
 
 		const [containerHeadBtns] = cycler(
