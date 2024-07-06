@@ -27,7 +27,7 @@ export class ScreenFilter extends CustomFilter<Uniforms> {
 		const frag = resource<string>('postprocess.frag') || '';
 		super(frag, {
 			uWhiteout: 0,
-			uNoise: 0.5,
+			uNoise: 0,
 			uInvert: 0,
 			uCurTime: 0,
 			uCamPos: [0, 0],
