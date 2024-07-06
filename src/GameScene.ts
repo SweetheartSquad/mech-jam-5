@@ -134,11 +134,13 @@ export class GameScene {
 		const arms = getPieces('arm');
 		const legs = getPieces('leg');
 		const chests = getPieces('chest');
+		const modules = getPieces('module');
 		this.pieces = {
 			heads,
 			arms,
 			legs,
 			chests,
+			modules,
 		};
 
 		this.camera.display.container.interactiveChildren = true;
@@ -172,7 +174,7 @@ export class GameScene {
 		// TODO
 	}
 
-	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
+	pieces: Record<'heads' | 'arms' | 'legs' | 'chests' | 'modules', string[]>;
 
 	mechinfo = new BitmapText({ style: fontMechInfo });
 	costMax = 1000;
