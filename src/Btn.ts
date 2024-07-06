@@ -1,6 +1,7 @@
 import { Sprite } from 'pixi.js';
 import { sfx } from './Audio';
 import { GameObject } from './GameObject';
+import { mouse } from './main';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { tex } from './utils';
@@ -29,11 +30,15 @@ export class Btn extends GameObject {
 		spr.tabIndex = 0;
 
 		let down = false;
-		spr.on('click', onClick);
+		spr.on('pointerup', (event) => {
+			if (event && event.button !== mouse.LEFT) return;
+			onClick();
+		});
 		spr.on('pointerover', () => {
 			spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
 		});
-		spr.on('mousedown', () => {
+		spr.on('pointerdown', (event) => {
+			if (event && event.button !== mouse.LEFT) return;
 			down = true;
 			spr.texture = tex(`${texture}_down`);
 			document.addEventListener(
