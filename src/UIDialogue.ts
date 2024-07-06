@@ -315,12 +315,7 @@ export class UIDialogue extends GameObject {
 					wordWrapWidth: (this.textText.style.wordWrapWidth || 0) - 2,
 				},
 			});
-			buttonify(
-				t,
-				`${a.length === 1 ? '' : (idx + 1).toString(10)} ${
-					strText || 'continue'
-				}`
-			);
+			buttonify(t, strText || 'continue');
 
 			t.on('pointerover', () => {
 				t.alpha = 0.75;
