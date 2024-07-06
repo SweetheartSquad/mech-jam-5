@@ -31,6 +31,7 @@ textures/head Tee.png
 textures/head Small.png
 textures/head Smaller.png
 textures/leg Treads.png
+textures/leg 1.png
 
 textures/button_normal.png
 textures/button_over.png
