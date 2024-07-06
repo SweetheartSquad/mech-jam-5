@@ -1,6 +1,7 @@
 import { Container, Sprite } from 'pixi.js';
 import { cellSize } from './config';
-import { strReverse, tex } from './utils';
+import { forCells, parseLayout } from './layout';
+import { tex } from './utils';
 
 export function mechPartParse(
 	type: string,
@@ -8,17 +9,9 @@ export function mechPartParse(
 	source: string,
 	flip = false
 ) {
-	const w = source
-		.split('\n')
-		.reduce((max, row) => Math.max(max, row.trimEnd().length), 0);
-	const rows = source
-		.replaceAll(' ', '.')
-		.split('\n')
-		.map((i) => i.substring(0, w).padEnd(w, '.'))
-		.map((i) => (flip ? strReverse(i) : i).split(''));
-	const h = rows.length;
+	const { cells, w, h } = parseLayout(source, flip);
 	const joints: [number, number][] = [];
-	forCells(rows, (x, y, cell) => {
+	forCells(cells, (x, y, cell) => {
 		if (cell === '=') {
 			joints.push([x, y]);
 		} else if (cell === '0') {
@@ -43,7 +36,7 @@ export function mechPartParse(
 	if (type === 'chest') {
 		loop: for (let x = 0; x < w / 2; ++x) {
 			for (let y = 0; y < h; ++y) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.armL = [x, y];
 					break loop;
 				}
@@ -53,7 +46,7 @@ export function mechPartParse(
 			throw new Error(`could not find valid armL joint in "${key}"`);
 		loop: for (let x = w - 1; x >= 0; --x) {
 			for (let y = 0; y < h; ++y) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.armR = [x, y];
 					break loop;
 				}
@@ -63,7 +56,7 @@ export function mechPartParse(
 			throw new Error(`could not find valid armR joint in "${key}"`);
 		loop: for (let y = h - 1; y >= 0; --y) {
 			for (let x = 0; x < w / 2; ++x) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.legL = [x, y];
 					break loop;
 				}
@@ -73,7 +66,7 @@ export function mechPartParse(
 			throw new Error(`could not find valid legL joint in "${key}"`);
 		loop: for (let y = h - 1; y >= 0; --y) {
 			for (let x = w - 1; x >= 0; --x) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.legR = [x, y];
 					break loop;
 				}
@@ -84,7 +77,7 @@ export function mechPartParse(
 		loop: for (let y = 0; y < h / 2; ++y) {
 			for (let x = 0; x < w; ++x) {
 				const x2 = (x + Math.floor(w / 2)) % w;
-				if (rows[y][x2] === '=') {
+				if (cells[y][x2] === '=') {
 					connections.head = [x2, y];
 					break loop;
 				}
@@ -95,7 +88,7 @@ export function mechPartParse(
 	} else if (type === 'leg') {
 		loop: for (let y = 0; y < h; ++y) {
 			for (let x = w - 1; x >= 0; --x) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.chest = [x, y];
 					break loop;
 				}
@@ -106,7 +99,7 @@ export function mechPartParse(
 	} else if (type === 'arm') {
 		loop: for (let x = w - 1; x >= 0; --x) {
 			for (let y = 0; y < h; ++y) {
-				if (rows[y][x] === '=') {
+				if (cells[y][x] === '=') {
 					connections.chest = [x, y];
 					break loop;
 				}
@@ -118,7 +111,7 @@ export function mechPartParse(
 		loop: for (let y = h - 1; y >= 0; --y) {
 			for (let x = 0; x < w; ++x) {
 				const x2 = (x + Math.floor(w / 2)) % w;
-				if (rows[y][x2] === '=') {
+				if (cells[y][x2] === '=') {
 					connections.chest = [x2, y];
 					break loop;
 				}
@@ -130,23 +123,11 @@ export function mechPartParse(
 	return {
 		name: key.replace(`${type} `, ''),
 		tex: tex(key),
-		cells: rows,
+		cells,
 		w,
 		h,
 		connections,
 	};
-}
-
-export function forCells(
-	rows: string[][],
-	cb: (x: number, y: number, cell: string) => void
-) {
-	rows.forEach((row, y) =>
-		row.forEach((cell, x) => {
-			if (!cell.trim() || cell === '.') return; // skip empties
-			cb(x, y, cell);
-		})
-	);
 }
 
 export function makePart(piece: ReturnType<typeof mechPartParse>) {

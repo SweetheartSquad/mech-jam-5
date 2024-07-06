@@ -415,8 +415,7 @@ module definitions below
 ::module Cockpit
 A standard cockpit.
 ---
-500
-cockpit
+500, cockpit
 ---
 00
 00
@@ -426,8 +425,7 @@ A weirdly shaped cockpit.
 
 Some more text.
 ---
-750
-cockpit
+750, cockpit
 ---
 000
 .0.
