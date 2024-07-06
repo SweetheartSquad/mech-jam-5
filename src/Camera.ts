@@ -44,6 +44,7 @@ export class Camera extends GameObject {
 	}
 
 	update(): void {
+		super.update();
 		this.updateTarget();
 
 		const dt = 1 - Math.exp(-game.app.ticker.deltaTime * 0.16);
