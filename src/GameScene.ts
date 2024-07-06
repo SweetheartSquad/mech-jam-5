@@ -5,7 +5,6 @@ import { Btn } from './Btn';
 import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
-import { Prop } from './Prop';
 import { ScreenFilter } from './ScreenFilter';
 import { StrandE } from './StrandE';
 import { TweenManager } from './Tweens';
@@ -16,10 +15,10 @@ import { DEBUG } from './debug';
 import { error, warn } from './logger';
 import { getInput } from './main';
 import { makePiece, mechPieceParse } from './mech-piece';
-import { randItem } from './utils';
 
 export class GameScene {
 	container = new Container();
+	containerUI = new Container();
 
 	camera = new Camera();
 
@@ -119,6 +118,7 @@ export class GameScene {
 		this.screenFilter = new ScreenFilter();
 
 		this.camera.display.container.addChild(this.container);
+		this.camera.display.container.addChild(this.containerUI);
 
 		this.strand.history.push('close');
 
@@ -140,47 +140,81 @@ export class GameScene {
 		};
 
 		this.camera.display.container.interactiveChildren = true;
-		const btn = new Btn(() => {
-			randItem(this.pieces.heads);
-			this.assembleParts(
-				randItem(this.pieces.heads),
-				randItem(this.pieces.chests),
-				randItem(this.pieces.arms),
-				randItem(this.pieces.legs)
-			);
-		}, 'button');
-		btn.transform.x = 0;
-		btn.transform.y -= 50;
-		this.container.addChild(btn.display.container);
+
+		this.pickParts();
 	}
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests', string[]>;
 
-	// async pickParts() {
-	// 	let head = 0;
-	// 	let chest = 0;
-	// 	let arm = 0;
-	// 	let leg = 0;
+	async pickParts() {
+		let head = '';
+		let chest = '';
+		let arm = '';
+		let leg = '';
 
-	// 	const cycler = (prev: () => void, next: () => void) => {
-	// 		const btnNext = new Btn(() => {
-	// 			next();
-	// 		}, 'button');
-	// 		const btnPrev = new Btn(() => {
-	// 			next();
-	// 		}, 'button');
-	// 	};
+		const cycler = <T>(update: (item: T) => void, items: T[] = []) => {
+			let index = 0;
+			const btnPrev = new Btn(() => {
+				--index;
+				if (index < 0) index = items.length - 1;
+				update(items[index]);
+			}, 'buttonArrow');
+			btnPrev.display.container.scale.x *= -1;
+			const btnNext = new Btn(() => {
+				++index;
+				index %= items.length;
+				update(items[index]);
+			}, 'buttonArrow');
+			const container = new Container();
+			btnPrev.transform.x -= btnPrev.display.container.width / 2;
+			btnNext.transform.x += btnNext.display.container.width / 2;
+			container.addChild(btnPrev.display.container);
+			container.addChild(btnNext.display.container);
+			update(items[index]);
+			return [container, btnPrev, btnNext] as const;
+		};
 
-	// 	const btnHeadNext = new Btn(() => {
-	// 		randItem(this.pieces.heads);
-	// 		this.assembleParts(
-	// 			randItem(this.pieces.heads),
-	// 			randItem(this.pieces.chests),
-	// 			randItem(this.pieces.arms),
-	// 			randItem(this.pieces.legs)
-	// 		);
-	// 	}, 'button');
-	// }
+		let mech = this.assembleParts('', '', '', '');
+		const [containerHeadBtns] = cycler((newHead) => {
+			head = newHead;
+			if (mech) mech.container.destroy({ children: true });
+			mech = this.assembleParts(head, chest, arm, leg);
+			if (!mech) return;
+			this.container.addChild(mech.container);
+		}, this.pieces.heads);
+		const [containerChestBtns] = cycler((newChest) => {
+			chest = newChest;
+			if (mech) mech.container.destroy({ children: true });
+			mech = this.assembleParts(head, chest, arm, leg);
+			if (!mech) return;
+			this.container.addChild(mech.container);
+		}, this.pieces.chests);
+		const [containerArmBtns] = cycler((newArm) => {
+			arm = newArm;
+			if (mech) mech.container.destroy({ children: true });
+			mech = this.assembleParts(head, chest, arm, leg);
+			if (!mech) return;
+			this.container.addChild(mech.container);
+		}, this.pieces.arms);
+		const [containerLegBtns] = cycler((newLeg) => {
+			leg = newLeg;
+			if (mech) mech.container.destroy({ children: true });
+			mech = this.assembleParts(head, chest, arm, leg);
+			if (!mech) return;
+			this.container.addChild(mech.container);
+		}, this.pieces.legs);
+		this.containerUI.addChild(containerHeadBtns);
+		this.containerUI.addChild(containerChestBtns);
+		this.containerUI.addChild(containerArmBtns);
+		this.containerUI.addChild(containerLegBtns);
+
+		containerChestBtns.y += containerChestBtns.height;
+		containerArmBtns.y += containerChestBtns.height;
+		containerArmBtns.y += containerArmBtns.height;
+		containerLegBtns.y += containerChestBtns.height;
+		containerLegBtns.y += containerArmBtns.height;
+		containerLegBtns.y += containerLegBtns.height;
+	}
 
 	assembleParts(
 		headKey: string,
@@ -188,6 +222,8 @@ export class GameScene {
 		armKey: string,
 		legKey: string
 	) {
+		if (!headKey || !chestKey || !armKey || !legKey) return;
+		const container = new Container();
 		const getPiece = (key: string, flip?: boolean) =>
 			mechPieceParse(
 				key.split(' ')[0],
@@ -216,18 +252,18 @@ export class GameScene {
 			[sprLegR, cellsLegR],
 			[sprLegL, cellsLegL],
 		];
-		this.container.addChild(sprHead);
-		this.container.addChild(sprChest);
-		this.container.addChild(sprArmR);
-		this.container.addChild(sprArmL);
-		this.container.addChild(sprLegR);
-		this.container.addChild(sprLegL);
-		this.container.addChild(cellsHead);
-		this.container.addChild(cellsChest);
-		this.container.addChild(cellsArmR);
-		this.container.addChild(cellsArmL);
-		this.container.addChild(cellsLegR);
-		this.container.addChild(cellsLegL);
+		container.addChild(sprHead);
+		container.addChild(sprChest);
+		container.addChild(sprArmR);
+		container.addChild(sprArmL);
+		container.addChild(sprLegR);
+		container.addChild(sprLegL);
+		container.addChild(cellsHead);
+		container.addChild(cellsChest);
+		container.addChild(cellsArmR);
+		container.addChild(cellsArmL);
+		container.addChild(cellsLegR);
+		container.addChild(cellsLegL);
 
 		[cellsChest, cellsArmL, cellsArmR, cellsLegL, cellsLegR, cellsHead].forEach(
 			(i) => {
@@ -270,11 +306,7 @@ export class GameScene {
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
 		});
-
-		const test = new Prop({ texture: 'module Cockpit' });
-		test.transform.x += cellSize / 2;
-		test.transform.y += cellSize / 2;
-		this.container.addChild(test.display.container);
+		return { container, headD, chestD, armLD, armRD, legLD, legRD };
 	}
 
 	destroy(): void {
