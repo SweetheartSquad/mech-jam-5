@@ -10,7 +10,7 @@ textures/border.png
 textures/dialogueBg.png
 textures/shadows.png
 
-font/bmfont.fnt
+font/fontfnt.fnt
 
 textures/img_cheryl.jpg
 

@@ -1,9 +1,9 @@
 import type { TextStyle } from 'pixi.js';
 
-const size = 8;
+const size = 16;
 
 export const fontDialogue: Partial<TextStyle> = {
-	fontFamily: 'bmfont',
+	fontFamily: 'fontfnt',
 	fontSize: size,
 	padding: size * 0.5,
 	fill: 0xffffff,
