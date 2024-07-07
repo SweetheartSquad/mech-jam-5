@@ -729,8 +729,10 @@ SPACE: ${freeCells
 		placed.forEach((i) => {
 			const sprModule = makeModule(i.module);
 			sprModule.rotation = (i.turns / 4) * Math.PI * 2;
-			sprModule.x = (i.x + (i.module.w % 2 ? 0.5 : 0)) * cellSize;
-			sprModule.y = (i.y + (i.module.h % 2 ? 0.5 : 0)) * cellSize;
+			const o = [i.module.w % 2 ? 0.5 : 0, i.module.h % 2 ? 0.5 : 0];
+			if (i.turns % 2) o.reverse();
+			sprModule.x = (i.x + o[0]) * cellSize;
+			sprModule.y = (i.y + o[1]) * cellSize;
 			sprModule.scale.x = i.flipH ? -1 : 1;
 			sprModule.scale.y = i.flipV ? -1 : 1;
 			container.addChild(sprModule);

@@ -1,4 +1,5 @@
 import { Container, Sprite } from 'pixi.js';
+import { cellSize } from './config';
 import { forCells, makeCellsTexture, parseLayout } from './layout';
 import { tex } from './utils';
 
@@ -31,11 +32,15 @@ export function mechModuleParse(key: string, source: string) {
 export type ModuleD = ReturnType<typeof mechModuleParse>;
 
 export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
-	const sprBase = new Sprite(piece.tex);
-	sprBase.label = piece.name;
 	const containerCells = new Container();
 	containerCells.label = piece.name;
+	const sprBase = new Sprite(piece.tex);
+	sprBase.label = piece.name;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	containerCells.addChild(sprBase);
+	containerCells.pivot.x = (piece.w / 2) * cellSize;
+	containerCells.pivot.y = (piece.h / 2) * cellSize;
+	sprBase.x += containerCells.pivot.x;
+	sprBase.y += containerCells.pivot.y;
 	return containerCells;
 }
