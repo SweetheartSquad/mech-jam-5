@@ -487,13 +487,17 @@ SPACE: ${freeCells
 			});
 			this.camera.scripts.push(dragger);
 
-			// TODO: UI for showing all modules
-			const scroller = new Scroller(10);
-			modules.forEach((moduleD, idx) => {
+			const scroller = new Scroller({
+				width: 200,
+				height: size.y,
+				gap: 10,
+			});
+			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
+				uiModule.x += uiModule.width / 2;
+				uiModule.y += uiModule.height / 2;
 				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
-				uiModule.x += size.x / 4;
 				uiModule.addEventListener('pointerover', () => {
 					// TODO: show module info
 				});
@@ -505,6 +509,9 @@ SPACE: ${freeCells
 					this.containerUI.addChild(dragging);
 				});
 			});
+			scroller.container.x = size.x / 2 - scroller.container.width;
+			scroller.container.y -= size.y / 2;
+
 			const destroy = () => {
 				document.removeEventListener('contextmenu', onContext);
 				removeFromArray(this.camera.scripts, dragger);
@@ -528,7 +535,7 @@ SPACE: ${freeCells
 				new BitmapText({ text: 'done', style: fontMechInfo })
 			);
 			this.container.addChild(containerBtns);
-			this.containerUI.addChild(scroller);
+			this.containerUI.addChild(scroller.container);
 			this.containerUI.addChild(btnDone.display.container);
 			this.containerUI.addChild(btnBack.display.container);
 			btnDone.transform.y -= btnDone.display.container.height;
