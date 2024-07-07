@@ -1,8 +1,11 @@
 import { Container } from 'pixi.js';
 import { flipMatrixH, flipMatrixV, rotateMatrixClockwise } from './utils';
 
-export function parseLayout(source: string, flip = false) {
-	const w = source
+export function parseLayout(
+	source: string,
+	{ square = false, flip = false }: { square?: boolean; flip?: boolean } = {}
+) {
+	let w = source
 		.split('\n')
 		.reduce((max, row) => Math.max(max, row.trimEnd().length), 0);
 	let rows = source
@@ -10,8 +13,27 @@ export function parseLayout(source: string, flip = false) {
 		.split('\n')
 		.map((i) => i.substring(0, w).padEnd(w, '.'))
 		.map((i) => i.split(''));
+	let h = rows.length;
+
+	if (square) {
+		for (let i = w; i < h; ++i) {
+			if (i % 2) {
+				rows.forEach((row) => row.unshift('.'));
+			} else {
+				rows.forEach((row) => row.push('.'));
+			}
+		}
+		for (let i = h; i < w; ++i) {
+			if (i % 2) {
+				rows.unshift(new Array(w).fill('.'));
+			} else {
+				rows.push(new Array(w).fill('.'));
+			}
+		}
+		w = Math.max(w, h);
+		h = w;
+	}
 	if (flip) rows = flipMatrixH(rows);
-	const h = rows.length;
 	return { cells: rows, w, h };
 }
 

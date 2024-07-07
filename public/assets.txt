@@ -50,4 +50,7 @@ textures/cell button_down.png
 
 textures/module Cockpit.png
 textures/module Tee.png
+textures/module Bar.png
+textures/module Bar2.png
+textures/module Single.png
 
