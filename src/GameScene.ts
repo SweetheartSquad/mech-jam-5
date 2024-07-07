@@ -796,7 +796,7 @@ SPACE: ${freeCells
 		const [grid] = flatten([
 			{
 				cells: replaceCells(
-					replaceCells(this.mech?.grid || [], /[^0]/, '.'),
+					replaceCells(this.mech?.grid || [], /[^0]/, '-'),
 					'0',
 					'x'
 				),
