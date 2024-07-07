@@ -559,6 +559,11 @@ SPACE: ${freeCells
 				new BitmapText({ text: 'back', style: fontMechInfo })
 			);
 			const btnDone = new Btn(() => {
+				if (this.mechinfo.text.includes('!!!')) {
+					// TODO: proper ui
+					window.alert('too expensive!');
+					return;
+				}
 				destroy();
 				donePlacingModules(true);
 			}, 'button');
