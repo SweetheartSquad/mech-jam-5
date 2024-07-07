@@ -51,7 +51,7 @@
 
 	this.Area('empty', []);
 	this.Area('intro', [
-		this.Prop({ texture: 'bg_ship', scale: 2, y: 110, offset: -1000000 }),
+		this.Prop({ texture: 'bg_ship', scale: 1, x: 100, y: -110, offset: -1000000 }),
 	]);
 
 	// start
