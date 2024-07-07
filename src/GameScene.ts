@@ -14,6 +14,7 @@ import { V } from './VMath';
 import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
+import { flatten, forCells } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse } from './mech-module';
@@ -536,7 +537,52 @@ SPACE: ${freeCells
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
 		});
-		return { container, headD, chestD, armLD, armRD, legLD, legRD };
+
+		const [grid, gridDimensions] = flatten([
+			{
+				cells: chestD.cells,
+				x: cellsChest.position.x / cellSize,
+				y: cellsChest.position.y / cellSize,
+			},
+			{
+				cells: headD.cells,
+				x: cellsHead.position.x / cellSize,
+				y: cellsHead.position.y / cellSize,
+			},
+			{
+				cells: legLD.cells,
+				x: cellsLegL.position.x / cellSize,
+				y: cellsLegL.position.y / cellSize,
+			},
+			{
+				cells: legRD.cells,
+				x: cellsLegR.position.x / cellSize,
+				y: cellsLegR.position.y / cellSize,
+			},
+			{
+				cells: armLD.cells,
+				x: cellsArmL.position.x / cellSize,
+				y: cellsArmL.position.y / cellSize,
+			},
+			{
+				cells: armRD.cells,
+				x: cellsArmR.position.x / cellSize,
+				y: cellsArmR.position.y / cellSize,
+			},
+		]);
+		console.log(grid);
+
+		return {
+			container,
+			headD,
+			chestD,
+			armLD,
+			armRD,
+			legLD,
+			legRD,
+			grid,
+			gridDimensions,
+		};
 	}
 
 	fight() {
