@@ -1,4 +1,7 @@
-import { Container } from 'pixi.js';
+import { Container, Graphics, Texture } from 'pixi.js';
+import { cellSize } from './config';
+import { DEBUG } from './debug';
+import { game } from './Game';
 import { flipMatrixH, flipMatrixV, rotateMatrixClockwise } from './utils';
 
 export function parseLayout(
@@ -104,4 +107,24 @@ export function rotateCellsByDisplay<T>(cells: T[][], display: Container) {
 	if (flip[0]) result = flipMatrixH(result);
 	if (flip[1]) result = flipMatrixV(result);
 	return result;
+}
+
+const cache: { [key: string]: Texture } = {};
+export function makeCellsTexture(cells: string[][]) {
+	const key = cells.join('|');
+	if (cache[key]) return cache[key];
+	const g = new Graphics();
+	forCells(cells, (x, y, cell) => {
+		g.rect(x * cellSize, y * cellSize, cellSize, cellSize);
+	});
+	g.fill(0xff0000);
+
+	if (DEBUG) {
+		game.app.renderer.extract.image(g).then((i) => {
+			document.body.appendChild(i);
+		});
+	}
+
+	cache[key] = game.app.renderer.extract.texture(g);
+	return cache[key];
 }

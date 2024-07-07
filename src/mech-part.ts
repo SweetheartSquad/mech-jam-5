@@ -1,7 +1,7 @@
 import { Container, Sprite } from 'pixi.js';
 import { cellSize } from './config';
-import { forCells, parseLayout } from './layout';
-import { tex } from './utils';
+import { forCells, makeCellsTexture, parseLayout } from './layout';
+import { flipMatrixH, tex } from './utils';
 
 export function mechPartParse(
 	type: string,
@@ -122,7 +122,10 @@ export function mechPartParse(
 	}
 	return {
 		name: key.replace(`${type} `, ''),
-		tex: tex(key),
+		tex:
+			tex(key) === tex('error')
+				? makeCellsTexture(flip ? flipMatrixH(cells) : cells)
+				: tex(key),
 		cells,
 		w,
 		h,

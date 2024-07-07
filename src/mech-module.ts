@@ -1,5 +1,5 @@
 import { Container, Sprite } from 'pixi.js';
-import { forCells, parseLayout } from './layout';
+import { forCells, makeCellsTexture, parseLayout } from './layout';
 import { tex } from './utils';
 
 export function mechModuleParse(key: string, source: string) {
@@ -21,7 +21,7 @@ export function mechModuleParse(key: string, source: string) {
 		description,
 		cost,
 		tags: mechanics,
-		tex: tex(key),
+		tex: tex(key) === tex('error') ? makeCellsTexture(cells) : tex(key),
 		cells,
 		w,
 		h,
