@@ -1,19 +1,26 @@
 import eases from 'eases';
 import { Container, ContainerChild, Sprite } from 'pixi.js';
 import { Tween, TweenManager } from './Tweens';
-import { tex } from './utils';
+import { clamp, tex } from './utils';
 
 export class Scroller extends Container {
 	spr: Sprite;
+	scrollTop = 0;
+	scrollHeight = 0;
 
-	constructor() {
+	constructor(public scrollGap = 0) {
 		super();
 		this.addEventListener('wheel', (event) => {
-			if (this.tween) TweenManager.finish(this.tween);
+			this.scrollTop = clamp(
+				0,
+				this.scrollTop + event.deltaY,
+				this.scrollHeight
+			);
+			if (this.tween) TweenManager.abort(this.tween);
 			TweenManager.tween(
 				this.pivot,
 				'y',
-				this.pivot.y + event.deltaY,
+				this.scrollTop,
 				100,
 				undefined,
 				eases.circOut
@@ -23,11 +30,13 @@ export class Scroller extends Container {
 		this.interactive = true;
 	}
 
-	addChild<U extends ContainerChild[]>(...children: U): U[0] {
+	addChild<U extends ContainerChild>(child: U): U {
 		super.removeChild(this.spr);
-		const r = super.addChild(...children);
+		const r = super.addChild(child);
 		this.spr.width = this.width;
 		this.spr.height = this.height;
+		child.y += this.scrollHeight;
+		this.scrollHeight += child.height + this.scrollGap;
 		super.addChildAt(this.spr, 0);
 		return r;
 	}

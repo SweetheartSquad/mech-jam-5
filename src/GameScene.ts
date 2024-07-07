@@ -488,12 +488,11 @@ SPACE: ${freeCells
 			this.camera.scripts.push(dragger);
 
 			// TODO: UI for showing all modules
-			const scroller = new Scroller();
+			const scroller = new Scroller(10);
 			modules.forEach((moduleD, idx) => {
 				const uiModule = makeModule(moduleD);
 				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
-				uiModule.y += idx * 50;
 				uiModule.x += size.x / 4;
 				uiModule.addEventListener('pointerover', () => {
 					// TODO: show module info
