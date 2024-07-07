@@ -31,7 +31,7 @@ export function mechModuleParse(key: string, source: string) {
 
 export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 	const sprBase = new Sprite(piece.tex);
-	sprBase.label = `${piece.name} sprite`;
+	sprBase.label = piece.name;
 	const containerCells = new Container();
 	containerCells.label = piece.name;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
