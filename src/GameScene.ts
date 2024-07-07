@@ -14,7 +14,7 @@ import { V } from './VMath';
 import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
-import { flatten, forCells } from './layout';
+import { flatten, forCells, rotateCellsByDisplay } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse } from './mech-module';
