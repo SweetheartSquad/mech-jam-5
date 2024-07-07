@@ -436,13 +436,14 @@ SPACE: ${freeCells
 			forCells(this.mech.grid, (x, y, cell) => {
 				if (cell !== '0') return;
 				const btn = new Btn((event) => {
+					const copying = event.shiftKey || event.ctrlKey;
 					if (!dragging) {
 						// check for module
 						const m = this.modules.grid[y][x];
 						if (!m) return;
 						const idx = parseInt(m, 10);
 						let module: GameScene['modules']['placed'][number];
-						if (event.shiftKey || event.ctrlKey) {
+						if (copying) {
 							// copy module
 							module = this.modules.placed[idx];
 						} else {
@@ -465,9 +466,11 @@ SPACE: ${freeCells
 							y,
 							...displayToPlacementProps(dragging),
 						});
-						dragging.destroy();
-						dragging = null;
-						target = null;
+						if (!copying) {
+							dragging.destroy();
+							dragging = null;
+							target = null;
+						}
 						this.reassemble();
 						checkPlacement();
 					}
