@@ -44,7 +44,7 @@ export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 		sprCell.y = y * cellSize;
 		sprCell.width = cellSize;
 		sprCell.height = cellSize;
-		sprCell.alpha = 0.25; // TODO: should these be visible?
+		sprCell.alpha = 0; // TODO: should these be visible?
 		containerCells.addChild(sprCell);
 	});
 	sprBase.x += containerCells.width / 2;
