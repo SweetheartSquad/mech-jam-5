@@ -22,6 +22,7 @@ export class Scroller {
 		gap?: number;
 	}) {
 		this.scrollGap = gap;
+		this.scrollHeight += gap;
 
 		this.container = new Container();
 		this.containerScroll = new Container();
