@@ -2,7 +2,12 @@ import { Container, Graphics, Texture } from 'pixi.js';
 import { cellSize } from './config';
 import { DEBUG } from './debug';
 import { game } from './Game';
-import { flipMatrixH, flipMatrixV, rotateMatrixClockwise } from './utils';
+import {
+	flipMatrixH,
+	flipMatrixV,
+	randRange,
+	rotateMatrixClockwise,
+} from './utils';
 
 export function parseLayout(
 	source: string,
@@ -129,7 +134,7 @@ export function makeCellsTexture(cells: string[][]) {
 	forCells(cells, (x, y, cell) => {
 		g.rect(x * cellSize, y * cellSize, cellSize, cellSize);
 	});
-	g.fill(0xff0000);
+	g.fill(randRange(0x999999, 0xffffff));
 
 	if (DEBUG) {
 		game.app.renderer.extract.image(g).then((i) => {
