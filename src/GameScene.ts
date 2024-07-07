@@ -425,10 +425,32 @@ SPACE: ${freeCells
 				this.mech.container.x + (this.mech.gridDimensions.x + 0.5) * cellSize;
 			containerBtns.y =
 				this.mech.container.y + (this.mech.gridDimensions.y + 0.5) * cellSize;
+
+			const startDragging = (moduleD: ModuleD) => {
+				dragging = makeModule(moduleD);
+				dragging.alpha = 0.5;
+				this.containerUI.addChild(dragging);
+				return dragging;
+			};
+
 			forCells(this.mech.grid, (x, y, cell) => {
 				if (cell !== '0') return;
 				const btn = new Btn(() => {
-					if (valid && target && dragging) {
+					if (!dragging) {
+						// try to pick up module
+						const m = this.modules.grid[y][x];
+						if (!m) return;
+						const idx = parseInt(m, 10);
+						const module = this.modules.placed.splice(idx, 1)[0];
+						this.reassemble();
+						const newDrag = startDragging(module.module);
+						newDrag.rotation = (module.turns / 4) * Math.PI * 2;
+						newDrag.scale.x *= module.flipH ? -1 : 1;
+						newDrag.scale.y *= module.flipV ? -1 : 1;
+						target = btn;
+						checkPlacement();
+					} else if (valid && target && dragging) {
+						// place selected module
 						const moduleD = modulesByName[dragging.label];
 						this.modules.placed.push({
 							module: moduleD,
@@ -505,9 +527,7 @@ SPACE: ${freeCells
 				uiModule.addEventListener('pointerdown', (event) => {
 					if (event && event.button !== mouse.LEFT) return;
 					if (dragging) dragging.destroy();
-					dragging = makeModule(moduleD);
-					dragging.alpha = 0.5;
-					this.containerUI.addChild(dragging);
+					dragging = startDragging(moduleD);
 				});
 			});
 			scroller.container.x = size.x / 2 - scroller.container.width;
