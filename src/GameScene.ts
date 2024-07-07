@@ -201,23 +201,10 @@ export class GameScene {
 	costMax = 1000;
 
 	updateMechInfo() {
-		const allCells = [
-			this.mech.headD,
-			this.mech.chestD,
-			this.mech.armLD,
-			this.mech.armRD,
-			this.mech.legLD,
-			this.mech.legRD,
-		].reduce(
-			(acc, i) =>
-				acc +
-				i.cells
-					.join('')
-					.replaceAll(',', '')
-					.replaceAll(' ', '')
-					.replaceAll('.', '').length,
-			0
-		);
+		let allCells = 0;
+		forCells(this.mech.grid, () => {
+			++allCells;
+		});
 		const freeCells = [
 			this.mech.headD,
 			this.mech.chestD,
