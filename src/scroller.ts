@@ -33,10 +33,10 @@ export class Scroller extends Container {
 	addChild<U extends ContainerChild>(child: U): U {
 		super.removeChild(this.spr);
 		const r = super.addChild(child);
-		this.spr.width = this.width;
-		this.spr.height = this.height;
 		child.y += this.scrollHeight;
 		this.scrollHeight += child.height + this.scrollGap;
+		this.spr.width = this.width;
+		this.spr.height = this.height;
 		super.addChildAt(this.spr, 0);
 		return r;
 	}
