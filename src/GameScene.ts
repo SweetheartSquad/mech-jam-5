@@ -519,7 +519,7 @@ SPACE: ${freeCells
 				const uiModule = makeModule(moduleD);
 				this.containerUI.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
-				uiModule.y += idx * 100;
+				uiModule.y += idx * 50;
 				uiModule.x += size.x / 4;
 				uiModule.addEventListener('pointerover', () => {
 					// TODO: show module info
