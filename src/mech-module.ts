@@ -31,7 +31,7 @@ export function mechModuleParse(key: string, source: string) {
 
 export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 	const sprBase = new Sprite(piece.tex);
-	sprBase.label = `${piece.name} sprite`;
+	sprBase.label = piece.name;
 	const containerCells = new Container();
 	containerCells.label = piece.name;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
@@ -44,7 +44,7 @@ export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 		sprCell.y = y * cellSize;
 		sprCell.width = cellSize;
 		sprCell.height = cellSize;
-		sprCell.alpha = 0.25; // TODO: should these be visible?
+		sprCell.alpha = 0; // TODO: should these be visible?
 		containerCells.addChild(sprCell);
 	});
 	sprBase.x += containerCells.width / 2;

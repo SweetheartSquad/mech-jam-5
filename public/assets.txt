@@ -44,6 +44,10 @@ textures/buttonArrow_normal.png
 textures/buttonArrow_over.png
 textures/buttonArrow_down.png
 
+textures/cell button_normal.png
+textures/cell button_over.png
+textures/cell button_down.png
+
 textures/module Cockpit.png
 textures/module Tee.png
 

@@ -295,3 +295,40 @@ export function buttonify(obj: Container, title?: string) {
 	obj.cursor = 'pointer';
 	obj.tabIndex = 0;
 }
+
+function rotateMatrixClockwiseOnce<T>(arr: T[][]) {
+	const M = arr.length;
+	const N = arr[0].length;
+
+	let rotated: T[][] = [];
+	for (let i = 0; i < N; i++) {
+		rotated[i] = [];
+	}
+
+	for (let i = 0; i < N; i++) {
+		for (let j = 0; j < M; j++) {
+			rotated[i][j] = arr[M - j - 1][i];
+		}
+	}
+
+	return rotated;
+}
+
+export function rotateMatrixClockwise<T>(arr: T[][], turns = 1) {
+	let result = arr;
+	while (turns < 0) {
+		turns += 4;
+	}
+	while (turns-- > 0) {
+		result = rotateMatrixClockwiseOnce(result);
+	}
+	return result;
+}
+
+export function flipMatrixH<T>(arr: T[][]) {
+	return arr.map((row) => row.slice().reverse());
+}
+
+export function flipMatrixV<T>(arr: T[][]) {
+	return arr.slice().reverse();
+}

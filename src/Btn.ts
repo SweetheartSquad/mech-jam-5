@@ -7,6 +7,7 @@ import { Transform } from './Scripts/Transform';
 import { buttonify, tex } from './utils';
 
 export class Btn extends GameObject {
+	spr: Sprite;
 	display: Display;
 	transform: Transform;
 
@@ -15,38 +16,38 @@ export class Btn extends GameObject {
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 
-		const spr = new Sprite(tex(`${texture}_normal`));
-		spr.label = 'button';
-		this.display.container.addChild(spr);
+		this.spr = new Sprite(tex(`${texture}_normal`));
+		this.spr.label = 'button';
+		this.display.container.addChild(this.spr);
 		this.display.container.interactiveChildren = true;
 		this.display.container.accessibleChildren = true;
-		spr.anchor.x = spr.anchor.y = 0.5;
-		buttonify(spr, title || texture);
+		this.spr.anchor.x = this.spr.anchor.y = 0.5;
+		buttonify(this.spr, title || texture);
 
 		let down = false;
-		spr.on('pointerup', (event) => {
+		this.spr.on('pointerup', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
 			onClick();
 		});
-		spr.on('pointerover', () => {
-			spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
+		this.spr.on('pointerover', () => {
+			this.spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
 		});
-		spr.on('pointerdown', (event) => {
+		this.spr.on('pointerdown', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
 			down = true;
-			spr.texture = tex(`${texture}_down`);
+			this.spr.texture = tex(`${texture}_down`);
 			document.addEventListener(
 				'pointerup',
 				() => {
 					down = false;
-					spr.texture = tex(`${texture}_normal`);
+					this.spr.texture = tex(`${texture}_normal`);
 				},
 				{ once: true }
 			);
 			sfx(texture, { rate: Math.random() * 0.2 + 0.9 });
 		});
-		spr.on('pointerout', () => {
-			spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
+		this.spr.on('pointerout', () => {
+			this.spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
 		});
 		this.init();
 	}

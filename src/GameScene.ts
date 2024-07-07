@@ -14,11 +14,20 @@ import { V } from './VMath';
 import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
+import { flatten, forCells } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse } from './mech-module';
 import { makePart, mechPartParse } from './mech-part';
-import { buttonify, randItem, relativeMouse, removeFromArray } from './utils';
+import {
+	buttonify,
+	flipMatrixH,
+	flipMatrixV,
+	randItem,
+	relativeMouse,
+	removeFromArray,
+	rotateMatrixClockwise,
+} from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -200,23 +209,10 @@ export class GameScene {
 	costMax = 1000;
 
 	updateMechInfo() {
-		const allCells = [
-			this.mech.headD,
-			this.mech.chestD,
-			this.mech.armLD,
-			this.mech.armRD,
-			this.mech.legLD,
-			this.mech.legRD,
-		].reduce(
-			(acc, i) =>
-				acc +
-				i.cells
-					.join('')
-					.replaceAll(',', '')
-					.replaceAll(' ', '')
-					.replaceAll('.', '').length,
-			0
-		);
+		let allCells = 0;
+		forCells(this.mech.grid, () => {
+			++allCells;
+		});
 		const freeCells = [
 			this.mech.headD,
 			this.mech.chestD,
@@ -284,12 +280,17 @@ SPACE: ${freeCells
 			let leg = this.mech
 				? `leg ${this.mech.legLD.name}`
 				: randItem(this.pieces.legs);
+
+			if (this.mech) {
+				this.mech.container.destroy({ children: true });
+			}
 			this.mech = this.assembleParts(head, chest, arm, leg);
 
 			const updateMech = () => {
 				this.mech.container.destroy({ children: true });
 				this.mech = this.assembleParts(head, chest, arm, leg);
 				this.container.addChild(this.mech.container);
+				this.mech.container.x -= Math.floor(size.x * (1 / 5));
 				this.updateMechInfo();
 			};
 
@@ -357,14 +358,175 @@ SPACE: ${freeCells
 
 	placeModules() {
 		return new Promise<boolean>((donePlacingModules) => {
-			const containerModules = new Container();
-			this.containerUI.addChild(containerModules);
-			// TODO: UI for showing all modules
-			this.pieces.modules.forEach((i, idx) => {
+			const modules = this.pieces.modules.map((i) => {
 				const moduleD = mechModuleParse(
 					i,
 					this.strand.getPassageWithTitle(i).body
 				);
+				return moduleD;
+			});
+			const modulesByName = modules.reduce<{
+				[key: string]: (typeof modules)[number];
+			}>((acc, i) => {
+				acc[i.name] = i;
+				return acc;
+			}, {});
+
+			const containerModules = new Container();
+			containerModules.x =
+				this.mech.container.x - this.mech.container.width / 2;
+			containerModules.y =
+				this.mech.container.y - this.mech.container.height / 2;
+
+			let dragging: Container | null = null;
+			let target: Btn | null = null;
+			let valid = false;
+
+			const onContext = (event: MouseEvent) => {
+				if (!dragging) return;
+				event.preventDefault();
+				dragging.destroy();
+				dragging = null;
+				target = null;
+				checkPlacement();
+			};
+			document.addEventListener('contextmenu', onContext);
+
+			const gridBtns: Btn[] = [];
+			const gridBtnsByPos: Btn[][] = [];
+
+			const checkPlacement = () => {
+				valid = false;
+				gridBtns.forEach((i) => {
+					i.spr.tint = 0xffffff;
+				});
+				if (!dragging) return;
+				if (!target) return;
+				valid = true;
+				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
+
+				const moduleD = modulesByName[dragging.label];
+				let draggingCells = moduleD.cells;
+				const turns = (dragging.rotation / (Math.PI * 2)) * 4;
+				draggingCells = rotateMatrixClockwise(draggingCells, turns);
+				const scale = [dragging.scale.x, dragging.scale.y];
+				if (turns % 2) scale.reverse();
+				if (scale[0] < 0) draggingCells = flipMatrixH(draggingCells);
+				if (scale[1] < 0) draggingCells = flipMatrixV(draggingCells);
+
+				forCells(draggingCells, (x2, y2) => {
+					const cell =
+						this.mech.grid[y + y2 - Math.floor(moduleD.h / 2)]?.[
+							x + x2 - Math.floor(moduleD.w / 2)
+						];
+					if (cell !== '0') valid = false;
+				});
+
+				forCells(draggingCells, (x2, y2) => {
+					const btnNeighbour =
+						gridBtnsByPos[y + y2 - Math.floor(moduleD.h / 2)]?.[
+							x + x2 - Math.floor(moduleD.w / 2)
+						];
+					if (!btnNeighbour) return;
+					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
+				});
+			};
+
+			const placeModule = ({
+				module,
+				x,
+				y,
+				rotation,
+				flipH,
+				flipV,
+			}: {
+				module: Parameters<typeof makeModule>[0];
+				x: number;
+				y: number;
+				rotation: number;
+				flipH: number;
+				flipV: number;
+			}) => {
+				const placedModule = makeModule(module);
+				const p = containerModules.toLocal(
+					gridBtnsByPos[y][x].transform,
+					containerBtns
+				);
+				placedModule.x = p.x - (module.w % 2 ? 0 : 0.5 * cellSize);
+				placedModule.y = p.y - (module.h % 2 ? 0 : 0.5 * cellSize);
+				placedModule.rotation = rotation;
+				placedModule.scale.x = flipH;
+				placedModule.scale.y = flipV;
+				containerModules.addChild(placedModule);
+				// TODO: save, block cells, reposition
+			};
+
+			const containerBtns = new Container();
+			containerBtns.x =
+				this.mech.container.x + (this.mech.gridDimensions.x + 0.5) * cellSize;
+			containerBtns.y =
+				this.mech.container.y + (this.mech.gridDimensions.y + 0.5) * cellSize;
+			forCells(this.mech.grid, (x, y, cell) => {
+				if (cell !== '0') return;
+				const btn = new Btn(() => {
+					if (valid && target && dragging) {
+						placeModule({
+							module: modulesByName[dragging.label],
+							x,
+							y,
+							rotation: dragging.rotation,
+							flipH: dragging.scale.x,
+							flipV: dragging.scale.y,
+						});
+					}
+				}, 'cell button');
+				btn.spr.label = `${x},${y}`;
+				btn.spr.addEventListener('pointerover', () => {
+					target = btn;
+					checkPlacement();
+				});
+				btn.spr.addEventListener('pointerout', () => {
+					if (target !== btn) return;
+					target = null;
+					checkPlacement();
+				});
+				btn.transform.x = x * cellSize;
+				btn.transform.y = y * cellSize;
+				containerBtns.addChild(btn.display.container);
+				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+				gridBtnsByPos[y][x] = btn;
+				gridBtns.push(btn);
+			});
+
+			const dragger = new Updater(this.camera, () => {
+				if (!dragging) return;
+				const input = getInput();
+				const rm = relativeMouse();
+				dragging.x = rm.x - size.x / 2;
+				dragging.y = rm.y - size.y / 2;
+				if (input.flipH) {
+					dragging.scale.x *= -1;
+					checkPlacement();
+				}
+				if (input.flipV) {
+					dragging.scale.y *= -1;
+					checkPlacement();
+				}
+				if (input.rotateR) {
+					dragging.rotation += Math.PI / 2;
+					dragging.rotation %= Math.PI * 2;
+					checkPlacement();
+				}
+				if (input.rotateL) {
+					dragging.rotation -= Math.PI / 2;
+					if (dragging.rotation < 0) dragging.rotation += Math.PI * 2;
+					checkPlacement();
+				}
+			});
+			this.camera.scripts.push(dragger);
+
+			// TODO: UI for showing all modules
+			modules.forEach((moduleD, idx) => {
 				const uiModule = makeModule(moduleD);
 				this.containerUI.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
@@ -375,48 +537,18 @@ SPACE: ${freeCells
 				});
 				uiModule.addEventListener('pointerdown', (event) => {
 					if (event && event.button !== mouse.LEFT) return;
-					const dragModule = makeModule(moduleD);
-					dragModule.rotation = uiModule.rotation;
-					this.containerUI.addChild(dragModule);
-
-					const dragger = new Updater(this.camera, () => {
-						const input = getInput();
-						const rm = relativeMouse();
-						dragModule.x = rm.x - size.x / 2;
-						dragModule.y = rm.y - size.y / 2;
-						if (input.flipH) dragModule.scale.x *= -1;
-						if (input.flipV) dragModule.scale.y *= -1;
-						if (input.rotateR) dragModule.rotation += Math.PI / 2;
-						if (input.rotateL) dragModule.rotation -= Math.PI / 2;
-					});
-					this.camera.scripts.push(dragger);
-					document.addEventListener(
-						'pointerup',
-						() => {
-							removeFromArray(this.camera.scripts, dragger);
-							const placedModule = makeModule(moduleD);
-							placedModule.x = dragModule.x;
-							placedModule.y = dragModule.y;
-							placedModule.rotation = dragModule.rotation;
-							containerModules.addChild(placedModule);
-							buttonify(placedModule);
-							placedModule.addEventListener('pointerdown', (event) => {
-								if (event && event.button !== mouse.LEFT) return;
-								uiModule.rotation = placedModule.rotation;
-								uiModule.dispatchEvent(event);
-								uiModule.rotation = 0;
-								placedModule.destroy({ children: true });
-							});
-							// TODO: grid checks
-							dragModule.destroy({ children: true });
-						},
-						{ once: true }
-					);
+					if (dragging) dragging.destroy();
+					dragging = makeModule(moduleD);
+					dragging.alpha = 0.5;
+					this.containerUI.addChild(dragging);
 				});
 			});
 			const destroy = () => {
+				document.removeEventListener('contextmenu', onContext);
+				removeFromArray(this.camera.scripts, dragger);
 				btnDone.destroy();
 				btnBack.destroy();
+				gridBtns.forEach((i) => i.destroy());
 				// TODO: destroy modules too
 			};
 			const btnBack = new Btn(() => {
@@ -433,6 +565,8 @@ SPACE: ${freeCells
 			btnDone.display.container.addChild(
 				new BitmapText({ text: 'done', style: fontMechInfo })
 			);
+			this.container.addChild(containerBtns);
+			this.container.addChild(containerModules);
 			this.containerUI.addChild(btnDone.display.container);
 			this.containerUI.addChild(btnBack.display.container);
 			btnDone.transform.y -= btnDone.display.container.height;
@@ -531,7 +665,51 @@ SPACE: ${freeCells
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
 		});
-		return { container, headD, chestD, armLD, armRD, legLD, legRD };
+
+		const [grid, gridDimensions] = flatten([
+			{
+				cells: chestD.cells,
+				x: cellsChest.position.x / cellSize,
+				y: cellsChest.position.y / cellSize,
+			},
+			{
+				cells: headD.cells,
+				x: cellsHead.position.x / cellSize,
+				y: cellsHead.position.y / cellSize,
+			},
+			{
+				cells: legLD.cells,
+				x: cellsLegL.position.x / cellSize,
+				y: cellsLegL.position.y / cellSize,
+			},
+			{
+				cells: legRD.cells,
+				x: cellsLegR.position.x / cellSize,
+				y: cellsLegR.position.y / cellSize,
+			},
+			{
+				cells: armLD.cells,
+				x: cellsArmL.position.x / cellSize,
+				y: cellsArmL.position.y / cellSize,
+			},
+			{
+				cells: armRD.cells,
+				x: cellsArmR.position.x / cellSize,
+				y: cellsArmR.position.y / cellSize,
+			},
+		]);
+
+		return {
+			container,
+			headD,
+			chestD,
+			armLD,
+			armRD,
+			legLD,
+			legRD,
+			grid,
+			gridDimensions,
+		};
 	}
 
 	fight() {
