@@ -18,13 +18,22 @@ import {
 	displayToPlacementProps,
 	flatten,
 	forCells,
+	replaceCells,
 	rotateCellsByDisplay,
 } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, mechPartParse, MechD as PartD } from './mech-part';
-import { buttonify, randItem, relativeMouse, removeFromArray } from './utils';
+import {
+	buttonify,
+	flipMatrixH,
+	flipMatrixV,
+	randItem,
+	relativeMouse,
+	removeFromArray,
+	rotateMatrixClockwise,
+} from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -210,14 +219,10 @@ export class GameScene {
 		forCells(this.mech.grid, () => {
 			++allCells;
 		});
-		const freeCells = [
-			this.mech.headD,
-			this.mech.chestD,
-			this.mech.armLD,
-			this.mech.armRD,
-			this.mech.legLD,
-			this.mech.legRD,
-		].reduce((acc, i) => acc + i.cells.join('').replace(/[^0]/g, '').length, 0); // TODO: minus placed modules
+		let freeCells = 0;
+		forCells(this.modules.grid, (x, y, cell) => {
+			if (cell === 'x') ++freeCells;
+		});
 		const cost = allCells * 1; // TODO: plus placed module costs
 		this.mechinfo.text = `
 PRICE: ${cost.toString(10).padStart(this.costMax.toString(10).length, '0')}/${
@@ -402,8 +407,8 @@ SPACE: ${freeCells
 				const o = [ox, oy];
 				if (turns % 2) o.reverse();
 				forCells(draggingCells, (x2, y2) => {
-					const cell = this.mech.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
-					if (cell !== '0') valid = false;
+					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
+					if (modulecell !== 'x') valid = false;
 				});
 
 				forCells(draggingCells, (x2, y2) => {
@@ -727,6 +732,7 @@ SPACE: ${freeCells
 	): {
 		container: Container;
 		placed: Parameters<GameScene['assembleModules']>[0];
+		grid: string[][];
 	} {
 		this.modules?.container.destroy({ children: true });
 		const container: Container = new Container();
@@ -741,9 +747,38 @@ SPACE: ${freeCells
 			sprModule.scale.y = i.flipV ? -1 : 1;
 			container.addChild(sprModule);
 		});
+
+		const [grid] = flatten([
+			{
+				cells: replaceCells(
+					replaceCells(this.mech?.grid || [], /[^0]/, '.'),
+					'0',
+					'x'
+				),
+				x: 0,
+				y: 0,
+			},
+			...placed.map((i, idx) => {
+				let cells = i.module.cells;
+				cells = rotateMatrixClockwise(cells, i.turns);
+				if (i.flipH) cells = flipMatrixH(cells);
+				if (i.flipV) cells = flipMatrixV(cells);
+				cells = replaceCells(cells, '0', idx.toString(10));
+				const ox = Math.floor(i.module.w / 2);
+				const oy = Math.floor(i.module.h / 2);
+				const o = [ox, oy];
+				if (i.turns % 2) o.reverse();
+				return {
+					cells,
+					x: i.x - o[0],
+					y: i.y - o[1],
+				};
+			}),
+		]);
 		return {
 			container,
 			placed,
+			grid,
 		};
 	}
 
