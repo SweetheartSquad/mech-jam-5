@@ -25,6 +25,7 @@ import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, mechPartParse, MechD as PartD } from './mech-part';
+import { Scroller } from './scroller';
 import {
 	buttonify,
 	flipMatrixH,
@@ -487,9 +488,10 @@ SPACE: ${freeCells
 			this.camera.scripts.push(dragger);
 
 			// TODO: UI for showing all modules
+			const scroller = new Scroller();
 			modules.forEach((moduleD, idx) => {
 				const uiModule = makeModule(moduleD);
-				this.containerUI.addChild(uiModule);
+				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
 				uiModule.y += idx * 50;
 				uiModule.x += size.x / 4;
@@ -527,6 +529,7 @@ SPACE: ${freeCells
 				new BitmapText({ text: 'done', style: fontMechInfo })
 			);
 			this.container.addChild(containerBtns);
+			this.containerUI.addChild(scroller);
 			this.containerUI.addChild(btnDone.display.container);
 			this.containerUI.addChild(btnBack.display.container);
 			btnDone.transform.y -= btnDone.display.container.height;
