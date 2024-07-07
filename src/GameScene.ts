@@ -698,7 +698,6 @@ SPACE: ${freeCells
 				y: cellsArmR.position.y / cellSize,
 			},
 		]);
-		console.log(grid);
 
 		return {
 			container,
