@@ -9,7 +9,7 @@ export function mechPartParse(
 	source: string,
 	flip = false
 ) {
-	const { cells, w, h } = parseLayout(source, flip);
+	const { cells, w, h } = parseLayout(source, { flip });
 	const joints: [number, number][] = [];
 	forCells(cells, (x, y, cell) => {
 		if (cell === '=') {
