@@ -435,13 +435,20 @@ SPACE: ${freeCells
 
 			forCells(this.mech.grid, (x, y, cell) => {
 				if (cell !== '0') return;
-				const btn = new Btn(() => {
+				const btn = new Btn((event) => {
 					if (!dragging) {
-						// try to pick up module
+						// check for module
 						const m = this.modules.grid[y][x];
 						if (!m) return;
 						const idx = parseInt(m, 10);
-						const module = this.modules.placed.splice(idx, 1)[0];
+						let module: GameScene['modules']['placed'][number];
+						if (event.shiftKey || event.ctrlKey) {
+							// copy module
+							module = this.modules.placed[idx];
+						} else {
+							// pick up module
+							module = this.modules.placed.splice(idx, 1)[0];
+						}
 						this.reassemble();
 						const newDrag = startDragging(module.module);
 						newDrag.rotation = (module.turns / 4) * Math.PI * 2;
