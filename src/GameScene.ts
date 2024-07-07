@@ -574,6 +574,13 @@ SPACE: ${freeCells
 					window.alert('too expensive!');
 					return;
 				}
+				if (
+					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
+				) {
+					// TODO: proper ui
+					window.alert('you have NO cockpit!');
+					return;
+				}
 				destroy();
 				donePlacingModules(true);
 			}, 'button');
