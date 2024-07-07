@@ -305,7 +305,7 @@ SPACE: ${freeCells
 				(newArm) => {
 					arm = newArm;
 					this.mech.armLD = this.getPiece(arm);
-					this.mech.armRD = this.getPiece(arm);
+					this.mech.armRD = this.getPiece(arm, true);
 					this.reassemble();
 				},
 				this.pieces.arms,
@@ -315,7 +315,7 @@ SPACE: ${freeCells
 				(newLeg) => {
 					leg = newLeg;
 					this.mech.legLD = this.getPiece(leg);
-					this.mech.legRD = this.getPiece(leg);
+					this.mech.legRD = this.getPiece(leg, true);
 					this.reassemble();
 				},
 				this.pieces.legs,
