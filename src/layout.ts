@@ -90,6 +90,18 @@ export function flatten(
 	return [result, gridDimensions] as const;
 }
 
+export function copyCells<T>(cells: T[][]) {
+	return cells.map((i) => i.slice());
+}
+
+export function replaceCells<T>(
+	cells: string[][],
+	from: string | RegExp,
+	to: T
+) {
+	return cells.map((i) => i.map((j) => (j.match(from) ? to : j)));
+}
+
 export function displayToPlacementProps(display: Container) {
 	return {
 		turns: (display.rotation / (Math.PI * 2)) * 4,
