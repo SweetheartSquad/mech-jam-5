@@ -30,11 +30,14 @@ export class Scroller extends Container {
 		this.interactive = true;
 	}
 
-	addChild<U extends ContainerChild>(child: U): U {
+	addChild<U extends ContainerChild[]>(...children: U): U[0] {
 		super.removeChild(this.spr);
-		const r = super.addChild(child);
-		child.y += this.scrollHeight;
-		this.scrollHeight += child.height + this.scrollGap;
+		let r!: U[0];
+		children.forEach((child) => {
+			r = r || super.addChild(child);
+			child.y += this.scrollHeight;
+			this.scrollHeight += child.height + this.scrollGap;
+		});
 		this.spr.width = this.width;
 		this.spr.height = this.height;
 		super.addChildAt(this.spr, 0);
