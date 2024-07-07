@@ -45,22 +45,22 @@ export function parseLayout(
 	return { cells: rows, w, h };
 }
 
-export function forCells(
-	rows: string[][],
-	cb: (x: number, y: number, cell: string) => void
+export function forCells<T>(
+	rows: T[][],
+	cb: (x: number, y: number, cell: T) => void
 ) {
 	rows.forEach((row, y) =>
 		row.forEach((cell, x) => {
-			if (!cell.trim() || cell === '.') return; // skip empties
+			if (!cell || !`${cell}`.trim() || cell === '.') return; // skip empties
 			cb(x, y, cell);
 		})
 	);
 }
 
-export function flatten(
-	entries: { cells: string[][]; x: number; y: number }[]
+export function flatten<T extends string>(
+	entries: { cells: T[][]; x: number; y: number }[]
 ) {
-	const map: { [key: string]: string } = {};
+	const map: { [key: string]: T } = {};
 	entries.forEach((i) => {
 		forCells(i.cells, (x, y, cell) => {
 			map[`${y + i.y},${x + i.x}`] = cell;
