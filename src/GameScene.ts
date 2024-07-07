@@ -401,13 +401,7 @@ SPACE: ${freeCells
 				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
 
 				const moduleD = modulesByName[dragging.label];
-				let draggingCells = moduleD.cells;
-				const turns = (dragging.rotation / (Math.PI * 2)) * 4;
-				draggingCells = rotateMatrixClockwise(draggingCells, turns);
-				const scale = [dragging.scale.x, dragging.scale.y];
-				if (turns % 2) scale.reverse();
-				if (scale[0] < 0) draggingCells = flipMatrixH(draggingCells);
-				if (scale[1] < 0) draggingCells = flipMatrixV(draggingCells);
+				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
 
 				forCells(draggingCells, (x2, y2) => {
 					const cell =
