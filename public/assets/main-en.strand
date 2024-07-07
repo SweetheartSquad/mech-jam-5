@@ -560,3 +560,67 @@ Some more text.
 750, cockpit
 ---
 0
+
+::module square
+A small cockpit.
+
+Some more text.
+---
+750, cockpit
+---
+000
+0.0
+000
+
+::module rocket1
+A small cockpit.
+
+Some more text.
+---
+750, cockpit
+---
+.0.
+000
+000
+
+::module crossx
+A small cockpit.
+
+Some more text.
+---
+750, cockpit
+---
+0.0
+.0.
+0.0
+
+::module crosshair
+A small cockpit.
+
+Some more text.
+---
+750, cockpit
+---
+.0.
+000
+.0.
+
+::module stair1
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+00.
+.00
+
+::module stair2
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+.00
+00.
