@@ -624,6 +624,8 @@ SPACE: ${freeCells
 			[sprLegR, cellsLegR],
 			[sprLegL, cellsLegL],
 		];
+		sprArmR.scale.x *= -1;
+		sprLegR.scale.x *= -1;
 		container.addChild(sprHead);
 		container.addChild(sprChest);
 		container.addChild(sprArmR);
