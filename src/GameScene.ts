@@ -284,6 +284,10 @@ SPACE: ${freeCells
 			let leg = this.mech
 				? `leg ${this.mech.legLD.name}`
 				: randItem(this.pieces.legs);
+
+			if (this.mech) {
+				this.mech.container.destroy({ children: true });
+			}
 			this.mech = this.assembleParts(head, chest, arm, leg);
 
 			const updateMech = () => {
