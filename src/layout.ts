@@ -1,20 +1,16 @@
 import { Container } from 'pixi.js';
-import {
-	flipMatrixH,
-	flipMatrixV,
-	rotateMatrixClockwise,
-	strReverse,
-} from './utils';
+import { flipMatrixH, flipMatrixV, rotateMatrixClockwise } from './utils';
 
 export function parseLayout(source: string, flip = false) {
 	const w = source
 		.split('\n')
 		.reduce((max, row) => Math.max(max, row.trimEnd().length), 0);
-	const rows = source
+	let rows = source
 		.replaceAll(' ', '.')
 		.split('\n')
 		.map((i) => i.substring(0, w).padEnd(w, '.'))
-		.map((i) => (flip ? strReverse(i) : i).split(''));
+		.map((i) => i.split(''));
+	if (flip) rows = flipMatrixH(rows);
 	const h = rows.length;
 	return { cells: rows, w, h };
 }
