@@ -1,5 +1,4 @@
 import { Container, Sprite } from 'pixi.js';
-import { cellSize } from './config';
 import { forCells, parseLayout } from './layout';
 import { tex } from './utils';
 
@@ -37,22 +36,6 @@ export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 	const containerCells = new Container();
 	containerCells.label = piece.name;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
-	forCells(piece.cells, (x, y, cell) => {
-		const sprCell = new Sprite(
-			tex({ 0: 'cell empty', '=': 'cell joint' }[cell] || cell)
-		);
-		sprCell.anchor.x = sprCell.anchor.y = 0;
-		sprCell.x = x * cellSize;
-		sprCell.y = y * cellSize;
-		sprCell.width = cellSize;
-		sprCell.height = cellSize;
-		sprCell.alpha = 0; // TODO: should these be visible?
-		containerCells.addChild(sprCell);
-	});
-	sprBase.x += containerCells.width / 2;
-	sprBase.y += containerCells.height / 2;
 	containerCells.addChild(sprBase);
-	containerCells.pivot.x = containerCells.width / 2;
-	containerCells.pivot.y = containerCells.height / 2;
 	return containerCells;
 }
