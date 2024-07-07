@@ -14,20 +14,17 @@ import { V } from './VMath';
 import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
-import { flatten, forCells, rotateCellsByDisplay } from './layout';
+import {
+	displayToPlacementProps,
+	flatten,
+	forCells,
+	rotateCellsByDisplay,
+} from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
-import { makeModule, mechModuleParse } from './mech-module';
-import { makePart, mechPartParse } from './mech-part';
-import {
-	buttonify,
-	flipMatrixH,
-	flipMatrixV,
-	randItem,
-	relativeMouse,
-	removeFromArray,
-	rotateMatrixClockwise,
-} from './utils';
+import { makeModule, mechModuleParse, ModuleD } from './mech-module';
+import { makePart, mechPartParse, MechD as PartD } from './mech-part';
+import { buttonify, randItem, relativeMouse, removeFromArray } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -233,8 +230,10 @@ SPACE: ${freeCells
 	}
 
 	mech!: ReturnType<GameScene['assembleParts']>;
+	modules!: ReturnType<GameScene['assembleModules']>;
 
 	async buildMech(): Promise<void> {
+		this.modules = this.assembleModules([]);
 		await this.pickParts();
 		const done = await this.placeModules();
 		if (!done) return this.buildMech();
@@ -367,12 +366,6 @@ SPACE: ${freeCells
 				return acc;
 			}, {});
 
-			const containerModules = new Container();
-			containerModules.x =
-				this.mech.container.x - this.mech.container.width / 2;
-			containerModules.y =
-				this.mech.container.y - this.mech.container.height / 2;
-
 			let dragging: Container | null = null;
 			let target: Btn | null = null;
 			let valid = false;
@@ -421,35 +414,6 @@ SPACE: ${freeCells
 				});
 			};
 
-			const placeModule = ({
-				module,
-				x,
-				y,
-				rotation,
-				flipH,
-				flipV,
-			}: {
-				module: Parameters<typeof makeModule>[0];
-				x: number;
-				y: number;
-				rotation: number;
-				flipH: number;
-				flipV: number;
-			}) => {
-				const placedModule = makeModule(module);
-				const p = containerModules.toLocal(
-					gridBtnsByPos[y][x].transform,
-					containerBtns
-				);
-				placedModule.x = p.x - (module.w % 2 ? 0 : 0.5 * cellSize);
-				placedModule.y = p.y - (module.h % 2 ? 0 : 0.5 * cellSize);
-				placedModule.rotation = rotation;
-				placedModule.scale.x = flipH;
-				placedModule.scale.y = flipV;
-				containerModules.addChild(placedModule);
-				// TODO: save, block cells, reposition
-			};
-
 			const containerBtns = new Container();
 			containerBtns.x =
 				this.mech.container.x + (this.mech.gridDimensions.x + 0.5) * cellSize;
@@ -459,14 +423,18 @@ SPACE: ${freeCells
 				if (cell !== '0') return;
 				const btn = new Btn(() => {
 					if (valid && target && dragging) {
-						placeModule({
-							module: modulesByName[dragging.label],
+						const moduleD = modulesByName[dragging.label];
+						this.modules.placed.push({
+							module: moduleD,
 							x,
 							y,
-							rotation: dragging.rotation,
-							flipH: dragging.scale.x,
-							flipV: dragging.scale.y,
+							...displayToPlacementProps(dragging),
 						});
+						dragging.destroy();
+						dragging = null;
+						target = null;
+						this.reassemble();
+						checkPlacement();
 					}
 				}, 'cell button');
 				btn.spr.label = `${x},${y}`;
@@ -555,7 +523,6 @@ SPACE: ${freeCells
 				new BitmapText({ text: 'done', style: fontMechInfo })
 			);
 			this.container.addChild(containerBtns);
-			this.container.addChild(containerModules);
 			this.containerUI.addChild(btnDone.display.container);
 			this.containerUI.addChild(btnBack.display.container);
 			btnDone.transform.y -= btnDone.display.container.height;
@@ -566,9 +533,6 @@ SPACE: ${freeCells
 	}
 
 	reassemble() {
-		if (this.mech) {
-			this.mech.container.destroy({ children: true });
-		}
 		let head = this.mech
 			? `head ${this.mech.headD.name}`
 			: randItem(this.pieces.heads);
@@ -582,8 +546,13 @@ SPACE: ${freeCells
 			? `leg ${this.mech.legLD.name}`
 			: randItem(this.pieces.legs);
 		this.mech = this.assembleParts(head, chest, arm, leg);
+		this.modules = this.assembleModules(this.modules?.placed || []);
 		this.container.addChildAt(this.mech.container, 0);
+		this.container.addChild(this.modules.container);
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
+		this.modules.container.x = this.mech.container.x;
+		this.modules.container.x += this.mech.gridDimensions.x * cellSize;
+		this.modules.container.y += this.mech.gridDimensions.y * cellSize;
 		this.updateMechInfo();
 	}
 
@@ -601,8 +570,24 @@ SPACE: ${freeCells
 		chestKey: string,
 		armKey: string,
 		legKey: string
-	) {
-		const container = new Container();
+	): {
+		container: Container;
+		headD: PartD;
+		chestD: PartD;
+		armLD: PartD;
+		armRD: PartD;
+		legLD: PartD;
+		legRD: PartD;
+		grid: string[][];
+		gridDimensions: {
+			x: number;
+			y: number;
+			w: number;
+			h: number;
+		};
+	} {
+		this.mech?.container.destroy({ children: true });
+		const container: Container = new Container();
 
 		const headD = this.getPiece(headKey);
 		const chestD = this.getPiece(chestKey);
@@ -724,6 +709,36 @@ SPACE: ${freeCells
 			legRD,
 			grid,
 			gridDimensions,
+		};
+	}
+
+	assembleModules(
+		placed: {
+			module: ModuleD;
+			x: number;
+			y: number;
+			turns: number;
+			flipH: boolean;
+			flipV: boolean;
+		}[]
+	): {
+		container: Container;
+		placed: Parameters<GameScene['assembleModules']>[0];
+	} {
+		this.modules?.container.destroy({ children: true });
+		const container: Container = new Container();
+		placed.forEach((i) => {
+			const sprModule = makeModule(i.module);
+			sprModule.rotation = (i.turns / 4) * Math.PI * 2;
+			sprModule.x = (i.x + (i.module.w % 2 ? 0.5 : 0)) * cellSize;
+			sprModule.y = (i.y + (i.module.h % 2 ? 0.5 : 0)) * cellSize;
+			sprModule.scale.x = i.flipH ? -1 : 1;
+			sprModule.scale.y = i.flipV ? -1 : 1;
+			container.addChild(sprModule);
+		});
+		return {
+			container,
+			placed,
 		};
 	}
 
