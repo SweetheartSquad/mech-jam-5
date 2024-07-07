@@ -695,13 +695,12 @@ SPACE: ${freeCells
 			},
 		]);
 
-		let oy = cellsChest.height + (cellsLegL.height - cellsLegL.y);
-
 		pairs.forEach(([spr, cells]) => {
-			cells.y -= oy;
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
 		});
+
+		container.y -= cellsChest.height + (cellsLegL.height - cellsLegL.y);
 
 		return {
 			container,
