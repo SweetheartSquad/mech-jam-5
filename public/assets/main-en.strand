@@ -583,16 +583,6 @@ Some more text.
 000
 000
 
-::module crossx
-A small cockpit.
-
-Some more text.
----
-750, cockpit
----
-0.0
-.0.
-0.0
 
 ::module crosshair
 A small cockpit.
@@ -622,5 +612,45 @@ Some more text.
 ---
 750, Heatsink
 ---
+.000
+000.
+
+::module stair3
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+.000
 .00
-00.
+000.
+
+::module stair4
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+...000
+..00
+000..
+
+::module shapesies
+
+00000
+0..00
+..000
+
+::module whoa
+00..0
+0..00
+0..00
+00000
+
+::module bucket
+00000
+0...0
+0...0
+0...0
