@@ -6,6 +6,6 @@ export const size: {
 	readonly x: number;
 	readonly y: number;
 } = {
-	x: 854,
-	y: 480,
+	x: 960,
+	y: 540,
 };
