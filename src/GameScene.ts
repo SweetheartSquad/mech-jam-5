@@ -240,10 +240,15 @@ SPACE: ${freeCells
 	modules!: ReturnType<GameScene['assembleModules']>;
 
 	async buildMech(): Promise<void> {
-		this.modules = this.assembleModules([]);
-		await this.pickParts();
+		if (!this.mech) {
+			await this.pickParts();
+		}
 		const done = await this.placeModules();
-		if (!done) return this.buildMech();
+		if (!done) {
+			this.modules = this.assembleModules([]);
+			await this.pickParts();
+			return this.buildMech();
+		}
 	}
 
 	pickParts() {
@@ -578,6 +583,8 @@ SPACE: ${freeCells
 			btnBack.transform.y -= btnBack.display.container.height;
 			btnDone.transform.x += size.x / 4;
 			btnBack.transform.x += size.x / 4 - btnBack.display.container.width;
+
+			this.reassemble();
 		});
 	}
 
