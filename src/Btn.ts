@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import { FederatedPointerEvent, Sprite } from 'pixi.js';
 import { sfx } from './Audio';
 import { GameObject } from './GameObject';
 import { mouse } from './main';
@@ -11,7 +11,11 @@ export class Btn extends GameObject {
 	display: Display;
 	transform: Transform;
 
-	constructor(public onClick: () => void, texture: string, title?: string) {
+	constructor(
+		public onClick: (event: FederatedPointerEvent) => void,
+		texture: string,
+		title?: string
+	) {
 		super();
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
@@ -28,7 +32,7 @@ export class Btn extends GameObject {
 		let inside = false;
 		this.spr.on('pointerup', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
-			if (down) onClick();
+			if (down) onClick(event);
 		});
 		this.spr.on('pointerover', () => {
 			inside = true;
