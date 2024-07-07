@@ -290,6 +290,7 @@ SPACE: ${freeCells
 				this.mech.container.destroy({ children: true });
 				this.mech = this.assembleParts(head, chest, arm, leg);
 				this.container.addChild(this.mech.container);
+				this.mech.container.x -= Math.floor(size.x * (1 / 5));
 				this.updateMechInfo();
 			};
 
