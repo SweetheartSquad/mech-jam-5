@@ -6,7 +6,7 @@ export function mechModuleParse(key: string, source: string) {
 	const [description, strMechanics, layout] = source.split('\n---\n');
 	const mechanics = strMechanics.split(/,\s?/);
 	const cost = parseInt(mechanics.shift() || '0', 10);
-	const { cells, w, h } = parseLayout(layout, { square: true });
+	const { cells, w, h } = parseLayout(layout);
 	forCells(cells, (x, y, cell) => {
 		if (cell === '0') {
 			// basic cell

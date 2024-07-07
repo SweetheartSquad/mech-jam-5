@@ -396,19 +396,18 @@ SPACE: ${freeCells
 				const moduleD = modulesByName[dragging.label];
 				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
 
+				const { turns } = displayToPlacementProps(dragging);
+				const ox = Math.floor(moduleD.w / 2);
+				const oy = Math.floor(moduleD.h / 2);
+				const o = [ox, oy];
+				if (turns % 2) o.reverse();
 				forCells(draggingCells, (x2, y2) => {
-					const cell =
-						this.mech.grid[y + y2 - Math.floor(moduleD.h / 2)]?.[
-							x + x2 - Math.floor(moduleD.w / 2)
-						];
+					const cell = this.mech.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (cell !== '0') valid = false;
 				});
 
 				forCells(draggingCells, (x2, y2) => {
-					const btnNeighbour =
-						gridBtnsByPos[y + y2 - Math.floor(moduleD.h / 2)]?.[
-							x + x2 - Math.floor(moduleD.w / 2)
-						];
+					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (!btnNeighbour) return;
 					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
 				});
