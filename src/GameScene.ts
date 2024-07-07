@@ -510,8 +510,8 @@ SPACE: ${freeCells
 				removeFromArray(this.camera.scripts, dragger);
 				btnDone.destroy();
 				btnBack.destroy();
+				scroller.destroy();
 				gridBtns.forEach((i) => i.destroy());
-				// TODO: destroy modules too
 			};
 			const btnBack = new Btn(() => {
 				destroy();
