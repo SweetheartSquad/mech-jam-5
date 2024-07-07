@@ -557,6 +557,11 @@ SPACE: ${freeCells
 				gridBtns.forEach((i) => i.destroy());
 			};
 			const btnBack = new Btn(() => {
+				if (this.modules.placed.length) {
+					// TODO: proper ui
+					if (!window.confirm('this will remove all modules, are you sure?'))
+						return;
+				}
 				destroy();
 				donePlacingModules(false);
 			}, 'button');
