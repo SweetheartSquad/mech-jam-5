@@ -29,6 +29,8 @@ export function mechModuleParse(key: string, source: string) {
 	};
 }
 
+export type ModuleD = ReturnType<typeof mechModuleParse>;
+
 export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 	const sprBase = new Sprite(piece.tex);
 	sprBase.label = piece.name;

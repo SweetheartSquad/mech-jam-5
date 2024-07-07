@@ -130,6 +130,8 @@ export function mechPartParse(
 	};
 }
 
+export type MechD = ReturnType<typeof mechPartParse>;
+
 export function makePart(piece: ReturnType<typeof mechPartParse>) {
 	const sprBase = new Sprite(piece.tex);
 	sprBase.label = `${piece.name} sprite`;
