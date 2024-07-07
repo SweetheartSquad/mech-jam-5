@@ -30,7 +30,11 @@ textures/head Block.png
 textures/head Tee.png
 textures/head Small.png
 textures/head Smaller.png
+textures/chest 1.png
+textures/head 1.png
+textures/arm 1.png
 textures/leg 1.png
+textures/leg 2.png
 
 textures/button_normal.png
 textures/button_over.png
