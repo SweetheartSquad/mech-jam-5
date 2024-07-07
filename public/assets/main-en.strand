@@ -638,19 +638,59 @@ Some more text.
 000..
 
 ::module shapesies
+A small cockpit.
 
+Some more text.
+---
+750, Heatsink
+---
 00000
 0..00
 ..000
 
 ::module whoa
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
 00..0
 0..00
 0..00
 00000
 
-::module bucket
+::module bucket1
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
 00000
 0...0
 0...0
 0...0
+
+::module bucket2
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+00000
+....0
+00000
+
+::module bucket3
+A small cockpit.
+
+Some more text.
+---
+750, Heatsink
+---
+0000
+0...
+0...
+0000
