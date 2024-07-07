@@ -1,4 +1,10 @@
-import { strReverse } from './utils';
+import { Container } from 'pixi.js';
+import {
+	flipMatrixH,
+	flipMatrixV,
+	rotateMatrixClockwise,
+	strReverse,
+} from './utils';
 
 export function parseLayout(source: string, flip = false) {
 	const w = source
@@ -61,4 +67,15 @@ export function flatten(
 		}
 	}
 	return [result, gridDimensions] as const;
+}
+
+export function rotateCellsByDisplay<T>(cells: T[][], display: Container) {
+	let result = cells;
+	const turns = (display.rotation / (Math.PI * 2)) * 4;
+	result = rotateMatrixClockwise(result, turns);
+	const scale = [display.scale.x, display.scale.y];
+	if (turns % 2) scale.reverse();
+	if (scale[0] < 0) result = flipMatrixH(result);
+	if (scale[1] < 0) result = flipMatrixV(result);
+	return result;
 }
