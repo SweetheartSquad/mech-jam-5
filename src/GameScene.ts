@@ -281,23 +281,13 @@ SPACE: ${freeCells
 				? `leg ${this.mech.legLD.name}`
 				: randItem(this.pieces.legs);
 
-			if (this.mech) {
-				this.mech.container.destroy({ children: true });
-			}
-			this.mech = this.assembleParts(head, chest, arm, leg);
-
-			const updateMech = () => {
-				this.mech.container.destroy({ children: true });
-				this.mech = this.assembleParts(head, chest, arm, leg);
-				this.container.addChild(this.mech.container);
-				this.mech.container.x -= Math.floor(size.x * (1 / 5));
-				this.updateMechInfo();
-			};
+			this.reassemble();
 
 			const headBtns = cycler(
 				(newHead) => {
 					head = newHead;
-					updateMech();
+					this.mech.headD = this.getPiece(newHead);
+					this.reassemble();
 				},
 				this.pieces.heads,
 				head
@@ -305,7 +295,8 @@ SPACE: ${freeCells
 			const chestBtns = cycler(
 				(newChest) => {
 					chest = newChest;
-					updateMech();
+					this.mech.chestD = this.getPiece(chest);
+					this.reassemble();
 				},
 				this.pieces.chests,
 				chest
@@ -313,7 +304,9 @@ SPACE: ${freeCells
 			const armBtns = cycler(
 				(newArm) => {
 					arm = newArm;
-					updateMech();
+					this.mech.armLD = this.getPiece(arm);
+					this.mech.armRD = this.getPiece(arm);
+					this.reassemble();
 				},
 				this.pieces.arms,
 				arm
@@ -321,7 +314,9 @@ SPACE: ${freeCells
 			const legBtns = cycler(
 				(newLeg) => {
 					leg = newLeg;
-					updateMech();
+					this.mech.legLD = this.getPiece(leg);
+					this.mech.legRD = this.getPiece(leg);
+					this.reassemble();
 				},
 				this.pieces.legs,
 				leg
@@ -576,6 +571,37 @@ SPACE: ${freeCells
 		});
 	}
 
+	reassemble() {
+		if (this.mech) {
+			this.mech.container.destroy({ children: true });
+		}
+		let head = this.mech
+			? `head ${this.mech.headD.name}`
+			: randItem(this.pieces.heads);
+		let chest = this.mech
+			? `chest ${this.mech.chestD.name}`
+			: randItem(this.pieces.chests);
+		let arm = this.mech
+			? `arm ${this.mech.armLD.name}`
+			: randItem(this.pieces.arms);
+		let leg = this.mech
+			? `leg ${this.mech.legLD.name}`
+			: randItem(this.pieces.legs);
+		this.mech = this.assembleParts(head, chest, arm, leg);
+		this.container.addChildAt(this.mech.container, 0);
+		this.mech.container.x -= Math.floor(size.x * (1 / 5));
+		this.updateMechInfo();
+	}
+
+	getPiece(key: string, flip?: boolean) {
+		return mechPartParse(
+			key.split(' ')[0],
+			key,
+			this.strand.getPassageWithTitle(key).body,
+			flip
+		);
+	}
+
 	assembleParts(
 		headKey: string,
 		chestKey: string,
@@ -583,20 +609,13 @@ SPACE: ${freeCells
 		legKey: string
 	) {
 		const container = new Container();
-		const getPiece = (key: string, flip?: boolean) =>
-			mechPartParse(
-				key.split(' ')[0],
-				key,
-				this.strand.getPassageWithTitle(key).body,
-				flip
-			);
 
-		const headD = getPiece(headKey);
-		const chestD = getPiece(chestKey);
-		const legLD = getPiece(legKey);
-		const armLD = getPiece(armKey);
-		const legRD = getPiece(legKey, true);
-		const armRD = getPiece(armKey, true);
+		const headD = this.getPiece(headKey);
+		const chestD = this.getPiece(chestKey);
+		const legLD = this.getPiece(legKey);
+		const armLD = this.getPiece(armKey);
+		const legRD = this.getPiece(legKey, true);
+		const armRD = this.getPiece(armKey, true);
 		const [sprHead, cellsHead] = makePart(headD);
 		const [sprChest, cellsChest] = makePart(chestD);
 		const [sprArmR, cellsArmR] = makePart(armRD);
