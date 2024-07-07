@@ -27,7 +27,7 @@ export class Btn extends GameObject {
 		let down = false;
 		this.spr.on('pointerup', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
-			onClick();
+			if (down) onClick();
 		});
 		this.spr.on('pointerover', () => {
 			this.spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
