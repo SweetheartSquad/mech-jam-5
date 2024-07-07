@@ -549,7 +549,9 @@ SPACE: ${freeCells
 		this.container.addChildAt(this.mech.container, 0);
 		this.container.addChild(this.modules.container);
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
+		this.mech.container.y += size.y * 0.45;
 		this.modules.container.x = this.mech.container.x;
+		this.modules.container.y = this.mech.container.y;
 		this.modules.container.x += this.mech.gridDimensions.x * cellSize;
 		this.modules.container.y += this.mech.gridDimensions.y * cellSize;
 		this.updateMechInfo();
@@ -660,11 +662,6 @@ SPACE: ${freeCells
 		cellsArmR.y -=
 			(armRD.connections.chest[1] - chestD.connections.armR[1]) * cellSize;
 
-		pairs.forEach(([spr, cells]) => {
-			spr.x = cells.x + cells.width / 2;
-			spr.y = cells.y + cells.height / 2;
-		});
-
 		const [grid, gridDimensions] = flatten([
 			{
 				cells: chestD.cells,
@@ -697,6 +694,14 @@ SPACE: ${freeCells
 				y: cellsArmR.position.y / cellSize,
 			},
 		]);
+
+		let oy = cellsChest.height + (cellsLegL.height - cellsLegL.y);
+
+		pairs.forEach(([spr, cells]) => {
+			cells.y -= oy;
+			spr.x = cells.x + cells.width / 2;
+			spr.y = cells.y + cells.height / 2;
+		});
 
 		return {
 			container,
