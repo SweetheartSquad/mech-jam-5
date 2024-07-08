@@ -69,6 +69,6 @@ export class Scroller {
 	tween?: Tween;
 
 	destroy() {
-		this.container.destroy();
+		this.container.destroy({ children: true });
 	}
 }
