@@ -1215,6 +1215,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.container.addChild(btnEnd.display.container);
 
 			const destroy = () => {
+				textHeat.destroy();
 				btnAttack.destroy();
 				btnAttackUndo.destroy();
 				btnToggleShield.destroy();
