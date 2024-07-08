@@ -189,6 +189,7 @@ export class GameScene {
 		);
 		this.modulesEnemy = this.assembleModules([]);
 		await this.pickParts();
+		await this.buildMech();
 		await this.scenePrefight();
 		await this.fight();
 		await this.scenePostfight();
@@ -637,6 +638,7 @@ SPACE: ${format(freeCells, allCells)}
 		this.modulesEnemy = this.assembleModules(this.modulesEnemy?.placed || []);
 		this.container.addChildAt(this.mechEnemy.container, 0);
 		this.container.addChild(this.modulesEnemy.container);
+		this.modulesEnemy.container.visible = false;
 
 		// TODO: position based on game state
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
@@ -926,7 +928,6 @@ SPACE: ${format(freeCells, allCells)}
 	async fight() {
 		let turnCount = 1;
 		do {
-			// TODO
 			await this.pickActions();
 			await this.playActions();
 			// TODO: check win
@@ -947,15 +948,46 @@ SPACE: ${format(freeCells, allCells)}
 
 	pickActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('pick actions');
-			r();
+
+			const gridBtns: Btn[] = [];
+			const gridBtnsByPos: Btn[][] = [];
+
+			const containerBtns = new Container();
+			containerBtns.x =
+				this.mechEnemy.container.x +
+				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
+			containerBtns.y =
+				this.mechEnemy.container.y +
+				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
+
+			const destroy = () => {
+				containerBtns.destroy({ children: true });
+			};
+
+			forCells(this.mechEnemy.grid, (x, y, cell) => {
+				if (cell !== '0') return;
+				const btn = new Btn(() => {
+					// TODO
+					destroy();
+					r();
+				}, 'cell button');
+				btn.spr.label = `${x},${y}`;
+				btn.transform.x = x * cellSize;
+				btn.transform.y = y * cellSize;
+				containerBtns.addChild(btn.display.container);
+				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+				gridBtnsByPos[y][x] = btn;
+				gridBtns.push(btn);
+			});
+			this.container.addChild(containerBtns);
 		});
 	}
 
 	playActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('play actions');
 			r();
 		});
@@ -963,7 +995,7 @@ SPACE: ${format(freeCells, allCells)}
 
 	enemyActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('enemy turn');
 			r();
 		});
