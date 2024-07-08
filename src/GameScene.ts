@@ -946,11 +946,162 @@ SPACE: ${format(freeCells, allCells)}
 		} while (true);
 	}
 
+	actions: {
+		shield: number;
+		attacks: [number, number][];
+	} = {
+		shield: 0,
+		attacks: [],
+	};
+
 	pickActions() {
 		// TODO
 		return new Promise<void>((r) => {
-			window.alert('pick actions');
+			this.actions.shield = 0;
+			this.actions.attacks = [];
+			const tags = this.modules.placed.flatMap((i) => {
+				// TODO: check if active
+				const active = true;
+				if (!active) return [];
+				return i.module.tags;
+			});
+			let attacksMax = 0;
+			let shieldsAmt = 0;
+			let heatMax = 0;
+			tags.forEach((tag) => {
+				switch (tag) {
+					case 'cockpit':
+						++attacksMax;
+						++heatMax;
+						break;
+					case 'heatsink':
+						++heatMax;
+						break;
+					case 'attack':
+						++attacksMax;
+						break;
+					case 'shield':
+						++shieldsAmt;
+						break;
+				}
+			});
 
+			const updateAttacks = () => {
+				if (this.actions.attacks.length < attacksMax) {
+					textAttack.text = `attack (${
+						attacksMax - this.actions.attacks.length
+					})`;
+					btnAttack.display.container.tint = 0x00ff00;
+				} else {
+					textAttack.text = `weapons primed`;
+					btnAttack.display.container.tint = 0xff0000;
+				}
+				if (this.actions.attacks.length) {
+					btnAttackUndo.display.container.tint = 0xffffff;
+				} else {
+					btnAttackUndo.display.container.tint = 0x999999;
+				}
+			};
+			const textAttack = new BitmapText({
+				text: 'attack',
+				style: fontMechInfo,
+			});
+			const btnAttack = new Btn(
+				async () => {
+					if (this.actions.attacks.length >= attacksMax) return;
+					const target = await this.pickTarget();
+					if (!target) return;
+					this.actions.attacks.push(target);
+					updateAttacks();
+				},
+				'button',
+				'attack'
+			);
+			btnAttack.display.container.addChild(textAttack);
+
+			const textAttackUndo = new BitmapText({
+				text: 'undo',
+				style: fontMechInfo,
+			});
+			const btnAttackUndo = new Btn(
+				() => {
+					if (!this.actions.attacks.length) return;
+					this.actions.attacks.pop();
+					updateAttacks();
+				},
+				'button',
+				'undo attack'
+			);
+			btnAttackUndo.display.container.addChild(textAttackUndo);
+			updateAttacks();
+
+			const updateShields = () => {
+				if (shieldsAmt) {
+					textToggleShield.text = this.actions.shield
+						? `shields: ${Math.floor(shieldsAmt * 100)}%`
+						: 'shields: disabled';
+					btnToggleShield.display.container.tint = this.actions.shield
+						? 0x00ff00
+						: 0x999999;
+				} else {
+					textToggleShield.text = 'shields: none';
+					btnToggleShield.display.container.tint = 0xff0000;
+				}
+			};
+			const textToggleShield = new BitmapText({
+				text: 'shields',
+				style: fontMechInfo,
+			});
+			const btnToggleShield = new Btn(
+				() => {
+					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
+					updateShields();
+				},
+				'button',
+				'toggle shields'
+			);
+			btnToggleShield.display.container.addChild(textToggleShield);
+			updateShields();
+
+			const textEnd = new BitmapText({
+				text: 'end',
+				style: fontMechInfo,
+			});
+			const btnEnd = new Btn(
+				() => {
+					if (!this.actions.shield && !this.actions.attacks.length) {
+						// TODO: proper UI
+						if (!window.confirm('Really skip your turn?')) return;
+					}
+					destroy();
+					r();
+				},
+				'button',
+				'end'
+			);
+			btnEnd.display.container.addChild(textEnd);
+			updateShields();
+
+			this.container.addChild(btnAttack.display.container);
+			btnAttackUndo.transform.x += btnAttack.display.container.width;
+			this.container.addChild(btnAttackUndo.display.container);
+			btnToggleShield.transform.y += btnAttack.display.container.height;
+			this.container.addChild(btnToggleShield.display.container);
+			btnEnd.transform.y += btnAttack.display.container.height;
+			btnEnd.transform.y += btnToggleShield.display.container.height;
+			this.container.addChild(btnEnd.display.container);
+
+			const destroy = () => {
+				btnAttack.destroy();
+				btnAttackUndo.destroy();
+				btnToggleShield.destroy();
+				btnEnd.destroy();
+			};
+		});
+	}
+
+	pickTarget() {
+		return new Promise<[number, number] | false>((r) => {
 			const gridBtns: Btn[] = [];
 			const gridBtnsByPos: Btn[][] = [];
 
@@ -963,15 +1114,16 @@ SPACE: ${format(freeCells, allCells)}
 				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
 
 			const destroy = () => {
-				containerBtns.destroy({ children: true });
+				containerBtns.destroy();
+				document.removeEventListener('contextmenu', onContext);
 			};
 
 			forCells(this.mechEnemy.grid, (x, y, cell) => {
 				if (cell !== '0') return;
+				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
 				const btn = new Btn(() => {
-					// TODO
 					destroy();
-					r();
+					r([x, y]);
 				}, 'cell button');
 				btn.spr.label = `${x},${y}`;
 				btn.transform.x = x * cellSize;
@@ -982,6 +1134,13 @@ SPACE: ${format(freeCells, allCells)}
 				gridBtns.push(btn);
 			});
 			this.container.addChild(containerBtns);
+
+			const onContext = (event: MouseEvent) => {
+				event.preventDefault();
+				destroy();
+				r(false);
+			};
+			document.addEventListener('contextmenu', onContext, { once: true });
 		});
 	}
 
