@@ -987,7 +987,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	pickActions() {
 		// TODO
-		// TODO: show heat in UI
 		return new Promise<void>((r) => {
 			// reset
 			this.actions.shield = 0;
@@ -1044,6 +1043,18 @@ SPACE: ${formatCount(freeCells, allCells)}
 				}
 			});
 
+			const updateHeat = () => {
+				const heat = this.actions.shield + this.actions.attacks.length;
+				textHeat.text = `heat: ${formatCount(heat, heatMax)}`;
+				if (heat > heatMax) {
+					textHeat.tint = 0xff0000;
+				} else if (heat === heatMax) {
+					textHeat.tint = 0x00ff00;
+				} else {
+					textHeat.tint = 0xffffff;
+				}
+			};
+
 			const updateAttacks = () => {
 				if (this.actions.attacks.length < attacksMax) {
 					textAttack.text = `attack (${
@@ -1070,7 +1081,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 					btn.display.container.visible = true;
 					btn.display.container.tint = 0xff0000;
 				});
+				updateHeat();
 			};
+			const textHeat = new BitmapText({
+				text: 'heat',
+				style: fontMechInfo,
+			});
 			const textAttack = new BitmapText({
 				text: 'attack',
 				style: fontMechInfo,
@@ -1118,6 +1134,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					textToggleShield.text = 'shields: none';
 					btnToggleShield.display.container.tint = 0xff0000;
 				}
+				updateHeat();
 			};
 			const textToggleShield = new BitmapText({
 				text: 'shields',
@@ -1153,6 +1170,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 			btnEnd.display.container.addChild(textEnd);
 			updateShields();
 
+			this.container.addChild(textHeat);
+			textHeat.y -= btnAttack.display.container.height;
 			this.container.addChild(btnAttack.display.container);
 			btnAttackUndo.transform.x += btnAttack.display.container.width;
 			this.container.addChild(btnAttackUndo.display.container);
