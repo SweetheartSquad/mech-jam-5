@@ -949,7 +949,37 @@ SPACE: ${format(freeCells, allCells)}
 		// TODO
 		return new Promise<void>((r) => {
 			window.alert('pick actions');
-			r();
+
+			const gridBtns: Btn[] = [];
+			const gridBtnsByPos: Btn[][] = [];
+
+			const containerBtns = new Container();
+			containerBtns.x =
+				this.mechEnemy.container.x +
+				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
+			containerBtns.y =
+				this.mechEnemy.container.y +
+				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
+
+			const destroy = () => {
+				containerBtns.destroy({ children: true });
+			};
+
+			forCells(this.mechEnemy.grid, (x, y, cell) => {
+				if (cell !== '0') return;
+				const btn = new Btn(() => {
+					// TODO
+					destroy();
+					r();
+				}, 'cell button');
+				btn.spr.label = `${x},${y}`;
+				btn.transform.x = x * cellSize;
+				btn.transform.y = y * cellSize;
+				containerBtns.addChild(btn.display.container);
+				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+				gridBtnsByPos[y][x] = btn;
+				gridBtns.push(btn);
+			});
 		});
 	}
 
