@@ -975,6 +975,10 @@ SPACE: ${format(freeCells, allCells)}
 		// TODO
 		// TODO: show heat in UI
 		return new Promise<void>((r) => {
+			// reset
+			this.actions.shield = 0;
+			this.actions.attacks = [];
+
 			const gridBtns: Btn[] = [];
 			const gridBtnsByPos: Btn[][] = [];
 
@@ -987,7 +991,6 @@ SPACE: ${format(freeCells, allCells)}
 				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
 
 			forCells(this.mechEnemy.grid, (x, y) => {
-				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
 				const btn = new Btn(() => {
 					// TODO: inspect hit/revealed modules
 				}, 'cell button');
@@ -1000,9 +1003,6 @@ SPACE: ${format(freeCells, allCells)}
 				gridBtns.push(btn);
 			});
 			this.container.addChild(containerBtns);
-
-			this.actions.shield = 0;
-			this.actions.attacks = [];
 			const tags = this.modules.placed.flatMap((i) => {
 				// TODO: check if active
 				const active = true;
@@ -1051,7 +1051,8 @@ SPACE: ${format(freeCells, allCells)}
 					i.display.container.tint = 0xffffff;
 				});
 				this.actions.attacks.forEach((i) => {
-					const btn = gridBtnsByPos[i[1]][i[0]];
+					const btn = gridBtnsByPos[i[1]]?.[i[0]];
+					if (!btn) return;
 					btn.display.container.visible = true;
 					btn.display.container.tint = 0xff0000;
 				});
