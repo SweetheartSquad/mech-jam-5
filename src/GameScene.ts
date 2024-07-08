@@ -1051,12 +1051,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 				gridBtns.push(btn);
 			});
 			this.container.addChild(containerBtns);
-			const tags = this.modules.placed.flatMap((i) => {
-				// TODO: check if active
-				const active = true;
-				if (!active) return [];
-				return i.module.tags;
-			});
+			const tags = this.modules.placed
+				.filter((i) => this.moduleIsDestroyed(i, this.battleGrid))
+				.flatMap((i) => i.module.tags);
 			let attacksMax = 0;
 			let shieldsAmt = 0;
 			this.actions.heatMax = 0;
