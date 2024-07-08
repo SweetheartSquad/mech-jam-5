@@ -29,6 +29,7 @@ import { makePart, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
 import {
 	buttonify,
+	delay,
 	flipMatrixH,
 	flipMatrixV,
 	formatCount,
@@ -1276,7 +1277,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	playActions() {
 		// TODO
-		return new Promise<void>((r) => {
+		return new Promise<void>(async (r) => {
 			window.alert('play actions');
 			// TODO: shield feedback
 			this.actions.attacks.forEach((i) => {
@@ -1285,6 +1286,25 @@ SPACE: ${formatCount(freeCells, allCells)}
 				i[0], i[1];
 			});
 			// TODO: hit self from overheat
+			let overheat = this.getHeat() - this.actions.heatMax;
+			while (overheat-- > 0) {
+				// TODO: animation
+				await delay(100);
+				// find heatsinks
+				const target = this.modules.placed
+					.filter((i) => i.module.tags.includes('heatsink'))
+					// and cockpits (lower priority)
+					.concat(
+						this.modules.placed.filter((i) => i.module.tags.includes('cockpit'))
+					)
+					// that aren't destroyed
+					.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))[0];
+				if (!target) break; // already dead
+				// destroy part
+				this.forPlacedModuleCells(target, (x, y) => {
+					this.battleGrid[y][x] = 'X';
+				});
+			}
 			r();
 		});
 	}
