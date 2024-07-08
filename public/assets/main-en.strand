@@ -312,6 +312,25 @@ todo diplomat prebuild stuff
 
 ::diplomat prefight
 todo diplomat prefight stuff
+<<do this.scene.loadMech({
+	"head": "1",
+	"chest": "4",
+	"arms": "1",
+	"legs": "2",
+	"modules": [
+		{ "name": "square","x": 7,"y": 12,"flipH": false,"flipV": false,"turns": 0 },
+		{ "name": "crosshair","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+		{ "name": "Bar2","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 1 },
+		{ "name": "Bar2","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 3 },
+		{ "name": "stair1","x": 6,"y": 10,"flipH": false,"flipV": false,"turns": 1 },
+		{ "name": "stair2","x": 10,"y": 18,"flipH": false,"flipV": false,"turns": 3 },
+		{ "name": "stair2","x": 5,"y": 18,"flipH": false,"flipV": true,"turns": 3 },
+		{ "name": "stair1","x": 9,"y": 10,"flipH": false,"flipV": true,"turns": 1 },
+		{ "name": "Single","x": 7,"y": 9,"flipH": false,"flipV": false,"turns": 0 },
+		{ "name": "Single","x": 7,"y": 10,"flipH": false,"flipV": false,"turns": 0},
+	]
+});>>
+
 [[>close]]
 
 ::diplomat postfight
