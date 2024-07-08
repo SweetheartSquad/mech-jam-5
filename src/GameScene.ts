@@ -271,11 +271,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
-	battleGrid: ('?' | 'X' | 'O')[][] = [];
+	battleGrid: ('.' | '?' | 'X' | 'O')[][] = [];
 
 	mechEnemy!: ReturnType<GameScene['assembleParts']>;
 	modulesEnemy!: ReturnType<GameScene['assembleModules']>;
-	battleGridEnemy: ('?' | 'X' | 'O')[][] = [];
+	battleGridEnemy: ('.' | '?' | 'X' | 'O')[][] = [];
 
 	async buildMech(): Promise<void> {
 		const done = await this.placeModules();
