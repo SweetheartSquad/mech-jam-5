@@ -173,6 +173,25 @@ export class GameScene {
 	}
 
 	async start() {
+		await this.scenePrebuild();
+		this.mech = this.assembleParts(
+			randItem(this.pieces.heads),
+			randItem(this.pieces.chests),
+			randItem(this.pieces.arms),
+			randItem(this.pieces.legs)
+		);
+		this.modules = this.assembleModules([]);
+		this.mechEnemy = this.assembleParts(
+			randItem(this.pieces.heads),
+			randItem(this.pieces.chests),
+			randItem(this.pieces.arms),
+			randItem(this.pieces.legs)
+		);
+		this.modulesEnemy = this.assembleModules([]);
+		await this.pickParts();
+		await this.scenePrefight();
+		await this.fight();
+		await this.scenePostfight();
 		do {
 			await this.scenePrebuild();
 			await this.buildMech();
@@ -239,13 +258,13 @@ SPACE: ${freeCells
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
 
+	mechEnemy!: ReturnType<GameScene['assembleParts']>;
+	modulesEnemy!: ReturnType<GameScene['assembleModules']>;
+
 	async buildMech(): Promise<void> {
-		if (!this.mech) {
-			await this.pickParts();
-		}
 		const done = await this.placeModules();
 		if (!done) {
-			this.modules = this.assembleModules([]);
+			this.modules.placed = [];
 			await this.pickParts();
 			return this.buildMech();
 		}
@@ -279,18 +298,10 @@ SPACE: ${freeCells
 				return { container, btnPrev, btnNext };
 			};
 
-			let head = this.mech
-				? `head ${this.mech.headD.name}`
-				: randItem(this.pieces.heads);
-			let chest = this.mech
-				? `chest ${this.mech.chestD.name}`
-				: randItem(this.pieces.chests);
-			let arm = this.mech
-				? `arm ${this.mech.armLD.name}`
-				: randItem(this.pieces.arms);
-			let leg = this.mech
-				? `leg ${this.mech.legLD.name}`
-				: randItem(this.pieces.legs);
+			let head = `head ${this.mech.headD.name}`;
+			let chest = `chest ${this.mech.chestD.name}`;
+			let arm = `arm ${this.mech.armLD.name}`;
+			let leg = `leg ${this.mech.legLD.name}`;
 
 			this.reassemble();
 
@@ -604,28 +615,45 @@ SPACE: ${freeCells
 	}
 
 	reassemble() {
-		let head = this.mech
-			? `head ${this.mech.headD.name}`
-			: randItem(this.pieces.heads);
-		let chest = this.mech
-			? `chest ${this.mech.chestD.name}`
-			: randItem(this.pieces.chests);
-		let arm = this.mech
-			? `arm ${this.mech.armLD.name}`
-			: randItem(this.pieces.arms);
-		let leg = this.mech
-			? `leg ${this.mech.legLD.name}`
-			: randItem(this.pieces.legs);
-		this.mech = this.assembleParts(head, chest, arm, leg);
+		this.mech.container.destroy({ children: true });
+		this.mech = this.assembleParts(
+			`head ${this.mech.headD.name}`,
+			`chest ${this.mech.chestD.name}`,
+			`arm ${this.mech.armLD.name}`,
+			`leg ${this.mech.legLD.name}`
+		);
+		this.modules.container.destroy({ children: true });
 		this.modules = this.assembleModules(this.modules?.placed || []);
 		this.container.addChildAt(this.mech.container, 0);
 		this.container.addChild(this.modules.container);
+
+		this.mechEnemy.container.destroy({ children: true });
+		this.mechEnemy = this.assembleParts(
+			`head ${this.mechEnemy.headD.name}`,
+			`chest ${this.mechEnemy.chestD.name}`,
+			`arm ${this.mechEnemy.armLD.name}`,
+			`leg ${this.mechEnemy.legLD.name}`
+		);
+		this.modulesEnemy.container.destroy({ children: true });
+		this.modulesEnemy = this.assembleModules(this.modulesEnemy?.placed || []);
+		this.container.addChildAt(this.mechEnemy.container, 0);
+		this.container.addChild(this.modulesEnemy.container);
+
+		// TODO: position based on game state
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
 		this.mech.container.y += size.y * 0.45;
+		this.mechEnemy.container.x += Math.floor(size.x * (1 / 5));
+		this.mechEnemy.container.y += size.y * 0.45;
+
 		this.modules.container.x = this.mech.container.x;
 		this.modules.container.y = this.mech.container.y;
 		this.modules.container.x += this.mech.gridDimensions.x * cellSize;
 		this.modules.container.y += this.mech.gridDimensions.y * cellSize;
+
+		this.modulesEnemy.container.x = this.mechEnemy.container.x;
+		this.modulesEnemy.container.y = this.mechEnemy.container.y;
+		this.modulesEnemy.container.x += this.mechEnemy.gridDimensions.x * cellSize;
+		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
 		this.updateMechInfo();
 	}
 
@@ -663,7 +691,6 @@ SPACE: ${freeCells
 			h: number;
 		};
 	} {
-		this.mech?.container.destroy({ children: true });
 		const container: Container = new Container();
 
 		const headD = this.getPart(headKey);
@@ -805,7 +832,6 @@ SPACE: ${freeCells
 		placed: Parameters<GameScene['assembleModules']>[0];
 		grid: string[][];
 	} {
-		this.modules?.container.destroy({ children: true });
 		const container: Container = new Container();
 		placed.forEach((i) => {
 			const sprModule = makeModule(i.module);
@@ -853,13 +879,17 @@ SPACE: ${freeCells
 		};
 	}
 
-	saveMech() {
+	saveMech(who: 'player' | 'enemy' = 'player') {
+		const [mech, modules] =
+			who === 'player'
+				? [this.mech, this.modules]
+				: [this.mechEnemy, this.modulesEnemy];
 		return {
-			head: this.mech.headD.name,
-			chest: this.mech.chestD.name,
-			arms: this.mech.armLD.name,
-			legs: this.mech.legLD.name,
-			modules: this.modules.placed.map((i) => ({
+			head: mech.headD.name,
+			chest: mech.chestD.name,
+			arms: mech.armLD.name,
+			legs: mech.legLD.name,
+			modules: modules.placed.map((i) => ({
 				name: i.module.name,
 				x: i.x,
 				y: i.y,
@@ -870,24 +900,27 @@ SPACE: ${freeCells
 		};
 	}
 
-	loadMech(data: string | ReturnType<GameScene['saveMech']>) {
+	loadMech(
+		who: 'player' | 'enemy' = 'player',
+		data: string | ReturnType<GameScene['saveMech']>
+	) {
+		const [mech, modules] =
+			who === 'player'
+				? [this.mech, this.modules]
+				: [this.mechEnemy, this.modulesEnemy];
 		if (typeof data === 'string') {
 			data = JSON.parse(data) as ReturnType<GameScene['saveMech']>;
 		}
-		this.mech.headD = this.getPart(`head ${data.head}`);
-		this.mech.chestD = this.getPart(`chest ${data.chest}`);
-		this.mech.armLD = this.getPart(`arm ${data.arms}`);
-		this.mech.armRD = this.getPart(`arm ${data.arms}`, true);
-		this.mech.legLD = this.getPart(`leg ${data.legs}`);
-		this.mech.legRD = this.getPart(`leg ${data.legs}`, true);
-		this.modules = {
-			container: new Container(),
-			grid: [],
-			placed: data.modules.map((i) => ({
-				...i,
-				module: this.getModule(`module ${i.name}`),
-			})),
-		};
+		mech.headD = this.getPart(`head ${data.head}`);
+		mech.chestD = this.getPart(`chest ${data.chest}`);
+		mech.armLD = this.getPart(`arm ${data.arms}`);
+		mech.armRD = this.getPart(`arm ${data.arms}`, true);
+		mech.legLD = this.getPart(`leg ${data.legs}`);
+		mech.legRD = this.getPart(`leg ${data.legs}`, true);
+		modules.placed = data.modules.map((i) => ({
+			...i,
+			module: this.getModule(`module ${i.name}`),
+		}));
 		this.reassemble();
 	}
 

@@ -312,7 +312,7 @@ todo diplomat prebuild stuff
 
 ::diplomat prefight
 todo diplomat prefight stuff
-<<do this.scene.loadMech({
+<<do this.scene.loadMech('enemy', {
 	"head": "1",
 	"chest": "4",
 	"arms": "1",
