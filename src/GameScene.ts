@@ -438,9 +438,8 @@ SPACE: ${freeCells
 					const copying = event.shiftKey || event.ctrlKey;
 					if (!dragging) {
 						// check for module
-						const m = this.modules.grid[y][x];
-						if (!m) return;
-						const idx = parseInt(m, 10);
+						const idx = Number(this.modules.grid[y][x]);
+						if (Number.isNaN(idx)) return;
 						let module: GameScene['modules']['placed'][number];
 						if (copying) {
 							// copy module
