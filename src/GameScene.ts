@@ -947,7 +947,7 @@ SPACE: ${format(freeCells, allCells)}
 
 	pickActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('pick actions');
 			r();
 		});
@@ -955,7 +955,7 @@ SPACE: ${format(freeCells, allCells)}
 
 	playActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('play actions');
 			r();
 		});
@@ -963,7 +963,7 @@ SPACE: ${format(freeCells, allCells)}
 
 	enemyActions() {
 		// TODO
-		return new Promise((r) => {
+		return new Promise<void>((r) => {
 			window.alert('enemy turn');
 			r();
 		});
