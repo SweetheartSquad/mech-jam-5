@@ -1148,6 +1148,13 @@ SPACE: ${format(freeCells, allCells)}
 		// TODO
 		return new Promise<void>((r) => {
 			window.alert('play actions');
+			// TODO: shield feedback
+			this.actions.attacks.forEach((i) => {
+				// TODO: hit enemy shields from last turn
+				// TODO: hit targeted cells
+				i[0], i[1];
+			});
+			// TODO: hit self from overheat
 			r();
 		});
 	}
@@ -1156,6 +1163,20 @@ SPACE: ${format(freeCells, allCells)}
 		// TODO
 		return new Promise<void>((r) => {
 			window.alert('enemy turn');
+			const tags = this.modulesEnemy.placed.flatMap((i) => {
+				// TODO: check if active
+				const active = true;
+				if (!active) return [];
+				return i.module.tags;
+			});
+			tags;
+			// TODO: decide whether to enable shields
+			// - early or after reveals?
+			// TODO: decide player targets
+			// - search around revealed parts
+			// - search randomly
+			// - when to be more/less aggressive?
+			// - when to overheat?
 			r();
 		});
 	}
