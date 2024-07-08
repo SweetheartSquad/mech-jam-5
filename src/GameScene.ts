@@ -923,8 +923,50 @@ SPACE: ${format(freeCells, allCells)}
 		this.reassemble();
 	}
 
-	fight() {
+	async fight() {
+		let turnCount = 1;
+		do {
+			// TODO
+			await this.pickActions();
+			await this.playActions();
+			// TODO: check win
+			const won = false;
+			if (won) {
+				this.strand.won = true;
+				return;
+			}
+			await this.enemyActions();
+			const dead = turnCount > 2;
+			if (dead) {
+				this.strand.won = false;
+				return;
+			}
+			++turnCount;
+		} while (true);
+	}
+
+	pickActions() {
 		// TODO
+		return new Promise((r) => {
+			window.alert('pick actions');
+			r();
+		});
+	}
+
+	playActions() {
+		// TODO
+		return new Promise((r) => {
+			window.alert('play actions');
+			r();
+		});
+	}
+
+	enemyActions() {
+		// TODO
+		return new Promise((r) => {
+			window.alert('enemy turn');
+			r();
+		});
 	}
 
 	destroy(): void {
