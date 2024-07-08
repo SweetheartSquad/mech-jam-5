@@ -980,6 +980,7 @@ SPACE: ${format(freeCells, allCells)}
 				gridBtnsByPos[y][x] = btn;
 				gridBtns.push(btn);
 			});
+			this.container.addChild(containerBtns);
 		});
 	}
 
