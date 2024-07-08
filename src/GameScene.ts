@@ -844,6 +844,44 @@ SPACE: ${freeCells
 		};
 	}
 
+	saveMech() {
+		return {
+			head: this.mech.headD.name,
+			chest: this.mech.chestD.name,
+			arms: this.mech.armLD.name,
+			legs: this.mech.legLD.name,
+			modules: this.modules.placed.map((i) => ({
+				name: i.module.name,
+				x: i.x,
+				y: i.y,
+				flipH: i.flipH,
+				flipV: i.flipV,
+				turns: i.turns,
+			})),
+		};
+	}
+
+	loadMech(data: string | ReturnType<GameScene['saveMech']>) {
+		if (typeof data === 'string') {
+			data = JSON.parse(data) as ReturnType<GameScene['saveMech']>;
+		}
+		this.mech.headD = this.getPart(`head ${data.head}`);
+		this.mech.chestD = this.getPart(`chest ${data.chest}`);
+		this.mech.armLD = this.getPart(`arm ${data.arms}`);
+		this.mech.armRD = this.getPart(`arm ${data.arms}`, true);
+		this.mech.legLD = this.getPart(`leg ${data.legs}`);
+		this.mech.legRD = this.getPart(`leg ${data.legs}`, true);
+		this.modules = {
+			container: new Container(),
+			grid: [],
+			placed: data.modules.map((i) => ({
+				...i,
+				module: this.getModule(`module ${i.name}`),
+			})),
+		};
+		this.reassemble();
+	}
+
 	fight() {
 		// TODO
 	}
