@@ -539,7 +539,7 @@ SPACE: ${format(freeCells, allCells)}
 			this.camera.scripts.push(dragger);
 
 			const scroller = new Scroller({
-				width: 200,
+				width: modules.reduce((acc, i) => Math.max(acc, i.w), 0) * cellSize,
 				height: size.y,
 				gap: 10,
 			});
