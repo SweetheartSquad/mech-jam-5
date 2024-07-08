@@ -15,6 +15,7 @@ import { cellSize, size } from './config';
 import { DEBUG } from './debug';
 import { fontMechInfo } from './font';
 import {
+	copyCells,
 	displayToPlacementProps,
 	flatten,
 	forCells,
@@ -271,9 +272,11 @@ SPACE: ${format(freeCells, allCells)}
 
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
+	battleGrid: ('?' | 'X' | 'O')[][] = [];
 
 	mechEnemy!: ReturnType<GameScene['assembleParts']>;
 	modulesEnemy!: ReturnType<GameScene['assembleModules']>;
+	battleGridEnemy: ('?' | 'X' | 'O')[][] = [];
 
 	async buildMech(): Promise<void> {
 		const done = await this.placeModules();
@@ -944,6 +947,18 @@ SPACE: ${format(freeCells, allCells)}
 
 	async fight() {
 		let turnCount = 1;
+		// reset battle grid
+		this.battleGrid = replaceCells(
+			copyCells(this.mech.grid),
+			/[^.]/,
+			'?'
+		) as typeof this.battleGrid;
+		this.battleGridEnemy = replaceCells(
+			copyCells(this.mechEnemy.grid),
+			/[^.]/,
+			'?'
+		) as typeof this.battleGrid;
+
 		do {
 			await this.pickActions();
 			await this.playActions();
