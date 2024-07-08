@@ -959,7 +959,34 @@ SPACE: ${format(freeCells, allCells)}
 
 	pickActions() {
 		// TODO
+		// TODO: show heat in UI
 		return new Promise<void>((r) => {
+			const gridBtns: Btn[] = [];
+			const gridBtnsByPos: Btn[][] = [];
+
+			const containerBtns = new Container();
+			containerBtns.x =
+				this.mechEnemy.container.x +
+				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
+			containerBtns.y =
+				this.mechEnemy.container.y +
+				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
+
+			forCells(this.mechEnemy.grid, (x, y) => {
+				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
+				const btn = new Btn(() => {
+					// TODO: inspect hit/revealed modules
+				}, 'cell button');
+				btn.spr.label = `${x},${y}`;
+				btn.transform.x = x * cellSize;
+				btn.transform.y = y * cellSize;
+				containerBtns.addChild(btn.display.container);
+				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+				gridBtnsByPos[y][x] = btn;
+				gridBtns.push(btn);
+			});
+			this.container.addChild(containerBtns);
+
 			this.actions.shield = 0;
 			this.actions.attacks = [];
 			const tags = this.modules.placed.flatMap((i) => {
@@ -1004,6 +1031,16 @@ SPACE: ${format(freeCells, allCells)}
 				} else {
 					btnAttackUndo.display.container.tint = 0x999999;
 				}
+
+				gridBtns.forEach((i) => {
+					i.display.container.visible = false;
+					i.display.container.tint = 0xffffff;
+				});
+				this.actions.attacks.forEach((i) => {
+					const btn = gridBtnsByPos[i[1]][i[0]];
+					btn.display.container.visible = true;
+					btn.display.container.tint = 0xff0000;
+				});
 			};
 			const textAttack = new BitmapText({
 				text: 'attack',
@@ -1099,6 +1136,8 @@ SPACE: ${format(freeCells, allCells)}
 				btnAttackUndo.destroy();
 				btnToggleShield.destroy();
 				btnEnd.destroy();
+				gridBtns.forEach((i) => i.destroy());
+				containerBtns.destroy();
 			};
 		});
 	}
@@ -1121,8 +1160,8 @@ SPACE: ${format(freeCells, allCells)}
 				document.removeEventListener('contextmenu', onContext);
 			};
 
-			forCells(this.mechEnemy.grid, (x, y, cell) => {
-				if (cell !== '0') return;
+			forCells(this.mechEnemy.grid, (x, y) => {
+				// TODO: leave out destroyed
 				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
 				const btn = new Btn(() => {
 					destroy();
