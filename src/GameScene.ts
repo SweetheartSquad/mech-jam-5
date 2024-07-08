@@ -1044,7 +1044,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			});
 
 			const updateHeat = () => {
-				const heat = this.actions.shield + this.actions.attacks.length;
+				const heat = this.getHeat();
 				textHeat.text = `heat: ${formatCount(heat, heatMax)}`;
 				if (heat > heatMax) {
 					textHeat.tint = 0xff0000;
@@ -1234,6 +1234,10 @@ SPACE: ${formatCount(freeCells, allCells)}
 			};
 			document.addEventListener('contextmenu', onContext, { once: true });
 		});
+	}
+
+	getHeat() {
+		return this.actions.attacks.length + this.actions.shield;
 	}
 
 	playActions() {
