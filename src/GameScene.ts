@@ -243,8 +243,9 @@ export class GameScene {
 		forCells(this.modules.grid, (x, y, cell) => {
 			if (cell === 'x') ++freeCells;
 		});
-		let cost = allCells * 1; // TODO: plus placed module costs
-		cost += this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
+		const cost =
+			allCells * 1 +
+			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
 		this.mechinfo.text = `
 PRICE: ${cost.toString(10).padStart(this.costMax.toString(10).length, '0')}/${
 			this.costMax
