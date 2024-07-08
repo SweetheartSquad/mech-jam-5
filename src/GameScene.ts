@@ -189,6 +189,7 @@ export class GameScene {
 		);
 		this.modulesEnemy = this.assembleModules([]);
 		await this.pickParts();
+		await this.buildMech();
 		await this.scenePrefight();
 		await this.fight();
 		await this.scenePostfight();
