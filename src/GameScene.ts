@@ -364,13 +364,7 @@ SPACE: ${freeCells
 
 	placeModules() {
 		return new Promise<boolean>((donePlacingModules) => {
-			const modules = this.pieces.modules.map((i) => {
-				const moduleD = mechModuleParse(
-					i,
-					this.strand.getPassageWithTitle(i).body
-				);
-				return moduleD;
-			});
+			const modules = this.pieces.modules.map((i) => this.getModule(i));
 			const modulesByName = modules.reduce<{
 				[key: string]: (typeof modules)[number];
 			}>((acc, i) => {
@@ -633,6 +627,10 @@ SPACE: ${freeCells
 			this.strand.getPassageWithTitle(key).body,
 			flip
 		);
+	}
+
+	getModule(key: string) {
+		return mechModuleParse(key, this.strand.getPassageWithTitle(key).body);
 	}
 
 	assembleParts(
