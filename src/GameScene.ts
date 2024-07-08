@@ -391,8 +391,10 @@ SPACE: ${freeCells
 
 			const checkPlacement = () => {
 				valid = false;
-				gridBtns.forEach((i) => {
-					i.spr.tint = 0xffffff;
+				forCells(gridBtnsByPos, (x, y, btn) => {
+					if (!btn) return;
+					btn.spr.tint = 0xffffff;
+					btn.spr.alpha = this.modules.grid[y][x] === 'x' ? 1 : 0;
 				});
 				if (!dragging) return;
 				if (!target) return;
@@ -477,11 +479,19 @@ SPACE: ${freeCells
 				btn.spr.addEventListener('pointerover', () => {
 					target = btn;
 					checkPlacement();
+					if (!dragging) {
+						const idx = Number(this.modules.grid[y][x]);
+						if (Number.isNaN(idx)) return;
+						this.modules.container.children[idx].alpha = 0.5;
+					}
 				});
 				btn.spr.addEventListener('pointerout', () => {
 					if (target !== btn) return;
 					target = null;
 					checkPlacement();
+					const idx = Number(this.modules.grid[y][x]);
+					if (Number.isNaN(idx)) return;
+					this.modules.container.children[idx].alpha = 1;
 				});
 				btn.transform.x = x * cellSize;
 				btn.transform.y = y * cellSize;
