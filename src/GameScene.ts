@@ -297,7 +297,7 @@ SPACE: ${freeCells
 			const headBtns = cycler(
 				(newHead) => {
 					head = newHead;
-					this.mech.headD = this.getPiece(newHead);
+					this.mech.headD = this.getPart(newHead);
 					this.reassemble();
 				},
 				this.pieces.heads,
@@ -306,7 +306,7 @@ SPACE: ${freeCells
 			const chestBtns = cycler(
 				(newChest) => {
 					chest = newChest;
-					this.mech.chestD = this.getPiece(chest);
+					this.mech.chestD = this.getPart(chest);
 					this.reassemble();
 				},
 				this.pieces.chests,
@@ -315,8 +315,8 @@ SPACE: ${freeCells
 			const armBtns = cycler(
 				(newArm) => {
 					arm = newArm;
-					this.mech.armLD = this.getPiece(arm);
-					this.mech.armRD = this.getPiece(arm, true);
+					this.mech.armLD = this.getPart(arm);
+					this.mech.armRD = this.getPart(arm, true);
 					this.reassemble();
 				},
 				this.pieces.arms,
@@ -325,8 +325,8 @@ SPACE: ${freeCells
 			const legBtns = cycler(
 				(newLeg) => {
 					leg = newLeg;
-					this.mech.legLD = this.getPiece(leg);
-					this.mech.legRD = this.getPiece(leg, true);
+					this.mech.legLD = this.getPart(leg);
+					this.mech.legRD = this.getPart(leg, true);
 					this.reassemble();
 				},
 				this.pieces.legs,
@@ -626,7 +626,7 @@ SPACE: ${freeCells
 		this.updateMechInfo();
 	}
 
-	getPiece(key: string, flip?: boolean) {
+	getPart(key: string, flip?: boolean) {
 		return mechPartParse(
 			key.split(' ')[0],
 			key,
@@ -659,12 +659,12 @@ SPACE: ${freeCells
 		this.mech?.container.destroy({ children: true });
 		const container: Container = new Container();
 
-		const headD = this.getPiece(headKey);
-		const chestD = this.getPiece(chestKey);
-		const legLD = this.getPiece(legKey);
-		const armLD = this.getPiece(armKey);
-		const legRD = this.getPiece(legKey, true);
-		const armRD = this.getPiece(armKey, true);
+		const headD = this.getPart(headKey);
+		const chestD = this.getPart(chestKey);
+		const legLD = this.getPart(legKey);
+		const armLD = this.getPart(armKey);
+		const legRD = this.getPart(legKey, true);
+		const armRD = this.getPart(armKey, true);
 		const [sprHead, cellsHead] = makePart(headD);
 		const [sprChest, cellsChest] = makePart(chestD);
 		const [sprArmR, cellsArmR] = makePart(armRD);
