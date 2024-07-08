@@ -1,4 +1,4 @@
-import { BitmapText, Container } from 'pixi.js';
+import { BitmapText, Container, Sprite } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
@@ -34,6 +34,7 @@ import {
 	relativeMouse,
 	removeFromArray,
 	rotateMatrixClockwise,
+	tex,
 } from './utils';
 
 export class GameScene {
@@ -213,6 +214,19 @@ export class GameScene {
 				}
 			};
 		});
+	}
+
+	modal(opacity = 0.25) {
+		const spr = new Sprite(tex('black'));
+		spr.width = size.x * 2;
+		spr.height = size.y * 2;
+		spr.anchor.x = spr.anchor.y = 0.5;
+		spr.alpha = opacity;
+		spr.interactive = true;
+		this.containerUI.addChild(spr);
+		return () => {
+			spr.destroy();
+		};
 	}
 
 	scenePrebuild() {
@@ -1049,7 +1063,9 @@ SPACE: ${format(freeCells, allCells)}
 			const btnAttack = new Btn(
 				async () => {
 					if (this.actions.attacks.length >= attacksMax) return;
+					const removeModal = this.modal();
 					const target = await this.pickTarget();
+					removeModal();
 					if (!target) return;
 					this.actions.attacks.push(target);
 					updateAttacks();
@@ -1175,7 +1191,7 @@ SPACE: ${format(freeCells, allCells)}
 				gridBtnsByPos[y][x] = btn;
 				gridBtns.push(btn);
 			});
-			this.container.addChild(containerBtns);
+			this.containerUI.addChild(containerBtns);
 
 			const onContext = (event: MouseEvent) => {
 				event.preventDefault();
