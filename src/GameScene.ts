@@ -876,20 +876,13 @@ SPACE: ${formatCount(freeCells, allCells)}
 				y: 0,
 			},
 			...placed.map((i, idx) => {
-				let cells = i.module.cells;
-				cells = rotateMatrixClockwise(cells, i.turns);
-				if (i.flipH) cells = flipMatrixH(cells);
-				if (i.flipV) cells = flipMatrixV(cells);
-				cells = replaceCells(cells, '0', idx.toString(10));
-				const ox = Math.floor(i.module.w / 2);
-				const oy = Math.floor(i.module.h / 2);
-				const o = [ox, oy];
-				if (i.turns % 2) o.reverse();
-				return {
-					cells,
-					x: i.x - o[0],
-					y: i.y - o[1],
-				};
+				const placedModule = this.getPlacedModule(i);
+				placedModule.cells = replaceCells(
+					placedModule.cells,
+					'0',
+					idx.toString(10)
+				);
+				return placedModule;
 			}),
 		]);
 		return {
@@ -942,6 +935,44 @@ SPACE: ${formatCount(freeCells, allCells)}
 			module: this.getModule(`module ${i.name}`),
 		}));
 		this.reassemble();
+	}
+
+	getPlacedModule(i: GameScene['modules']['placed'][number]) {
+		let cells = i.module.cells;
+		cells = rotateMatrixClockwise(cells, i.turns);
+		if (i.flipH) cells = flipMatrixH(cells);
+		if (i.flipV) cells = flipMatrixV(cells);
+		const ox = Math.floor(i.module.w / 2);
+		const oy = Math.floor(i.module.h / 2);
+		const o = [ox, oy];
+		if (i.turns % 2) o.reverse();
+		return {
+			cells,
+			x: i.x - o[0],
+			y: i.y - o[1],
+		};
+	}
+
+	moduleIsDestroyed(
+		module: GameScene['modules']['placed'][number],
+		cells: string[][]
+	) {
+		let destroyed = false;
+		this.forPlacedModuleCells(module, (x, y) => {
+			if (destroyed) return;
+			if (cells[y][x] === 'X') destroyed = true;
+		});
+		return destroyed;
+	}
+
+	forPlacedModuleCells(
+		i: GameScene['modules']['placed'][number],
+		cb: (x: number, y: number, cell: string) => void
+	) {
+		const placedModule = this.getPlacedModule(i);
+		forCells(placedModule.cells, (x, y, cell) => {
+			cb(x + placedModule.x, y + placedModule.y, cell);
+		});
 	}
 
 	async fight() {
