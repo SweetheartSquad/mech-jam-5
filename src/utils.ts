@@ -332,3 +332,9 @@ export function flipMatrixH<T>(arr: T[][]) {
 export function flipMatrixV<T>(arr: T[][]) {
 	return arr.slice().reverse();
 }
+
+export function formatCount(a: number, b: number) {
+	return `${a.toString(10).padStart(b.toString(10).length, '0')}/${b} ${
+		a > b ? '!!!' : ''
+	}`;
+}

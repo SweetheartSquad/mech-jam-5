@@ -31,6 +31,7 @@ import {
 	buttonify,
 	flipMatrixH,
 	flipMatrixV,
+	formatCount,
 	randItem,
 	relativeMouse,
 	removeFromArray,
@@ -262,11 +263,9 @@ export class GameScene {
 		const cost =
 			allCells * 1 +
 			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
-		const format = (a: number, b: number) =>
-			`${a.toString(10).padStart(b.toString(10).length, '0')}/${b}`;
 		this.mechinfo.text = `
-PRICE: ${format(cost, this.costMax)} ${cost > this.costMax ? '!!!' : ''}
-SPACE: ${format(freeCells, allCells)}
+PRICE: ${formatCount(cost, this.costMax)}
+SPACE: ${formatCount(freeCells, allCells)}
 `.trim();
 	}
 
