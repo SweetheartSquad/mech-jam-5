@@ -958,6 +958,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		module: GameScene['modules']['placed'][number],
 		cells: string[][]
 	) {
+		// TODO: check connected to cockpit
 		let destroyed = false;
 		this.forPlacedModuleCells(module, (x, y) => {
 			if (destroyed) return;
