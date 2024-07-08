@@ -927,7 +927,6 @@ SPACE: ${format(freeCells, allCells)}
 	async fight() {
 		let turnCount = 1;
 		do {
-			// TODO
 			await this.pickActions();
 			await this.playActions();
 			// TODO: check win
