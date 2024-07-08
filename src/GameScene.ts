@@ -639,6 +639,9 @@ SPACE: ${format(freeCells, allCells)}
 		this.container.addChildAt(this.mechEnemy.container, 0);
 		this.container.addChild(this.modulesEnemy.container);
 		this.modulesEnemy.container.visible = false;
+		this.mechEnemy.container.children.forEach((i) => {
+			if (i.children.length) i.visible = false;
+		});
 
 		// TODO: position based on game state
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
