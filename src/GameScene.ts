@@ -246,13 +246,11 @@ export class GameScene {
 		const cost =
 			allCells * 1 +
 			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
+		const format = (a: number, b: number) =>
+			`${a.toString(10).padStart(b.toString(10).length, '0')}/${b}`;
 		this.mechinfo.text = `
-PRICE: ${cost.toString(10).padStart(this.costMax.toString(10).length, '0')}/${
-			this.costMax
-		} ${cost > this.costMax ? '!!!' : ''}
-SPACE: ${freeCells
-			.toString(10)
-			.padStart(freeCells.toString(10).length, '0')}/${allCells}
+PRICE: ${format(cost, this.costMax)} ${cost > this.costMax ? '!!!' : ''}
+SPACE: ${format(freeCells, allCells)}
 `.trim();
 	}
 
