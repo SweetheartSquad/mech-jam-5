@@ -980,9 +980,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 	actions: {
 		shield: number;
 		attacks: [number, number][];
+		heatMax: number;
 	} = {
 		shield: 0,
 		attacks: [],
+		heatMax: 0,
 	};
 
 	pickActions() {
@@ -1024,15 +1026,15 @@ SPACE: ${formatCount(freeCells, allCells)}
 			});
 			let attacksMax = 0;
 			let shieldsAmt = 0;
-			let heatMax = 0;
+			this.actions.heatMax = 0;
 			tags.forEach((tag) => {
 				switch (tag) {
 					case 'cockpit':
 						++attacksMax;
-						++heatMax;
+						++this.actions.heatMax;
 						break;
 					case 'heatsink':
-						++heatMax;
+						++this.actions.heatMax;
 						break;
 					case 'attack':
 						++attacksMax;
@@ -1045,10 +1047,10 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 			const updateHeat = () => {
 				const heat = this.getHeat();
-				textHeat.text = `heat: ${formatCount(heat, heatMax)}`;
-				if (heat > heatMax) {
+				textHeat.text = `heat: ${formatCount(heat, this.actions.heatMax)}`;
+				if (heat > this.actions.heatMax) {
 					textHeat.tint = 0xff0000;
-				} else if (heat === heatMax) {
+				} else if (heat === this.actions.heatMax) {
 					textHeat.tint = 0x00ff00;
 				} else {
 					textHeat.tint = 0xffffff;
