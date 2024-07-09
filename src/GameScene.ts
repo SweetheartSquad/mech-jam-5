@@ -192,6 +192,13 @@ export class GameScene {
 			randItem(this.pieces.legs)
 		);
 		this.modulesEnemy = this.assembleModules([]);
+		this.loadMech('player', {
+			head: '1',
+			chest: '1',
+			arms: '1',
+			legs: '2',
+			modules: [],
+		});
 		await this.pickParts();
 		await this.buildMech();
 		await this.scenePrefight();
