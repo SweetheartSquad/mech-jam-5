@@ -59,3 +59,4 @@ textures/module Single.png
 textures/portrait Guy.png
 textures/portrait Guy angry.png
 textures/portrait frame.png
+textures/dialogue frame.png
