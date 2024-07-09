@@ -1285,8 +1285,16 @@ SPACE: ${formatCount(freeCells, allCells)}
 		return new Promise<void>(async (r) => {
 			window.alert('play actions');
 			// TODO: shield feedback
+			let shields = 0; // TODO: get enemy shields from last turn
+			for (let [x, y] of this.actions.attacks) {
+				if (shields-- > 0) {
+					// TODO: hit shield feedback
+					continue;
+				}
+				// TODO: hit feedback
+				this.battleGridEnemy[y][x] = 'X';
+			}
 			this.actions.attacks.forEach((i) => {
-				// TODO: hit enemy shields from last turn
 				// TODO: hit targeted cells
 				i[0], i[1];
 			});
