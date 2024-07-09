@@ -675,6 +675,13 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.modulesEnemy.container.y = this.mechEnemy.container.y;
 		this.modulesEnemy.container.x += this.mechEnemy.gridDimensions.x * cellSize;
 		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
+
+		// TODO: better destroyed module display
+		this.modules.placed.forEach((i, idx) => {
+			if (this.moduleIsDestroyed(i, this.battleGrid)) {
+				this.modules.container.children[idx].tint = 0xff0000;
+			}
+		});
 		this.updateMechInfo();
 	}
 
