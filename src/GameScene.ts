@@ -959,10 +959,10 @@ SPACE: ${formatCount(freeCells, allCells)}
 		cells: string[][]
 	) {
 		// TODO: check connected to cockpit
-		let destroyed = false;
+		let destroyed = true;
 		this.forPlacedModuleCells(module, (x, y) => {
-			if (destroyed) return;
-			if (cells[y][x] === 'X') destroyed = true;
+			if (!destroyed) return;
+			if (cells[y][x] !== 'X') destroyed = false;
 		});
 		return destroyed;
 	}
