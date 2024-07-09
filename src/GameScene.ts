@@ -1052,7 +1052,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			});
 			this.container.addChild(containerBtns);
 			const tags = this.modules.placed
-				.filter((i) => this.moduleIsDestroyed(i, this.battleGrid))
+				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
 				.flatMap((i) => i.module.tags);
 			let attacksMax = 0;
 			let shieldsAmt = 0;
