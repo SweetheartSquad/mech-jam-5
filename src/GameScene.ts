@@ -1333,12 +1333,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 		// TODO
 		return new Promise<void>((r) => {
 			window.alert('enemy turn');
-			const tags = this.modulesEnemy.placed.flatMap((i) => {
-				// TODO: check if active
-				const active = true;
-				if (!active) return [];
-				return i.module.tags;
-			});
+			const tags = this.modulesEnemy.placed
+				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
+				.flatMap((i) => i.module.tags);
 			tags;
 			// TODO: decide whether to enable shields
 			// - early or after reveals?
