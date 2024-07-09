@@ -1279,7 +1279,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 			};
 
 			forCells(this.mechEnemy.grid, (x, y) => {
-				// TODO: leave out destroyed
 				if (this.battleGridEnemy[y][x] === 'X') return;
 				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
 				const btn = new Btn(() => {
