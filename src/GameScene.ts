@@ -962,7 +962,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		let destroyed = true;
 		this.forPlacedModuleCells(module, (x, y) => {
 			if (!destroyed) return;
-			if (cells[y][x] !== 'X') destroyed = false;
+			if (cells[y]?.[x] !== 'X') destroyed = false;
 		});
 		return destroyed;
 	}
