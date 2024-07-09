@@ -32,10 +32,10 @@ const exclamationInflectionRange = 10;
 
 export class UIDialogue extends GameObject {
 	padding = {
-		top: (size.y * 3) / 4,
-		bottom: 20,
-		left: 94,
-		right: 94,
+		top: 175,
+		bottom: 175,
+		left: 260,
+		right: 225,
 	};
 
 	sprScrim: Sprite;
