@@ -198,6 +198,8 @@ export class GameScene {
 		await this.fight();
 		await this.scenePostfight();
 		do {
+			this.battleGrid = [];
+			this.battleGridEnemy = [];
 			await this.scenePrebuild();
 			await this.buildMech();
 			await this.scenePrefight();
