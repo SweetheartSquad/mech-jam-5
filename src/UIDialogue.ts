@@ -1,4 +1,3 @@
-import { cubicIn, cubicOut } from 'eases';
 import {
 	BitmapFontManager,
 	BitmapText,
@@ -82,20 +81,8 @@ export class UIDialogue extends GameObject {
 		return this.sprBg.height;
 	}
 
-	// eslint-disable-next-line class-methods-use-this
-	openY() {
-		return size.y;
-	}
-
-	closeY() {
-		return size.y + this.height();
-	}
-
 	progress() {
-		return (
-			Math.abs(this.sprBg.y - this.closeY()) /
-			Math.abs(this.openY() - this.closeY())
-		);
+		return this.display.container.alpha;
 	}
 
 	constructor(strand: Strand) {
@@ -163,8 +150,7 @@ export class UIDialogue extends GameObject {
 		game.app.stage.addChild(this.display.container);
 
 		this.sprBg.alpha = 0;
-		this.sprBg.y = this.closeY();
-
+		this.transform.y = size.y;
 		this.init();
 	}
 
@@ -398,19 +384,10 @@ export class UIDialogue extends GameObject {
 	private open() {
 		if (!this.isOpen) {
 			this.isOpen = true;
-			this.scrim(0.25, 500);
 			this.tweens.forEach((t) => TweenManager.abort(t));
 			this.tweens.length = 0;
 			this.tweens.push(
-				TweenManager.tween(this.sprBg, 'alpha', 1, 500),
-				TweenManager.tween(
-					this.sprBg,
-					'y',
-					this.openY(),
-					500,
-					undefined,
-					cubicOut
-				)
+				TweenManager.tween(this.display.container, 'alpha', 1, 200)
 			);
 		}
 	}
@@ -423,19 +400,10 @@ export class UIDialogue extends GameObject {
 			});
 			this.choices = [];
 			this.isOpen = false;
-			this.scrim(0, 500);
 			this.tweens.forEach((t) => TweenManager.abort(t));
 			this.tweens.length = 0;
 			this.tweens.push(
-				TweenManager.tween(this.sprBg, 'alpha', 0, 500),
-				TweenManager.tween(
-					this.sprBg,
-					'y',
-					this.closeY(),
-					500,
-					undefined,
-					cubicIn
-				)
+				TweenManager.tween(this.display.container, 'alpha', 0, 200)
 			);
 		}
 	}
