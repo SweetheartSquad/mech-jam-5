@@ -143,7 +143,7 @@ export function makePart(piece: ReturnType<typeof mechPartParse>) {
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	forCells(piece.cells, (x, y, cell) => {
 		const sprCell = new Sprite(
-			tex({ 0: 'cell empty', '=': 'cell joint' }[cell] || cell)
+			tex({ 0: 'cell button_normal', '=': 'cell joint' }[cell] || cell)
 		);
 		sprCell.anchor.x = sprCell.anchor.y = 0;
 		sprCell.x = x * cellSize;
