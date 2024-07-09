@@ -57,31 +57,32 @@
 	// start
 	this.started=true;
 	this.scene.goto({ area: 'intro' });
-	requestAnimationFrame(() => {
-		this.scrim(1, 3000);
-		this.scene.dialogue.sprBg.alpha = 0;
-	});
 >>
 <<endif>>
-<<do
-	if (this.debug) this.show('').then(() => {this.goto('start2')});
-	else {
-		this.scene.dialogue.textText.style.fill = 0xffd20a;
-		this.show('img_cheryl', { scale: 1, duration: 0 });
-	}
->>
-LANDING SEQUENCE ON PLANET 54XE COMPLETE
->OPEN AIRLOCK
-<<do
-	this.scene.dialogue.textText.style.fill = 0xffffff;
-	this.music('bgm');
-	this.show('').then(() => {this.goto('start2')});
->>
+FLEETWOOD MECH
+[[START]]
+[[OPTIONS]]
+[[ABOUT]]
 
-::start2
+::OPTIONS
+idk if we have any?
+[[BACK|this.back()]]
+
+::ABOUT
+MADE BY
+  SEAN
+    MICHAEL
+      IAN
+        OF "SWEET<<print '\u0003'>>HEART SQUAD"
+ 
+FOR "MECH JAM V"
+[[BACK|this.back()]]
+
+::START
 <<do
-	this.tween(this.scene.border.display.container, 'alpha', 1, 5000);
-	this.tween(this.scene.dialogue.sprBg, 'alpha', 1, 5000, 0);;
+	this.show('');
+	this.music('bgm');
+	this.tween(this.scene.border.display.container, 'alpha', 1, 500);
 	this.goto('main');
 >>
 
