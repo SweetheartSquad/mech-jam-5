@@ -1009,15 +1009,22 @@ SPACE: ${formatCount(freeCells, allCells)}
 		do {
 			await this.pickActions();
 			await this.playActions();
-			// TODO: check win
-			const won = false;
+			const won = !this.modulesEnemy.placed.some(
+				(i) =>
+					i.module.tags.includes('cockpit') &&
+					!this.moduleIsDestroyed(i, this.battleGridEnemy)
+			);
 			if (won) {
 				this.strand.won = true;
 				return;
 			}
 			await this.enemyActions();
-			const dead = turnCount > 2;
-			if (dead) {
+			const lost = !this.modules.placed.some(
+				(i) =>
+					i.module.tags.includes('cockpit') &&
+					!this.moduleIsDestroyed(i, this.battleGrid)
+			);
+			if (lost) {
 				this.strand.won = false;
 				return;
 			}
