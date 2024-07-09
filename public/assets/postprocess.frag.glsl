@@ -20,12 +20,14 @@ uniform vec3 uFg;
 
 uniform vec2 camPos;
 const vec2 size = vec2(256.0);
-const vec2 ditherSize = vec2(8.0);
+const vec2 ditherSize = vec2(2.0);
+const vec3 col1 = vec3(255.0, 165.0, 0.0) / 255.0;
+const vec3 col2 = vec3(81.0, 197.0, 194.0) / 255.0;
 uniform float uNoise;
 const float scale = 1.0;
-const float posterize = 4.0;
+const float posterize = 2.0;
 const float brightness = 1.0;
-const float contrast = 1.0;
+const float contrast = 1.5;
 const float PI = 3.14159;
 const float PI2 = PI*2.0;
 
@@ -92,7 +94,7 @@ void main(void) {
 	// col = mix(uBg, uFg, col) / 255.0;
 
 	// scanlines
-	if (fract(uv.y * size.y * 0.5) > 0.75) col*= 0.5;
+	if (fract(uv.y * size.y * 0.5) > 0.9) col*= 0.5;
 
 	// soft vignette
 	float haze = 0.02;
@@ -109,6 +111,10 @@ void main(void) {
 	vec3 dither = step(limit, (raw-posterized)*posterize)/posterize;
 	// output
 	col = posterized + dither;
+
+	col.r = mix(col1.r, col2.r, step(col.r, 0.5))*col.r;
+	col.g = mix(col1.g, col2.g, step(col.g, 0.5))*col.g;
+	col.b = mix(col1.b, col2.b, step(col.b, 0.5))*col.b;
 	finalColor = vec4(col, 1.0);
 
 	// finalColor = vec4(texture2D(uTexture, uvPreview).rgb, 1.0);
