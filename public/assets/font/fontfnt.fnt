@@ -257,3 +257,5 @@ char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=251 x=99 y=135
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=252 x=108 y=135
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=253 x=117 y=135
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=254 x=126 y=135
+// shy
+char page=0 width=0 height=32 xoffset=0 yoffset=0 xadvance=0 id=8203 x=0 y=0
