@@ -1009,6 +1009,17 @@ SPACE: ${formatCount(freeCells, allCells)}
 		do {
 			await this.pickActions();
 			await this.playActions();
+			{
+				const lost = !this.modules.placed.some(
+					(i) =>
+						i.module.tags.includes('cockpit') &&
+						!this.moduleIsDestroyed(i, this.battleGrid)
+				);
+				if (lost) {
+					this.strand.won = false;
+					return;
+				}
+			}
 			const won = !this.modulesEnemy.placed.some(
 				(i) =>
 					i.module.tags.includes('cockpit') &&
