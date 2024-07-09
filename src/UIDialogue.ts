@@ -51,7 +51,8 @@ export class UIDialogue extends GameObject {
 
 	display: Display;
 
-	toggler: Toggler;
+	togglerL: Toggler;
+	togglerR: Toggler;
 
 	isOpen: boolean;
 
@@ -108,9 +109,13 @@ export class UIDialogue extends GameObject {
 		);
 		this.transform.x = 0;
 
-		this.scripts.push((this.toggler = new Toggler(this)));
-		this.toggler.container.x += size.x / 2;
-		this.toggler.container.y = -size.y / 2;
+		this.scripts.push((this.togglerL = new Toggler(this)));
+		this.togglerL.container.x += size.x / 2 - 350;
+		this.togglerL.container.y = -size.y / 2;
+
+		this.scripts.push((this.togglerR = new Toggler(this)));
+		this.togglerR.container.x += size.x / 2 + 350;
+		this.togglerR.container.y = -size.y / 2;
 
 		this.strText = '';
 		this.pos = 0;
@@ -143,7 +148,8 @@ export class UIDialogue extends GameObject {
 
 		this.display.container.addChild(this.sprScrim);
 		this.display.container.addChild(this.sprBg);
-		this.display.container.addChild(this.toggler.container);
+		this.display.container.addChild(this.togglerL.container);
+		this.display.container.addChild(this.togglerR.container);
 		this.display.container.addChild(this.textText);
 		this.display.container.addChild(this.containerChoices);
 
@@ -371,8 +377,12 @@ export class UIDialogue extends GameObject {
 		this.posTime = 0;
 	}
 
-	show(...args: Parameters<Toggler['show']>) {
-		return this.toggler.show(...args);
+	showL(...args: Parameters<Toggler['show']>) {
+		return this.togglerL.show(...args);
+	}
+
+	showR(...args: Parameters<Toggler['show']>) {
+		return this.togglerR.show(...args);
 	}
 
 	complete() {

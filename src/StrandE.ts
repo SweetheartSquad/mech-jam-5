@@ -116,8 +116,12 @@ export class StrandE extends Strand {
 		};
 	}
 
-	show(...args: Parameters<(typeof this.scene)['dialogue']['show']>) {
-		return this.scene.dialogue.show(...args);
+	showL(...args: Parameters<(typeof this.scene)['dialogue']['showL']>) {
+		return this.scene.dialogue.showL(...args);
+	}
+
+	showR(...args: Parameters<(typeof this.scene)['dialogue']['showR']>) {
+		return this.scene.dialogue.showR(...args);
 	}
 
 	tween(...args: Parameters<(typeof TweenManager)['tween']>) {

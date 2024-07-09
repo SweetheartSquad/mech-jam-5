@@ -13,7 +13,8 @@
 //
 // js examples:
 // 	this.goto('passage')
-// 	this.show('texture', { duration, x, y, scale, animate, freq })
+// 	this.showL('texture', { duration, x, y, scale, animate, freq })
+// 	this.showR('texture', { duration, x, y, scale, animate, freq })
 // 	this.scrim(amount, duration)
 // 	this.tween(object, 'property', to, duration, from, ease)
 // 	this.gameObject - npc/interrupt that triggered the dialog
@@ -61,12 +62,12 @@
 	this.scene.goto({ area: 'intro' });
 
 	// add syntax sugar for passages like `Guy angry: Blah blah.`
-	const check = /(\w+)(\s+.*)?:\s*/;
+	const check = /(\w+)(\s+\w*)?:\s*/;
 	this.scene.dialogue.sayo = this.scene.dialogue.say;
 	this.scene.dialogue.say = (text, actions) => {
 		const match = check.exec(text);
 		if (match) {
-			this.show(['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' '));
+			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' '));
 			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
 			this.scene.dialogue.sayo(`${match[1]}:\n${text.substring(match[0].length)}`, actions);
 		} else {
@@ -96,7 +97,8 @@ FOR "MECH JAM V"
 
 ::START
 <<do
-	this.show('');
+	this.showL('');
+	this.showR('');
 	this.music('bgm');
 	this.goto('main');
 >>
@@ -326,6 +328,8 @@ actual written scenes below
 todo diplomat prebuild stuff
 >
 Guy: Hello.
+>
+Songbird: Hi.
 >
 Guy angry: Fancy meeting you here.
 [[>close]]
