@@ -655,7 +655,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.modulesEnemy = this.assembleModules(this.modulesEnemy?.placed || []);
 		this.container.addChildAt(this.mechEnemy.container, 0);
 		this.container.addChild(this.modulesEnemy.container);
-		this.modulesEnemy.container.visible = false;
 		this.mechEnemy.container.children.forEach((i) => {
 			if (i.children.length) i.visible = false;
 		});
@@ -682,6 +681,15 @@ SPACE: ${formatCount(freeCells, allCells)}
 				this.modules.container.children[idx].tint = 0xff0000;
 			}
 		});
+		this.modulesEnemy.placed.forEach((i, idx) => {
+			if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
+				this.modulesEnemy.container.children[idx].visible = true;
+				this.modulesEnemy.container.children[idx].tint = 0xff0000;
+			} else {
+				this.modulesEnemy.container.children[idx].visible = false;
+			}
+		});
+
 		this.updateMechInfo();
 	}
 
