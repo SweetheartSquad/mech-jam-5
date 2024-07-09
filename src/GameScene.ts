@@ -1309,6 +1309,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				this.forPlacedModuleCells(target, (x, y) => {
 					this.battleGrid[y][x] = 'X';
 				});
+				this.reassemble();
 			}
 			r();
 		});
