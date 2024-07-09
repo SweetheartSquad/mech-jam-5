@@ -425,6 +425,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					if (!btn) return;
 					btn.spr.tint = 0xffffff;
 					btn.spr.alpha = this.modules.grid[y][x] === 'x' ? 1 : 0;
+					btn.spr.texture = tex('cell button_normal');
 				});
 				if (!dragging) return;
 				if (!target) return;
@@ -448,6 +449,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (!btnNeighbour) return;
 					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
+					btnNeighbour.spr.texture = tex('cell button_over');
 				});
 			};
 
