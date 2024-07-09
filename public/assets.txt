@@ -56,3 +56,5 @@ textures/module Bar.png
 textures/module Bar2.png
 textures/module Single.png
 
+textures/portrait Guy.png
+textures/portrait Guy angry.png

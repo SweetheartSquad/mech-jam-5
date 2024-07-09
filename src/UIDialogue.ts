@@ -110,7 +110,7 @@ export class UIDialogue extends GameObject {
 
 		this.scripts.push((this.toggler = new Toggler(this)));
 		this.toggler.container.x += size.x / 2;
-		this.toggler.container.y = size.y / 2;
+		this.toggler.container.y = -size.y / 2;
 
 		this.strText = '';
 		this.pos = 0;

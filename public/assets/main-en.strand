@@ -59,6 +59,20 @@
 	this.tween(this.scene.dialogue.sprBg, 'alpha', 1, 500);
 	this.tween(this.scene.border.display.container, 'alpha', 1, 500);
 	this.scene.goto({ area: 'intro' });
+
+	// add syntax sugar for passages like `Guy angry: Blah blah.`
+	const check = /(\w+)(\s+.*)?:\s*/;
+	this.scene.dialogue.sayo = this.scene.dialogue.say;
+	this.scene.dialogue.say = (text, actions) => {
+		const match = check.exec(text);
+		if (match) {
+			this.show(['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' '));
+			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
+			this.scene.dialogue.sayo(`${match[1]}:\n${text.substring(match[0].length)}`, actions);
+		} else {
+			this.scene.dialogue.sayo(text, actions);
+		}
+	};
 >>
 <<endif>>
 FLEETWOOD MECH
@@ -310,6 +324,10 @@ actual written scenes below
 
 ::diplomat prebuild
 todo diplomat prebuild stuff
+>
+Guy: Hello.
+>
+Guy angry: Fancy meeting you here.
 [[>close]]
 
 ::diplomat prefight
