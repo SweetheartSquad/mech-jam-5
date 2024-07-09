@@ -1412,8 +1412,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 		const curTime = game.app.ticker.lastTime;
 
-		this.screenFilter.update();
-
 		GameObject.update();
 		TweenManager.update();
 		this.screenFilter.uniforms.uCurTime = curTime / 1000;
