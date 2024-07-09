@@ -1301,11 +1301,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 				}
 				// TODO: hit feedback
 				this.battleGridEnemy[y][x] = 'X';
+				this.reassemble();
 			}
-			this.actions.attacks.forEach((i) => {
-				// TODO: hit targeted cells
-				i[0], i[1];
-			});
 			// TODO: hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
