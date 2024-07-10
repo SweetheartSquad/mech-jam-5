@@ -283,10 +283,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
 	battleGrid: ('.' | '?' | 'X' | 'O')[][] = [];
+	damageBtns!: ReturnType<GameScene['makeBtnGrid']>;
 
 	mechEnemy!: ReturnType<GameScene['assembleParts']>;
 	modulesEnemy!: ReturnType<GameScene['assembleModules']>;
 	battleGridEnemy: ('.' | '?' | 'X' | 'O')[][] = [];
+	damageBtnsEnemy!: ReturnType<GameScene['makeBtnGrid']>;
 
 	async buildMech(): Promise<void> {
 		const done = await this.placeModules();
@@ -335,8 +337,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 				this.reassemble();
 
 				containerBtns.destroy();
-				const btns = this.makeBtnGrid('player', (btn) => {
-					btn.enabled = false;
+				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
+					if (cell === '=') {
+						btn.spr.texture = tex('cell joint');
 						btn.enabled = false;
 					}
 				});
@@ -464,36 +467,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 			};
 			document.addEventListener('contextmenu', onContext);
 
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const checkPlacement = () => {
-				valid = false;
-				forCells(gridBtnsByPos, (x, y, btn) => {
-					if (!btn) return;
-					btn.spr.tint = 0xffffff;
-					btn.spr.alpha = this.modules.grid[y][x] === 'x' ? 1 : 0;
-					btn.spr.texture = tex('cell button_normal');
-				});
-				if (!dragging) return;
-				if (!target) return;
-				valid = true;
-				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
-
-				const moduleD = modulesByName[dragging.label];
-				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
-
-				const { turns } = displayToPlacementProps(dragging);
-				const ox = Math.floor(moduleD.w / 2);
-				const oy = Math.floor(moduleD.h / 2);
-				const o = [ox, oy];
-				forCells(draggingCells, (x2, y2) => {
-					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
-					if (modulecell !== 'x') valid = false;
-				});
-
-				forCells(draggingCells, (x2, y2) => {
-					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 			const {
 				container: containerBtns,
 				gridBtns,
@@ -542,8 +515,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 						this.reassemble();
 						checkPlacement();
 					}
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
+				};
 				btn.spr.addEventListener('pointerover', () => {
 					target = btn;
 					checkPlacement();
@@ -561,13 +533,49 @@ SPACE: ${formatCount(freeCells, allCells)}
 					if (Number.isNaN(idx)) return;
 					this.modules.container.children[idx].alpha = 1;
 				});
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
 			});
+
+			const checkPlacement = () => {
+				valid = false;
+				forCells(gridBtnsByPos, (x, y, btn) => {
+					if (!btn) return;
+					btn.spr.tint = 0xffffff;
+					if (btn !== target && btn.enabled)
+						btn.spr.texture = tex('cell button_normal');
+				});
+				if (!dragging) return;
+				if (!target) return;
+				valid = true;
+				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
+
+				const moduleD = modulesByName[dragging.label];
+				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
+
+				const { turns } = displayToPlacementProps(dragging);
+				const ox = Math.floor(moduleD.w / 2);
+				const oy = Math.floor(moduleD.h / 2);
+				const o = [ox, oy];
+				if (turns % 2) o.reverse();
+				forCells(draggingCells, (x2, y2) => {
+					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
+					if (modulecell !== 'x') valid = false;
+				});
+
+				forCells(draggingCells, (x2, y2) => {
+					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
+					if (!btnNeighbour) return;
+					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
+					if (btnNeighbour !== target && btnNeighbour.enabled)
+						btnNeighbour.spr.texture = tex('cell button_over');
+				});
+			};
+
+			const startDragging = (moduleD: ModuleD) => {
+				dragging = makeModule(moduleD);
+				dragging.alpha = 0.5;
+				this.containerUI.addChild(dragging);
+				return dragging;
+			};
 
 			const dragger = new Updater(this.camera, () => {
 				if (!dragging) return;
@@ -716,19 +724,62 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
 
 		// TODO: better destroyed module display
-		this.modules.placed.forEach((i, idx) => {
-			if (this.moduleIsDestroyed(i, this.battleGrid)) {
-				this.modules.container.children[idx].tint = 0xff0000;
-			}
-		});
-		this.modulesEnemy.placed.forEach((i, idx) => {
-			if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
-				this.modulesEnemy.container.children[idx].visible = true;
-				this.modulesEnemy.container.children[idx].tint = 0xff0000;
-			} else {
-				this.modulesEnemy.container.children[idx].visible = false;
-			}
-		});
+		this.damageBtns?.container.destroy();
+		this.damageBtns?.gridBtns.forEach((i) => i.destroy());
+		if (this.battleGrid.length) {
+			this.damageBtns = this.makeBtnGrid('player', (btn, x, y, cell) => {
+				if (cell === '=') {
+					btn.spr.texture = tex('cell joint');
+					btn.enabled = false;
+				}
+				if (this.battleGrid[y][x] === 'X') {
+					btn.spr.texture = tex(
+						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
+							? 'cell damaged'
+							: 'cell detect_empty'
+					);
+					btn.enabled = false;
+				}
+			});
+			this.container.addChild(this.damageBtns.container);
+			this.modules.placed.forEach((i, idx) => {
+				if (this.moduleIsDestroyed(i, this.battleGrid)) {
+					this.modules.container.children[idx].tint = 0xff0000;
+				}
+			});
+		}
+		this.damageBtnsEnemy?.container.destroy();
+		this.damageBtnsEnemy?.gridBtns.forEach((i) => i.destroy());
+		if (this.battleGridEnemy.length) {
+			this.damageBtnsEnemy = this.makeBtnGrid('enemy', (btn, x, y, cell) => {
+				btn.onClick = () => {
+					// TODO: say what it is
+				};
+				// if (cell === '=') {
+				// 	btn.spr.texture = tex('cell joint');
+				// 	btn.enabled = false;
+				// }
+				if (this.battleGridEnemy[y][x] === 'X') {
+					btn.spr.texture = tex(
+						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
+							? 'cell damaged'
+							: 'cell detect_empty'
+					);
+					btn.enabled = false;
+				} else {
+					btn.display.container.visible = false;
+				}
+			});
+			this.container.addChild(this.damageBtnsEnemy.container);
+			this.modulesEnemy.placed.forEach((i, idx) => {
+				if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
+					this.modulesEnemy.container.children[idx].visible = true;
+					this.modulesEnemy.container.children[idx].tint = 0xff0000;
+				} else {
+					this.modulesEnemy.container.children[idx].visible = false;
+				}
+			});
+		}
 
 		this.updateMechInfo();
 	}
@@ -1045,6 +1096,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			/[^.]/,
 			'?'
 		) as typeof this.battleGrid;
+		this.reassemble();
 
 		do {
 			await this.pickActions();
