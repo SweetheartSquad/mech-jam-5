@@ -65,7 +65,7 @@ function updateResourceCache(assetsLoaded: Record<string, unknown>) {
 	Object.entries(assetsLoaded).forEach(([key, value]) => {
 		resources[key] = value;
 		const texture = value as Texture;
-		if (texture.label) {
+		if (texture?.label) {
 			texture.label = key;
 		}
 	});
