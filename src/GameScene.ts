@@ -1065,6 +1065,30 @@ SPACE: ${formatCount(freeCells, allCells)}
 		heatMax: 0,
 	};
 
+	tagsToPossibleActions(tags: string[]) {
+		let attacksMax = 0;
+		let shieldsAmt = 0;
+		let heatMax = 0;
+		tags.forEach((tag) => {
+			switch (tag) {
+				case 'cockpit':
+					++attacksMax;
+					++heatMax;
+					break;
+				case 'heatsink':
+					++heatMax;
+					break;
+				case 'attack':
+					++attacksMax;
+					break;
+				case 'shield':
+					++shieldsAmt;
+					break;
+			}
+		});
+		return { attacksMax, shieldsAmt, heatMax };
+	}
+
 	pickActions() {
 		// TODO
 		return new Promise<void>((r) => {
@@ -1099,26 +1123,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 			const tags = this.modules.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
 				.flatMap((i) => i.module.tags);
-			let attacksMax = 0;
-			let shieldsAmt = 0;
-			this.actions.heatMax = 0;
-			tags.forEach((tag) => {
-				switch (tag) {
-					case 'cockpit':
-						++attacksMax;
-						++this.actions.heatMax;
-						break;
-					case 'heatsink':
-						++this.actions.heatMax;
-						break;
-					case 'attack':
-						++attacksMax;
-						break;
-					case 'shield':
-						++shieldsAmt;
-						break;
-				}
-			});
+			const { attacksMax, shieldsAmt, heatMax } =
+				this.tagsToPossibleActions(tags);
+			this.actions.heatMax = heatMax;
 
 			const updateHeat = () => {
 				const heat = this.getHeat();
