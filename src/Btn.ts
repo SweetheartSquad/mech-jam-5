@@ -32,7 +32,7 @@ export class Btn extends GameObject {
 		let inside = false;
 		this.spr.on('pointerup', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
-			if (down) onClick(event);
+			if (down) this.onClick(event);
 		});
 		this.spr.on('pointerover', () => {
 			inside = true;
