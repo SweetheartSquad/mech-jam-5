@@ -330,13 +330,24 @@ SPACE: ${formatCount(freeCells, allCells)}
 			let arm = `arm ${this.mech.armLD.name}`;
 			let leg = `leg ${this.mech.legLD.name}`;
 
-			this.reassemble();
+			let containerBtns = new Container();
+			const update = () => {
+				this.reassemble();
+
+				containerBtns.destroy();
+				const btns = this.makeBtnGrid('player', (btn) => {
+					btn.enabled = false;
+				});
+				containerBtns = btns.container;
+				this.container.addChild(btns.container);
+			};
+			update();
 
 			const headBtns = cycler(
 				(newHead) => {
 					head = newHead;
 					this.mech.headD = this.getPart(newHead);
-					this.reassemble();
+					update();
 				},
 				this.pieces.heads,
 				head
@@ -345,7 +356,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				(newChest) => {
 					chest = newChest;
 					this.mech.chestD = this.getPart(chest);
-					this.reassemble();
+					update();
 				},
 				this.pieces.chests,
 				chest
@@ -355,7 +366,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					arm = newArm;
 					this.mech.armLD = this.getPart(arm);
 					this.mech.armRD = this.getPart(arm, true);
-					this.reassemble();
+					update();
 				},
 				this.pieces.arms,
 				arm
@@ -365,7 +376,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					leg = newLeg;
 					this.mech.legLD = this.getPart(leg);
 					this.mech.legRD = this.getPart(leg, true);
-					this.reassemble();
+					update();
 				},
 				this.pieces.legs,
 				leg
@@ -377,6 +388,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					i.container.destroy({ children: true });
 				});
 				btnDone.destroy();
+				containerBtns.destroy();
 				donePickingParts();
 			}, 'button');
 			this.containerUI.addChild(headBtns.container);
