@@ -1427,6 +1427,13 @@ SPACE: ${formatCount(freeCells, allCells)}
 				// - when to be more/less aggressive?
 				// - when to overheat?
 				if (randItem([true, false, false])) continue;
+				if (heatMax - shields - attacks.length < 0 && heatMax <= 1) continue;
+				if (
+					heatMax - shields - attacks.length < 0 &&
+					randItem([true, false, false, false, false, false])
+				)
+					continue;
+
 				const target = possibleTargets.pop();
 				if (!target) break;
 				attacks.push(target);
