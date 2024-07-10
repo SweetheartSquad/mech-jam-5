@@ -337,6 +337,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 				containerBtns.destroy();
 				const btns = this.makeBtnGrid('player', (btn) => {
 					btn.enabled = false;
+						btn.enabled = false;
+					}
 				});
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
@@ -485,7 +487,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 				const ox = Math.floor(moduleD.w / 2);
 				const oy = Math.floor(moduleD.h / 2);
 				const o = [ox, oy];
-				if (turns % 2) o.reverse();
 				forCells(draggingCells, (x2, y2) => {
 					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (modulecell !== 'x') valid = false;
@@ -493,34 +494,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 				forCells(draggingCells, (x2, y2) => {
 					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
-					if (!btnNeighbour) return;
-					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
-					btnNeighbour.spr.texture = tex('cell button_over');
-				});
-			};
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mech.container.x + (this.mech.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mech.container.y + (this.mech.gridDimensions.y + 0.5) * cellSize;
-
-			const startDragging = (moduleD: ModuleD) => {
-				dragging = makeModule(moduleD);
-				dragging.alpha = 0.5;
-				this.containerUI.addChild(dragging);
-				return dragging;
-			};
-
-			forCells(this.mech.grid, (x, y, cell) => {
-				if (cell !== '0') return;
-				const btn = new Btn((event) => {
+			const {
+				container: containerBtns,
+				gridBtns,
+				gridBtnsByPos,
+			} = this.makeBtnGrid('player', (btn, x, y, cell) => {
+				if (cell === '=') {
+					btn.spr.texture = tex('cell joint');
+					btn.enabled = false;
+				}
+				btn.onClick = (event) => {
 					const copying = event.shiftKey || event.ctrlKey;
 					if (!dragging) {
 						// check for module
 						const idx = Number(this.modules.grid[y][x]);
 						if (Number.isNaN(idx)) return;
 						let module: GameScene['modules']['placed'][number];
+						if (this.modules.placed[idx].module.tags.includes('joint')) return; // can't move joints
 						if (copying) {
 							// copy module
 							module = this.modules.placed[idx];
