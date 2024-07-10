@@ -1434,7 +1434,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 			// play enemy actions
 			shields; // TODO: save for next turn
-			attacks; // TODO: hit player
+
+			await this.attack({
+				attacks: attacks,
+				shields: this.actions.shield,
+				grid: this.battleGrid,
+			});
 
 			let overheat = this.getHeat() - heatMax;
 			while (overheat-- > 0) {
