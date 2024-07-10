@@ -37,6 +37,7 @@ import {
 	relativeMouse,
 	removeFromArray,
 	rotateMatrixClockwise,
+	shuffle,
 	tex,
 } from './utils';
 
@@ -1338,11 +1339,16 @@ SPACE: ${formatCount(freeCells, allCells)}
 				// TODO: animation
 				await delay(100);
 				// find heatsinks
-				const target = this.modules.placed
-					.filter((i) => i.module.tags.includes('heatsink'))
+				const target = shuffle(
+					this.modules.placed.filter((i) => i.module.tags.includes('heatsink'))
+				)
 					// and cockpits (lower priority)
 					.concat(
-						this.modules.placed.filter((i) => i.module.tags.includes('cockpit'))
+						shuffle(
+							this.modules.placed.filter((i) =>
+								i.module.tags.includes('cockpit')
+							)
+						)
 					)
 					// that aren't destroyed
 					.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))[0];
