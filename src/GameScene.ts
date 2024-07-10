@@ -37,6 +37,7 @@ import {
 	relativeMouse,
 	removeFromArray,
 	rotateMatrixClockwise,
+	shuffle,
 	tex,
 } from './utils';
 
@@ -1064,6 +1065,30 @@ SPACE: ${formatCount(freeCells, allCells)}
 		heatMax: 0,
 	};
 
+	tagsToPossibleActions(tags: string[]) {
+		let attacksMax = 0;
+		let shieldsAmt = 0;
+		let heatMax = 0;
+		tags.forEach((tag) => {
+			switch (tag) {
+				case 'cockpit':
+					++attacksMax;
+					++heatMax;
+					break;
+				case 'heatsink':
+					++heatMax;
+					break;
+				case 'attack':
+					++attacksMax;
+					break;
+				case 'shield':
+					++shieldsAmt;
+					break;
+			}
+		});
+		return { attacksMax, shieldsAmt, heatMax };
+	}
+
 	pickActions() {
 		// TODO
 		return new Promise<void>((r) => {
@@ -1098,26 +1123,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 			const tags = this.modules.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
 				.flatMap((i) => i.module.tags);
-			let attacksMax = 0;
-			let shieldsAmt = 0;
-			this.actions.heatMax = 0;
-			tags.forEach((tag) => {
-				switch (tag) {
-					case 'cockpit':
-						++attacksMax;
-						++this.actions.heatMax;
-						break;
-					case 'heatsink':
-						++this.actions.heatMax;
-						break;
-					case 'attack':
-						++attacksMax;
-						break;
-					case 'shield':
-						++shieldsAmt;
-						break;
-				}
-			});
+			const { attacksMax, shieldsAmt, heatMax } =
+				this.tagsToPossibleActions(tags);
+			this.actions.heatMax = heatMax;
 
 			const updateHeat = () => {
 				const heat = this.getHeat();
@@ -1317,6 +1325,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 		return this.actions.attacks.length + this.actions.shield;
 	}
 
+	overheat(placed: GameScene['modules']['placed'], grid: string[][]) {
+		// find heatsinks
+		const target = shuffle(
+			placed.filter((i) => i.module.tags.includes('heatsink'))
+		)
+			// and cockpits (lower priority)
+			.concat(shuffle(placed.filter((i) => i.module.tags.includes('cockpit'))))
+			// that aren't destroyed
+			.filter((i) => !this.moduleIsDestroyed(i, grid))[0];
+		if (!target) return; // already dead
+		// destroy part
+		this.forPlacedModuleCells(target, (x, y) => {
+			grid[y][x] = 'X';
+		});
+		this.reassemble();
+	}
+
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
@@ -1337,21 +1362,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				// find heatsinks
-				const target = this.modules.placed
-					.filter((i) => i.module.tags.includes('heatsink'))
-					// and cockpits (lower priority)
-					.concat(
-						this.modules.placed.filter((i) => i.module.tags.includes('cockpit'))
-					)
-					// that aren't destroyed
-					.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))[0];
-				if (!target) break; // already dead
-				// destroy part
-				this.forPlacedModuleCells(target, (x, y) => {
-					this.battleGrid[y][x] = 'X';
-				});
-				this.reassemble();
+				this.overheat(this.modules.placed, this.battleGrid);
 			}
 			r();
 		});
@@ -1359,19 +1370,63 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	enemyActions() {
 		// TODO
-		return new Promise<void>((r) => {
+		return new Promise<void>(async (r) => {
 			window.alert('enemy turn');
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
-			tags;
-			// TODO: decide whether to enable shields
+			const { attacksMax, shieldsAmt, heatMax } =
+				this.tagsToPossibleActions(tags);
+			let shields = 0;
+			let attacks: [number, number][] = [];
+
+			// pick enemy actions
+			// TODO: better deciding whether to enable shields
 			// - early or after reveals?
-			// TODO: decide player targets
-			// - search around revealed parts
-			// - search randomly
-			// - when to be more/less aggressive?
-			// - when to overheat?
+			if (shieldsAmt < heatMax && randItem([true, false])) {
+				shields = shieldsAmt;
+			} else if (
+				shieldsAmt > heatMax &&
+				heatMax > 1 &&
+				randItem([true, false, false, false, false, false])
+			) {
+				shields = shieldsAmt;
+			}
+
+			// pick targets
+			// TODO: better deciding what to target
+			// prioritize:
+			// 1. revealed parts
+			// 2. around partially destroyed parts
+			// 3. random
+			let possibleTargets: [number, number][] = [];
+			forCells(this.battleGrid, (x, y, cell) => {
+				if (cell !== 'X') {
+					possibleTargets.push([x, y]);
+				}
+			});
+			possibleTargets = shuffle(possibleTargets);
+
+			for (let i = 0; i < attacksMax; ++i) {
+				// TODO: better deciding whether to shoot
+				// - when to be more/less aggressive?
+				// - when to overheat?
+				if (randItem([true, false, false])) continue;
+				const target = possibleTargets.pop();
+				if (!target) break;
+				attacks.push(target);
+			}
+
+			// play enemy actions
+			shields; // TODO: save for next turn
+			attacks; // TODO: hit player
+
+			let overheat = this.getHeat() - heatMax;
+			while (overheat-- > 0) {
+				// TODO: animation
+				await delay(100);
+				this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+			}
 			r();
 		});
 	}
