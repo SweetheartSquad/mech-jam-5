@@ -1325,6 +1325,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 		return this.actions.attacks.length + this.actions.shield;
 	}
 
+	overheat(placed: GameScene['modules']['placed'], grid: string[][]) {
+		// find heatsinks
+		const target = shuffle(
+			placed.filter((i) => i.module.tags.includes('heatsink'))
+		)
+			// and cockpits (lower priority)
+			.concat(shuffle(placed.filter((i) => i.module.tags.includes('cockpit'))))
+			// that aren't destroyed
+			.filter((i) => !this.moduleIsDestroyed(i, grid))[0];
+		if (!target) return; // already dead
+		// destroy part
+		this.forPlacedModuleCells(target, (x, y) => {
+			grid[y][x] = 'X';
+		});
+		this.reassemble();
+	}
+
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
@@ -1345,26 +1362,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				// find heatsinks
-				const target = shuffle(
-					this.modules.placed.filter((i) => i.module.tags.includes('heatsink'))
-				)
-					// and cockpits (lower priority)
-					.concat(
-						shuffle(
-							this.modules.placed.filter((i) =>
-								i.module.tags.includes('cockpit')
-							)
-						)
-					)
-					// that aren't destroyed
-					.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))[0];
-				if (!target) break; // already dead
-				// destroy part
-				this.forPlacedModuleCells(target, (x, y) => {
-					this.battleGrid[y][x] = 'X';
-				});
-				this.reassemble();
+				this.overheat(this.modules.placed, this.battleGrid);
 			}
 			r();
 		});
