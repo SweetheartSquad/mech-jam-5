@@ -1342,21 +1342,36 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.reassemble();
 	}
 
+	attack({
+		attacks,
+		grid,
+		shields,
+	}: {
+		attacks: [number, number][];
+		grid: string[][];
+		shields: number;
+	}) {
+		for (let [x, y] of attacks) {
+			if (shields-- > 0) {
+				// TODO: hit shield feedback
+				continue;
+			}
+			// TODO: hit feedback
+			grid[y][x] = 'X';
+			this.reassemble();
+		}
+	}
+
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
 			window.alert('play actions');
-			// TODO: shield feedback
 			let shields = 0; // TODO: get enemy shields from last turn
-			for (let [x, y] of this.actions.attacks) {
-				if (shields-- > 0) {
-					// TODO: hit shield feedback
-					continue;
-				}
-				// TODO: hit feedback
-				this.battleGridEnemy[y][x] = 'X';
-				this.reassemble();
-			}
+			await this.attack({
+				attacks: this.actions.attacks,
+				shields,
+				grid: this.battleGridEnemy,
+			});
 			// TODO: hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
