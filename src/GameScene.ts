@@ -1342,27 +1342,42 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.reassemble();
 	}
 
+	attack({
+		attacks,
+		grid,
+		shields,
+	}: {
+		attacks: [number, number][];
+		grid: string[][];
+		shields: number;
+	}) {
+		for (let [x, y] of attacks) {
+			if (shields-- > 0) {
+				// TODO: hit shield feedback
+				continue;
+			}
+			// TODO: hit feedback
+			grid[y][x] = 'X';
+			this.reassemble();
+		}
+	}
+
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
 			window.alert('play actions');
-			// TODO: shield feedback
 			let shields = 0; // TODO: get enemy shields from last turn
-			for (let [x, y] of this.actions.attacks) {
-				if (shields-- > 0) {
-					// TODO: hit shield feedback
-					continue;
-				}
-				// TODO: hit feedback
-				this.battleGridEnemy[y][x] = 'X';
-				this.reassemble();
-			}
+			await this.attack({
+				attacks: this.actions.attacks,
+				shields,
+				grid: this.battleGridEnemy,
+			});
 			// TODO: hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				this.overheat(this.modules.placed, this.battleGrid);
+				await this.overheat(this.modules.placed, this.battleGrid);
 			}
 			r();
 		});
@@ -1412,6 +1427,13 @@ SPACE: ${formatCount(freeCells, allCells)}
 				// - when to be more/less aggressive?
 				// - when to overheat?
 				if (randItem([true, false, false])) continue;
+				if (heatMax - shields - attacks.length < 0 && heatMax <= 1) continue;
+				if (
+					heatMax - shields - attacks.length < 0 &&
+					randItem([true, false, false, false, false, false])
+				)
+					continue;
+
 				const target = possibleTargets.pop();
 				if (!target) break;
 				attacks.push(target);
@@ -1419,13 +1441,18 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 			// play enemy actions
 			shields; // TODO: save for next turn
-			attacks; // TODO: hit player
+
+			await this.attack({
+				attacks: attacks,
+				shields: this.actions.shield,
+				grid: this.battleGrid,
+			});
 
 			let overheat = this.getHeat() - heatMax;
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
 			}
 			r();
 		});
