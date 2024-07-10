@@ -19,7 +19,7 @@ uniform vec3 uBg;
 uniform vec3 uFg;
 
 uniform vec2 camPos;
-const vec2 size = vec2(256.0);
+const vec2 size = vec2(960.0,540.0);
 const vec2 ditherSize = vec2(2.0);
 const vec3 col1 = vec3(255.0, 165.0, 0.0) / 255.0;
 const vec3 col2 = vec3(81.0, 197.0, 194.0) / 255.0;
@@ -84,7 +84,9 @@ void main(void) {
 	vec2 noiseT = vec2(rand(vec2(0.0, t - mod(t, 0.4))), rand(vec2(t - mod(t, 0.4), 0.0)));
 	// uv += (noise(uv*10.0 + noiseT)-0.5)*uNoise;
 
-	vec3 col = chrAbb(uv, abs(uv.x-0.5)*0.5, 0.5);
+	vec3 col = chrAbb(uv, abs(uv.x-0.5)*1.5, 0.5);
+	uv /= size;
+	uv *= 1024.0;
 
 	// fx
 	col = (col - 0.5 + (brightness - 1.0)) * contrast + 0.5;
@@ -94,7 +96,8 @@ void main(void) {
 	// col = mix(uBg, uFg, col) / 255.0;
 
 	// scanlines
-	if (fract(uv.y * size.y * 0.5) > 0.9) col*= 0.5;
+	const float gap = 1.0 / 8.0;
+	col *= (step(fract(uv.y * size.y * gap), 1.0 - gap)*0.5 + 0.5);
 
 	// soft vignette
 	float haze = 0.02;
