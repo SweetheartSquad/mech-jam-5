@@ -135,19 +135,25 @@ export function mechPartParse(
 
 export type MechD = ReturnType<typeof mechPartParse>;
 
-export function makePart(piece: ReturnType<typeof mechPartParse>) {
+export function makePart(
+	piece: ReturnType<typeof mechPartParse>,
+	showCells = false
+) {
 	const sprBase = new Sprite(piece.tex);
 	sprBase.label = `${piece.name} sprite`;
 	const containerCells = new Container();
 	containerCells.label = `${piece.name} cells`;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
-	forCells(piece.cells, (x, y) => {
-		const sprCell = new Sprite(tex('blank'));
+	forCells(piece.cells, (x, y, cell) => {
+		const sprCell = new Sprite(
+			tex(cell === '=' ? 'cell joint' : 'cell button_normal')
+		);
 		sprCell.anchor.x = sprCell.anchor.y = 0;
 		sprCell.x = x * cellSize;
 		sprCell.y = y * cellSize;
 		sprCell.width = cellSize;
 		sprCell.height = cellSize;
+		sprCell.alpha = showCells ? 1 : 0;
 		containerCells.addChild(sprCell);
 	});
 	return [sprBase, containerCells];

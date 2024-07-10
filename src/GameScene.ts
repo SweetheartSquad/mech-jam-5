@@ -685,7 +685,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 			`head ${this.mech.headD.name}`,
 			`chest ${this.mech.chestD.name}`,
 			`arm ${this.mech.armLD.name}`,
-			`leg ${this.mech.legLD.name}`
+			`leg ${this.mech.legLD.name}`,
+			this.battleGrid.length > 0
 		);
 		this.modules.container.destroy({ children: true });
 		this.modules = this.assembleModules(this.modules?.placed || []);
@@ -728,10 +729,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.damageBtns?.gridBtns.forEach((i) => i.destroy());
 		if (this.battleGrid.length) {
 			this.damageBtns = this.makeBtnGrid('player', (btn, x, y, cell) => {
-				if (cell === '=') {
-					btn.spr.texture = tex('cell joint');
-					btn.enabled = false;
-				}
 				if (this.battleGrid[y][x] === 'X') {
 					btn.spr.texture = tex(
 						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
@@ -739,6 +736,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 							: 'cell detect_empty'
 					);
 					btn.enabled = false;
+				} else {
+					btn.display.container.visible = false;
 				}
 			});
 			this.container.addChild(this.damageBtns.container);
@@ -755,13 +754,10 @@ SPACE: ${formatCount(freeCells, allCells)}
 				btn.onClick = () => {
 					// TODO: say what it is
 				};
-				// if (cell === '=') {
-				// 	btn.spr.texture = tex('cell joint');
-				// 	btn.enabled = false;
-				// }
 				if (this.battleGridEnemy[y][x] === 'X') {
 					btn.spr.texture = tex(
-						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
+						this.mechEnemy.grid[y][x] === '=' ||
+							this.modulesEnemy.grid[y][x] !== 'x'
 							? 'cell damaged'
 							: 'cell detect_empty'
 					);
@@ -801,7 +797,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 		headKey: string,
 		chestKey: string,
 		armKey: string,
-		legKey: string
+		legKey: string,
+		showCells?: boolean
 	): {
 		container: Container;
 		headD: PartD;
@@ -826,12 +823,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 		const armLD = this.getPart(armKey);
 		const legRD = this.getPart(legKey, true);
 		const armRD = this.getPart(armKey, true);
-		const [sprHead, cellsHead] = makePart(headD);
-		const [sprChest, cellsChest] = makePart(chestD);
-		const [sprArmR, cellsArmR] = makePart(armRD);
-		const [sprArmL, cellsArmL] = makePart(armLD);
-		const [sprLegR, cellsLegR] = makePart(legRD);
-		const [sprLegL, cellsLegL] = makePart(legLD);
+		const [sprHead, cellsHead] = makePart(headD, showCells);
+		const [sprChest, cellsChest] = makePart(chestD, showCells);
+		const [sprArmR, cellsArmR] = makePart(armRD, showCells);
+		const [sprArmL, cellsArmL] = makePart(armLD, showCells);
+		const [sprLegR, cellsLegR] = makePart(legRD, showCells);
+		const [sprLegL, cellsLegL] = makePart(legLD, showCells);
 		const pairs = [
 			[sprHead, cellsHead],
 			[sprChest, cellsChest],
@@ -1344,37 +1341,29 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	pickTarget() {
 		return new Promise<[number, number] | false>((r) => {
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mechEnemy.container.x +
-				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mechEnemy.container.y +
-				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
-
+			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
+				'enemy',
+				(btn, x, y) => {
+					if (
+						this.battleGridEnemy[y][x] === 'X' ||
+						this.actions.attacks.some((i) => i[0] === x && i[1] === y)
+					) {
+						btn.enabled = false;
+						btn.display.container.visible = false;
+						return;
+					}
+					btn.onClick = () => {
+						destroy();
+						r([x, y]);
+					};
+				}
+			);
 			const destroy = () => {
 				containerBtns.destroy();
+				gridBtns.forEach((i) => i.destroy());
 				document.removeEventListener('contextmenu', onContext);
 			};
 
-			forCells(this.mechEnemy.grid, (x, y) => {
-				if (this.battleGridEnemy[y][x] === 'X') return;
-				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
-				const btn = new Btn(() => {
-					destroy();
-					r([x, y]);
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
-			});
 			this.containerUI.addChild(containerBtns);
 
 			const onContext = (event: MouseEvent) => {
