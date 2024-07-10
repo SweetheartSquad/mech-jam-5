@@ -400,6 +400,33 @@ SPACE: ${formatCount(freeCells, allCells)}
 		});
 	}
 
+	makeBtnGrid(
+		who: 'player' | 'enemy',
+		cb: (btn: Btn, x: number, y: number, cell: string) => void
+	) {
+		const grid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
+		const mech = who === 'player' ? this.mech : this.mechEnemy;
+		const container = new Container();
+		const gridBtns: Btn[] = [];
+		const gridBtnsByPos: Btn[][] = [];
+		const noop = () => {};
+		forCells(grid, (x, y, cell) => {
+			const btn = new Btn(noop, 'cell button');
+			btn.enabled = false;
+			btn.spr.label = `${x},${y}`;
+			btn.transform.x = x * cellSize;
+			btn.transform.y = y * cellSize;
+			container.addChild(btn.display.container);
+			gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+			gridBtnsByPos[y][x] = btn;
+			gridBtns.push(btn);
+			cb(btn, x, y, cell);
+		});
+		container.x = mech.container.x + (mech.gridDimensions.x + 0.5) * cellSize;
+		container.y = mech.container.y + (mech.gridDimensions.y + 0.5) * cellSize;
+		return { container, gridBtns, gridBtnsByPos };
+	}
+
 	placeModules() {
 		return new Promise<boolean>((donePlacingModules) => {
 			const modules = this.pieces.modules.map((i) => this.getModule(i));
