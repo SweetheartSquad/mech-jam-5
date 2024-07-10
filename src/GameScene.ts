@@ -1377,7 +1377,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				this.overheat(this.modules.placed, this.battleGrid);
+				await this.overheat(this.modules.placed, this.battleGrid);
 			}
 			r();
 		});
@@ -1440,7 +1440,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
 			}
 			r();
 		});
