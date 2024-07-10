@@ -1370,19 +1370,63 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	enemyActions() {
 		// TODO
-		return new Promise<void>((r) => {
+		return new Promise<void>(async (r) => {
 			window.alert('enemy turn');
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
-			tags;
-			// TODO: decide whether to enable shields
+			const { attacksMax, shieldsAmt, heatMax } =
+				this.tagsToPossibleActions(tags);
+			let shields = 0;
+			let attacks: [number, number][] = [];
+
+			// pick enemy actions
+			// TODO: better deciding whether to enable shields
 			// - early or after reveals?
-			// TODO: decide player targets
-			// - search around revealed parts
-			// - search randomly
-			// - when to be more/less aggressive?
-			// - when to overheat?
+			if (shieldsAmt < heatMax && randItem([true, false])) {
+				shields = shieldsAmt;
+			} else if (
+				shieldsAmt > heatMax &&
+				heatMax > 1 &&
+				randItem([true, false, false, false, false, false])
+			) {
+				shields = shieldsAmt;
+			}
+
+			// pick targets
+			// TODO: better deciding what to target
+			// prioritize:
+			// 1. revealed parts
+			// 2. around partially destroyed parts
+			// 3. random
+			let possibleTargets: [number, number][] = [];
+			forCells(this.battleGrid, (x, y, cell) => {
+				if (cell !== 'X') {
+					possibleTargets.push([x, y]);
+				}
+			});
+			possibleTargets = shuffle(possibleTargets);
+
+			for (let i = 0; i < attacksMax; ++i) {
+				// TODO: better deciding whether to shoot
+				// - when to be more/less aggressive?
+				// - when to overheat?
+				if (randItem([true, false, false])) continue;
+				const target = possibleTargets.pop();
+				if (!target) break;
+				attacks.push(target);
+			}
+
+			// play enemy actions
+			shields; // TODO: save for next turn
+			attacks; // TODO: hit player
+
+			let overheat = this.getHeat() - heatMax;
+			while (overheat-- > 0) {
+				// TODO: animation
+				await delay(100);
+				this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+			}
 			r();
 		});
 	}
