@@ -1422,7 +1422,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.reassemble();
 	}
 
-	attack({
+	async attack({
 		attacks,
 		grid,
 		shields,
@@ -1432,6 +1432,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		shields: number;
 	}) {
 		for (let [x, y] of attacks) {
+			await delay(100);
 			if (shields-- > 0) {
 				// TODO: hit shield feedback
 				continue;
