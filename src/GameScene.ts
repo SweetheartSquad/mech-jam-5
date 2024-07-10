@@ -1176,29 +1176,16 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.actions.shield = 0;
 			this.actions.attacks = [];
 
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mechEnemy.container.x +
-				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mechEnemy.container.y +
-				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
-
-			forCells(this.mechEnemy.grid, (x, y) => {
-				const btn = new Btn(() => {
-					// TODO: inspect hit/revealed modules
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
+			const {
+				container: containerBtns,
+				gridBtns,
+				gridBtnsByPos,
+			} = this.makeBtnGrid('enemy', (btn, x, y) => {
+				btn.enabled = false;
+				btn.spr.texture = tex('cell detect_filled');
+				btn.display.container.tint = 0xff0000;
 			});
+
 			this.container.addChild(containerBtns);
 			const tags = this.modules.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
@@ -1237,13 +1224,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 				gridBtns.forEach((i) => {
 					i.display.container.visible = false;
-					i.display.container.tint = 0xffffff;
 				});
 				this.actions.attacks.forEach((i) => {
 					const btn = gridBtnsByPos[i[1]]?.[i[0]];
 					if (!btn) return;
 					btn.display.container.visible = true;
-					btn.display.container.tint = 0xff0000;
 				});
 				updateHeat();
 			};
