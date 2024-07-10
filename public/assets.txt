@@ -50,6 +50,10 @@ textures/cell damaged.png
 textures/cell detect_empty.png
 textures/cell detect_filled.png
 
+textures/module debug cockpit.png
+textures/module debug attack.png
+textures/module debug shield.png
+textures/module debug heat.png
 textures/module Cockpit.png
 textures/module Tee.png
 textures/module Bar.png
