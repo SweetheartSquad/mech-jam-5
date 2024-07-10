@@ -10,6 +10,7 @@ export class Btn extends GameObject {
 	spr: Sprite;
 	display: Display;
 	transform: Transform;
+	_enabled = true;
 
 	constructor(
 		public onClick: (event: FederatedPointerEvent) => void,
@@ -31,14 +32,17 @@ export class Btn extends GameObject {
 		let down = false;
 		let inside = false;
 		this.spr.on('pointerup', (event) => {
+			if (!this._enabled) return;
 			if (event && event.button !== mouse.LEFT) return;
-			if (down) onClick(event);
+			if (down) this.onClick(event);
 		});
 		this.spr.on('pointerover', () => {
+			if (!this._enabled) return;
 			inside = true;
 			this.spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
 		});
 		this.spr.on('pointerdown', (event) => {
+			if (!this._enabled) return;
 			if (event && event.button !== mouse.LEFT) return;
 			down = true;
 			this.spr.texture = tex(`${texture}_down`);
@@ -53,9 +57,18 @@ export class Btn extends GameObject {
 			sfx(texture, { rate: Math.random() * 0.2 + 0.9 });
 		});
 		this.spr.on('pointerout', () => {
+			if (!this._enabled) return;
 			inside = false;
 			this.spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
 		});
 		this.init();
+	}
+
+	public set enabled(v: boolean) {
+		this._enabled = v;
+		this.spr.cursor = v ? 'pointer' : 'auto';
+	}
+	public get enabled() {
+		return this._enabled;
 	}
 }

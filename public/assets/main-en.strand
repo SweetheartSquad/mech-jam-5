@@ -782,16 +782,6 @@ Some more text.
 ---
 000
 
-::module Bar3
-A weirdly shaped cockpit.
-
-Some more text.
----
-750, cockpit
----
-0.0.
-.0.0
-
 ::module Single
 A small cockpit.
 

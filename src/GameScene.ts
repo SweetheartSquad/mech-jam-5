@@ -283,10 +283,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
 	battleGrid: ('.' | '?' | 'X' | 'O')[][] = [];
+	damageBtns!: ReturnType<GameScene['makeBtnGrid']>;
 
 	mechEnemy!: ReturnType<GameScene['assembleParts']>;
 	modulesEnemy!: ReturnType<GameScene['assembleModules']>;
 	battleGridEnemy: ('.' | '?' | 'X' | 'O')[][] = [];
+	damageBtnsEnemy!: ReturnType<GameScene['makeBtnGrid']>;
 
 	async buildMech(): Promise<void> {
 		const done = await this.placeModules();
@@ -330,13 +332,27 @@ SPACE: ${formatCount(freeCells, allCells)}
 			let arm = `arm ${this.mech.armLD.name}`;
 			let leg = `leg ${this.mech.legLD.name}`;
 
-			this.reassemble();
+			let containerBtns = new Container();
+			const update = () => {
+				this.reassemble();
+
+				containerBtns.destroy();
+				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
+					if (cell === '=') {
+						btn.spr.texture = tex('cell joint');
+						btn.enabled = false;
+					}
+				});
+				containerBtns = btns.container;
+				this.container.addChild(btns.container);
+			};
+			update();
 
 			const headBtns = cycler(
 				(newHead) => {
 					head = newHead;
 					this.mech.headD = this.getPart(newHead);
-					this.reassemble();
+					update();
 				},
 				this.pieces.heads,
 				head
@@ -345,7 +361,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				(newChest) => {
 					chest = newChest;
 					this.mech.chestD = this.getPart(chest);
-					this.reassemble();
+					update();
 				},
 				this.pieces.chests,
 				chest
@@ -355,7 +371,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					arm = newArm;
 					this.mech.armLD = this.getPart(arm);
 					this.mech.armRD = this.getPart(arm, true);
-					this.reassemble();
+					update();
 				},
 				this.pieces.arms,
 				arm
@@ -365,7 +381,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					leg = newLeg;
 					this.mech.legLD = this.getPart(leg);
 					this.mech.legRD = this.getPart(leg, true);
-					this.reassemble();
+					update();
 				},
 				this.pieces.legs,
 				leg
@@ -377,6 +393,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					i.container.destroy({ children: true });
 				});
 				btnDone.destroy();
+				containerBtns.destroy();
 				donePickingParts();
 			}, 'button');
 			this.containerUI.addChild(headBtns.container);
@@ -398,6 +415,32 @@ SPACE: ${formatCount(freeCells, allCells)}
 			legBtns.container.x += size.x / 4;
 			btnDone.transform.x += size.x / 4;
 		});
+	}
+
+	makeBtnGrid(
+		who: 'player' | 'enemy',
+		cb: (btn: Btn, x: number, y: number, cell: string) => void
+	) {
+		const grid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
+		const mech = who === 'player' ? this.mech : this.mechEnemy;
+		const container = new Container();
+		const gridBtns: Btn[] = [];
+		const gridBtnsByPos: Btn[][] = [];
+		const noop = () => {};
+		forCells(grid, (x, y, cell) => {
+			const btn = new Btn(noop, 'cell button');
+			btn.spr.label = `${x},${y}`;
+			btn.transform.x = x * cellSize;
+			btn.transform.y = y * cellSize;
+			container.addChild(btn.display.container);
+			gridBtnsByPos[y] = gridBtnsByPos[y] || [];
+			gridBtnsByPos[y][x] = btn;
+			gridBtns.push(btn);
+			cb(btn, x, y, cell);
+		});
+		container.x = mech.container.x + (mech.gridDimensions.x + 0.5) * cellSize;
+		container.y = mech.container.y + (mech.gridDimensions.y + 0.5) * cellSize;
+		return { container, gridBtns, gridBtnsByPos };
 	}
 
 	placeModules() {
@@ -424,65 +467,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 			};
 			document.addEventListener('contextmenu', onContext);
 
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const checkPlacement = () => {
-				valid = false;
-				forCells(gridBtnsByPos, (x, y, btn) => {
-					if (!btn) return;
-					btn.spr.tint = 0xffffff;
-					btn.spr.alpha = this.modules.grid[y][x] === 'x' ? 1 : 0;
-					btn.spr.texture = tex('cell button_normal');
-				});
-				if (!dragging) return;
-				if (!target) return;
-				valid = true;
-				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
-
-				const moduleD = modulesByName[dragging.label];
-				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
-
-				const { turns } = displayToPlacementProps(dragging);
-				const ox = Math.floor(moduleD.w / 2);
-				const oy = Math.floor(moduleD.h / 2);
-				const o = [ox, oy];
-				if (turns % 2) o.reverse();
-				forCells(draggingCells, (x2, y2) => {
-					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
-					if (modulecell !== 'x') valid = false;
-				});
-
-				forCells(draggingCells, (x2, y2) => {
-					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
-					if (!btnNeighbour) return;
-					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
-					btnNeighbour.spr.texture = tex('cell button_over');
-				});
-			};
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mech.container.x + (this.mech.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mech.container.y + (this.mech.gridDimensions.y + 0.5) * cellSize;
-
-			const startDragging = (moduleD: ModuleD) => {
-				dragging = makeModule(moduleD);
-				dragging.alpha = 0.5;
-				this.containerUI.addChild(dragging);
-				return dragging;
-			};
-
-			forCells(this.mech.grid, (x, y, cell) => {
-				if (cell !== '0') return;
-				const btn = new Btn((event) => {
+			const {
+				container: containerBtns,
+				gridBtns,
+				gridBtnsByPos,
+			} = this.makeBtnGrid('player', (btn, x, y, cell) => {
+				if (cell === '=') {
+					btn.spr.texture = tex('cell joint');
+					btn.enabled = false;
+				}
+				btn.onClick = (event) => {
 					const copying = event.shiftKey || event.ctrlKey;
 					if (!dragging) {
 						// check for module
 						const idx = Number(this.modules.grid[y][x]);
 						if (Number.isNaN(idx)) return;
 						let module: GameScene['modules']['placed'][number];
+						if (this.modules.placed[idx].module.tags.includes('joint')) return; // can't move joints
 						if (copying) {
 							// copy module
 							module = this.modules.placed[idx];
@@ -514,8 +515,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 						this.reassemble();
 						checkPlacement();
 					}
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
+				};
 				btn.spr.addEventListener('pointerover', () => {
 					target = btn;
 					checkPlacement();
@@ -533,13 +533,49 @@ SPACE: ${formatCount(freeCells, allCells)}
 					if (Number.isNaN(idx)) return;
 					this.modules.container.children[idx].alpha = 1;
 				});
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
 			});
+
+			const checkPlacement = () => {
+				valid = false;
+				forCells(gridBtnsByPos, (x, y, btn) => {
+					if (!btn) return;
+					btn.spr.tint = 0xffffff;
+					if (btn !== target && btn.enabled)
+						btn.spr.texture = tex('cell button_normal');
+				});
+				if (!dragging) return;
+				if (!target) return;
+				valid = true;
+				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
+
+				const moduleD = modulesByName[dragging.label];
+				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
+
+				const { turns } = displayToPlacementProps(dragging);
+				const ox = Math.floor(moduleD.w / 2);
+				const oy = Math.floor(moduleD.h / 2);
+				const o = [ox, oy];
+				if (turns % 2) o.reverse();
+				forCells(draggingCells, (x2, y2) => {
+					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
+					if (modulecell !== 'x') valid = false;
+				});
+
+				forCells(draggingCells, (x2, y2) => {
+					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
+					if (!btnNeighbour) return;
+					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
+					if (btnNeighbour !== target && btnNeighbour.enabled)
+						btnNeighbour.spr.texture = tex('cell button_over');
+				});
+			};
+
+			const startDragging = (moduleD: ModuleD) => {
+				dragging = makeModule(moduleD);
+				dragging.alpha = 0.5;
+				this.containerUI.addChild(dragging);
+				return dragging;
+			};
 
 			const dragger = new Updater(this.camera, () => {
 				if (!dragging) return;
@@ -649,7 +685,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 			`head ${this.mech.headD.name}`,
 			`chest ${this.mech.chestD.name}`,
 			`arm ${this.mech.armLD.name}`,
-			`leg ${this.mech.legLD.name}`
+			`leg ${this.mech.legLD.name}`,
+			this.battleGrid.length > 0
 		);
 		this.modules.container.destroy({ children: true });
 		this.modules = this.assembleModules(this.modules?.placed || []);
@@ -688,19 +725,57 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
 
 		// TODO: better destroyed module display
-		this.modules.placed.forEach((i, idx) => {
-			if (this.moduleIsDestroyed(i, this.battleGrid)) {
-				this.modules.container.children[idx].tint = 0xff0000;
-			}
-		});
-		this.modulesEnemy.placed.forEach((i, idx) => {
-			if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
-				this.modulesEnemy.container.children[idx].visible = true;
-				this.modulesEnemy.container.children[idx].tint = 0xff0000;
-			} else {
-				this.modulesEnemy.container.children[idx].visible = false;
-			}
-		});
+		this.damageBtns?.container.destroy();
+		this.damageBtns?.gridBtns.forEach((i) => i.destroy());
+		if (this.battleGrid.length) {
+			this.damageBtns = this.makeBtnGrid('player', (btn, x, y, cell) => {
+				if (this.battleGrid[y][x] === 'X') {
+					btn.spr.texture = tex(
+						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
+							? 'cell damaged'
+							: 'cell detect_empty'
+					);
+					btn.enabled = false;
+				} else {
+					btn.display.container.visible = false;
+				}
+			});
+			this.container.addChild(this.damageBtns.container);
+			this.modules.placed.forEach((i, idx) => {
+				if (this.moduleIsDestroyed(i, this.battleGrid)) {
+					this.modules.container.children[idx].tint = 0xff0000;
+				}
+			});
+		}
+		this.damageBtnsEnemy?.container.destroy();
+		this.damageBtnsEnemy?.gridBtns.forEach((i) => i.destroy());
+		if (this.battleGridEnemy.length) {
+			this.damageBtnsEnemy = this.makeBtnGrid('enemy', (btn, x, y, cell) => {
+				btn.onClick = () => {
+					// TODO: say what it is
+				};
+				if (this.battleGridEnemy[y][x] === 'X') {
+					btn.spr.texture = tex(
+						this.mechEnemy.grid[y][x] === '=' ||
+							this.modulesEnemy.grid[y][x] !== 'x'
+							? 'cell damaged'
+							: 'cell detect_empty'
+					);
+					btn.enabled = false;
+				} else {
+					btn.display.container.visible = false;
+				}
+			});
+			this.container.addChild(this.damageBtnsEnemy.container);
+			this.modulesEnemy.placed.forEach((i, idx) => {
+				if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
+					this.modulesEnemy.container.children[idx].visible = true;
+					this.modulesEnemy.container.children[idx].tint = 0xff0000;
+				} else {
+					this.modulesEnemy.container.children[idx].visible = false;
+				}
+			});
+		}
 
 		this.updateMechInfo();
 	}
@@ -722,7 +797,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 		headKey: string,
 		chestKey: string,
 		armKey: string,
-		legKey: string
+		legKey: string,
+		showCells?: boolean
 	): {
 		container: Container;
 		headD: PartD;
@@ -747,12 +823,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 		const armLD = this.getPart(armKey);
 		const legRD = this.getPart(legKey, true);
 		const armRD = this.getPart(armKey, true);
-		const [sprHead, cellsHead] = makePart(headD);
-		const [sprChest, cellsChest] = makePart(chestD);
-		const [sprArmR, cellsArmR] = makePart(armRD);
-		const [sprArmL, cellsArmL] = makePart(armLD);
-		const [sprLegR, cellsLegR] = makePart(legRD);
-		const [sprLegL, cellsLegL] = makePart(legLD);
+		const [sprHead, cellsHead] = makePart(headD, showCells);
+		const [sprChest, cellsChest] = makePart(chestD, showCells);
+		const [sprArmR, cellsArmR] = makePart(armRD, showCells);
+		const [sprArmL, cellsArmL] = makePart(armLD, showCells);
+		const [sprLegR, cellsLegR] = makePart(legRD, showCells);
+		const [sprLegL, cellsLegL] = makePart(legLD, showCells);
 		const pairs = [
 			[sprHead, cellsHead],
 			[sprChest, cellsChest],
@@ -1017,6 +1093,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			/[^.]/,
 			'?'
 		) as typeof this.battleGrid;
+		this.reassemble();
 
 		do {
 			await this.pickActions();
@@ -1096,29 +1173,16 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.actions.shield = 0;
 			this.actions.attacks = [];
 
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mechEnemy.container.x +
-				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mechEnemy.container.y +
-				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
-
-			forCells(this.mechEnemy.grid, (x, y) => {
-				const btn = new Btn(() => {
-					// TODO: inspect hit/revealed modules
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
+			const {
+				container: containerBtns,
+				gridBtns,
+				gridBtnsByPos,
+			} = this.makeBtnGrid('enemy', (btn, x, y) => {
+				btn.enabled = false;
+				btn.spr.texture = tex('cell detect_filled');
+				btn.display.container.tint = 0xff0000;
 			});
+
 			this.container.addChild(containerBtns);
 			const tags = this.modules.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
@@ -1157,13 +1221,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 				gridBtns.forEach((i) => {
 					i.display.container.visible = false;
-					i.display.container.tint = 0xffffff;
 				});
 				this.actions.attacks.forEach((i) => {
 					const btn = gridBtnsByPos[i[1]]?.[i[0]];
 					if (!btn) return;
 					btn.display.container.visible = true;
-					btn.display.container.tint = 0xff0000;
 				});
 				updateHeat();
 			};
@@ -1279,37 +1341,29 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	pickTarget() {
 		return new Promise<[number, number] | false>((r) => {
-			const gridBtns: Btn[] = [];
-			const gridBtnsByPos: Btn[][] = [];
-
-			const containerBtns = new Container();
-			containerBtns.x =
-				this.mechEnemy.container.x +
-				(this.mechEnemy.gridDimensions.x + 0.5) * cellSize;
-			containerBtns.y =
-				this.mechEnemy.container.y +
-				(this.mechEnemy.gridDimensions.y + 0.5) * cellSize;
-
+			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
+				'enemy',
+				(btn, x, y) => {
+					if (
+						this.battleGridEnemy[y][x] === 'X' ||
+						this.actions.attacks.some((i) => i[0] === x && i[1] === y)
+					) {
+						btn.enabled = false;
+						btn.display.container.visible = false;
+						return;
+					}
+					btn.onClick = () => {
+						destroy();
+						r([x, y]);
+					};
+				}
+			);
 			const destroy = () => {
 				containerBtns.destroy();
+				gridBtns.forEach((i) => i.destroy());
 				document.removeEventListener('contextmenu', onContext);
 			};
 
-			forCells(this.mechEnemy.grid, (x, y) => {
-				if (this.battleGridEnemy[y][x] === 'X') return;
-				if (this.actions.attacks.some((i) => i[0] === x && i[1] === y)) return;
-				const btn = new Btn(() => {
-					destroy();
-					r([x, y]);
-				}, 'cell button');
-				btn.spr.label = `${x},${y}`;
-				btn.transform.x = x * cellSize;
-				btn.transform.y = y * cellSize;
-				containerBtns.addChild(btn.display.container);
-				gridBtnsByPos[y] = gridBtnsByPos[y] || [];
-				gridBtnsByPos[y][x] = btn;
-				gridBtns.push(btn);
-			});
 			this.containerUI.addChild(containerBtns);
 
 			const onContext = (event: MouseEvent) => {
@@ -1342,7 +1396,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.reassemble();
 	}
 
-	attack({
+	async attack({
 		attacks,
 		grid,
 		shields,
@@ -1352,6 +1406,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		shields: number;
 	}) {
 		for (let [x, y] of attacks) {
+			await delay(100);
 			if (shields-- > 0) {
 				// TODO: hit shield feedback
 				continue;
