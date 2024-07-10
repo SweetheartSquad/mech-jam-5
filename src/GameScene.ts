@@ -424,7 +424,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 		const noop = () => {};
 		forCells(grid, (x, y, cell) => {
 			const btn = new Btn(noop, 'cell button');
-			btn.enabled = false;
 			btn.spr.label = `${x},${y}`;
 			btn.transform.x = x * cellSize;
 			btn.transform.y = y * cellSize;
