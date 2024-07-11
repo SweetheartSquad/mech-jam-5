@@ -414,6 +414,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 					['leg', this.mech.legLD.name, this.pieces.legs, scrollerLegs],
 				] as const
 			).forEach(([type, current, pieces, scroller]) => {
+				const sprPadding = new Sprite(tex('blank'));
+				sprPadding.height = 100;
+				scroller.addChild(sprPadding);
 				pieces.forEach((i) => {
 					const part = this.getPart(i);
 					const spr = new Sprite(part.tex);
@@ -488,6 +491,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 					i.container.y -= size.y / 2;
 				}
 			);
+
+			containerScrollers.x -= size.x / 2;
+			containerScrollers.x += scrollerHeads.container.width / 2;
+			containerScrollers.y -= size.y / 2;
+			containerScrollers.y += containerScrollers.height;
 
 			btnDone.transform.y -= btnDone.display.container.height;
 			btnDone.transform.x += size.x / 4;
