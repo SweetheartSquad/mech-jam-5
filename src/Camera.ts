@@ -1,5 +1,4 @@
 import { Container } from 'pixi.js';
-import { game } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import * as VMath from './VMath';
@@ -47,22 +46,12 @@ export class Camera extends GameObject {
 		super.update();
 		this.updateTarget();
 
-		const dt = 1 - Math.exp(-game.app.ticker.deltaTime * 0.16);
 		VMath.copy(
 			this.display.container.pivot,
-			VMath.add(
-				VMath.add(
-					VMath.multiply(
-						VMath.subtract(this.targetPivot, this.display.container.pivot),
-						dt
-					),
-					this.display.container.pivot
-				),
-				{
-					x: randRange(-this.shake, this.shake),
-					y: randRange(-this.shake, this.shake),
-				}
-			)
+			VMath.add(this.targetPivot, {
+				x: randRange(-this.shake, this.shake),
+				y: randRange(-this.shake, this.shake),
+			})
 		);
 		if (!this.subpixel) {
 			this.display.container.pivot.x = Math.round(
