@@ -367,10 +367,83 @@ SPACE: ${formatCount(freeCells, allCells)}
 				return { container, btnPrev, btnNext };
 			};
 
-			let head = `head ${this.mech.headD.name}`;
-			let chest = `chest ${this.mech.chestD.name}`;
-			let arm = `arm ${this.mech.armLD.name}`;
-			let leg = `leg ${this.mech.legLD.name}`;
+			const scrollerHeads = new Scroller({
+				width: 300,
+				height: size.y,
+				gap: 10,
+			});
+			const scrollerChests = new Scroller({
+				width: 300,
+				height: size.y,
+				gap: 10,
+			});
+			const scrollerArms = new Scroller({
+				width: 300,
+				height: size.y,
+				gap: 10,
+			});
+			const scrollerLegs = new Scroller({
+				width: 300,
+				height: size.y,
+				gap: 10,
+			});
+
+			const {
+				container: containerScrollers,
+				btnNext,
+				btnPrev,
+			} = cycler(
+				(scroller) => {
+					[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
+						(i) => {
+							i.container.visible = false;
+							scroller.container.visible = true;
+						}
+					);
+				},
+				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs],
+				scrollerHeads
+			);
+
+			(
+				[
+					['head', this.mech.headD.name, this.pieces.heads, scrollerHeads],
+					['chest', this.mech.chestD.name, this.pieces.chests, scrollerChests],
+					['arm', this.mech.armLD.name, this.pieces.arms, scrollerArms],
+					['leg', this.mech.legLD.name, this.pieces.legs, scrollerLegs],
+				] as const
+			).forEach(([type, current, pieces, scroller]) => {
+				pieces.forEach((i) => {
+					const part = this.getPart(i);
+					const spr = new Sprite(part.tex);
+					buttonify(spr, i);
+					spr.addEventListener('click', () => {
+						switch (type) {
+							case 'head':
+								this.mech.headD = part;
+								break;
+							case 'chest':
+								this.mech.chestD = part;
+								break;
+							case 'arm':
+								this.mech.armLD = part;
+								this.mech.armRD = this.getPart(i, true);
+								break;
+							case 'leg':
+								this.mech.legLD = part;
+								this.mech.legRD = this.getPart(i, true);
+								break;
+						}
+						scroller.containerScroll.children.forEach((j) => {
+							j.tint = 0xffffff;
+						});
+						spr.tint = 0x00ff00;
+						update();
+					});
+					if (i === `${type} ${current}`) spr.tint = 0x00ff00;
+					scroller.addChild(spr);
+				});
+			});
 
 			let containerBtns = new Container();
 			const update = () => {
@@ -388,71 +461,34 @@ SPACE: ${formatCount(freeCells, allCells)}
 			};
 			update();
 
-			const headBtns = cycler(
-				(newHead) => {
-					head = newHead;
-					this.mech.headD = this.getPart(newHead);
-					update();
-				},
-				this.pieces.heads,
-				head
-			);
-			const chestBtns = cycler(
-				(newChest) => {
-					chest = newChest;
-					this.mech.chestD = this.getPart(chest);
-					update();
-				},
-				this.pieces.chests,
-				chest
-			);
-			const armBtns = cycler(
-				(newArm) => {
-					arm = newArm;
-					this.mech.armLD = this.getPart(arm);
-					this.mech.armRD = this.getPart(arm, true);
-					update();
-				},
-				this.pieces.arms,
-				arm
-			);
-			const legBtns = cycler(
-				(newLeg) => {
-					leg = newLeg;
-					this.mech.legLD = this.getPart(leg);
-					this.mech.legRD = this.getPart(leg, true);
-					update();
-				},
-				this.pieces.legs,
-				leg
-			);
 			const btnDone = new Btn(() => {
-				[headBtns, chestBtns, armBtns, legBtns].forEach((i) => {
-					i.btnPrev.destroy();
-					i.btnNext.destroy();
-					i.container.destroy({ children: true });
-				});
+				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
+					(i) => {
+						i.destroy();
+					}
+				);
 				btnDone.destroy();
 				containerBtns.destroy();
+				containerScrollers.destroy();
+				btnNext.destroy();
+				btnPrev.destroy();
 				donePickingParts();
 			}, 'button');
-			this.containerUI.addChild(headBtns.container);
-			this.containerUI.addChild(chestBtns.container);
-			this.containerUI.addChild(armBtns.container);
-			this.containerUI.addChild(legBtns.container);
+			this.containerUI.addChild(scrollerHeads.container);
+			this.containerUI.addChild(scrollerChests.container);
+			this.containerUI.addChild(scrollerArms.container);
+			this.containerUI.addChild(scrollerLegs.container);
+			this.containerUI.addChild(containerScrollers);
 			this.containerUI.addChild(btnDone.display.container);
 
-			chestBtns.container.y += chestBtns.container.height;
-			armBtns.container.y += chestBtns.container.height;
-			armBtns.container.y += armBtns.container.height;
-			legBtns.container.y += chestBtns.container.height;
-			legBtns.container.y += armBtns.container.height;
-			legBtns.container.y += legBtns.container.height;
+			[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
+				(i) => {
+					i.container.x -= size.x / 2;
+					i.container.y -= size.y / 2;
+				}
+			);
+
 			btnDone.transform.y -= btnDone.display.container.height;
-			headBtns.container.x += size.x / 4;
-			chestBtns.container.x += size.x / 4;
-			armBtns.container.x += size.x / 4;
-			legBtns.container.x += size.x / 4;
 			btnDone.transform.x += size.x / 4;
 		});
 	}
@@ -654,7 +690,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 			});
 			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
-				uiModule.x += uiModule.width / 2;
 				uiModule.y += uiModule.height / 2;
 				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
