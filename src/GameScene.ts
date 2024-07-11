@@ -63,6 +63,8 @@ export class GameScene {
 
 	area?: string;
 
+	focus = new Container();
+
 	get currentArea() {
 		return this.areas[this.area || ''];
 	}
@@ -175,6 +177,8 @@ export class GameScene {
 		this.mechinfo.y -= size.y / 2;
 		this.mechinfo.x += 50;
 		this.mechinfo.y += 50;
+		this.container.addChild(this.focus);
+		this.camera.setTarget(this.focus);
 	}
 
 	async start() {
@@ -1551,6 +1555,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 		GameObject.update();
 		TweenManager.update();
+		this.containerUI.x = this.camera.display.container.pivot.x;
+		this.containerUI.y = this.camera.display.container.pivot.y;
 		this.screenFilter.uniforms.uCurTime = curTime / 1000;
 		this.screenFilter.uniforms.uCamPos = [
 			this.camera.display.container.pivot.x,
