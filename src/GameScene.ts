@@ -646,7 +646,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.camera.scripts.push(dragger);
 
 			const scroller = new Scroller({
-				width: modules.reduce((acc, i) => Math.max(acc, i.w), 0) * cellSize,
+				width:
+					modules.reduce((acc, i) => Math.max(acc, i.w), 0) * cellSize +
+					tex('scroll_track').width,
 				height: size.y,
 				gap: 10,
 			});
