@@ -149,6 +149,9 @@ export class Scroller {
 			child.y += this.scrollHeight;
 			this.scrollHeight += child.height + this.scrollGap;
 		});
+		this.containerScroll.children.forEach((i) => {
+			i.x = (this.sprMask.width - i.width) / 2;
+		});
 		this.sprBg.width = Math.max(this.containerScroll.width, this.sprMask.width);
 		this.sprBg.height = Math.max(this.scrollHeight, this.sprMask.height);
 		this.sprThumb.height =
