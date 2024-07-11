@@ -14,7 +14,7 @@ import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
 import { cellSize, size } from './config';
 import { DEBUG } from './debug';
-import { fontMechInfo } from './font';
+import { fontDialogue, fontMechInfo } from './font';
 import {
 	copyCells,
 	displayToPlacementProps,
@@ -40,6 +40,7 @@ import {
 	removeFromArray,
 	rotateMatrixClockwise,
 	shuffle,
+	smartify,
 	tex,
 } from './utils';
 
@@ -343,7 +344,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 		this.setFocus(-size.x / 2, undefined, 500, eases.cubicInOut);
 		return new Promise<void>((donePickingParts) => {
 			const cycler = <T>(
-				update: (item: T) => void,
+				update: (item: T, idx: number) => void,
 				items: T[],
 				selected: T = items[0]
 			) => {
@@ -351,20 +352,20 @@ SPACE: ${formatCount(freeCells, allCells)}
 				const btnPrev = new Btn(() => {
 					--index;
 					if (index < 0) index = items.length - 1;
-					update(items[index]);
+					update(items[index], index);
 				}, 'buttonArrow');
 				btnPrev.display.container.scale.x *= -1;
 				const btnNext = new Btn(() => {
 					++index;
 					index %= items.length;
-					update(items[index]);
+					update(items[index], index);
 				}, 'buttonArrow');
 				const container = new Container();
 				btnPrev.transform.x -= btnPrev.display.container.width / 2;
 				btnNext.transform.x += btnNext.display.container.width / 2;
 				container.addChild(btnPrev.display.container);
 				container.addChild(btnNext.display.container);
-				update(items[index]);
+				update(items[index], index);
 				return { container, btnPrev, btnNext };
 			};
 
@@ -389,17 +390,27 @@ SPACE: ${formatCount(freeCells, allCells)}
 				gap: 10,
 			});
 
+			const textType = new BitmapText({
+				text: smartify(' \u000f \u0007 \u0007 \u0007  '),
+				style: fontDialogue,
+			});
+			textType.x -= textType.width / 2;
+			textType.y -= textType.height / 2;
+
 			const {
 				container: containerScrollers,
 				btnNext,
 				btnPrev,
 			} = cycler(
-				(scroller) => {
+				(scroller, idx) => {
 					[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 						(i) => {
 							i.container.visible = false;
 							scroller.container.visible = true;
 						}
+					);
+					textType.text = smartify(
+						` ${'\u0007 '.repeat(idx)}\u000f ${'\u0007 '.repeat(3 - idx)}`
 					);
 				},
 				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs],
@@ -496,6 +507,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 			containerScrollers.x += scrollerHeads.container.width / 2;
 			containerScrollers.y -= size.y / 2;
 			containerScrollers.y += containerScrollers.height;
+			containerScrollers.addChild(textType);
+			btnPrev.transform.x -= textType.width / 2;
+			btnNext.transform.x += textType.width / 2;
 
 			btnDone.transform.y -= btnDone.display.container.height;
 			btnDone.transform.x += size.x / 4;
