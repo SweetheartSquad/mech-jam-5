@@ -10,7 +10,7 @@ export const fontDialogue: Partial<TextStyle> = {
 	fill: white,
 	align: 'left',
 	lineHeight: size * 2 * 1.25,
-	letterSpacing: -2,
+	letterSpacing: 0,
 };
 export const fontMechInfo: Partial<TextStyle> = {
 	fontFamily: 'fontfnt',
