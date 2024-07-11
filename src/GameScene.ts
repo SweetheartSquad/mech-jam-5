@@ -28,6 +28,7 @@ import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
+import { gray, green, red, white } from './tints';
 import {
 	buttonify,
 	delay,
@@ -435,12 +436,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 								break;
 						}
 						scroller.containerScroll.children.forEach((j) => {
-							j.tint = 0xffffff;
+							j.tint = white;
 						});
-						spr.tint = 0x00ff00;
+						spr.tint = green;
 						update();
 					});
-					if (i === `${type} ${current}`) spr.tint = 0x00ff00;
+					if (i === `${type} ${current}`) spr.tint = green;
 					scroller.addChild(spr);
 				});
 			});
@@ -616,7 +617,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				valid = false;
 				forCells(gridBtnsByPos, (x, y, btn) => {
 					if (!btn) return;
-					btn.spr.tint = 0xffffff;
+					btn.spr.tint = white;
 					if (btn !== target && btn.enabled)
 						btn.spr.texture = tex('cell button_normal');
 				});
@@ -641,7 +642,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				forCells(draggingCells, (x2, y2) => {
 					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (!btnNeighbour) return;
-					btnNeighbour.spr.tint = valid ? 0x00ff00 : 0xff0000;
+					btnNeighbour.spr.tint = valid ? green : red;
 					if (btnNeighbour !== target && btnNeighbour.enabled)
 						btnNeighbour.spr.texture = tex('cell button_over');
 				});
@@ -821,7 +822,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.container.addChild(this.damageBtns.container);
 			this.modules.placed.forEach((i, idx) => {
 				if (this.moduleIsDestroyed(i, this.battleGrid)) {
-					this.modules.container.children[idx].tint = 0xff0000;
+					this.modules.container.children[idx].tint = red;
 				}
 			});
 		}
@@ -848,7 +849,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.modulesEnemy.placed.forEach((i, idx) => {
 				if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
 					this.modulesEnemy.container.children[idx].visible = true;
-					this.modulesEnemy.container.children[idx].tint = 0xff0000;
+					this.modulesEnemy.container.children[idx].tint = red;
 				} else {
 					this.modulesEnemy.container.children[idx].visible = false;
 				}
@@ -1260,7 +1261,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			} = this.makeBtnGrid('enemy', (btn, x, y) => {
 				btn.enabled = false;
 				btn.spr.texture = tex('cell detect_filled');
-				btn.display.container.tint = 0xff0000;
+				btn.display.container.tint = red;
 			});
 
 			this.container.addChild(containerBtns);
@@ -1275,11 +1276,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 				const heat = this.getHeat();
 				textHeat.text = `heat: ${formatCount(heat, this.actions.heatMax)}`;
 				if (heat > this.actions.heatMax) {
-					textHeat.tint = 0xff0000;
+					textHeat.tint = red;
 				} else if (heat === this.actions.heatMax) {
-					textHeat.tint = 0x00ff00;
+					textHeat.tint = green;
 				} else {
-					textHeat.tint = 0xffffff;
+					textHeat.tint = white;
 				}
 			};
 
@@ -1288,15 +1289,15 @@ SPACE: ${formatCount(freeCells, allCells)}
 					textAttack.text = `attack (${
 						attacksMax - this.actions.attacks.length
 					})`;
-					btnAttack.display.container.tint = 0x00ff00;
+					btnAttack.display.container.tint = green;
 				} else {
 					textAttack.text = `weapons primed`;
-					btnAttack.display.container.tint = 0xff0000;
+					btnAttack.display.container.tint = red;
 				}
 				if (this.actions.attacks.length) {
-					btnAttackUndo.display.container.tint = 0xffffff;
+					btnAttackUndo.display.container.tint = white;
 				} else {
-					btnAttackUndo.display.container.tint = 0x999999;
+					btnAttackUndo.display.container.tint = gray;
 				}
 
 				gridBtns.forEach((i) => {
@@ -1354,11 +1355,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 						? `shields: ${Math.floor(shieldsAmt * 100)}%`
 						: 'shields: disabled';
 					btnToggleShield.display.container.tint = this.actions.shield
-						? 0x00ff00
-						: 0x999999;
+						? green
+						: gray;
 				} else {
 					textToggleShield.text = 'shields: none';
-					btnToggleShield.display.container.tint = 0xff0000;
+					btnToggleShield.display.container.tint = red;
 				}
 				updateHeat();
 			};

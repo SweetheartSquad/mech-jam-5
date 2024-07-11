@@ -2,6 +2,7 @@ import { Container, Graphics, Texture } from 'pixi.js';
 import { cellSize } from './config';
 import { DEBUG } from './debug';
 import { game } from './Game';
+import { gray, white } from './tints';
 import {
 	flipMatrixH,
 	flipMatrixV,
@@ -134,7 +135,7 @@ export function makeCellsTexture(cells: string[][]) {
 	forCells(cells, (x, y, cell) => {
 		g.rect(x * cellSize, y * cellSize, cellSize, cellSize);
 	});
-	g.fill(randRange(0x999999, 0xffffff));
+	g.fill(randRange(gray, white));
 
 	if (DEBUG) {
 		game.app.renderer.extract.image(g).then((i) => {
