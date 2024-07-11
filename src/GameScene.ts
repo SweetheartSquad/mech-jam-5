@@ -1,3 +1,4 @@
+import eases from 'eases';
 import { BitmapText, Container, Sprite } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
@@ -8,7 +9,7 @@ import { GameObject } from './GameObject';
 import { ScreenFilter } from './ScreenFilter';
 import { Updater } from './Scripts/Updater';
 import { StrandE } from './StrandE';
-import { TweenManager } from './Tweens';
+import { Tween, TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
 import { cellSize, size } from './config';
@@ -63,7 +64,39 @@ export class GameScene {
 
 	area?: string;
 
+	tweenFocus?: Tween;
 	focus = new Container();
+	setFocus(
+		x: number,
+		y?: number,
+		duration?: number,
+		ease?: (t: number) => number
+	) {
+		if (this.tweenFocus) TweenManager.finish(this.tweenFocus);
+		this.tweenFocus = undefined;
+		if (y === undefined) y = this.focus.y;
+		if (!duration) {
+			this.focus.x = x;
+			this.focus.y = y;
+			return;
+		}
+		this.tweenFocus = TweenManager.tween(
+			this.focus,
+			'x',
+			x,
+			duration,
+			undefined,
+			ease
+		);
+		this.tweenFocus = TweenManager.tween(
+			this.focus,
+			'y',
+			y,
+			duration,
+			undefined,
+			ease
+		);
+	}
 
 	get currentArea() {
 		return this.areas[this.area || ''];
@@ -247,11 +280,13 @@ export class GameScene {
 	}
 
 	scenePrebuild() {
+		this.setFocus(-size.x);
 		this.strand.goto(`${this.strand.next} prebuild`);
 		return this.waitForClose();
 	}
 
 	scenePrefight() {
+		this.setFocus(size.x, undefined, 500, eases.cubicIn);
 		this.strand.goto(`${this.strand.next} prefight`);
 		return this.waitForClose();
 	}
@@ -304,6 +339,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 	}
 
 	pickParts() {
+		this.setFocus(-size.x / 2, undefined, 500, eases.cubicInOut);
 		return new Promise<void>((donePickingParts) => {
 			const cycler = <T>(
 				update: (item: T) => void,
@@ -448,6 +484,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 	}
 
 	placeModules() {
+		this.setFocus(-0, undefined, 500, eases.cubicInOut);
 		return new Promise<boolean>((donePlacingModules) => {
 			const modules = this.pieces.modules.map((i) => this.getModule(i));
 			const modulesByName = modules.reduce<{
@@ -1085,6 +1122,8 @@ SPACE: ${formatCount(freeCells, allCells)}
 	}
 
 	async fight() {
+		this.setFocus(0, -size.y);
+		this.setFocus(0, 0, 1000, eases.cubicOut);
 		let turnCount = 1;
 		// reset battle grid
 		this.battleGrid = replaceCells(
