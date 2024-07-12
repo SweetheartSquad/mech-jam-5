@@ -234,7 +234,7 @@ export class GameScene {
 		);
 		this.modulesEnemy = this.assembleModules([]);
 		this.loadMech('player', {
-			head: '1',
+			head: 'Tallboy 2000',
 			chest: '1',
 			arms: '1',
 			legs: '2',

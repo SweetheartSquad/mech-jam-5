@@ -337,7 +337,7 @@ Guy angry: Fancy meeting you here.
 ::diplomat prefight
 todo diplomat prefight stuff
 <<do this.scene.loadMech('enemy', {
-    "head": "1",
+    "head": "Tallboy 2000",
     "chest": "1",
     "arms": "1",
     "legs": "2",
@@ -429,7 +429,7 @@ part definitions below
 0
 =
 
-::head 1
+::head Tallboy 2000
 .0.
 0.0.
 0.0.
