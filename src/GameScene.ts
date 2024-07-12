@@ -392,7 +392,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			});
 
 			const textType = new BitmapText({
-				text: smartify(' \u000f \u0007 \u0007 \u0007  '),
+				text: '\u00A0\u000f \u0007 \u0007 \u0007\u00A0\nHEAD',
 				style: fontDialogue,
 			});
 			textType.x -= textType.width / 2;
@@ -411,7 +411,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 						}
 					);
 					textType.text = smartify(
-						` ${'\u0007 '.repeat(idx)}\u000f ${'\u0007 '.repeat(3 - idx)}`
+						` ${'\u0007 '.repeat(idx)}\u000f ${'\u0007 '.repeat(3 - idx)}\n   ${
+							['HEAD', 'MAIN', 'ARMS', 'LEGS'][idx]
+						}`
 					);
 				},
 				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs],
