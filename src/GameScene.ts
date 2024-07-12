@@ -1417,20 +1417,15 @@ ${lastPart.description}`)}`
 				updateAttacks();
 			});
 
-			const textAttackUndo = new BitmapText({
-				text: 'undo',
-				style: fontMechInfo,
-			});
-			const btnAttackUndo = new Btn(
+			const btnAttackUndo = new BtnText(
+				'undo',
 				() => {
 					if (!this.actions.attacks.length) return;
 					this.actions.attacks.pop();
 					updateAttacks();
 				},
-				'button',
 				'undo attack'
 			);
-			btnAttackUndo.display.container.addChild(textAttackUndo);
 			updateAttacks();
 
 			const updateShields = () => {
@@ -1459,23 +1454,14 @@ ${lastPart.description}`)}`
 			);
 			updateShields();
 
-			const textEnd = new BitmapText({
-				text: 'end',
-				style: fontMechInfo,
+			const btnEnd = new BtnText('end', () => {
+				if (!this.actions.shield && !this.actions.attacks.length) {
+					// TODO: proper UI
+					if (!window.confirm('Really skip your turn?')) return;
+				}
+				destroy();
+				r();
 			});
-			const btnEnd = new Btn(
-				() => {
-					if (!this.actions.shield && !this.actions.attacks.length) {
-						// TODO: proper UI
-						if (!window.confirm('Really skip your turn?')) return;
-					}
-					destroy();
-					r();
-				},
-				'button',
-				'end'
-			);
-			btnEnd.display.container.addChild(textEnd);
 			updateShields();
 
 			this.container.addChild(textHeat);
