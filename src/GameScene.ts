@@ -534,8 +534,8 @@ ${lastPart.description}`)}`
 			btnPrev.transform.x -= textType.width / 2;
 			btnNext.transform.x += textType.width / 2;
 
-			btnDone.transform.y -= btnDone.display.container.height;
-			btnDone.transform.x += size.x / 4;
+			btnDone.transform.y += size.y / 2;
+			btnDone.transform.y -= btnDone.display.container.height / 2;
 
 			const sprPanel = new Spr9('panel');
 			sprPanel.width = containerScrollersCycler.width + 10;
