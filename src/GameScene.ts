@@ -814,7 +814,7 @@ ${lastPart.description}`)}`
 				scroller.destroy();
 				gridBtns.forEach((i) => i.destroy());
 			};
-			const btnBack = new Btn(() => {
+			const btnBack = new BtnText('BACK', () => {
 				if (this.modules.placed.length) {
 					// TODO: proper ui
 					if (!window.confirm('this will remove all modules, are you sure?'))
@@ -822,11 +822,8 @@ ${lastPart.description}`)}`
 				}
 				destroy();
 				donePlacingModules(false);
-			}, 'button');
-			btnBack.display.container.addChild(
-				new BitmapText({ text: 'back', style: fontMechInfo })
-			);
-			const btnDone = new Btn(() => {
+			});
+			const btnDone = new BtnText('DONE', () => {
 				// TODO: cost check
 				// if (this.mechinfo.text.includes('!!!')) {
 				// 	// TODO: proper ui
@@ -842,10 +839,7 @@ ${lastPart.description}`)}`
 				}
 				destroy();
 				donePlacingModules(true);
-			}, 'button');
-			btnDone.display.container.addChild(
-				new BitmapText({ text: 'done', style: fontMechInfo })
-			);
+			});
 			this.container.addChild(containerBtns);
 			this.containerUI.addChild(scroller.container);
 			this.containerUI.addChild(btnDone.display.container);
@@ -1385,12 +1379,12 @@ ${lastPart.description}`)}`
 
 			const updateAttacks = () => {
 				if (this.actions.attacks.length < attacksMax) {
-					textAttack.text = `attack (${
-						attacksMax - this.actions.attacks.length
-					})`;
+					btnAttack.setText(
+						`attack (${attacksMax - this.actions.attacks.length})`
+					);
 					btnAttack.display.container.tint = green;
 				} else {
-					textAttack.text = `weapons primed`;
+					btnAttack.setText(`weapons primed`);
 					btnAttack.display.container.tint = red;
 				}
 				if (this.actions.attacks.length) {
@@ -1413,24 +1407,15 @@ ${lastPart.description}`)}`
 				text: 'heat',
 				style: fontMechInfo,
 			});
-			const textAttack = new BitmapText({
-				text: 'attack',
-				style: fontMechInfo,
+			const btnAttack = new BtnText('attack', async () => {
+				if (this.actions.attacks.length >= attacksMax) return;
+				const removeModal = this.modal();
+				const target = await this.pickTarget();
+				removeModal();
+				if (!target) return;
+				this.actions.attacks.push(target);
+				updateAttacks();
 			});
-			const btnAttack = new Btn(
-				async () => {
-					if (this.actions.attacks.length >= attacksMax) return;
-					const removeModal = this.modal();
-					const target = await this.pickTarget();
-					removeModal();
-					if (!target) return;
-					this.actions.attacks.push(target);
-					updateAttacks();
-				},
-				'button',
-				'attack'
-			);
-			btnAttack.display.container.addChild(textAttack);
 
 			const textAttackUndo = new BitmapText({
 				text: 'undo',
@@ -1450,31 +1435,28 @@ ${lastPart.description}`)}`
 
 			const updateShields = () => {
 				if (shieldsAmt) {
-					textToggleShield.text = this.actions.shield
-						? `shields: ${Math.floor(shieldsAmt * 100)}%`
-						: 'shields: disabled';
+					btnToggleShield.setText(
+						this.actions.shield
+							? `shields: ${Math.floor(shieldsAmt * 100)}%`
+							: 'shields: disabled'
+					);
 					btnToggleShield.display.container.tint = this.actions.shield
 						? green
 						: gray;
 				} else {
-					textToggleShield.text = 'shields: none';
+					btnToggleShield.setText('shields: none');
 					btnToggleShield.display.container.tint = red;
 				}
 				updateHeat();
 			};
-			const textToggleShield = new BitmapText({
-				text: 'shields',
-				style: fontMechInfo,
-			});
-			const btnToggleShield = new Btn(
+			const btnToggleShield = new BtnText(
+				'shields',
 				() => {
 					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
 					updateShields();
 				},
-				'button',
 				'toggle shields'
 			);
-			btnToggleShield.display.container.addChild(textToggleShield);
 			updateShields();
 
 			const textEnd = new BitmapText({
