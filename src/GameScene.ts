@@ -807,11 +807,12 @@ ${lastPart.description}`)}`
 				new BitmapText({ text: 'back', style: fontMechInfo })
 			);
 			const btnDone = new Btn(() => {
-				if (this.mechinfo.text.includes('!!!')) {
-					// TODO: proper ui
-					window.alert('too expensive!');
-					return;
-				}
+				// TODO: cost check
+				// if (this.mechinfo.text.includes('!!!')) {
+				// 	// TODO: proper ui
+				// 	window.alert('too expensive!');
+				// 	return;
+				// }
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {
