@@ -9,9 +9,12 @@ export function mechPartParse(
 	source: string,
 	flip = false
 ) {
-	const { cells, w, h } = parseLayout(source, { flip });
+	const [description, strCost, layout] = source.split('\n---\n');
+	const { cells, w, h } = parseLayout(layout, { flip });
 	const joints: [number, number][] = [];
+	let cellCount = 0;
 	forCells(cells, (x, y, cell) => {
+		++cellCount;
 		if (cell === '=') {
 			joints.push([x, y]);
 		} else if (cell === '0') {
@@ -120,13 +123,23 @@ export function mechPartParse(
 		if (connections.chest[0] < 0)
 			throw new Error(`could not find valid chest joint in "${key}"`);
 	}
+	let cost = Number(strCost);
+	if (Number.isNaN(cost)) {
+		cost = 0;
+		forCells(cells, () => {
+			cost += 1;
+		});
+	}
 	return {
 		name: key.replace(`${type} `, ''),
+		description,
+		cost,
 		tex:
 			tex(key) === tex('error')
 				? makeCellsTexture(flip ? flipMatrixH(cells) : cells)
 				: tex(key),
 		cells,
+		cellCount,
 		w,
 		h,
 		connections,
