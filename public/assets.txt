@@ -62,8 +62,6 @@ textures/module Single.png
 
 textures/portrait Guy.png
 textures/portrait Guy angry.png
-textures/portrait frame.png
-textures/dialogue frame.png
 
 textures/scroll_track.png
 textures/scroll_thumb.png
