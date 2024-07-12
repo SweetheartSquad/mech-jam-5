@@ -497,7 +497,36 @@ ${lastPart.description}`)}`
 			};
 			update();
 
-			const btnDone = new Btn(() => {
+			const btnDone = new Btn(async () => {
+				btnDone.enabled = false;
+				btnNext.enabled = false;
+				btnPrev.enabled = false;
+				const closeModal = this.modal(0);
+				donePickingParts();
+				this.screenFilter.flash(0.5, 500, eases.circOut);
+
+				const tweens = [
+					TweenManager.tween(
+						panelInfo.scale,
+						'y',
+						2,
+						500,
+						undefined,
+						eases.circIn
+					),
+					TweenManager.tween(panelInfo, 'y', 0, 500, undefined, eases.circIn),
+					TweenManager.tween(
+						panelInfo,
+						'alpha',
+						0,
+						500,
+						undefined,
+						eases.cubicIn
+					),
+				];
+				await delay(500);
+				tweens.forEach((i) => TweenManager.abort(i));
+
 				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 					(i) => {
 						i.destroy();
@@ -509,7 +538,8 @@ ${lastPart.description}`)}`
 				btnNext.destroy();
 				btnPrev.destroy();
 				panelInfo.destroy();
-				donePickingParts();
+
+				closeModal();
 			}, 'button');
 			this.containerUI.addChild(scrollerHeads.container);
 			this.containerUI.addChild(scrollerChests.container);
@@ -777,11 +807,12 @@ ${lastPart.description}`)}`
 				new BitmapText({ text: 'back', style: fontMechInfo })
 			);
 			const btnDone = new Btn(() => {
-				if (this.mechinfo.text.includes('!!!')) {
-					// TODO: proper ui
-					window.alert('too expensive!');
-					return;
-				}
+				// TODO: cost check
+				// if (this.mechinfo.text.includes('!!!')) {
+				// 	// TODO: proper ui
+				// 	window.alert('too expensive!');
+				// 	return;
+				// }
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {

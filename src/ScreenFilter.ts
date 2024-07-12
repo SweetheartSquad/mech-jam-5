@@ -55,16 +55,14 @@ export class ScreenFilter extends CustomFilter<Uniforms> {
 	tweenFlash: Tween[] = [];
 
 	flash(
-		colour: [number, number, number],
+		amt: number,
 		duration: number,
 		ease: (t: number) => number = eases.linear
 	) {
 		this.tweenFlash.forEach((i) => TweenManager.abort(i));
 		this.tweenFlash.length = 0;
 		this.tweenFlash = [
-			TweenManager.tween(this.uniforms.uBg, 0, 0, duration, colour[0], ease),
-			TweenManager.tween(this.uniforms.uBg, 1, 0, duration, colour[1], ease),
-			TweenManager.tween(this.uniforms.uBg, 2, 0, duration, colour[2], ease),
+			TweenManager.tween(this.uniforms, 'uWhiteout', 0, duration, amt, ease),
 		];
 	}
 }
