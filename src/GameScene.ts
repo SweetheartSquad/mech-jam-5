@@ -3,6 +3,7 @@ import { BitmapText, Container, NineSliceSprite, Sprite } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
+import { BtnText } from './BtnText';
 import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
@@ -514,7 +515,7 @@ ${lastPart.description}`)}`
 			};
 			update();
 
-			const btnDone = new Btn(async () => {
+			const btnDone = new BtnText('DONE', async () => {
 				btnDone.enabled = false;
 				btnNext.enabled = false;
 				btnPrev.enabled = false;
@@ -557,14 +558,14 @@ ${lastPart.description}`)}`
 				panelInfo.destroy();
 
 				closeModal();
-			}, 'button');
+			});
 			this.containerUI.addChild(scrollerHeads.container);
 			this.containerUI.addChild(scrollerChests.container);
 			this.containerUI.addChild(scrollerArms.container);
 			this.containerUI.addChild(scrollerLegs.container);
 			this.containerUI.addChild(containerScrollersCycler);
 			this.containerUI.addChild(panelInfo);
-			this.containerUI.addChild(btnDone.display.container);
+			panelInfo.addChild(btnDone.display.container);
 
 			[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 				(i) => {
@@ -581,7 +582,9 @@ ${lastPart.description}`)}`
 			btnPrev.transform.x -= textType.width / 2;
 			btnNext.transform.x += textType.width / 2;
 
-			btnDone.transform.y += size.y / 2;
+			btnDone.transform.x += 350;
+			btnDone.transform.x -= btnDone.display.container.width / 2;
+			btnDone.transform.y += size.x / 2;
 			btnDone.transform.y -= btnDone.display.container.height / 2;
 
 			const sprPanel = new Spr9('panel');
