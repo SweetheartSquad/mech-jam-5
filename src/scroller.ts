@@ -6,6 +6,7 @@ import {
 	NineSliceSprite,
 	Sprite,
 } from 'pixi.js';
+import { Spr9 } from './Spr9';
 import { Tween, TweenManager } from './Tweens';
 import { clamp, lerp, relativeMouse, tex } from './utils';
 
@@ -42,22 +43,8 @@ export class Scroller {
 		this.containerScroll.mask = this.sprMask;
 		this.container.addChild(this.containerScroll, this.sprMask);
 
-		const texTrack = tex('scroll_track');
-		const sprTrack = new NineSliceSprite({
-			texture: texTrack,
-			leftWidth: texTrack.width / 3,
-			topHeight: texTrack.height / 3,
-			rightWidth: texTrack.width / 3,
-			bottomHeight: texTrack.height / 3,
-		});
-		const texThumb = tex('scroll_thumb');
-		this.sprThumb = new NineSliceSprite({
-			texture: texThumb,
-			leftWidth: texThumb.width / 3,
-			topHeight: texThumb.height / 3,
-			rightWidth: texThumb.width / 3,
-			bottomHeight: texThumb.height / 3,
-		});
+		const sprTrack = new Spr9('scroll_track');
+		this.sprThumb = new Spr9('scroll_thumb');
 		this.container.addChild(sprTrack);
 		sprTrack.addChild(this.sprThumb);
 		sprTrack.height = height;
