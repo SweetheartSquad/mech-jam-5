@@ -893,13 +893,53 @@ debug shield
 0
 
 
-::module Cockpit
+::module cockpit 1
+A lil' cockpit.
+---
+500, cockpit
+---
+0
+
+::module cockpit 2
 A standard cockpit.
 ---
 500, cockpit
 ---
 00
 00
+
+::module cockpit 3
+A big cockpit.
+---
+500, cockpit
+---
+000
+000
+000
+
+::module armour 1
+A lil' armour.
+---
+500
+---
+0
+
+::module armour 2
+A standard armour.
+---
+500
+---
+00
+00
+
+::module armour 3
+A big armour.
+---
+500
+---
+000
+000
+000
 
 ::module Tee
 A weirdly shaped cockpit.
