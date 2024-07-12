@@ -14,7 +14,7 @@ export class Btn extends GameObject {
 
 	constructor(
 		public onClick: (event: FederatedPointerEvent) => void,
-		texture: string,
+		public texture: string,
 		title?: string
 	) {
 		super();
@@ -29,6 +29,13 @@ export class Btn extends GameObject {
 		this.spr.anchor.x = this.spr.anchor.y = 0.5;
 		buttonify(this.spr, title || texture);
 
+		const texs = [
+			tex(`${texture}_normal`),
+			tex(`${texture}_down`),
+			tex(`${texture}_over`),
+		];
+		const [texNormal, texDown, texOver] = texs;
+
 		let down = false;
 		let inside = false;
 		this.spr.on('pointerup', (event) => {
@@ -39,18 +46,20 @@ export class Btn extends GameObject {
 		this.spr.on('pointerover', () => {
 			if (!this._enabled) return;
 			inside = true;
-			this.spr.texture = tex(`${texture}_${down ? 'down' : 'over'}`);
+			if (texs.includes(this.spr.texture))
+				this.spr.texture = down ? texDown : texOver;
 		});
 		this.spr.on('pointerdown', (event) => {
 			if (!this._enabled) return;
 			if (event && event.button !== mouse.LEFT) return;
 			down = true;
-			this.spr.texture = tex(`${texture}_down`);
+			if (texs.includes(this.spr.texture)) this.spr.texture = texDown;
 			document.addEventListener(
 				'pointerup',
 				() => {
 					down = false;
-					this.spr.texture = tex(`${texture}_${inside ? 'over' : 'normal'}`);
+					if (texs.includes(this.spr.texture))
+						this.spr.texture = inside ? texOver : texNormal;
 				},
 				{ once: true }
 			);
@@ -59,7 +68,8 @@ export class Btn extends GameObject {
 		this.spr.on('pointerout', () => {
 			if (!this._enabled) return;
 			inside = false;
-			this.spr.texture = tex(`${texture}_${down ? 'over' : 'normal'}`);
+			if (texs.includes(this.spr.texture))
+				this.spr.texture = down ? texOver : texNormal;
 		});
 		this.init();
 	}
