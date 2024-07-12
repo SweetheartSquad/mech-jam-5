@@ -68,3 +68,4 @@ textures/dialogue frame.png
 textures/scroll_track.png
 textures/scroll_thumb.png
 
+textures/panel.png
