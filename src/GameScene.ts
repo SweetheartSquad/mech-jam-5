@@ -8,6 +8,7 @@ import { game, resource } from './Game';
 import { GameObject } from './GameObject';
 import { ScreenFilter } from './ScreenFilter';
 import { Updater } from './Scripts/Updater';
+import { Spr9 } from './Spr9';
 import { StrandE } from './StrandE';
 import { Tween, TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
@@ -398,7 +399,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			textType.y -= textType.height / 2;
 
 			const {
-				container: containerScrollers,
+				container: containerScrollersCycler,
 				btnNext,
 				btnPrev,
 			} = cycler(
@@ -484,7 +485,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				);
 				btnDone.destroy();
 				containerBtns.destroy();
-				containerScrollers.destroy();
+				containerScrollersCycler.destroy();
 				btnNext.destroy();
 				btnPrev.destroy();
 				donePickingParts();
@@ -493,7 +494,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.containerUI.addChild(scrollerChests.container);
 			this.containerUI.addChild(scrollerArms.container);
 			this.containerUI.addChild(scrollerLegs.container);
-			this.containerUI.addChild(containerScrollers);
+			this.containerUI.addChild(containerScrollersCycler);
 			this.containerUI.addChild(btnDone.display.container);
 
 			[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
@@ -503,16 +504,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 				}
 			);
 
-			containerScrollers.x -= size.x / 2;
-			containerScrollers.x += scrollerHeads.container.width / 2;
-			containerScrollers.y -= size.y / 2;
-			containerScrollers.y += containerScrollers.height;
-			containerScrollers.addChild(textType);
+			containerScrollersCycler.x -= size.x / 2;
+			containerScrollersCycler.x += scrollerHeads.container.width / 2;
+			containerScrollersCycler.y -= size.y / 2;
+			containerScrollersCycler.y += containerScrollersCycler.height;
+			containerScrollersCycler.addChild(textType);
 			btnPrev.transform.x -= textType.width / 2;
 			btnNext.transform.x += textType.width / 2;
 
 			btnDone.transform.y -= btnDone.display.container.height;
 			btnDone.transform.x += size.x / 4;
+
+			const sprPanel = new Spr9('panel');
+			sprPanel.width = containerScrollersCycler.width + 10;
+			sprPanel.height = containerScrollersCycler.height + 10;
+			sprPanel.x -= sprPanel.width / 2;
+			sprPanel.y -= sprPanel.height / 2;
+			containerScrollersCycler.addChildAt(sprPanel, 0);
 		});
 	}
 
