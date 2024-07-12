@@ -1,5 +1,4 @@
 import {
-	BitmapFontManager,
 	BitmapText,
 	Container,
 	EventEmitter,
@@ -21,7 +20,7 @@ import { size } from './config';
 import { fontDialogue } from './font';
 import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
-import { buttonify, clamp, lerp, smartify, tex } from './utils';
+import { buttonify, clamp, lerp, setTextWrapped, smartify, tex } from './utils';
 
 const rateQuestionMultiplier = 1.4;
 const questionInflectionRange = 6;
@@ -283,13 +282,7 @@ export class UIDialogue extends GameObject {
 		text = text.replace(/(,"?)(\s)/g, '$1\u200B\u200B\u200B\u200B$2');
 		this.selected = undefined;
 
-		this.textText.style.wordWrap = true;
-		const layout = BitmapFontManager.getLayout(text, this.textText.style);
-		this.strText = layout.lines
-			.map((i) => i.chars.join(''))
-			.join('\n')
-			.trimEnd();
-		this.textText.style.wordWrap = false;
+		this.strText = setTextWrapped(this.textText, text);
 
 		this.textText.text = '';
 		this.display.container.accessibleHint = text;

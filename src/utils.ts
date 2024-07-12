@@ -1,4 +1,10 @@
-import { Container, Point, Texture } from 'pixi.js';
+import {
+	BitmapFontManager,
+	BitmapText,
+	Container,
+	Point,
+	Texture,
+} from 'pixi.js';
 import { resizer } from '.';
 import { resource } from './Game';
 import { size } from './config';
@@ -337,4 +343,17 @@ export function formatCount(a: number, b: number) {
 	return `${a.toString(10).padStart(b.toString(10).length, '0')}/${b} ${
 		a > b ? '!!!' : ''
 	}`;
+}
+
+/** @returns wrapped text string */
+export function setTextWrapped(text: BitmapText, str: string) {
+	text.style.wordWrap = true;
+	const layout = BitmapFontManager.getLayout(str, text.style);
+	str = layout.lines
+		.map((i) => i.chars.join(''))
+		.join('\n')
+		.trimEnd();
+	text.text = str;
+	text.style.wordWrap = false;
+	return str;
 }
