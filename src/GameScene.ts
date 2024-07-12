@@ -1,8 +1,9 @@
 import eases from 'eases';
-import { BitmapText, Container, Sprite } from 'pixi.js';
+import { BitmapText, Container, NineSliceSprite, Sprite } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
+import { BtnText } from './BtnText';
 import { Camera } from './Camera';
 import { game, resource } from './Game';
 import { GameObject } from './GameObject';
@@ -70,6 +71,9 @@ export class GameScene {
 
 	tweenFocus?: Tween;
 	focus = new Container();
+
+	panelTip: NineSliceSprite;
+	textTip: BitmapText;
 	setFocus(
 		x: number,
 		y?: number,
@@ -211,6 +215,14 @@ export class GameScene {
 
 		this.container.addChild(this.focus);
 		this.camera.setTarget(this.focus);
+
+		this.panelTip = new Spr9('panel');
+		this.textTip = new BitmapText({ text: '\u000f', style: fontDialogue });
+		this.textTip.style.align = 'right';
+		this.textTip.x = 8;
+		this.textTip.y = 8;
+		this.panelTip.addChild(this.textTip);
+		this.containerUI.addChild(this.panelTip);
 	}
 
 	async start() {
@@ -462,8 +474,14 @@ export class GameScene {
 				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
 					if (cell === '=') {
 						btn.spr.texture = tex('cell joint');
-						btn.enabled = false;
 					}
+					btn.spr.addEventListener('pointerover', () => {
+						if (cell === '=') {
+							this.textTip.text = 'joint';
+						} else if (cell === '0') {
+							this.textTip.text = 'empty cell';
+						}
+					});
 				});
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
@@ -497,7 +515,7 @@ ${lastPart.description}`)}`
 			};
 			update();
 
-			const btnDone = new Btn(async () => {
+			const btnDone = new BtnText('DONE', async () => {
 				btnDone.enabled = false;
 				btnNext.enabled = false;
 				btnPrev.enabled = false;
@@ -540,14 +558,14 @@ ${lastPart.description}`)}`
 				panelInfo.destroy();
 
 				closeModal();
-			}, 'button');
+			});
 			this.containerUI.addChild(scrollerHeads.container);
 			this.containerUI.addChild(scrollerChests.container);
 			this.containerUI.addChild(scrollerArms.container);
 			this.containerUI.addChild(scrollerLegs.container);
 			this.containerUI.addChild(containerScrollersCycler);
 			this.containerUI.addChild(panelInfo);
-			this.containerUI.addChild(btnDone.display.container);
+			panelInfo.addChild(btnDone.display.container);
 
 			[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 				(i) => {
@@ -564,7 +582,9 @@ ${lastPart.description}`)}`
 			btnPrev.transform.x -= textType.width / 2;
 			btnNext.transform.x += textType.width / 2;
 
-			btnDone.transform.y += size.y / 2;
+			btnDone.transform.x += 350;
+			btnDone.transform.x -= btnDone.display.container.width / 2;
+			btnDone.transform.y += size.x / 2;
 			btnDone.transform.y -= btnDone.display.container.height / 2;
 
 			const sprPanel = new Spr9('panel');
@@ -794,7 +814,7 @@ ${lastPart.description}`)}`
 				scroller.destroy();
 				gridBtns.forEach((i) => i.destroy());
 			};
-			const btnBack = new Btn(() => {
+			const btnBack = new BtnText('BACK', () => {
 				if (this.modules.placed.length) {
 					// TODO: proper ui
 					if (!window.confirm('this will remove all modules, are you sure?'))
@@ -802,11 +822,8 @@ ${lastPart.description}`)}`
 				}
 				destroy();
 				donePlacingModules(false);
-			}, 'button');
-			btnBack.display.container.addChild(
-				new BitmapText({ text: 'back', style: fontMechInfo })
-			);
-			const btnDone = new Btn(() => {
+			});
+			const btnDone = new BtnText('DONE', () => {
 				// TODO: cost check
 				// if (this.mechinfo.text.includes('!!!')) {
 				// 	// TODO: proper ui
@@ -822,10 +839,7 @@ ${lastPart.description}`)}`
 				}
 				destroy();
 				donePlacingModules(true);
-			}, 'button');
-			btnDone.display.container.addChild(
-				new BitmapText({ text: 'done', style: fontMechInfo })
-			);
+			});
 			this.container.addChild(containerBtns);
 			this.containerUI.addChild(scroller.container);
 			this.containerUI.addChild(btnDone.display.container);
@@ -1365,12 +1379,12 @@ ${lastPart.description}`)}`
 
 			const updateAttacks = () => {
 				if (this.actions.attacks.length < attacksMax) {
-					textAttack.text = `attack (${
-						attacksMax - this.actions.attacks.length
-					})`;
+					btnAttack.setText(
+						`attack (${attacksMax - this.actions.attacks.length})`
+					);
 					btnAttack.display.container.tint = green;
 				} else {
-					textAttack.text = `weapons primed`;
+					btnAttack.setText(`weapons primed`);
 					btnAttack.display.container.tint = red;
 				}
 				if (this.actions.attacks.length) {
@@ -1393,87 +1407,61 @@ ${lastPart.description}`)}`
 				text: 'heat',
 				style: fontMechInfo,
 			});
-			const textAttack = new BitmapText({
-				text: 'attack',
-				style: fontMechInfo,
+			const btnAttack = new BtnText('attack', async () => {
+				if (this.actions.attacks.length >= attacksMax) return;
+				const removeModal = this.modal();
+				const target = await this.pickTarget();
+				removeModal();
+				if (!target) return;
+				this.actions.attacks.push(target);
+				updateAttacks();
 			});
-			const btnAttack = new Btn(
-				async () => {
-					if (this.actions.attacks.length >= attacksMax) return;
-					const removeModal = this.modal();
-					const target = await this.pickTarget();
-					removeModal();
-					if (!target) return;
-					this.actions.attacks.push(target);
-					updateAttacks();
-				},
-				'button',
-				'attack'
-			);
-			btnAttack.display.container.addChild(textAttack);
 
-			const textAttackUndo = new BitmapText({
-				text: 'undo',
-				style: fontMechInfo,
-			});
-			const btnAttackUndo = new Btn(
+			const btnAttackUndo = new BtnText(
+				'undo',
 				() => {
 					if (!this.actions.attacks.length) return;
 					this.actions.attacks.pop();
 					updateAttacks();
 				},
-				'button',
 				'undo attack'
 			);
-			btnAttackUndo.display.container.addChild(textAttackUndo);
 			updateAttacks();
 
 			const updateShields = () => {
 				if (shieldsAmt) {
-					textToggleShield.text = this.actions.shield
-						? `shields: ${Math.floor(shieldsAmt * 100)}%`
-						: 'shields: disabled';
+					btnToggleShield.setText(
+						this.actions.shield
+							? `shields: ${Math.floor(shieldsAmt * 100)}%`
+							: 'shields: disabled'
+					);
 					btnToggleShield.display.container.tint = this.actions.shield
 						? green
 						: gray;
 				} else {
-					textToggleShield.text = 'shields: none';
+					btnToggleShield.setText('shields: none');
 					btnToggleShield.display.container.tint = red;
 				}
 				updateHeat();
 			};
-			const textToggleShield = new BitmapText({
-				text: 'shields',
-				style: fontMechInfo,
-			});
-			const btnToggleShield = new Btn(
+			const btnToggleShield = new BtnText(
+				'shields',
 				() => {
 					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
 					updateShields();
 				},
-				'button',
 				'toggle shields'
 			);
-			btnToggleShield.display.container.addChild(textToggleShield);
 			updateShields();
 
-			const textEnd = new BitmapText({
-				text: 'end',
-				style: fontMechInfo,
+			const btnEnd = new BtnText('end', () => {
+				if (!this.actions.shield && !this.actions.attacks.length) {
+					// TODO: proper UI
+					if (!window.confirm('Really skip your turn?')) return;
+				}
+				destroy();
+				r();
 			});
-			const btnEnd = new Btn(
-				() => {
-					if (!this.actions.shield && !this.actions.attacks.length) {
-						// TODO: proper UI
-						if (!window.confirm('Really skip your turn?')) return;
-					}
-					destroy();
-					r();
-				},
-				'button',
-				'end'
-			);
-			btnEnd.display.container.addChild(textEnd);
 			updateShields();
 
 			this.container.addChild(textHeat);
@@ -1711,6 +1699,13 @@ ${lastPart.description}`)}`
 
 		GameObject.update();
 		TweenManager.update();
+
+		this.containerUI.addChild(this.panelTip);
+		this.panelTip.width = this.textTip.width + 16;
+		this.panelTip.height = this.textTip.height + 16;
+		this.panelTip.x = size.x / 2 - this.panelTip.width - 10;
+		this.panelTip.y = -size.y / 2 + this.panelTip.height - 26;
+
 		this.containerUI.x = this.camera.display.container.pivot.x;
 		this.containerUI.y = this.camera.display.container.pivot.y;
 		this.screenFilter.uniforms.uCurTime = curTime / 1000;
