@@ -1,5 +1,5 @@
 import eases from 'eases';
-import { BitmapText, Container, Sprite } from 'pixi.js';
+import { BitmapText, Container, NineSliceSprite, Sprite } from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
@@ -70,6 +70,9 @@ export class GameScene {
 
 	tweenFocus?: Tween;
 	focus = new Container();
+
+	panelTip: NineSliceSprite;
+	textTip: BitmapText;
 	setFocus(
 		x: number,
 		y?: number,
@@ -211,6 +214,14 @@ export class GameScene {
 
 		this.container.addChild(this.focus);
 		this.camera.setTarget(this.focus);
+
+		this.panelTip = new Spr9('panel');
+		this.textTip = new BitmapText({ text: '\u000f', style: fontDialogue });
+		this.textTip.style.align = 'right';
+		this.textTip.x = 8;
+		this.textTip.y = 8;
+		this.panelTip.addChild(this.textTip);
+		this.containerUI.addChild(this.panelTip);
 	}
 
 	async start() {
@@ -462,8 +473,14 @@ export class GameScene {
 				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
 					if (cell === '=') {
 						btn.spr.texture = tex('cell joint');
-						btn.enabled = false;
 					}
+					btn.spr.addEventListener('pointerover', () => {
+						if (cell === '=') {
+							this.textTip.text = 'joint';
+						} else if (cell === '0') {
+							this.textTip.text = 'empty cell';
+						}
+					});
 				});
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
@@ -1711,6 +1728,13 @@ ${lastPart.description}`)}`
 
 		GameObject.update();
 		TweenManager.update();
+
+		this.containerUI.addChild(this.panelTip);
+		this.panelTip.width = this.textTip.width + 16;
+		this.panelTip.height = this.textTip.height + 16;
+		this.panelTip.x = size.x / 2 - this.panelTip.width - 10;
+		this.panelTip.y = -size.y / 2 + this.panelTip.height - 26;
+
 		this.containerUI.x = this.camera.display.container.pivot.x;
 		this.containerUI.y = this.camera.display.container.pivot.y;
 		this.screenFilter.uniforms.uCurTime = curTime / 1000;
