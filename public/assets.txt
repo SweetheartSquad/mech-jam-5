@@ -56,6 +56,7 @@ textures/module debug shield.png
 textures/module debug heat.png
 textures/module cockpit 1.png
 textures/module cockpit 2.png
+textures/module cockpit 3.png
 textures/module armour 1.png
 textures/module armour 2.png
 textures/module armour 3.png
