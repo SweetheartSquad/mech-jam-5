@@ -27,7 +27,7 @@ import {
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
-import { makePart, mechPartParse, MechD as PartD } from './mech-part';
+import { makePart, MechD, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
 import { gray, green, red, white } from './tints';
 import {
@@ -40,6 +40,7 @@ import {
 	relativeMouse,
 	removeFromArray,
 	rotateMatrixClockwise,
+	setTextWrapped,
 	shuffle,
 	smartify,
 	tex,
@@ -208,11 +209,6 @@ export class GameScene {
 		this.camera.display.container.interactiveChildren = true;
 		this.camera.display.container.accessibleChildren = true;
 
-		this.containerUI.addChild(this.mechinfo);
-		this.mechinfo.x -= size.x / 2;
-		this.mechinfo.y -= size.y / 2;
-		this.mechinfo.x += 50;
-		this.mechinfo.y += 50;
 		this.container.addChild(this.focus);
 		this.camera.setTarget(this.focus);
 	}
@@ -301,26 +297,7 @@ export class GameScene {
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests' | 'modules', string[]>;
 
-	mechinfo = new BitmapText({ style: fontMechInfo });
 	costMax = 1000;
-
-	updateMechInfo() {
-		let allCells = 0;
-		forCells(this.mech.grid, () => {
-			++allCells;
-		});
-		let freeCells = 0;
-		forCells(this.modules.grid, (x, y, cell) => {
-			if (cell === 'x') ++freeCells;
-		});
-		const cost =
-			allCells * 1 +
-			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
-		this.mechinfo.text = `
-PRICE: ${formatCount(cost, this.costMax)}
-SPACE: ${formatCount(freeCells, allCells)}
-`.trim();
-	}
 
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
@@ -420,6 +397,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				scrollerHeads
 			);
 
+			let lastPart: MechD = this.getPart(`head ${this.mech.headD.name}`);
 			(
 				[
 					['head', this.mech.headD.name, this.pieces.heads, scrollerHeads],
@@ -436,6 +414,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					const spr = new Sprite(part.tex);
 					buttonify(spr, i);
 					spr.addEventListener('click', () => {
+						lastPart = part;
 						switch (type) {
 							case 'head':
 								this.mech.headD = part;
@@ -463,6 +442,18 @@ SPACE: ${formatCount(freeCells, allCells)}
 				});
 			});
 
+			const textInfo = new BitmapText({ text: '', style: fontDialogue });
+			textInfo.style.wordWrapWidth = size.x / 3 - 32;
+			const panelInfo = new Spr9('panel');
+			panelInfo.width = size.x / 3;
+			panelInfo.height = size.y - 10;
+			panelInfo.x -= size.x / 2;
+			panelInfo.x += scrollerChests.container.width;
+			panelInfo.y -= panelInfo.height / 2;
+			textInfo.x += 16;
+			textInfo.y += 16;
+			panelInfo.addChild(textInfo);
+
 			let containerBtns = new Container();
 			const update = () => {
 				this.reassemble();
@@ -476,6 +467,33 @@ SPACE: ${formatCount(freeCells, allCells)}
 				});
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
+
+				let allCells = 0;
+				forCells(this.mech.grid, () => {
+					++allCells;
+				});
+				let freeCells = 0;
+				forCells(this.modules.grid, (x, y, cell) => {
+					if (cell === 'x') ++freeCells;
+				});
+				const cost =
+					allCells * 1 +
+					this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
+				setTextWrapped(
+					textInfo,
+					`
+- TOTALS
+PRICE:  ${formatCount(cost, this.costMax)}
+SPACE: ${formatCount(freeCells, allCells)}
+ 
+---------------------
+ 
+${smartify(`"${lastPart.name}"
+ 
+$${lastPart.cost} | ${lastPart.cellCount} CELLS
+ 
+${lastPart.description}`)}`
+				);
 			};
 			update();
 
@@ -490,6 +508,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 				containerScrollersCycler.destroy();
 				btnNext.destroy();
 				btnPrev.destroy();
+				panelInfo.destroy();
 				donePickingParts();
 			}, 'button');
 			this.containerUI.addChild(scrollerHeads.container);
@@ -497,6 +516,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.containerUI.addChild(scrollerArms.container);
 			this.containerUI.addChild(scrollerLegs.container);
 			this.containerUI.addChild(containerScrollersCycler);
+			this.containerUI.addChild(panelInfo);
 			this.containerUI.addChild(btnDone.display.container);
 
 			[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
@@ -715,9 +735,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			this.camera.scripts.push(dragger);
 
 			const scroller = new Scroller({
-				width:
-					modules.reduce((acc, i) => Math.max(acc, i.w), 0) * cellSize +
-					tex('scroll_track').width,
+				width: 200,
 				height: size.y,
 				gap: 10,
 			});
@@ -887,8 +905,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 				}
 			});
 		}
-
-		this.updateMechInfo();
 	}
 
 	getPart(key: string, flip?: boolean) {
