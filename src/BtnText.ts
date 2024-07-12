@@ -16,4 +16,11 @@ export class BtnText extends Btn {
 		this.text.y -= this.text.height / 2;
 		this.text.x += 4;
 	}
+
+	setText(str: string) {
+		this.text.text = str;
+		this.text.x = -this.text.width / 2;
+		this.text.y = -this.text.height / 2;
+		this.text.x += 4;
+	}
 }
