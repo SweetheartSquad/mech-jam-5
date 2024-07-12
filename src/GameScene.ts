@@ -472,6 +472,7 @@ export class GameScene {
 
 				containerBtns.destroy();
 				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
+					btn.spr.alpha = 0.4;
 					if (cell === '=') {
 						btn.spr.texture = tex('cell joint');
 					}
