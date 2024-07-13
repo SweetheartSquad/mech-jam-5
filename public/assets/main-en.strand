@@ -374,6 +374,35 @@ todo signal failure prebuild stuff
 
 ::signal failure prefight
 todo signal failure prefight stuff
+<<do this.scene.loadMech('enemy', {
+	"head": "7",
+	"chest": "9",
+	"arms": "6",
+	"legs": "1",
+	"modules": [
+		{ "name": "debug cockpit", "x": 0, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug cockpit", "x": 12, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug cockpit", "x": 4, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug cockpit", "x": 8, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug cockpit", "x": 6, "y": 0, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 1, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 1, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 2, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 2, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 2, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 11, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 11, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 10, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 10, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 10, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 5, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 5, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 5, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 7, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 7, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
+		{ "name": "debug heat", "x": 7, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
+	],
+})>>
 [[>close]]
 
 ::signal failure postfight
