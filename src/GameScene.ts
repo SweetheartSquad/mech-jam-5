@@ -1074,6 +1074,14 @@ ${lastModule.description}`)}`
 							: 'cell detect_empty'
 					);
 					btn.enabled = false;
+				} else if (this.battleGridEnemy[y][x] === 'O') {
+					btn.spr.texture = tex(
+						this.mechEnemy.grid[y][x] === '=' ||
+							this.modulesEnemy.grid[y][x] !== 'x'
+							? 'cell detect_filled'
+							: 'cell detect_empty'
+					);
+					btn.enabled = false;
 				} else {
 					btn.display.container.visible = false;
 				}
