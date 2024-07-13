@@ -352,6 +352,38 @@ SPACE: ${formatCount(freeCells, allCells)}
 `;
 	}
 
+	transitionIn(item: Container, duration: number) {
+		const tweens = [
+			TweenManager.tween(
+				item,
+				'x',
+				item.x,
+				duration,
+				item.x + item.width * 1.5,
+				eases.backOut
+			),
+			TweenManager.tween(item.scale, 'x', 1, duration, 0, eases.backOut),
+			TweenManager.tween(item, 'alpha', 1, duration, 0, eases.cubicOut),
+		];
+		return tweens;
+	}
+
+	transitionOut(item: Container, duration: number) {
+		const tweens = [
+			TweenManager.tween(
+				item,
+				'x',
+				item.x - item.width * 1.5,
+				duration,
+				undefined,
+				eases.circIn
+			),
+			TweenManager.tween(item.scale, 'x', 2, duration, undefined, eases.circIn),
+			TweenManager.tween(item, 'alpha', 0, duration, undefined, eases.cubicIn),
+		];
+		return tweens;
+	}
+
 	pickParts() {
 		this.setFocus(
 			-size.x / 3 + this.mech.container.x,
@@ -359,7 +391,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			500,
 			eases.cubicInOut
 		);
-		return new Promise<void>((donePickingParts) => {
+		return new Promise<void>(async (donePickingParts) => {
 			const cycler = <T>(
 				update: (item: T, idx: number) => void,
 				items: T[],
@@ -533,33 +565,10 @@ ${lastPart.description}`)}`
 				donePickingParts();
 				this.screenFilter.flash(0.5, 500, eases.circOut);
 
-				const tweens = [
-					TweenManager.tween(
-						panelInfo.scale,
-						'x',
-						2,
-						500,
-						undefined,
-						eases.circIn
-					),
-					TweenManager.tween(
-						panelInfo,
-						'x',
-						panelInfo.x - size.x / 2,
-						500,
-						undefined,
-						eases.circIn
-					),
-					TweenManager.tween(
-						panelInfo,
-						'alpha',
-						0,
-						500,
-						undefined,
-						eases.cubicIn
-					),
-				];
-				await delay(500);
+				const tweens: Tween[] = [];
+				tweens.push(...this.transitionOut(panelInfo, 300));
+				tweens.push(...this.transitionOut(containerScrollers, 200));
+				await delay(300);
 				tweens.forEach((i) => TweenManager.abort(i));
 
 				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
@@ -567,20 +576,21 @@ ${lastPart.description}`)}`
 						i.destroy();
 					}
 				);
-				btnDone.destroy();
 				containerBtns.destroy();
-				containerScrollersCycler.destroy();
+				btnDone.destroy();
 				btnNext.destroy();
 				btnPrev.destroy();
 				panelInfo.destroy();
 
 				closeModal();
 			});
-			this.containerUI.addChild(scrollerHeads.container);
-			this.containerUI.addChild(scrollerChests.container);
-			this.containerUI.addChild(scrollerArms.container);
-			this.containerUI.addChild(scrollerLegs.container);
-			this.containerUI.addChild(containerScrollersCycler);
+			const containerScrollers = new Container();
+			this.containerUI.addChild(containerScrollers);
+			containerScrollers.addChild(scrollerHeads.container);
+			containerScrollers.addChild(scrollerChests.container);
+			containerScrollers.addChild(scrollerArms.container);
+			containerScrollers.addChild(scrollerLegs.container);
+			containerScrollers.addChild(containerScrollersCycler);
 			this.containerUI.addChild(panelInfo);
 			panelInfo.addChild(btnDone.display.container);
 
@@ -610,6 +620,12 @@ ${lastPart.description}`)}`
 			sprPanel.x -= sprPanel.width / 2;
 			sprPanel.y -= sprPanel.height / 2;
 			containerScrollersCycler.addChildAt(sprPanel, 0);
+
+			const closeModal = this.modal(0);
+			this.transitionIn(panelInfo, 400);
+			this.transitionIn(containerScrollers, 500);
+			await delay(500);
+			closeModal();
 		});
 	}
 
