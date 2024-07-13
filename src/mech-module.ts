@@ -8,9 +8,11 @@ export function mechModuleParse(key: string, source: string) {
 	const mechanics = strMechanics.split(/,\s?/);
 	const cost = parseInt(mechanics.shift() || '0', 10);
 	const { cells, w, h } = parseLayout(layout);
+	let cellCount = 0;
 	forCells(cells, (x, y, cell) => {
 		if (cell === '0') {
 			// basic cell
+			++cellCount;
 		} else if (cell === '.') {
 			// empty
 		} else {
@@ -21,6 +23,7 @@ export function mechModuleParse(key: string, source: string) {
 		name: key.replace(`module `, ''),
 		description,
 		cost,
+		cellCount,
 		tags: mechanics,
 		tex: tex(key) === tex('error') ? makeCellsTexture(cells) : tex(key),
 		cells,
