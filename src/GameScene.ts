@@ -1530,15 +1530,18 @@ ${lastModule.description}`)}`
 	actions: {
 		shield: number;
 		attacks: [number, number][];
+		scans: [number, number][];
 		heatMax: number;
 	} = {
 		shield: 0,
 		attacks: [],
+		scans: [],
 		heatMax: 0,
 	};
 
 	tagsToPossibleActions(tags: string[]) {
 		let attacksMax = 0;
+		let scansMax = 0;
 		let shieldsAmt = 0;
 		let heatMax = 0;
 		tags.forEach((tag) => {
@@ -1553,12 +1556,15 @@ ${lastModule.description}`)}`
 				case 'attack':
 					++attacksMax;
 					break;
+				case 'radar':
+					++scansMax;
+					break;
 				case 'shield':
 					++shieldsAmt;
 					break;
 			}
 		});
-		return { attacksMax, shieldsAmt, heatMax };
+		return { attacksMax, scansMax, shieldsAmt, heatMax };
 	}
 
 	pickActions() {
@@ -1567,6 +1573,7 @@ ${lastModule.description}`)}`
 			// reset
 			this.actions.shield = 0;
 			this.actions.attacks = [];
+			this.actions.scans = [];
 
 			const {
 				container: containerBtns,
@@ -1582,7 +1589,7 @@ ${lastModule.description}`)}`
 			const tags = this.modules.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGrid))
 				.flatMap((i) => i.module.tags);
-			const { attacksMax, shieldsAmt, heatMax } =
+			const { attacksMax, scansMax, shieldsAmt, heatMax } =
 				this.tagsToPossibleActions(tags);
 			this.actions.heatMax = heatMax;
 
@@ -1634,14 +1641,7 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const updateAttacks = () => {
-				btnAttack.setText(`AIM\n(${attacksMax - this.actions.attacks.length})`);
-				if (this.actions.attacks.length < attacksMax) {
-					btnAttack.display.container.tint = green;
-				} else {
-					btnAttack.display.container.tint = red;
-				}
-
+			const updateTargetGrid = () => {
 				gridBtns.forEach((i) => {
 					i.display.container.visible = false;
 				});
@@ -1649,7 +1649,23 @@ ${lastModule.description}`)}`
 					const btn = gridBtnsByPos[i[1]]?.[i[0]];
 					if (!btn) return;
 					btn.display.container.visible = true;
+					btn.display.container.tint = red;
 				});
+				this.actions.scans.forEach((i) => {
+					const btn = gridBtnsByPos[i[1]]?.[i[0]];
+					if (!btn) return;
+					btn.display.container.visible = true;
+					btn.display.container.tint = green;
+				});
+			};
+
+			const updateAttacks = () => {
+				btnAttack.setText(`AIM\n(${attacksMax - this.actions.attacks.length})`);
+				if (this.actions.attacks.length < attacksMax) {
+					btnAttack.display.container.tint = green;
+				} else {
+					btnAttack.display.container.tint = red;
+				}
 			};
 
 			const btnAttack = new BtnText('AIM', async () => {
@@ -1660,6 +1676,28 @@ ${lastModule.description}`)}`
 				if (!target) return;
 				this.actions.attacks.push(target);
 				updateAttacks();
+				updateTargetGrid();
+				updateHeat();
+			});
+
+			const updateScans = () => {
+				btnScan.setText(`SCAN\n (${scansMax - this.actions.scans.length})`);
+				if (this.actions.scans.length < scansMax) {
+					btnScan.display.container.tint = green;
+				} else {
+					btnScan.display.container.tint = red;
+				}
+			};
+
+			const btnScan = new BtnText('SCAN', async () => {
+				if (this.actions.scans.length >= scansMax) return;
+				const removeModal = this.modal();
+				const target = await this.pickTarget();
+				removeModal();
+				if (!target) return;
+				this.actions.scans.push(target);
+				updateScans();
+				updateTargetGrid();
 				updateHeat();
 			});
 
@@ -1692,9 +1730,12 @@ ${lastModule.description}`)}`
 				'RESET',
 				() => {
 					this.actions.attacks.length = 0;
+					this.actions.scans.length = 0;
 					this.actions.shield = 0;
 					updateAttacks();
+					updateScans();
 					updateShields();
+					updateTargetGrid();
 					updateHeat();
 				},
 				'reset actions'
@@ -1717,8 +1758,12 @@ ${lastModule.description}`)}`
 				btnEnd.transform.y - btnEnd.display.container.height;
 			this.containerUI.addChild(btnToggleShield.display.container);
 
-			btnAttack.transform.y =
+			btnScan.transform.y =
 				btnToggleShield.transform.y - btnToggleShield.display.container.height;
+			this.containerUI.addChild(btnScan.display.container);
+
+			btnAttack.transform.y =
+				btnScan.transform.y - btnScan.display.container.height;
 			this.containerUI.addChild(btnAttack.display.container);
 
 			btnReset.transform.y =
@@ -1733,12 +1778,13 @@ ${lastModule.description}`)}`
 				const closeModal = this.modal(0);
 				const tweens = [
 					...this.transitionOut(containerHeat, 200),
-					...this.transitionOut(btnAttack.display.container, 300),
-					...this.transitionOut(btnReset.display.container, 400),
-					...this.transitionOut(btnToggleShield.display.container, 500),
-					...this.transitionOut(btnEnd.display.container, 600),
+					...this.transitionOut(btnReset.display.container, 300),
+					...this.transitionOut(btnAttack.display.container, 400),
+					...this.transitionOut(btnScan.display.container, 500),
+					...this.transitionOut(btnToggleShield.display.container, 600),
+					...this.transitionOut(btnEnd.display.container, 700),
 				];
-				await delay(600);
+				await delay(700);
 				tweens.forEach((i) => TweenManager.abort(i));
 
 				containerHeat.destroy();
@@ -1752,7 +1798,9 @@ ${lastModule.description}`)}`
 			};
 
 			updateAttacks();
+			updateScans();
 			updateShields();
+			updateTargetGrid();
 			updateHeat();
 
 			this.transitionIn(containerHeat, 200);
@@ -1770,7 +1818,8 @@ ${lastModule.description}`)}`
 				(btn, x, y) => {
 					if (
 						this.battleGridEnemy[y][x] === 'X' ||
-						this.actions.attacks.some((i) => i[0] === x && i[1] === y)
+						this.actions.attacks.some((i) => i[0] === x && i[1] === y) ||
+						this.actions.scans.some((i) => i[0] === x && i[1] === y)
 					) {
 						btn.enabled = false;
 						btn.display.container.visible = false;
@@ -1800,7 +1849,11 @@ ${lastModule.description}`)}`
 	}
 
 	getHeat() {
-		return this.actions.attacks.length + this.actions.shield;
+		return (
+			this.actions.attacks.length +
+			this.actions.scans.length +
+			this.actions.shield
+		);
 	}
 
 	overheat(placed: GameScene['modules']['placed'], grid: string[][]) {
@@ -1837,6 +1890,15 @@ ${lastModule.description}`)}`
 			}
 			// TODO: hit feedback
 			grid[y][x] = 'X';
+			this.reassemble();
+		}
+	}
+
+	async scan({ scans, grid }: { scans: [number, number][]; grid: string[][] }) {
+		for (let [x, y] of scans) {
+			await delay(100);
+			// TODO: scan feedback
+			grid[y][x] = 'O';
 			this.reassemble();
 		}
 	}
@@ -1916,7 +1978,13 @@ ${lastModule.description}`)}`
 				shields,
 				grid: this.battleGridEnemy,
 			});
-			// TODO: hit self from overheat
+			// reveal scans
+			await this.scan({
+				scans: this.actions.scans,
+				grid: this.battleGridEnemy,
+			});
+
+			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
 				// TODO: animation
@@ -1943,6 +2011,7 @@ ${lastModule.description}`)}`
 				this.tagsToPossibleActions(tags);
 			let shields = 0;
 			let attacks: [number, number][] = [];
+			let scans: [number, number][] = [];
 
 			// pick enemy actions
 			// TODO: better deciding whether to enable shields
@@ -1988,6 +2057,8 @@ ${lastModule.description}`)}`
 				attacks.push(target);
 			}
 
+			// TODO: pick scans
+
 			// play enemy actions
 			shields; // TODO: save for next turn
 
@@ -2003,6 +2074,11 @@ ${lastModule.description}`)}`
 				await delay(100);
 				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
 			}
+			// reveal scans
+			await this.scan({
+				scans,
+				grid: this.battleGrid,
+			});
 
 			// expand hits to sever parts
 			await this.severParts('player');
