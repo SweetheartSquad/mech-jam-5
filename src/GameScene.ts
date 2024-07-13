@@ -1066,6 +1066,17 @@ ${lastModule.description}`)}`
 				btn.onClick = () => {
 					// TODO: say what it is
 				};
+				const idx = Number(this.modulesEnemy.grid[y][x]);
+				if (
+					!Number.isNaN(idx) &&
+					this.moduleIsDestroyed(
+						this.modulesEnemy.placed[idx],
+						this.battleGridEnemy
+					)
+				) {
+					btn.enabled = false;
+					btn.display.container.visible = false;
+				}
 				if (this.battleGridEnemy[y][x] === 'X') {
 					btn.spr.texture = tex(
 						this.mechEnemy.grid[y][x] === '=' ||
