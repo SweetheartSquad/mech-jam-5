@@ -1088,6 +1088,10 @@ ${lastModule.description}`)}`
 			w: number;
 			h: number;
 		};
+		gridParts: string[][];
+		connections: {
+			[key in 'head' | 'armL' | 'armR' | 'legL' | 'legR']: [number, number];
+		};
 	} {
 		const container: Container = new Container();
 
@@ -1196,6 +1200,70 @@ ${lastModule.description}`)}`
 			},
 		]);
 
+		const partCellHead = replaceCells(headD.cells, '0', 'H');
+		const partCellChest = replaceCells(chestD.cells, '0', 'C');
+		const partCellArmL = replaceCells(armLD.cells, '0', 'AL');
+		const partCellArmR = replaceCells(armRD.cells, '0', 'AR');
+		const partCellLegL = replaceCells(legLD.cells, '0', 'LL');
+		const partCellLegR = replaceCells(legRD.cells, '0', 'LR');
+		partCellChest[chestD.connections.head[1]][chestD.connections.head[0]] =
+			'JH';
+		partCellChest[chestD.connections.legL[1]][chestD.connections.legL[0]] =
+			'JLL';
+		partCellChest[chestD.connections.legR[1]][chestD.connections.legR[0]] =
+			'JLR';
+		partCellChest[chestD.connections.armL[1]][chestD.connections.armL[0]] =
+			'JAL';
+		partCellChest[chestD.connections.armR[1]][chestD.connections.armR[0]] =
+			'JAR';
+		const [gridParts] = flatten([
+			{
+				cells: partCellChest,
+				x: cellsChest.position.x / cellSize,
+				y: cellsChest.position.y / cellSize,
+			},
+			{
+				cells: partCellHead,
+				x: cellsHead.position.x / cellSize,
+				y: cellsHead.position.y / cellSize,
+			},
+			{
+				cells: partCellLegL,
+				x: cellsLegL.position.x / cellSize,
+				y: cellsLegL.position.y / cellSize,
+			},
+			{
+				cells: partCellLegR,
+				x: cellsLegR.position.x / cellSize,
+				y: cellsLegR.position.y / cellSize,
+			},
+			{
+				cells: partCellArmL,
+				x: cellsArmL.position.x / cellSize,
+				y: cellsArmL.position.y / cellSize,
+			},
+			{
+				cells: partCellArmR,
+				x: cellsArmR.position.x / cellSize,
+				y: cellsArmR.position.y / cellSize,
+			},
+		]);
+
+		const connections: ReturnType<GameScene['assembleParts']>['connections'] = {
+			head: [0, 0],
+			armL: [0, 0],
+			armR: [0, 0],
+			legL: [0, 0],
+			legR: [0, 0],
+		};
+		forCells(gridParts, (x, y, cell) => {
+			if (cell === 'JH') connections.head = [x, y];
+			if (cell === 'JLL') connections.legL = [x, y];
+			if (cell === 'JLR') connections.legR = [x, y];
+			if (cell === 'JAL') connections.armL = [x, y];
+			if (cell === 'JAR') connections.armR = [x, y];
+		});
+
 		pairs.forEach(([spr, cells]) => {
 			spr.x = cells.x + cells.width / 2;
 			spr.y = cells.y + cells.height / 2;
@@ -1213,6 +1281,8 @@ ${lastModule.description}`)}`
 			legRD,
 			grid,
 			gridDimensions,
+			gridParts,
+			connections,
 		};
 	}
 
