@@ -1367,14 +1367,42 @@ ${lastPart.description}`)}`
 			this.actions.heatMax = heatMax;
 
 			const updateHeat = () => {
+				containerHeat.children.forEach((i) => {
+					i.destroy();
+				});
 				const heat = this.getHeat();
-				textHeat.text = `heat: ${formatCount(heat, this.actions.heatMax)}`;
-				if (heat > this.actions.heatMax) {
-					textHeat.tint = red;
-				} else if (heat === this.actions.heatMax) {
-					textHeat.tint = green;
-				} else {
-					textHeat.tint = white;
+				for (let i = 0; i < Math.max(heat, heatMax); ++i) {
+					const textCount = new BitmapText({
+						text: i.toString(10),
+						style: fontMechInfo,
+					});
+					const sprHeatBg = new Sprite(tex('heatbar empty'));
+					sprHeatBg.anchor.x = 0.5;
+					sprHeatBg.y -= (sprHeatBg.height - 5) * i;
+					if (i >= heatMax) {
+						sprHeatBg.y += sprHeatBg.height / 2;
+						sprHeatBg.scale.y *= -1;
+						textCount.scale.y *= -1;
+						textCount.y += sprHeatBg.height / 2;
+					}
+					textCount.x += sprHeatBg.width / 2 + 2;
+					textCount.y += sprHeatBg.height / 2;
+					sprHeatBg.addChild(textCount);
+					containerHeat.addChild(sprHeatBg);
+				}
+				for (let i = 0; i < heat; ++i) {
+					const sprHeatFill = new Sprite(tex('heatbar full'));
+					sprHeatFill.anchor.x = 0.5;
+					sprHeatFill.y -= (sprHeatFill.height - 5) * i;
+					if (i >= heatMax) {
+						sprHeatFill.y += sprHeatFill.height / 2;
+						sprHeatFill.scale.y *= -1;
+						sprHeatFill.tint = red;
+					}
+					if (heat === heatMax) {
+						sprHeatFill.tint = green;
+					}
+					containerHeat.addChild(sprHeatFill);
 				}
 			};
 
@@ -1404,10 +1432,8 @@ ${lastPart.description}`)}`
 				});
 				updateHeat();
 			};
-			const textHeat = new BitmapText({
-				text: 'heat',
-				style: fontMechInfo,
-			});
+
+			const containerHeat = new Container();
 			const btnAttack = new BtnText('attack', async () => {
 				if (this.actions.attacks.length >= attacksMax) return;
 				const removeModal = this.modal();
@@ -1465,8 +1491,8 @@ ${lastPart.description}`)}`
 			});
 			updateShields();
 
-			this.container.addChild(textHeat);
-			textHeat.y -= btnAttack.display.container.height;
+			this.container.addChild(containerHeat);
+			containerHeat.y -= btnAttack.display.container.height;
 			this.container.addChild(btnAttack.display.container);
 			btnAttackUndo.transform.x += btnAttack.display.container.width;
 			this.container.addChild(btnAttackUndo.display.container);
@@ -1477,7 +1503,7 @@ ${lastPart.description}`)}`
 			this.container.addChild(btnEnd.display.container);
 
 			const destroy = () => {
-				textHeat.destroy();
+				containerHeat.destroy();
 				btnAttack.destroy();
 				btnAttackUndo.destroy();
 				btnToggleShield.destroy();
