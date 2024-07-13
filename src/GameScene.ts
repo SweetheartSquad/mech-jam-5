@@ -662,6 +662,18 @@ ${lastPart.description}`)}`
 			};
 			document.addEventListener('contextmenu', onContext);
 
+			let lastModule: ModuleD = modules[0];
+			const updateInfo = () => {
+				setTextWrapped(
+					textInfo,
+					`${this.getGeneralInfo()}${smartify(`"${lastModule.name}"
+ 
+$${lastModule.cost} | ${lastModule.cellCount} CELLS
+ 
+${lastModule.description}`)}`
+				);
+			};
+
 			const {
 				container: containerBtns,
 				gridBtns,
@@ -709,6 +721,7 @@ ${lastPart.description}`)}`
 						}
 						this.reassemble();
 						checkPlacement();
+						updateInfo();
 					}
 				};
 				btn.spr.addEventListener('pointerover', () => {
@@ -769,6 +782,8 @@ ${lastPart.description}`)}`
 				dragging = makeModule(moduleD);
 				dragging.alpha = 0.5;
 				this.containerUI.addChild(dragging);
+				lastModule = moduleD;
+				updateInfo();
 				return dragging;
 			};
 
@@ -824,9 +839,21 @@ ${lastPart.description}`)}`
 			scroller.container.x = size.x / 2 - scroller.container.width;
 			scroller.container.y -= size.y / 2;
 
+			const textInfo = new BitmapText({ text: '', style: fontDialogue });
+			textInfo.style.wordWrapWidth = size.x / 3 - 32;
+			const panelInfo = new Spr9('panel');
+			panelInfo.width = size.x / 3;
+			panelInfo.x -= panelInfo.width / 2;
+			panelInfo.height = size.y - 10;
+			panelInfo.y -= panelInfo.height / 2;
+			textInfo.x += 16;
+			textInfo.y += 16;
+			panelInfo.addChild(textInfo);
+
 			const destroy = () => {
 				document.removeEventListener('contextmenu', onContext);
 				removeFromArray(this.camera.scripts, dragger);
+				panelInfo.destroy();
 				btnDone.destroy();
 				btnBack.destroy();
 				scroller.destroy();
@@ -860,6 +887,7 @@ ${lastPart.description}`)}`
 			});
 			this.container.addChild(containerBtns);
 			this.containerUI.addChild(scroller.container);
+			this.containerUI.addChild(panelInfo);
 			this.containerUI.addChild(btnDone.display.container);
 			this.containerUI.addChild(btnBack.display.container);
 			btnDone.transform.y -= btnDone.display.container.height;
@@ -867,6 +895,7 @@ ${lastPart.description}`)}`
 			btnDone.transform.x += size.x / 4;
 			btnBack.transform.x += size.x / 4 - btnBack.display.container.width;
 
+			updateInfo();
 			this.reassemble();
 		});
 	}
