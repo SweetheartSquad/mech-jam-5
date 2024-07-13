@@ -1795,6 +1795,7 @@ ${lastModule.description}`)}`
 		let poweredLegL = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'LL');
 		let poweredLegR = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'LR');
 
+		// check chest power connections first since everything else is only connected to chest
 		poweredChest =
 			poweredChest ||
 			(poweredHead && !severedHead) ||
