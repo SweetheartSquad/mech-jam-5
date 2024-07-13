@@ -1588,8 +1588,10 @@ ${lastModule.description}`)}`
 
 			const updateHeat = () => {
 				containerHeat.children.forEach((i) => {
-					i.destroy();
+					i.destroy({ children: true });
+					containerHeat.removeChild(i);
 				});
+				containerHeat.children.length = 0;
 				const heat = this.getHeat();
 				for (let i = 0; i < Math.max(heat, heatMax); ++i) {
 					const textCount = new BitmapText({
