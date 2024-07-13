@@ -330,6 +330,28 @@ export class GameScene {
 		}
 	}
 
+	getGeneralInfo() {
+		let allCells = 0;
+		forCells(this.mech.grid, () => {
+			++allCells;
+		});
+		let freeCells = 0;
+		forCells(this.modules.grid, (x, y, cell) => {
+			if (cell === 'x') ++freeCells;
+		});
+		const cost =
+			allCells * 1 +
+			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
+		return `
+- TOTALS
+PRICE:  ${formatCount(cost, this.costMax)}
+SPACE: ${formatCount(freeCells, allCells)}
+
+---------------------
+
+`;
+	}
+
 	pickParts() {
 		this.setFocus(-size.x / 2, undefined, 500, eases.cubicInOut);
 		return new Promise<void>((donePickingParts) => {
@@ -487,27 +509,9 @@ export class GameScene {
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
 
-				let allCells = 0;
-				forCells(this.mech.grid, () => {
-					++allCells;
-				});
-				let freeCells = 0;
-				forCells(this.modules.grid, (x, y, cell) => {
-					if (cell === 'x') ++freeCells;
-				});
-				const cost =
-					allCells * 1 +
-					this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
 				setTextWrapped(
 					textInfo,
-					`
-- TOTALS
-PRICE:  ${formatCount(cost, this.costMax)}
-SPACE: ${formatCount(freeCells, allCells)}
- 
----------------------
- 
-${smartify(`"${lastPart.name}"
+					`${this.getGeneralInfo()}${smartify(`"${lastPart.name}"
  
 $${lastPart.cost} | ${lastPart.cellCount} CELLS
  
