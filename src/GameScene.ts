@@ -783,10 +783,10 @@ ${lastModule.description}`)}`
 				const moduleD = modulesByName[dragging.label];
 				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
 
-				const { turns } = displayToPlacementProps(dragging);
-				const ox = Math.floor(moduleD.w / 2);
-				const oy = Math.floor(moduleD.h / 2);
-				const o = [ox, oy];
+				const { turns, flipH, flipV } = displayToPlacementProps(dragging);
+				const o = moduleD.pivot.slice();
+				if (turns >= 2 !== flipH) o[0] = moduleD.w - o[0] - 1;
+				if (turns >= 3 !== flipV) o[1] = moduleD.h - o[1] - 1;
 				if (turns % 2) o.reverse();
 				forCells(draggingCells, (x2, y2) => {
 					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
@@ -1398,9 +1398,9 @@ ${lastModule.description}`)}`
 		cells = rotateMatrixClockwise(cells, i.turns);
 		if (i.flipH) cells = flipMatrixH(cells);
 		if (i.flipV) cells = flipMatrixV(cells);
-		const ox = Math.floor(i.module.w / 2);
-		const oy = Math.floor(i.module.h / 2);
-		const o = [ox, oy];
+		const o = i.module.pivot.slice();
+		if (i.turns >= 2 !== i.flipH) o[0] = i.module.w - o[0] - 1;
+		if (i.turns >= 3 !== i.flipV) o[1] = i.module.h - o[1] - 1;
 		if (i.turns % 2) o.reverse();
 		return {
 			cells,
