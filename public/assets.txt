@@ -72,3 +72,6 @@ textures/scroll_track.png
 textures/scroll_thumb.png
 
 textures/panel.png
+
+textures/heatbar empty.png
+textures/heatbar full.png
