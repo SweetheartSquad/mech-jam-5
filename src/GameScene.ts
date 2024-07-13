@@ -663,7 +663,6 @@ ${lastPart.description}`)}`
 			eases.cubicInOut
 		);
 		return new Promise<boolean>(async (donePlacingModules) => {
-			await delay(500);
 			const modules = this.pieces.modules.map((i) => this.getModule(i));
 			const modulesByName = modules.reduce<{
 				[key: string]: (typeof modules)[number];
@@ -839,7 +838,7 @@ ${lastModule.description}`)}`
 			this.camera.scripts.push(dragger);
 
 			const scroller = new Scroller({
-				width: 200,
+				width: size.x / 3,
 				height: size.y,
 				gap: 10,
 			});
@@ -860,7 +859,6 @@ ${lastModule.description}`)}`
 					dragging = startDragging(moduleD);
 				});
 			});
-			scroller.container.x = size.x / 2 - scroller.container.width;
 			scroller.container.y -= size.y / 2;
 
 			const textInfo = new BitmapText({ text: '', style: fontDialogue });
@@ -874,8 +872,15 @@ ${lastModule.description}`)}`
 			textInfo.y += 16;
 			panelInfo.addChild(textInfo);
 
-			const destroy = () => {
+			const destroy = async () => {
 				document.removeEventListener('contextmenu', onContext);
+
+				const tweens: Tween[] = [];
+				tweens.push(...this.transitionOut(panelInfo, 300));
+				tweens.push(...this.transitionOut(containerScrollers, 200));
+				await delay(300);
+				tweens.forEach((i) => TweenManager.abort(i));
+
 				removeFromArray(this.camera.scripts, dragger);
 				panelInfo.destroy();
 				btnDone.destroy();
@@ -890,6 +895,7 @@ ${lastModule.description}`)}`
 						return;
 				}
 				destroy();
+				this.screenFilter.flash(0.3, 400, eases.circOut);
 				donePlacingModules(false);
 			});
 			const btnDone = new BtnText('DONE', () => {
@@ -907,20 +913,45 @@ ${lastModule.description}`)}`
 					return;
 				}
 				destroy();
+				this.screenFilter.flash(0.5, 500, eases.circOut);
 				donePlacingModules(true);
 			});
+
+			const containerScrollers = new Container();
 			this.container.addChild(containerBtns);
-			this.containerUI.addChild(scroller.container);
+			this.container.addChild(containerScrollers);
+			containerScrollers.addChild(scroller.container);
+			containerScrollers.x = size.x / 3 - tex('scroll_thumb').width;
 			this.containerUI.addChild(panelInfo);
-			this.containerUI.addChild(btnDone.display.container);
-			this.containerUI.addChild(btnBack.display.container);
-			btnDone.transform.y -= btnDone.display.container.height;
-			btnBack.transform.y -= btnBack.display.container.height;
-			btnDone.transform.x += size.x / 4;
-			btnBack.transform.x += size.x / 4 - btnBack.display.container.width;
+			panelInfo.addChild(btnDone.display.container);
+			panelInfo.addChild(btnBack.display.container);
+			btnDone.transform.x += 350;
+			btnDone.transform.x -= btnDone.display.container.width / 2;
+			btnDone.transform.y += size.x / 2;
+			btnDone.transform.y -= btnDone.display.container.height / 2;
+
+			btnBack.transform.x += 350;
+			btnBack.transform.x -= btnBack.display.container.width / 2;
+			btnBack.transform.y += size.x / 2;
+			btnBack.transform.y -= btnBack.display.container.height / 2;
+			btnBack.transform.x -= btnDone.display.container.width + 10;
+			btnBack.display.container.scale.x *= -1;
+			btnBack.text.scale.x *= -1;
+			btnBack.text.x += btnBack.text.width;
 
 			updateInfo();
 			this.reassemble();
+
+			const closeModal = this.modal(0);
+			panelInfo.visible = false;
+			containerScrollers.visible = false;
+			await delay(250);
+			panelInfo.visible = true;
+			containerScrollers.visible = true;
+			this.transitionIn(panelInfo, 400);
+			this.transitionIn(containerScrollers, 600);
+			await delay(600);
+			closeModal();
 		});
 	}
 
