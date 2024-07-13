@@ -1063,9 +1063,6 @@ ${lastModule.description}`)}`
 		this.damageBtnsEnemy?.gridBtns.forEach((i) => i.destroy());
 		if (this.battleGridEnemy.length) {
 			this.damageBtnsEnemy = this.makeBtnGrid('enemy', (btn, x, y, cell) => {
-				btn.onClick = () => {
-					// TODO: say what it is
-				};
 				const idx = Number(this.modulesEnemy.grid[y][x]);
 				if (
 					!Number.isNaN(idx) &&
@@ -1074,25 +1071,28 @@ ${lastModule.description}`)}`
 						this.battleGridEnemy
 					)
 				) {
-					btn.enabled = false;
-					btn.display.container.visible = false;
-				}
-				if (this.battleGridEnemy[y][x] === 'X') {
-					btn.spr.texture = tex(
+					btn.display.container.alpha = 0;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = this.modulesEnemy.placed[idx].module.name;
+					});
+				} else if (
+					this.battleGridEnemy[y][x] === 'X' ||
+					this.battleGridEnemy[y][x] === 'O'
+				) {
+					const damaged = this.battleGridEnemy[y][x] === 'X';
+					const filled =
 						this.mechEnemy.grid[y][x] === '=' ||
-							this.modulesEnemy.grid[y][x] !== 'x'
-							? 'cell damaged'
+						this.modulesEnemy.grid[y][x] !== 'x';
+					btn.spr.texture = tex(
+						filled
+							? `cell ${damaged ? 'damaged' : 'detect_filled'}`
 							: 'cell detect_empty'
 					);
-					btn.enabled = false;
-				} else if (this.battleGridEnemy[y][x] === 'O') {
-					btn.spr.texture = tex(
-						this.mechEnemy.grid[y][x] === '=' ||
-							this.modulesEnemy.grid[y][x] !== 'x'
-							? 'cell detect_filled'
-							: 'cell detect_empty'
-					);
-					btn.enabled = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = filled
+							? `part ${damaged ? 'damaged' : 'detected'}`
+							: 'empty cell';
+					});
 				} else {
 					btn.display.container.visible = false;
 				}
