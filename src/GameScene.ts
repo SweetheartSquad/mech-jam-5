@@ -1671,7 +1671,7 @@ ${lastModule.description}`)}`
 			const btnAttack = new BtnText('AIM', async () => {
 				if (this.actions.attacks.length >= attacksMax) return;
 				const removeModal = this.modal();
-				const target = await this.pickTarget();
+				const target = await this.pickTarget(true);
 				removeModal();
 				if (!target) return;
 				this.actions.attacks.push(target);
@@ -1692,7 +1692,7 @@ ${lastModule.description}`)}`
 			const btnScan = new BtnText('SCAN', async () => {
 				if (this.actions.scans.length >= scansMax) return;
 				const removeModal = this.modal();
-				const target = await this.pickTarget();
+				const target = await this.pickTarget(false);
 				removeModal();
 				if (!target) return;
 				this.actions.scans.push(target);
@@ -1811,13 +1811,14 @@ ${lastModule.description}`)}`
 		});
 	}
 
-	pickTarget() {
+	pickTarget(includeRevealed: boolean) {
 		return new Promise<[number, number] | false>((r) => {
 			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
 				'enemy',
 				(btn, x, y) => {
 					if (
 						this.battleGridEnemy[y][x] === 'X' ||
+						(!includeRevealed && this.battleGridEnemy[y][x] === 'O') ||
 						this.actions.attacks.some((i) => i[0] === x && i[1] === y) ||
 						this.actions.scans.some((i) => i[0] === x && i[1] === y)
 					) {
