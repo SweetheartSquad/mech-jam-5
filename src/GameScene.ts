@@ -714,7 +714,6 @@ ${lastModule.description}`)}`
 						const idx = Number(this.modules.grid[y][x]);
 						if (Number.isNaN(idx)) return;
 						let module: GameScene['modules']['placed'][number];
-						if (this.modules.placed[idx].module.tags.includes('joint')) return; // can't move joints
 						if (copying) {
 							// copy module
 							module = this.modules.placed[idx];
