@@ -1817,19 +1817,29 @@ ${lastModule.description}`)}`
 			who === 'player'
 				? [this.mech, this.modules, this.battleGrid]
 				: [this.mechEnemy, this.modulesEnemy, this.battleGridEnemy];
-		const severedHead = getFlood(mech.grid, ...mech.connections.head).every(
+
+		// extend base part joints to include placed modules
+		const gridExtended = copyCells(mech.grid);
+		forCells(modules.grid, (x, y, cell) => {
+			const idx = Number(cell);
+			if (Number.isNaN(idx)) return;
+			if (!modules.placed[idx].module.tags.includes('joint')) return;
+			gridExtended[y][x] = '=';
+		});
+
+		const severedHead = getFlood(gridExtended, ...mech.connections.head).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
-		const severedArmL = getFlood(mech.grid, ...mech.connections.armL).every(
+		const severedArmL = getFlood(gridExtended, ...mech.connections.armL).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
-		const severedArmR = getFlood(mech.grid, ...mech.connections.armR).every(
+		const severedArmR = getFlood(gridExtended, ...mech.connections.armR).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
-		const severedLegL = getFlood(mech.grid, ...mech.connections.legL).every(
+		const severedLegL = getFlood(gridExtended, ...mech.connections.legL).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
-		const severedLegR = getFlood(mech.grid, ...mech.connections.legR).every(
+		const severedLegR = getFlood(gridExtended, ...mech.connections.legR).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
 		const cockpits = modules.placed.filter(
