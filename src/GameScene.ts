@@ -1586,6 +1586,7 @@ ${lastModule.description}`)}`
 				this.tagsToPossibleActions(tags);
 			this.actions.heatMax = heatMax;
 
+			const containerHeat = new Container();
 			const updateHeat = () => {
 				containerHeat.children.forEach((i) => {
 					i.destroy({ children: true });
@@ -1626,22 +1627,19 @@ ${lastModule.description}`)}`
 					}
 					containerHeat.addChild(sprHeatFill);
 				}
+				if (heat > 0) {
+					btnReset.display.container.tint = white;
+				} else {
+					btnReset.display.container.tint = gray;
+				}
 			};
 
 			const updateAttacks = () => {
+				btnAttack.setText(`AIM\n(${attacksMax - this.actions.attacks.length})`);
 				if (this.actions.attacks.length < attacksMax) {
-					btnAttack.setText(
-						`attack (${attacksMax - this.actions.attacks.length})`
-					);
 					btnAttack.display.container.tint = green;
 				} else {
-					btnAttack.setText(`weapons primed`);
 					btnAttack.display.container.tint = red;
-				}
-				if (this.actions.attacks.length) {
-					btnAttackUndo.display.container.tint = white;
-				} else {
-					btnAttackUndo.display.container.tint = gray;
 				}
 
 				gridBtns.forEach((i) => {
@@ -1652,11 +1650,9 @@ ${lastModule.description}`)}`
 					if (!btn) return;
 					btn.display.container.visible = true;
 				});
-				updateHeat();
 			};
 
-			const containerHeat = new Container();
-			const btnAttack = new BtnText('attack', async () => {
+			const btnAttack = new BtnText('AIM', async () => {
 				if (this.actions.attacks.length >= attacksMax) return;
 				const removeModal = this.modal();
 				const target = await this.pickTarget();
@@ -1664,46 +1660,47 @@ ${lastModule.description}`)}`
 				if (!target) return;
 				this.actions.attacks.push(target);
 				updateAttacks();
+				updateHeat();
 			});
-
-			const btnAttackUndo = new BtnText(
-				'undo',
-				() => {
-					if (!this.actions.attacks.length) return;
-					this.actions.attacks.pop();
-					updateAttacks();
-				},
-				'undo attack'
-			);
-			updateAttacks();
 
 			const updateShields = () => {
 				if (shieldsAmt) {
 					btnToggleShield.setText(
 						this.actions.shield
-							? `shields: ${Math.floor(shieldsAmt * 100)}%`
-							: 'shields: disabled'
+							? `SHIELD\n ${Math.floor(shieldsAmt * 100)}%`
+							: 'SHIELD\n OFF'
 					);
 					btnToggleShield.display.container.tint = this.actions.shield
 						? green
 						: gray;
 				} else {
-					btnToggleShield.setText('shields: none');
+					btnToggleShield.setText('SHIELD\n  0%');
 					btnToggleShield.display.container.tint = red;
 				}
-				updateHeat();
 			};
 			const btnToggleShield = new BtnText(
 				'shields',
 				() => {
 					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
 					updateShields();
+					updateHeat();
 				},
 				'toggle shields'
 			);
-			updateShields();
 
-			const btnEnd = new BtnText('end', () => {
+			const btnReset = new BtnText(
+				'RESET',
+				() => {
+					this.actions.attacks.length = 0;
+					this.actions.shield = 0;
+					updateAttacks();
+					updateShields();
+					updateHeat();
+				},
+				'reset actions'
+			);
+
+			const btnEnd = new BtnText('END', () => {
 				if (!this.actions.shield && !this.actions.attacks.length) {
 					// TODO: proper UI
 					if (!window.confirm('Really skip your turn?')) return;
@@ -1711,28 +1708,40 @@ ${lastModule.description}`)}`
 				destroy();
 				r();
 			});
-			updateShields();
+
+			btnEnd.transform.y +=
+				size.y / 2 - btnEnd.display.container.height / 2 - 5;
+			this.container.addChild(btnEnd.display.container);
+
+			btnToggleShield.transform.y =
+				btnEnd.transform.y - btnEnd.display.container.height;
+			this.container.addChild(btnToggleShield.display.container);
+
+			btnAttack.transform.y =
+				btnToggleShield.transform.y - btnToggleShield.display.container.height;
+			this.container.addChild(btnAttack.display.container);
+
+			btnReset.transform.y =
+				btnAttack.transform.y - btnAttack.display.container.height;
+			this.container.addChild(btnReset.display.container);
 
 			this.container.addChild(containerHeat);
-			containerHeat.y -= btnAttack.display.container.height;
-			this.container.addChild(btnAttack.display.container);
-			btnAttackUndo.transform.x += btnAttack.display.container.width;
-			this.container.addChild(btnAttackUndo.display.container);
-			btnToggleShield.transform.y += btnAttack.display.container.height;
-			this.container.addChild(btnToggleShield.display.container);
-			btnEnd.transform.y += btnAttack.display.container.height;
-			btnEnd.transform.y += btnToggleShield.display.container.height;
-			this.container.addChild(btnEnd.display.container);
+			containerHeat.y =
+				btnReset.transform.y - btnReset.display.container.height;
 
 			const destroy = () => {
 				containerHeat.destroy();
 				btnAttack.destroy();
-				btnAttackUndo.destroy();
+				btnReset.destroy();
 				btnToggleShield.destroy();
 				btnEnd.destroy();
 				gridBtns.forEach((i) => i.destroy());
 				containerBtns.destroy();
 			};
+
+			updateAttacks();
+			updateShields();
+			updateHeat();
 		});
 	}
 
