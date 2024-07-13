@@ -1765,10 +1765,10 @@ ${lastModule.description}`)}`
 	}
 
 	async severParts(who: 'player' | 'enemy') {
-		const [mech, grid] =
+		const [mech, modules, grid] =
 			who === 'player'
-				? [this.mech, this.battleGrid]
-				: [this.mechEnemy, this.battleGridEnemy];
+				? [this.mech, this.modules, this.battleGrid]
+				: [this.mechEnemy, this.modulesEnemy, this.battleGridEnemy];
 		const severedHead = getFlood(mech.grid, ...mech.connections.head).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
@@ -1784,13 +1784,37 @@ ${lastModule.description}`)}`
 		const severedLegR = getFlood(mech.grid, ...mech.connections.legR).every(
 			([x, y]) => grid[y][x] === 'X'
 		);
+		const cockpits = modules.placed.filter(
+			(i) =>
+				i.module.tags.includes('cockpit') && !this.moduleIsDestroyed(i, grid)
+		);
+		let poweredChest = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'C');
+		let poweredHead = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'H');
+		let poweredArmL = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'AL');
+		let poweredArmR = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'AR');
+		let poweredLegL = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'LL');
+		let poweredLegR = cockpits.some((i) => mech.gridParts[i.y][i.x] === 'LR');
+
+		poweredChest =
+			poweredChest ||
+			(poweredHead && !severedHead) ||
+			(poweredArmL && !severedArmL) ||
+			(poweredArmR && !severedArmR) ||
+			(poweredLegL && !severedLegL) ||
+			(poweredLegR && !severedLegR);
+		poweredHead = poweredHead || (poweredChest && !severedHead);
+		poweredArmL = poweredArmL || (poweredChest && !severedArmL);
+		poweredArmR = poweredArmR || (poweredChest && !severedArmR);
+		poweredLegL = poweredLegL || (poweredChest && !severedLegL);
+		poweredLegR = poweredLegR || (poweredChest && !severedLegR);
 
 		forCells(mech.gridParts, (x, y, cell) => {
-			if (cell === 'H' && severedHead) grid[y][x] = 'X';
-			if (cell === 'AL' && severedArmL) grid[y][x] = 'X';
-			if (cell === 'AR' && severedArmR) grid[y][x] = 'X';
-			if (cell === 'LL' && severedLegL) grid[y][x] = 'X';
-			if (cell === 'LR' && severedLegR) grid[y][x] = 'X';
+			if (cell === 'C' && !poweredChest) grid[y][x] = 'X';
+			if (cell === 'H' && !poweredHead) grid[y][x] = 'X';
+			if (cell === 'AL' && !poweredArmL) grid[y][x] = 'X';
+			if (cell === 'AR' && !poweredArmR) grid[y][x] = 'X';
+			if (cell === 'LL' && !poweredLegL) grid[y][x] = 'X';
+			if (cell === 'LR' && !poweredLegR) grid[y][x] = 'X';
 		});
 	}
 
