@@ -353,7 +353,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 	}
 
 	pickParts() {
-		this.setFocus(-size.x / 2, undefined, 500, eases.cubicInOut);
+		this.setFocus(
+			-size.x / 3 + this.mech.container.x,
+			undefined,
+			500,
+			eases.cubicInOut
+		);
 		return new Promise<void>((donePickingParts) => {
 			const cycler = <T>(
 				update: (item: T, idx: number) => void,
@@ -628,7 +633,12 @@ ${lastPart.description}`)}`
 	}
 
 	placeModules() {
-		this.setFocus(-0, undefined, 500, eases.cubicInOut);
+		this.setFocus(
+			size.x / 3 + this.mech.container.x,
+			undefined,
+			500,
+			eases.cubicInOut
+		);
 		return new Promise<boolean>((donePlacingModules) => {
 			const modules = this.pieces.modules.map((i) => this.getModule(i));
 			const modulesByName = modules.reduce<{
