@@ -39,7 +39,7 @@ export class Scroller {
 		this.sprMask = new Sprite(tex('white'));
 		this.sprMask.width = width;
 		this.sprMask.height = height;
-		this.sprBg = new Sprite(tex('blank'));
+		this.sprBg = new Sprite(tex('black'));
 		this.containerScroll.mask = this.sprMask;
 		this.container.addChild(this.containerScroll, this.sprMask);
 
