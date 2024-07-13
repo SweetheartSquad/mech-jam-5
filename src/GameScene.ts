@@ -22,6 +22,7 @@ import {
 	displayToPlacementProps,
 	flatten,
 	forCells,
+	getFlood,
 	replaceCells,
 	rotateCellsByDisplay,
 } from './layout';
@@ -1763,6 +1764,36 @@ ${lastModule.description}`)}`
 		}
 	}
 
+	async severParts(who: 'player' | 'enemy') {
+		const [mech, grid] =
+			who === 'player'
+				? [this.mech, this.battleGrid]
+				: [this.mechEnemy, this.battleGridEnemy];
+		const severedHead = getFlood(mech.grid, ...mech.connections.head).every(
+			([x, y]) => grid[y][x] === 'X'
+		);
+		const severedArmL = getFlood(mech.grid, ...mech.connections.armL).every(
+			([x, y]) => grid[y][x] === 'X'
+		);
+		const severedArmR = getFlood(mech.grid, ...mech.connections.armR).every(
+			([x, y]) => grid[y][x] === 'X'
+		);
+		const severedLegL = getFlood(mech.grid, ...mech.connections.legL).every(
+			([x, y]) => grid[y][x] === 'X'
+		);
+		const severedLegR = getFlood(mech.grid, ...mech.connections.legR).every(
+			([x, y]) => grid[y][x] === 'X'
+		);
+
+		forCells(mech.gridParts, (x, y, cell) => {
+			if (cell === 'H' && severedHead) grid[y][x] = 'X';
+			if (cell === 'AL' && severedArmL) grid[y][x] = 'X';
+			if (cell === 'AR' && severedArmR) grid[y][x] = 'X';
+			if (cell === 'LL' && severedLegL) grid[y][x] = 'X';
+			if (cell === 'LR' && severedLegR) grid[y][x] = 'X';
+		});
+	}
+
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
@@ -1780,6 +1811,11 @@ ${lastModule.description}`)}`
 				await delay(100);
 				await this.overheat(this.modules.placed, this.battleGrid);
 			}
+
+			// expand hits to sever parts
+			await this.severParts('enemy');
+			this.reassemble();
+
 			r();
 		});
 	}
@@ -1855,6 +1891,11 @@ ${lastModule.description}`)}`
 				await delay(100);
 				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
 			}
+
+			// expand hits to sever parts
+			await this.severParts('player');
+			this.reassemble();
+
 			r();
 		});
 	}
