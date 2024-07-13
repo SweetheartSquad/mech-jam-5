@@ -785,9 +785,23 @@ ${lastModule.description}`)}`
 
 				const { turns, flipH, flipV } = displayToPlacementProps(dragging);
 				const o = moduleD.pivot.slice();
-				if (turns >= 2 !== flipH) o[0] = moduleD.w - o[0] - 1;
-				if (turns >= 3 !== flipV) o[1] = moduleD.h - o[1] - 1;
-				if (turns % 2) o.reverse();
+				if (flipH) {
+					o[0] = moduleD.w - o[0] - 1;
+				}
+				if (flipV) {
+					o[1] = moduleD.h - o[1] - 1;
+				}
+				const p = o.slice();
+				if (turns === 1) {
+					o[0] = moduleD.h - p[1] - 1;
+					o[1] = p[0];
+				} else if (turns === 2) {
+					o[0] = moduleD.w - p[0] - 1;
+					o[1] = moduleD.h - p[1] - 1;
+				} else if (turns === 3) {
+					o[0] = p[1];
+					o[1] = moduleD.w - p[0] - 1;
+				}
 				forCells(draggingCells, (x2, y2) => {
 					const modulecell = this.modules.grid[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (modulecell !== 'x') valid = false;
@@ -848,7 +862,7 @@ ${lastModule.description}`)}`
 			scroller.addChild(sprPadding);
 			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
-				uiModule.y += uiModule.height / 2;
+				uiModule.y += moduleD.pivot[1] * cellSize;
 				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
 				uiModule.addEventListener('pointerover', () => {
@@ -1312,10 +1326,8 @@ ${lastModule.description}`)}`
 		placed.forEach((i) => {
 			const sprModule = makeModule(i.module);
 			sprModule.rotation = (i.turns / 4) * Math.PI * 2;
-			const o = [i.module.w % 2 ? 0.5 : 0, i.module.h % 2 ? 0.5 : 0];
-			if (i.turns % 2) o.reverse();
-			sprModule.x = (i.x + o[0]) * cellSize;
-			sprModule.y = (i.y + o[1]) * cellSize;
+			sprModule.x = (i.x + 0.5) * cellSize;
+			sprModule.y = (i.y + 0.5) * cellSize;
 			sprModule.scale.x = i.flipH ? -1 : 1;
 			sprModule.scale.y = i.flipV ? -1 : 1;
 			container.addChild(sprModule);
@@ -1399,9 +1411,23 @@ ${lastModule.description}`)}`
 		if (i.flipH) cells = flipMatrixH(cells);
 		if (i.flipV) cells = flipMatrixV(cells);
 		const o = i.module.pivot.slice();
-		if (i.turns >= 2 !== i.flipH) o[0] = i.module.w - o[0] - 1;
-		if (i.turns >= 3 !== i.flipV) o[1] = i.module.h - o[1] - 1;
-		if (i.turns % 2) o.reverse();
+		if (i.flipH) {
+			o[0] = i.module.w - o[0] - 1;
+		}
+		if (i.flipV) {
+			o[1] = i.module.h - o[1] - 1;
+		}
+		const p = o.slice();
+		if (i.turns === 1) {
+			o[0] = i.module.h - p[1] - 1;
+			o[1] = p[0];
+		} else if (i.turns === 2) {
+			o[0] = i.module.w - p[0] - 1;
+			o[1] = i.module.h - p[1] - 1;
+		} else if (i.turns === 3) {
+			o[0] = p[1];
+			o[1] = i.module.w - p[0] - 1;
+		}
 		return {
 			cells,
 			x: i.x - o[0],
