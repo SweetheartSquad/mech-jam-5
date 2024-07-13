@@ -900,6 +900,7 @@ ${lastModule.description}`)}`
 				panelInfo.destroy();
 				btnDone.destroy();
 				btnBack.destroy();
+				btnReset.destroy();
 				scroller.destroy();
 				gridBtns.forEach((i) => i.destroy());
 			};
@@ -912,6 +913,16 @@ ${lastModule.description}`)}`
 				destroy();
 				this.screenFilter.flash(0.3, 400, eases.circOut);
 				donePlacingModules(false);
+			});
+			const btnReset = new BtnText('RESET', () => {
+				if (this.modules.placed.length) {
+					// TODO: proper ui
+					if (!window.confirm('this will remove all modules, are you sure?'))
+						return;
+				}
+				this.modules.placed = [];
+				this.reassemble();
+				this.screenFilter.flash(0.3, 200, eases.circOut);
 			});
 			const btnDone = new BtnText('DONE', () => {
 				// TODO: cost check
@@ -940,10 +951,15 @@ ${lastModule.description}`)}`
 			this.containerUI.addChild(panelInfo);
 			panelInfo.addChild(btnDone.display.container);
 			panelInfo.addChild(btnBack.display.container);
+			panelInfo.addChild(btnReset.display.container);
 			btnDone.transform.x += 350;
 			btnDone.transform.x -= btnDone.display.container.width / 2;
 			btnDone.transform.y += size.x / 2;
 			btnDone.transform.y -= btnDone.display.container.height / 2;
+
+			btnReset.transform.x = btnDone.transform.x;
+			btnReset.transform.y = btnDone.transform.y;
+			btnReset.transform.y -= btnDone.display.container.height;
 
 			btnBack.transform.x += 350;
 			btnBack.transform.x -= btnBack.display.container.width / 2;
