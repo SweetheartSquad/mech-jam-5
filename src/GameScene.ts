@@ -1789,6 +1789,7 @@ ${lastModule.description}`)}`
 
 				containerHeat.destroy();
 				btnAttack.destroy();
+				btnScan.destroy();
 				btnReset.destroy();
 				btnToggleShield.destroy();
 				btnEnd.destroy();
