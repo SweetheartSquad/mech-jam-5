@@ -536,13 +536,20 @@ ${lastPart.description}`)}`
 				const tweens = [
 					TweenManager.tween(
 						panelInfo.scale,
-						'y',
+						'x',
 						2,
 						500,
 						undefined,
 						eases.circIn
 					),
-					TweenManager.tween(panelInfo, 'y', 0, 500, undefined, eases.circIn),
+					TweenManager.tween(
+						panelInfo,
+						'x',
+						panelInfo.x - size.x / 2,
+						500,
+						undefined,
+						eases.circIn
+					),
 					TweenManager.tween(
 						panelInfo,
 						'alpha',
@@ -639,7 +646,8 @@ ${lastPart.description}`)}`
 			500,
 			eases.cubicInOut
 		);
-		return new Promise<boolean>((donePlacingModules) => {
+		return new Promise<boolean>(async (donePlacingModules) => {
+			await delay(500);
 			const modules = this.pieces.modules.map((i) => this.getModule(i));
 			const modulesByName = modules.reduce<{
 				[key: string]: (typeof modules)[number];
