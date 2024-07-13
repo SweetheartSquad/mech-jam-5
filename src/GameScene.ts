@@ -790,6 +790,9 @@ ${lastPart.description}`)}`
 				height: size.y,
 				gap: 10,
 			});
+			const sprPadding = new Sprite(tex('blank'));
+			sprPadding.height = 100;
+			scroller.addChild(sprPadding);
 			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
 				uiModule.y += uiModule.height / 2;
