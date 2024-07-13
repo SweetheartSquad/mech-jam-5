@@ -920,6 +920,13 @@ debug shield
 ---
 0
 
+::module debug joint
+debug joint
+---
+1, joint
+---
+0
+
 
 ::module cockpit 1
 A lil' cockpit.
