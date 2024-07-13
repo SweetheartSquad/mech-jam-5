@@ -22,6 +22,8 @@ export class Scroller {
 
 	tweens: Tween[] = [];
 
+	enabled = true;
+
 	constructor({
 		width,
 		height,
@@ -52,6 +54,7 @@ export class Scroller {
 
 		sprTrack.interactive = true;
 		sprTrack.addEventListener('click', (e) => {
+			if (!this.enabled) return;
 			const diff = e.globalY - this.scrollTop;
 			const dir = Math.sign(diff);
 			this.scrollBy(
@@ -62,6 +65,7 @@ export class Scroller {
 		this.sprThumb.cursor = 'grab';
 		this.sprThumb.interactive = true;
 		this.sprThumb.addEventListener('pointerdown', () => {
+			if (!this.enabled) return;
 			sprTrack.interactive = false;
 			const scrollStart = this.scrollTop;
 			const start = relativeMouse();
@@ -83,6 +87,7 @@ export class Scroller {
 		});
 
 		const onScroll = (event: FederatedWheelEvent) => {
+			if (!this.enabled) return;
 			this.scrollBy(event.deltaY, 100);
 		};
 		this.containerScroll.addEventListener('wheel', onScroll);
