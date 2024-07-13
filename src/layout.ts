@@ -103,6 +103,38 @@ export function replaceCells<T>(
 	return cells.map((i) => i.map((j) => (j.match(from) ? to : j)));
 }
 
+/** @returns orthogonal neighbours (i.e. cell above, below, to the right, to the left). excludes empties and outside boundaries */
+export function getNeighbours<T>(cells: T[][], x: number, y: number) {
+	const result: [number, number][] = [];
+	const up = cells[y - 1]?.[x];
+	const down = cells[y + 1]?.[x];
+	const left = cells[y]?.[x - 1];
+	const right = cells[y]?.[x + 1];
+	if (up !== undefined && up !== '.') result.push([x, y - 1]);
+	if (down !== undefined && down !== '.') result.push([x, y + 1]);
+	if (left !== undefined && left !== '.') result.push([x - 1, y]);
+	if (right !== undefined && right !== '.') result.push([x + 1, y]);
+	return result;
+}
+
+/** @returns list of positions in neighbourhood of given position that match its value (i.e. magic wand) */
+export function getFlood<T>(cells: T[][], x: number, y: number) {
+	const result: [number, number][] = [];
+	const target = cells[y][x];
+	const checked: { [key: string]: boolean } = {};
+	checked[`${x},${y}`] = false;
+	const check = (x: number, y: number): void => {
+		const key = `${x},${y}`;
+		if (checked[key]) return;
+		if (cells[y]?.[x] !== target) return;
+		result.push([x, y]);
+		checked[key] = true;
+		getNeighbours(cells, x, y).forEach((i) => check(...i));
+	};
+	check(x, y);
+	return result;
+}
+
 export function displayToPlacementProps(display: Container) {
 	return {
 		turns: (display.rotation / (Math.PI * 2)) * 4,
