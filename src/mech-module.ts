@@ -4,7 +4,7 @@ import { forCells, makeCellsTexture, parseLayout } from './layout';
 import { tex } from './utils';
 
 export function mechModuleParse(key: string, source: string) {
-	const [description, strMechanics, layout] = source.split('\n---\n');
+	const [description, strMechanics, layout, strPivot] = source.split('\n---\n');
 	const mechanics = strMechanics.split(/,\s?/);
 	const cost = parseInt(mechanics.shift() || '0', 10);
 	const { cells, w, h } = parseLayout(layout);
@@ -19,6 +19,12 @@ export function mechModuleParse(key: string, source: string) {
 			throw new Error(`invalid cell type "${cell}" in "${key}"`);
 		}
 	});
+	let pivot: [number, number];
+	if (strPivot) {
+		pivot = strPivot.split(',').map((i) => parseInt(i)) as [number, number];
+	} else {
+		pivot = [Math.floor(w / 2), Math.floor(h / 2)];
+	}
 	return {
 		name: key.replace(`module `, ''),
 		description,
@@ -29,6 +35,7 @@ export function mechModuleParse(key: string, source: string) {
 		cells,
 		w,
 		h,
+		pivot,
 	};
 }
 
@@ -41,8 +48,8 @@ export function makeModule(piece: ReturnType<typeof mechModuleParse>) {
 	sprBase.label = piece.name;
 	sprBase.anchor.x = sprBase.anchor.y = 0.5;
 	containerCells.addChild(sprBase);
-	containerCells.pivot.x = (piece.w / 2) * cellSize;
-	containerCells.pivot.y = (piece.h / 2) * cellSize;
+	containerCells.pivot.x = piece.pivot[0] * cellSize;
+	containerCells.pivot.y = piece.pivot[1] * cellSize;
 	sprBase.x += containerCells.pivot.x;
 	sprBase.y += containerCells.pivot.y;
 	return containerCells;
