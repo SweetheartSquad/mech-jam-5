@@ -1711,25 +1711,35 @@ ${lastModule.description}`)}`
 
 			btnEnd.transform.y +=
 				size.y / 2 - btnEnd.display.container.height / 2 - 5;
-			this.container.addChild(btnEnd.display.container);
+			this.containerUI.addChild(btnEnd.display.container);
 
 			btnToggleShield.transform.y =
 				btnEnd.transform.y - btnEnd.display.container.height;
-			this.container.addChild(btnToggleShield.display.container);
+			this.containerUI.addChild(btnToggleShield.display.container);
 
 			btnAttack.transform.y =
 				btnToggleShield.transform.y - btnToggleShield.display.container.height;
-			this.container.addChild(btnAttack.display.container);
+			this.containerUI.addChild(btnAttack.display.container);
 
 			btnReset.transform.y =
 				btnAttack.transform.y - btnAttack.display.container.height;
-			this.container.addChild(btnReset.display.container);
+			this.containerUI.addChild(btnReset.display.container);
 
-			this.container.addChild(containerHeat);
+			this.containerUI.addChild(containerHeat);
 			containerHeat.y =
 				btnReset.transform.y - btnReset.display.container.height;
 
-			const destroy = () => {
+			const destroy = async () => {
+				const tweens = [
+					...this.transitionOut(containerHeat, 200),
+					...this.transitionOut(btnAttack.display.container, 300),
+					...this.transitionOut(btnReset.display.container, 400),
+					...this.transitionOut(btnToggleShield.display.container, 500),
+					...this.transitionOut(btnEnd.display.container, 600),
+				];
+				await delay(600);
+				tweens.forEach((i) => TweenManager.abort(i));
+
 				containerHeat.destroy();
 				btnAttack.destroy();
 				btnReset.destroy();
@@ -1742,6 +1752,12 @@ ${lastModule.description}`)}`
 			updateAttacks();
 			updateShields();
 			updateHeat();
+
+			this.transitionIn(containerHeat, 200);
+			this.transitionIn(btnAttack.display.container, 300);
+			this.transitionIn(btnReset.display.container, 400);
+			this.transitionIn(btnToggleShield.display.container, 500);
+			this.transitionIn(btnEnd.display.container, 600);
 		});
 	}
 
