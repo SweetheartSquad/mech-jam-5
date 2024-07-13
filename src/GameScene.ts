@@ -1730,6 +1730,7 @@ ${lastModule.description}`)}`
 				btnReset.transform.y - btnReset.display.container.height;
 
 			const destroy = async () => {
+				const closeModal = this.modal(0);
 				const tweens = [
 					...this.transitionOut(containerHeat, 200),
 					...this.transitionOut(btnAttack.display.container, 300),
@@ -1747,6 +1748,7 @@ ${lastModule.description}`)}`
 				btnEnd.destroy();
 				gridBtns.forEach((i) => i.destroy());
 				containerBtns.destroy();
+				closeModal();
 			};
 
 			updateAttacks();
