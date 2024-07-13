@@ -945,12 +945,12 @@ ${lastModule.description}`)}`
 			const closeModal = this.modal(0);
 			panelInfo.visible = false;
 			containerScrollers.visible = false;
-			await delay(250);
+			await delay(150);
 			panelInfo.visible = true;
 			containerScrollers.visible = true;
 			this.transitionIn(panelInfo, 400);
-			this.transitionIn(containerScrollers, 600);
-			await delay(600);
+			this.transitionIn(containerScrollers, 500);
+			await delay(500);
 			closeModal();
 		});
 	}
