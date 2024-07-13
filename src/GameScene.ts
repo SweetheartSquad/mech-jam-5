@@ -234,14 +234,14 @@ export class GameScene {
 			randItem(this.pieces.arms),
 			randItem(this.pieces.legs)
 		);
-		this.modules = this.assembleModules([]);
+		this.modules = this.assembleModules(this.mech.grid, []);
 		this.mechEnemy = this.assembleParts(
 			randItem(this.pieces.heads),
 			randItem(this.pieces.chests),
 			randItem(this.pieces.arms),
 			randItem(this.pieces.legs)
 		);
-		this.modulesEnemy = this.assembleModules([]);
+		this.modulesEnemy = this.assembleModules(this.mechEnemy.grid, []);
 		this.loadMech('player', {
 			head: 'Tallboy 2000',
 			chest: '1',
@@ -966,7 +966,10 @@ ${lastModule.description}`)}`
 			this.battleGrid.length > 0
 		);
 		this.modules.container.destroy({ children: true });
-		this.modules = this.assembleModules(this.modules?.placed || []);
+		this.modules = this.assembleModules(
+			this.mech.grid,
+			this.modules?.placed || []
+		);
 		this.container.addChildAt(this.mech.container, 0);
 		this.container.addChild(this.modules.container);
 
@@ -978,7 +981,10 @@ ${lastModule.description}`)}`
 			`leg ${this.mechEnemy.legLD.name}`
 		);
 		this.modulesEnemy.container.destroy({ children: true });
-		this.modulesEnemy = this.assembleModules(this.modulesEnemy?.placed || []);
+		this.modulesEnemy = this.assembleModules(
+			this.mechEnemy.grid,
+			this.modulesEnemy?.placed || []
+		);
 		this.container.addChildAt(this.mechEnemy.container, 0);
 		this.container.addChild(this.modulesEnemy.container);
 		this.mechEnemy.container.children.forEach((i) => {
@@ -1288,6 +1294,7 @@ ${lastModule.description}`)}`
 	}
 
 	assembleModules(
+		mechGrid: string[][],
 		placed: {
 			module: ModuleD;
 			x: number;
@@ -1298,7 +1305,7 @@ ${lastModule.description}`)}`
 		}[]
 	): {
 		container: Container;
-		placed: Parameters<GameScene['assembleModules']>[0];
+		placed: Parameters<GameScene['assembleModules']>[1];
 		grid: string[][];
 	} {
 		const container: Container = new Container();
@@ -1317,7 +1324,7 @@ ${lastModule.description}`)}`
 		const [grid] = flatten([
 			{
 				cells: replaceCells(
-					replaceCells(this.mech?.grid || [], /[^0]/, '-'),
+					replaceCells(mechGrid || [], /[^0]/, '-'),
 					'0',
 					'x'
 				),
