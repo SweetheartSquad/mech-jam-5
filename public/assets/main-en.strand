@@ -1020,6 +1020,8 @@ Some more text.
 000
 0.0
 000
+---
+1,0
 
 ::module rocket1
 A small cockpit.
@@ -1096,6 +1098,8 @@ Some more text.
 00000
 0..00
 ..000
+---
+3,1
 
 ::module whoa
 A small cockpit.
@@ -1108,6 +1112,8 @@ Some more text.
 0..00
 0..00
 00000
+---
+3,2
 
 ::module bucket1
 A small cockpit.
