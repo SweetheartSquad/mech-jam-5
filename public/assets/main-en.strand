@@ -927,6 +927,13 @@ debug joint
 ---
 0
 
+::module debug radar
+debug radar
+---
+1, radar
+---
+0
+
 
 ::module cockpit 1
 A lil' cockpit.
