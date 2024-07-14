@@ -138,6 +138,7 @@ export class Mouse {
 				.originalEvent?.wheelDelta ||
 			0;
 		this.wheelX = event.deltaX;
+		event.preventDefault();
 	};
 
 	isDown(): boolean {

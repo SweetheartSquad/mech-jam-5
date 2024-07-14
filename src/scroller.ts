@@ -89,6 +89,7 @@ export class Scroller {
 		const onScroll = (event: FederatedWheelEvent) => {
 			if (!this.enabled) return;
 			this.scrollBy(event.deltaY, 100);
+			event.preventDefault();
 		};
 		this.containerScroll.addEventListener('wheel', onScroll);
 		sprTrack.addEventListener('wheel', onScroll);
