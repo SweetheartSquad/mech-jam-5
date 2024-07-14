@@ -1881,11 +1881,11 @@ ${lastModule.description}`)}`
 				const heat = this.getHeat();
 				for (let i = 0; i < Math.max(heat, heatMax); ++i) {
 					const textCount = new BitmapText({
-						text: i.toString(10),
+						text: (i + 1).toString(10),
 						style: fontMechInfo,
 					});
 					const textCount2 = new BitmapText({
-						text: i.toString(10),
+						text: (i + 1).toString(10),
 						style: fontMechInfo,
 					});
 					const sprHeatBg = new Sprite(tex('heatbar empty'));
