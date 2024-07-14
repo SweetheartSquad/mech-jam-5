@@ -1762,7 +1762,6 @@ ${lastModule.description}`)}`
 	}
 
 	pickActions() {
-		// TODO
 		return new Promise<void>((r) => {
 			// reset
 			this.actions.shield = 0;
@@ -2174,7 +2173,6 @@ ${lastModule.description}`)}`
 	}
 
 	playActions() {
-		// TODO
 		return new Promise<void>(async (r) => {
 			await this.alert('play actions'); // TODO: remove
 			let shields = 0; // TODO: get enemy shields from last turn
@@ -2206,7 +2204,6 @@ ${lastModule.description}`)}`
 	}
 
 	enemyActions() {
-		// TODO
 		return new Promise<void>(async (r) => {
 			await this.alert('enemy turn'); // TODO: remove
 			const tags = this.modulesEnemy.placed
