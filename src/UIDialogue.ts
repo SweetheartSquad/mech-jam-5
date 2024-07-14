@@ -22,6 +22,8 @@ import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
 import { buttonify, clamp, lerp, setTextWrapped, smartify, tex } from './utils';
 
+const rateBase = 0.5;
+const rateLetter = 1;
 const rateQuestionMultiplier = 1.4;
 const questionInflectionRange = 6;
 const volumeBase = 0.75;
@@ -240,7 +242,7 @@ export class UIDialogue extends GameObject {
 		if (prevPos !== this.pos) {
 			const letter = this.strText?.[this.pos]?.replace(/[^\w]/, '');
 			if (this.pos % 2 && letter && this.voice !== 'None') {
-				const rate = (letter.charCodeAt(0) % 30) / 30 + 0.5;
+				const rate = ((letter.charCodeAt(0) % 30) / 30) * rateLetter + rateBase;
 				let nextQuestion = this.strText.indexOf('?', this.pos) - this.pos;
 				if (nextQuestion <= 0) nextQuestion = 1;
 				else
