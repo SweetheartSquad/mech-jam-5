@@ -1178,8 +1178,6 @@ auto, heatsink
 ---
 0
 000
----
-0,1
 
 ::module l2
 A small cockpit.
@@ -1192,7 +1190,7 @@ auto, heatsink
 0
 000
 ---
-0,1
+0,2
 
 ::module l3
 A small cockpit.
@@ -1214,8 +1212,6 @@ Some more text.
 auto, heatsink
 ---
 00
----
-0,1
 
 ::module extender 3
 A huge L
@@ -1230,7 +1226,7 @@ auto, heatsink
 0
 000000
 ---
-0,0
+0,4
 
 ::module extender 2
 A long squiggle
@@ -1241,9 +1237,6 @@ auto, heatsink
 ---
 00
 .00000
-
----
-0,0
 
 ::module doubleFork
 A double fork
@@ -1256,10 +1249,6 @@ auto, heatsink
 .000.
 00.00
 
-
----
-0,1
-
 ::module extender 1
 A long L
 
@@ -1269,5 +1258,3 @@ auto, heatsink
 ---
 .....0
 000000
----
-5,0
