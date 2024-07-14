@@ -6,6 +6,7 @@ import {
 	costPerAttack,
 	costPerCockpitCell,
 	costPerHeatsink,
+	costPerJointExtendCell,
 	costPerModuleCell,
 	costPerRadar,
 	costPerShield,
@@ -70,6 +71,8 @@ export function mechModuleParse(key: string, source: string) {
 					case 'armour':
 						cost += costPerArmourCell;
 						break;
+					case 'joint':
+						cost += costPerJointExtendCell;
 				}
 			});
 		});
