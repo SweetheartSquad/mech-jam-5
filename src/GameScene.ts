@@ -755,6 +755,43 @@ ${lastPart.description}`)}`
 			this.transitionIn(containerScrollers, 500);
 			await delay(500);
 			closeModal();
+
+			// safety check on mech sizes
+			if (DEBUG) {
+				const tallestHead = this.pieces.heads
+					.slice()
+					.sort((a, b) => this.getPart(b).h - this.getPart(a).h)[0];
+				const tallestHeadD = this.getPart(tallestHead);
+				const tallestChest = this.pieces.chests
+					.slice()
+					.sort((a, b) => this.getPart(b).h - this.getPart(a).h)[0];
+				const tallestChestD = this.getPart(tallestChest);
+				const tallestLegs = this.pieces.legs
+					.slice()
+					.sort((a, b) => this.getPart(b).h - this.getPart(a).h)[0];
+				const tallestLegsD = this.getPart(tallestLegs);
+				const widestChest = this.pieces.chests
+					.slice()
+					.sort((a, b) => this.getPart(b).w - this.getPart(a).w)[0];
+				const widestChestD = this.getPart(widestChest);
+				const widestArms = this.pieces.arms
+					.slice()
+					.sort((a, b) => this.getPart(b).w - this.getPart(a).w)[0];
+				const widestArmsD = this.getPart(widestArms);
+
+				const tallest = tallestHeadD.h + tallestChestD.h + tallestLegsD.h;
+				const widest = widestChestD.w + widestArmsD.w;
+				if (tallest > 32) {
+					await this.alert(
+						`tallest: ${tallestHead} (${tallestHeadD.h}) + ${tallestChest} (${tallestChestD.h}) + ${tallestLegs} (${tallestLegsD.h}) = ${tallest}`
+					);
+				}
+				if (widest > 15) {
+					await this.alert(
+						`widest: ${widestChest} (${widestChestD.w}) + ${widestArms} (${widestArmsD.w}) = ${widest}`
+					);
+				}
+			}
 		});
 	}
 
