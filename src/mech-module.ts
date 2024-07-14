@@ -87,6 +87,7 @@ export function mechModuleParse(key: string, source: string) {
 			}
 		});
 	}
+	cost = Math.ceil(cost);
 	return {
 		name: key.replace(`module `, ''),
 		description,

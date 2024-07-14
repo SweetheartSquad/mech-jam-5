@@ -137,6 +137,7 @@ export function mechPartParse(
 			cost += cell === '=' ? costPerJoint : costPerEmptyCell;
 		});
 	}
+	cost = Math.ceil(cost);
 	return {
 		name: key.replace(`${type} `, ''),
 		description,
