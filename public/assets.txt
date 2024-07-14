@@ -63,6 +63,7 @@ textures/module Tee.png
 textures/module Bar.png
 textures/module Bar2.png
 
+audio/voiceDiane.mp3
 audio/voiceSongbird.mp3
 
 textures/portrait Danny.png
