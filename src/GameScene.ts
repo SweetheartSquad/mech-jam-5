@@ -2615,8 +2615,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			}
 
 			// play enemy actions
-			shields; // TODO: save for next turn
-
 			const log: string[] = [];
 
 			// overheat
@@ -2640,7 +2638,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			await this.severParts('player');
 			this.reassemble();
 
-			r(log);
+			r({ shields, log });
 		});
 	}
 
