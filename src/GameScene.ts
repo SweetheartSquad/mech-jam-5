@@ -2125,6 +2125,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const btnToggleShield = new BtnText(
 				'shields',
 				() => {
+					if (!shieldsAmt) return;
 					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
 					updateShields();
 					updateHeat();
