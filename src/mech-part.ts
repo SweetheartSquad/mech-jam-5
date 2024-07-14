@@ -1,5 +1,6 @@
 import { Container, Sprite } from 'pixi.js';
 import { cellSize } from './config';
+import { costPerEmptyCell, costPerJoint } from './costs';
 import { forCells, makeCellsTexture, parseLayout } from './layout';
 import { flipMatrixH, tex } from './utils';
 
@@ -126,8 +127,8 @@ export function mechPartParse(
 	let cost = Number(strCost);
 	if (Number.isNaN(cost)) {
 		cost = 0;
-		forCells(cells, () => {
-			cost += 1;
+		forCells(cells, (x, y, cell) => {
+			cost += cell === '=' ? costPerJoint : costPerEmptyCell;
 		});
 	}
 	return {

@@ -1,11 +1,22 @@
 import { Container, Sprite } from 'pixi.js';
+import {
+	costMultAwkward,
+	costMultFlexible,
+	costPerArmourCell,
+	costPerAttack,
+	costPerCockpitCell,
+	costPerHeatsink,
+	costPerModuleCell,
+	costPerRadar,
+	costPerShield,
+} from './costs';
 import { forCells, makeCellsTexture, parseLayout } from './layout';
 import { tex } from './utils';
 
 export function mechModuleParse(key: string, source: string) {
 	const [description, strMechanics, layout, strPivot] = source.split('\n---\n');
 	const mechanics = strMechanics.split(/,\s?/);
-	const cost = parseInt(mechanics.shift() || '0', 10);
+	const strCost = mechanics.shift() || 'auto';
 	const { cells, w, h } = parseLayout(layout);
 	let cellCount = 0;
 	forCells(cells, (x, y, cell) => {
@@ -23,6 +34,54 @@ export function mechModuleParse(key: string, source: string) {
 		pivot = strPivot.split(',').map((i) => parseInt(i)) as [number, number];
 	} else {
 		pivot = [Math.floor(w / 2), Math.floor(h / 2)];
+	}
+	let cost = Number(strCost);
+	if (Number.isNaN(cost)) {
+		cost = 0;
+		mechanics.forEach((i) => {
+			switch (i) {
+				case 'attack':
+					cost += costPerAttack;
+					break;
+				case 'radar':
+					cost += costPerRadar;
+					break;
+				case 'shield':
+					cost += costPerShield;
+					break;
+				case 'heatsink':
+					cost += costPerHeatsink;
+					break;
+			}
+			forCells(cells, () => {
+				switch (i) {
+					case 'cockpit':
+						cost += costPerCockpitCell;
+						break;
+					case 'armour':
+						cost += costPerArmourCell;
+						break;
+					default:
+						cost += costPerModuleCell;
+				}
+			});
+		});
+		mechanics.forEach((i) => {
+			switch (i) {
+				case 'awkward':
+					cost *= costMultAwkward;
+					break;
+				case 'flexible':
+					cost *= costMultFlexible;
+					break;
+			}
+		});
+		if (mechanics.includes('cockpit')) {
+			cost += costPerCockpitCell;
+		}
+		if (mechanics.includes('attack')) {
+			cost += costPerAttack;
+		}
 	}
 	return {
 		name: key.replace(`module `, ''),

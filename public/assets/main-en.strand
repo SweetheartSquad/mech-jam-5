@@ -330,12 +330,6 @@ actual written scenes below
 
 ::diplomat prebuild
 todo diplomat prebuild stuff
->
-Guy: Hello.
->
-Songbird: Hi.
->
-Guy angry: Fancy meeting you here.
 [[>close]]
 
 ::diplomat prefight
@@ -946,14 +940,14 @@ debug radar
 ::module cockpit 1
 A lil' cockpit.
 ---
-500, cockpit
+auto, cockpit
 ---
 0
 
 ::module cockpit 2
 A standard cockpit.
 ---
-500, cockpit
+auto, , cockpit
 ---
 00
 00
@@ -961,7 +955,7 @@ A standard cockpit.
 ::module cockpit 3
 A big cockpit.
 ---
-500, cockpit
+auto, cockpit
 ---
 000
 000
@@ -970,14 +964,14 @@ A big cockpit.
 ::module armour 1
 A lil' armour.
 ---
-500
+auto, armour
 ---
 0
 
 ::module armour 2
 A standard armour.
 ---
-500
+auto, armour
 ---
 00
 00
@@ -985,7 +979,7 @@ A standard armour.
 ::module armour 3
 A big armour.
 ---
-500
+auto, armour
 ---
 000
 000
@@ -996,7 +990,7 @@ A weirdly shaped cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto, attack
 ---
 000
 .0.
@@ -1007,7 +1001,7 @@ A weirdly shaped cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto, radar
 ---
 0
 0
@@ -1019,7 +1013,7 @@ A weirdly shaped cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto, radar
 ---
 000
 
@@ -1028,7 +1022,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto
 ---
 0
 
@@ -1037,7 +1031,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto
 ---
 000
 0.0
@@ -1050,7 +1044,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto, attack
 ---
 .0.
 000
@@ -1062,7 +1056,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, cockpit
+auto, joint
 ---
 .0.
 000
@@ -1073,7 +1067,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, shield
 ---
 00.
 .00
@@ -1083,7 +1077,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, shield
 ---
 .000
 000.
@@ -1093,7 +1087,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, shield
 ---
 .000
 .00
@@ -1104,7 +1098,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, shield
 ---
 ...000
 ..00
@@ -1115,7 +1109,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00000
 0..00
@@ -1128,7 +1122,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00..0
 0..00
@@ -1142,7 +1136,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00000
 0...0
@@ -1156,7 +1150,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00000
 ....0
@@ -1169,7 +1163,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0000
 0...
@@ -1183,7 +1177,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 000
@@ -1195,7 +1189,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 0
@@ -1208,7 +1202,7 @@ A small cockpit.
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 00
@@ -1220,7 +1214,7 @@ A thing
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00
 ---
@@ -1231,7 +1225,7 @@ A huge L
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 0
@@ -1246,7 +1240,7 @@ A long squiggle
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00
 .00000
@@ -1259,7 +1253,7 @@ A double fork
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 00.00
 .000.
@@ -1274,7 +1268,7 @@ A long L
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 .....0
 000000
