@@ -973,6 +973,15 @@ ${lastModule.description}`)}`
 					dragging.scale.y *= -1;
 					checkPlacement();
 				}
+				if (input.flipC) {
+					if (displayToPlacementProps(dragging).turns % 2) {
+						dragging.scale.x *= -1;
+						checkPlacement();
+					} else {
+						dragging.scale.y *= -1;
+						checkPlacement();
+					}
+				}
 				if (input.rotateR) {
 					dragging.rotation += Math.PI / 2;
 					dragging.rotation %= Math.PI * 2;
