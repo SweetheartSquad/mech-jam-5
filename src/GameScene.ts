@@ -1481,6 +1481,19 @@ ${lastModule.description}`)}`
 		return destroyed;
 	}
 
+	moduleIsRevealed(
+		module: GameScene['modules']['placed'][number],
+		cells: string[][]
+	) {
+		let revealed = true;
+		this.forPlacedModuleCells(module, (x, y) => {
+			if (!revealed) return;
+			const cell = cells[y]?.[x];
+			if (cell !== 'X' && cell !== 'O') revealed = false;
+		});
+		return revealed;
+	}
+
 	forPlacedModuleCells(
 		i: GameScene['modules']['placed'][number],
 		cb: (x: number, y: number, cell: string) => void
