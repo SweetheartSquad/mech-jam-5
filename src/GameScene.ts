@@ -284,7 +284,7 @@ export class GameScene {
 		spr.height = size.y * 2;
 		spr.anchor.x = spr.anchor.y = 0.5;
 		spr.alpha = 0;
-		const tween = TweenManager.tween(
+		let tween = TweenManager.tween(
 			spr,
 			'alpha',
 			opacity,
@@ -294,7 +294,18 @@ export class GameScene {
 		);
 		spr.interactive = true;
 		this.containerUI.addChild(spr);
-		return () => {
+		return async () => {
+			TweenManager.abort(tween);
+			tween = TweenManager.tween(
+				spr,
+				'alpha',
+				0,
+				150,
+				undefined,
+				eases.cubicOut
+			);
+			spr.interactive = false;
+			await delay(150);
 			TweenManager.abort(tween);
 			spr.destroy();
 		};
