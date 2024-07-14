@@ -1806,38 +1806,71 @@ ${lastModule.description}${
 
 		do {
 			await this.pickActions();
-			await this.playOverheat();
-			{
-				const lost = !this.modules.placed.some(
-					(i) =>
-						i.module.tags.includes('cockpit') &&
-						!this.moduleIsDestroyed(i, this.battleGrid)
-				);
-				if (lost) {
-					this.strand.won = false;
-					return;
-				}
-			}
-			await this.playActions();
-			const won = !this.modulesEnemy.placed.some(
-				(i) =>
-					i.module.tags.includes('cockpit') &&
-					!this.moduleIsDestroyed(i, this.battleGridEnemy)
-			);
-			if (won) {
-				this.strand.won = true;
-				return;
-			}
-			await this.enemyActions();
-			const lost = !this.modules.placed.some(
+			const log: string[] = [];
+			log.push(...(await this.playOverheat()));
+			let lost = !this.modules.placed.some(
 				(i) =>
 					i.module.tags.includes('cockpit') &&
 					!this.moduleIsDestroyed(i, this.battleGrid)
 			);
 			if (lost) {
 				this.strand.won = false;
+			} else {
+				log.push(...(await this.playActions()));
+			}
+			const won = !this.modulesEnemy.placed.some(
+				(i) =>
+					i.module.tags.includes('cockpit') &&
+					!this.moduleIsDestroyed(i, this.battleGridEnemy)
+			);
+
+			await this.alert(
+				`
+TURN ${turnCount}
+ 
+OVERHEATED: ${log.filter((i) => i === 'OVERHEATED').length}
+SHIELDED: ${log.filter((i) => i === 'SHIELDED').length}
+HIT: ${log.filter((i) => i === 'HIT').length}
+REVEALED: ${log.filter((i) => i === 'REVEALED').length}
+MISS: ${log.filter((i) => i === 'MISS').length}
+`,
+				lost ? 'LOSS' : won ? 'WIN' : 'NEXT',
+				lost ? red : won ? green : greenHalf
+			);
+			if (won) {
+				this.strand.won = true;
+			}
+
+			if (won || lost) return;
+
+			++turnCount;
+			log.length = 0;
+
+			await this.enemyActions();
+			lost = !this.modules.placed.some(
+				(i) =>
+					i.module.tags.includes('cockpit') &&
+					!this.moduleIsDestroyed(i, this.battleGrid)
+			);
+
+			await this.alert(
+				`
+TURN ${turnCount}
+ 
+OVERHEATED: ${log.filter((i) => i === 'OVERHEATED').length}
+SHIELDED: ${log.filter((i) => i === 'SHIELDED').length}
+HIT: ${log.filter((i) => i === 'HIT').length}
+REVEALED: ${log.filter((i) => i === 'REVEALED').length}
+MISS: ${log.filter((i) => i === 'MISS').length}
+`,
+				lost ? 'LOSS' : 'NEXT',
+				lost ? red : redHalf
+			);
+			if (lost) {
+				this.strand.won = false;
 				return;
 			}
+
 			++turnCount;
 		} while (true);
 	}
@@ -2225,7 +2258,7 @@ ${lastModule.description}${
 		);
 	}
 
-	overheat(who: 'player' | 'enemy') {
+	async overheat(who: 'player' | 'enemy') {
 		const [placed, grid] =
 			who === 'player'
 				? [this.modules.placed, this.battleGrid]
@@ -2261,27 +2294,35 @@ ${lastModule.description}${
 			shields: number;
 		}
 	) {
+		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
 		const modulesGrid =
 			who === 'player' ? this.modules.grid : this.modulesEnemy.grid;
 		for (let [x, y] of attacks) {
 			await delay(100);
+			let msg = 'SHIELDED';
 			if (shields-- > 0) {
 				// TODO: hit shield feedback
+				await this.zoop(who, x, y, red, msg);
+				log.push(msg);
 				continue;
 			}
 			// TODO: hit feedback
 			const idx = Number(modulesGrid[y][x]);
 			const hasModule = !Number.isNaN(idx);
 			const isJoint = mechGrid[y][x] === '=';
-			await this.zoop(who, x, y, red, hasModule || isJoint ? 'HIT' : 'EMPTY');
+			msg = hasModule || isJoint ? 'HIT' : 'MISS';
+			await this.zoop(who, x, y, red, msg);
+			log.push(msg);
 			grid[y][x] = 'X';
 			this.reassemble();
 		}
+		return log;
 	}
 
 	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
+		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
 		const modulesGrid =
@@ -2292,16 +2333,13 @@ ${lastModule.description}${
 			const idx = Number(modulesGrid[y][x]);
 			const hasModule = !Number.isNaN(idx);
 			const isJoint = mechGrid[y][x] === '=';
-			await this.zoop(
-				who,
-				x,
-				y,
-				green,
-				hasModule || isJoint ? 'REVEALED' : 'EMPTY'
-			);
+			const msg = hasModule || isJoint ? 'REVEALED' : 'MISS';
+			log.push(msg);
+			await this.zoop(who, x, y, green, msg);
 			grid[y][x] = 'O';
 			this.reassemble();
 		}
+		return log;
 	}
 
 	async severParts(who: 'player' | 'enemy') {
@@ -2462,40 +2500,42 @@ ${lastModule.description}${
 	}
 
 	playOverheat() {
-		return new Promise<void>(async (r) => {
+		return new Promise<string[]>(async (r) => {
+			const log: string[] = [];
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
-				await delay(100);
+				await delay(500);
 				await this.overheat('player');
+				log.push('OVERHEATED');
 			}
-			this.reassemble();
-			r();
+			r(log);
 		});
 	}
 
 	playActions() {
-		return new Promise<void>(async (r) => {
-			await this.alert('play actions'); // TODO: remove
+		return new Promise<string[]>(async (r) => {
+			const log: string[] = [];
 			let shields = 0; // TODO: get enemy shields from last turn
-			await this.attack('enemy', {
-				attacks: this.actions.attacks,
-				shields,
-			});
+			log.push(
+				...(await this.attack('enemy', {
+					attacks: this.actions.attacks,
+					shields,
+				}))
+			);
 			// reveal scans
-			await this.scan('enemy', this.actions.scans);
+			log.push(...(await this.scan('enemy', this.actions.scans)));
 
 			// expand hits to sever parts
 			await this.severParts('enemy');
 			this.reassemble();
 
-			r();
+			r(log);
 		});
 	}
 
 	enemyActions() {
-		return new Promise<void>(async (r) => {
-			await this.alert('enemy turn'); // TODO: remove
+		return new Promise<string[]>(async (r) => {
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
@@ -2574,24 +2614,30 @@ ${lastModule.description}${
 			// play enemy actions
 			shields; // TODO: save for next turn
 
-			await this.attack('player', {
-				attacks: attacks,
-				shields: this.actions.shield,
-			});
+			const log: string[] = [];
 
+			// overheat
 			let overheat = this.getHeat() - heatMax;
 			while (overheat-- > 0) {
-				await delay(100);
+				await delay(500);
 				await this.overheat('enemy');
+				log.push('OVERHEATED');
 			}
+
+			log.push(
+				...(await this.attack('player', {
+					attacks: attacks,
+					shields: this.actions.shield,
+				}))
+			);
 			// reveal scans
-			await this.scan('player', scans);
+			log.push(...(await this.scan('player', scans)));
 
 			// expand hits to sever parts
 			await this.severParts('player');
 			this.reassemble();
 
-			r();
+			r(log);
 		});
 	}
 
