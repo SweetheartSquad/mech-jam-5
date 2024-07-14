@@ -282,26 +282,10 @@ this should never render
 ::main
 <<do
 	this.sfx('voiceDefault');
-	this.talkednpc = 0;
-	this.supply = 0
 
-	if (this.scene.areas.main) {
-		this.scene.areas.main.forEach(i => {
-			this.destroy(i);
-		});
-		if (this.scene.area === 'main') {
-			this.scene.goto({ area: 'empty' });
-		}
-	}
 	const objects = [
 		this.PropParallax({ texture: 'bg_parallax', offset: -1000000, mult: 1 }),
 	];
-	this.Area('main', objects);
-	if (this.skipped) {
-		this.scene.goto({ area: 'main' });
-	} else {
-		this.scene.goto({ area: 'intro' });
-	}
 	this.goto('close');
 
 	this.next = 'diplomat';
