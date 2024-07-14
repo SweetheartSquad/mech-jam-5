@@ -1662,6 +1662,10 @@ ${lastModule.description}`)}`
 			this.actions.heatMax = heatMax;
 
 			const containerHeat = new Container();
+			buttonify(containerHeat);
+			containerHeat.addEventListener('pointerover', () => {
+				this.textTip.text = `HEAT: ${formatCount(this.getHeat(), heatMax)}`;
+			});
 			const updateHeat = () => {
 				containerHeat.children.forEach((i) => {
 					i.destroy({ children: true });
