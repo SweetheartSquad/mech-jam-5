@@ -816,7 +816,7 @@ ${lastPart.description}`)}`
 		const noop = () => {};
 		forCells(grid, (x, y, cell) => {
 			const btn = new Btn(noop, 'cell button');
-			btn.spr.label = `${x},${y}`;
+			btn.spr.label = xyKey(x, y);
 			btn.transform.x = x * cellSize;
 			btn.transform.y = y * cellSize;
 			container.addChild(btn.display.container);

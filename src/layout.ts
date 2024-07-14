@@ -122,9 +122,9 @@ export function getFlood<T>(cells: T[][], x: number, y: number) {
 	const result: [number, number][] = [];
 	const target = cells[y][x];
 	const checked: { [key: string]: boolean } = {};
-	checked[`${x},${y}`] = false;
+	checked[xyKey(x, y)] = false;
 	const check = (x: number, y: number): void => {
-		const key = `${x},${y}`;
+		const key = xyKey(x, y);
 		if (checked[key]) return;
 		if (cells[y]?.[x] !== target) return;
 		result.push([x, y]);
