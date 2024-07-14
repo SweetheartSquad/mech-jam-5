@@ -265,8 +265,6 @@ export class GameScene {
 		await this.fight();
 		await this.scenePostfight();
 		do {
-			this.battleGrid = [];
-			this.battleGridEnemy = [];
 			await this.scenePrebuild();
 			await this.buildMech();
 			await this.scenePrefight();
@@ -428,6 +426,8 @@ export class GameScene {
 	}
 
 	scenePrebuild() {
+		this.battleGrid = [];
+		this.battleGridEnemy = [];
 		this.setFocus(-size.x);
 		this.strand.goto(`${this.strand.next} prebuild`);
 		return this.waitForClose();
@@ -1222,7 +1222,8 @@ ${lastModule.description}${
 			Math.max(size.x * (1 / 5), this.mechEnemy.container.width / 2) + 50
 		);
 		this.mechEnemy.container.y += size.y * 0.45;
-		this.mechEnemy.container.visible = this.battleGridEnemy.length > 0;
+		this.mechEnemy.container.visible = this.modulesEnemy.container.visible =
+			this.battleGridEnemy.length > 0;
 
 		this.modules.container.x = this.mech.container.x;
 		this.modules.container.y = this.mech.container.y;
