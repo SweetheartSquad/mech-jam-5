@@ -8,7 +8,6 @@ textures/blank.png
 textures/ditherGrid.png
 textures/border.png
 textures/dialogueBg.png
-textures/shadows.png
 
 font/fontfnt.fnt
 
