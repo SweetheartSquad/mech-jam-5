@@ -961,23 +961,23 @@ auto, cockpit
 000
 000
 
-::module armour 1
-A lil' armour.
+::module Cheap Plating
+Scraps of bronze hastily fashioned into defensive plating by the nearest star. A solid one-two block.
+---
+auto, armour, flexible
+---
+00
+
+::module Standard Plating
+Modular steel, available anywhere this side of the Kuiper belt. The best defense is a big ol' slate of gun-metal grey.
 ---
 auto, armour
 ---
 00
-
-::module armour 2
-A standard armour.
----
-auto, armour
----
-00
 00
 
-::module armour 3
-A big armour.
+::module Superior Plating
+A premium panel of interlocking nanocarbon alloys. Stronger than a magic spell and wider than the widest sea.
 ---
 auto, armour
 ---

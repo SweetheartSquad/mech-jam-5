@@ -61,9 +61,9 @@ textures/module debug radar.png
 textures/module cockpit 1.png
 textures/module cockpit 2.png
 textures/module cockpit 3.png
-textures/module armour 1.png
-textures/module armour 2.png
-textures/module armour 3.png
+textures/module Cheap Plating.png
+textures/module Standard Plating.png
+textures/module Superior Plating.png
 textures/module Tee.png
 textures/module Bar.png
 textures/module Bar2.png
