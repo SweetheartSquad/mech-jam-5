@@ -1385,6 +1385,9 @@ ${lastModule.description}${
 					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
 					btn.display.container.visible = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `unknown`;
+					});
 				}
 			});
 			this.container.addChild(this.damageBtnsEnemy.container);
@@ -2229,6 +2232,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 
 	pickTarget(includeRevealed: boolean) {
 		return new Promise<[number, number, boolean] | false>((r) => {
+			let tween: Tween;
 			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
 				'enemy',
 				(btn, x, y) => {
@@ -2242,19 +2246,62 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 						btn.display.container.visible = false;
 						return;
 					}
+					if (includeRevealed && this.battleGridEnemy[y][x] === 'O') {
+						btn.display.container.alpha = 0.5;
+					}
 					btn.onClick = (event) => {
 						destroy();
 						r([x, y, event.ctrlKey || event.shiftKey]);
 					};
+
+					const idx = Number(this.modulesEnemy.grid[y][x]);
+					if (
+						!Number.isNaN(idx) &&
+						this.moduleIsRevealed(
+							this.modulesEnemy.placed[idx],
+							this.battleGridEnemy
+						)
+					) {
+						btn.display.container.alpha = 0.5;
+					}
+					// HACK: copy the tooltip/tint of the buttons on the existing overlay
+					const l =
+						this.damageBtnsEnemy.gridBtnsByPos[y][x].spr.listeners(
+							'pointerover'
+						)[1];
+					btn.spr.tint = this.damageBtnsEnemy.gridBtnsByPos[y][x].spr.tint;
+					if (l) btn.spr.addEventListener('pointerover', l);
 				}
 			);
-			const destroy = () => {
+			const destroy = async () => {
+				document.removeEventListener('contextmenu', onContext);
+				gridBtns.forEach((i) => (i.enabled = false));
+
+				TweenManager.abort(tween);
+				tween = TweenManager.tween(
+					containerBtns,
+					'alpha',
+					0,
+					500,
+					undefined,
+					eases.cubicInOut
+				);
+				await delay(500);
+				TweenManager.abort(tween);
 				containerBtns.destroy();
 				gridBtns.forEach((i) => i.destroy());
-				document.removeEventListener('contextmenu', onContext);
 			};
 
 			this.containerUI.addChild(containerBtns);
+
+			tween = TweenManager.tween(
+				containerBtns,
+				'alpha',
+				1,
+				500,
+				0,
+				eases.cubicInOut
+			);
 
 			const onContext = (event: MouseEvent) => {
 				event.preventDefault();
