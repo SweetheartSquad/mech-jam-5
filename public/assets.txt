@@ -69,6 +69,7 @@ audio/voiceJudy.mp3
 audio/voiceMadge.mp3
 audio/voiceMurrow.mp3
 audio/voiceRhiannon.mp3
+audio/voiceSara.mp3
 audio/voiceSongbird.mp3
 
 textures/portrait Danny.png
