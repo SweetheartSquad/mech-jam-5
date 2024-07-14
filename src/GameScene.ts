@@ -2409,7 +2409,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const msg = hasModule || isJoint ? 'REVEALED' : 'MISS';
 			log.push(msg);
 			await this.zoop(who, x, y, green, msg);
-			grid[y][x] = 'O';
+			grid[y][x] = hasModule || isJoint ? 'O' : 'X';
 			this.reassemble();
 		}
 		return log;
