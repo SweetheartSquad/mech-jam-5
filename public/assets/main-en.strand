@@ -1217,7 +1217,7 @@ auto, heatsink
 ---
 0,1
 
-::module hugeL
+::module extender 3
 A huge L
 
 Some more text.
@@ -1230,9 +1230,9 @@ auto, heatsink
 0
 000000
 ---
-0,1
+0,0
 
-::module longsquig
+::module extender 2
 A long squiggle
 
 Some more text.
@@ -1243,7 +1243,7 @@ auto, heatsink
 .00000
 
 ---
-0,1
+0,0
 
 ::module doubleFork
 A double fork
@@ -1270,4 +1270,4 @@ auto, heatsink
 .....0
 000000
 ---
-0,1
+5,0
