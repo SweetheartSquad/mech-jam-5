@@ -865,7 +865,7 @@ ${lastModule.description}`)}`
 				scroller.addChild(uiModule);
 				buttonify(uiModule, moduleD.name);
 				uiModule.addEventListener('pointerover', () => {
-					// TODO: show module info
+					this.textTip.text = moduleD.name;
 				});
 				uiModule.addEventListener('pointerdown', (event) => {
 					if (event && event.button !== mouse.LEFT) return;
