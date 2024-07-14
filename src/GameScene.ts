@@ -1166,9 +1166,13 @@ ${lastModule.description}`)}`
 			if (i.children.length) i.visible = false;
 		});
 
-		this.mech.container.x -= Math.floor(size.x * (1 / 5));
+		this.mech.container.x -= Math.floor(
+			Math.max(size.x * (1 / 5), this.mech.container.width / 2) + 50
+		);
 		this.mech.container.y += size.y * 0.45;
-		this.mechEnemy.container.x += Math.floor(size.x * (1 / 5));
+		this.mechEnemy.container.x += Math.floor(
+			Math.max(size.x * (1 / 5), this.mechEnemy.container.width / 2) + 50
+		);
 		this.mechEnemy.container.y += size.y * 0.45;
 		this.mechEnemy.container.visible = this.battleGridEnemy.length > 0;
 
