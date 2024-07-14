@@ -1053,12 +1053,12 @@ ${lastModule.description}`)}`
 				this.screenFilter.flash(0.3, 200, eases.circOut);
 			});
 			const btnDone = new BtnText('DONE', () => {
-				// TODO: cost check
-				// if (this.mechinfo.text.includes('!!!')) {
-				// 	// TODO: proper ui
-				// 	window.alert('too expensive!');
-				// 	return;
-				// }
+				// who needs raw data when you have formatted text
+				if (this.getGeneralInfo().includes('!!!')) {
+					// TODO: real error message
+					this.alert('too expensive!');
+					return;
+				}
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {
