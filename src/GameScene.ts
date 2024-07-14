@@ -21,6 +21,7 @@ import { Tween, TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
 import { V } from './VMath';
 import { cellSize, size } from './config';
+import { costMax } from './costs';
 import { DEBUG } from './debug';
 import { fontDialogue, fontMechInfo } from './font';
 import {
@@ -435,8 +436,6 @@ export class GameScene {
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests' | 'modules', string[]>;
 
-	costMax = 10000;
-
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
 	battleGrid: ('.' | '?' | 'X' | 'O')[][] = [];
@@ -470,7 +469,7 @@ export class GameScene {
 			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
 		return `
 - TOTALS
-PRICE:  ${formatCount(cost, this.costMax)}
+PRICE:  ${formatCount(cost, costMax)}
 SPACE: ${formatCount(freeCells, allCells)}
 
 ---------------------
