@@ -311,6 +311,63 @@ export class GameScene {
 		};
 	}
 
+	confirm(msg: string, confirm = 'OK', cancel = 'NVM') {
+		return new Promise<boolean>((r) => {
+			const closeModal = this.modal();
+			const panel = new Spr9('panel');
+			const destroy = async () => {
+				tweens.forEach((i) => TweenManager.abort(i));
+				tweens.length = 0;
+				closeModal();
+				tweens.push(...this.transitionOut(panel, 150));
+				await delay(300);
+				tweens.forEach((i) => TweenManager.abort(i));
+				panel.destroy();
+				btnConfirm.destroy();
+				btnCancel.destroy();
+			};
+			const btnConfirm = new BtnText(confirm, () => {
+				destroy();
+				r(true);
+			});
+			const btnCancel = new BtnText(cancel, () => {
+				destroy();
+				r(false);
+			});
+			btnCancel.display.container.scale.x *= -1;
+			btnCancel.text.scale.x *= -1;
+			btnCancel.text.x += btnCancel.text.width;
+			btnCancel.display.container.alpha = 0.8;
+
+			const textMsg = new BitmapText({ text: '', style: fontDialogue });
+			textMsg.style.wordWrapWidth = 250;
+			setTextWrapped(textMsg, msg);
+			panel.width = 300;
+			panel.x -= panel.width / 2;
+			const gap = (panel.width - textMsg.style.wordWrapWidth) / 2;
+			textMsg.x += gap;
+			textMsg.y += gap;
+			btnConfirm.transform.x -=
+				btnConfirm.display.container.width / 2 + gap / 2;
+			btnCancel.transform.x += btnConfirm.display.container.width / 2 + gap / 2;
+			btnConfirm.transform.x += panel.width / 2;
+			btnCancel.transform.x += panel.width / 2;
+			btnConfirm.transform.y += textMsg.height + gap * 3;
+			btnCancel.transform.y += textMsg.height + gap * 3;
+			panel.height =
+				textMsg.height + btnCancel.display.container.height + gap * 3;
+			panel.y -= panel.height / 2;
+
+			this.containerUI.addChild(panel);
+			panel.addChild(textMsg);
+			panel.addChild(btnConfirm.display.container);
+			panel.addChild(btnCancel.display.container);
+
+			const tweens: Tween[] = [];
+			tweens.push(...this.transitionIn(panel, 150));
+		});
+	}
+
 	scenePrebuild() {
 		this.setFocus(-size.x);
 		this.strand.goto(`${this.strand.next} prebuild`);
