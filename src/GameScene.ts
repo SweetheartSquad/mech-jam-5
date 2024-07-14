@@ -2137,6 +2137,12 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const btnReset = new BtnText(
 				'RESET',
 				() => {
+					if (
+						!this.actions.attacks.length &&
+						!this.actions.scans.length &&
+						!this.actions.shield
+					)
+						return;
 					this.screenFilter.flash(0.3, 400, eases.circOut);
 					this.actions.attacks.length = 0;
 					this.actions.scans.length = 0;
