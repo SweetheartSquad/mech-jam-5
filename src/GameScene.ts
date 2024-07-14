@@ -2283,7 +2283,7 @@ ${lastModule.description}`)}`
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
-			const { attacksMax, shieldsAmt, heatMax } =
+			const { attacksMax, scansMax, shieldsAmt, heatMax } =
 				this.tagsToPossibleActions(tags);
 			let shields = 0;
 			let attacks: [number, number][] = [];
@@ -2333,7 +2333,27 @@ ${lastModule.description}`)}`
 				attacks.push(target);
 			}
 
-			// TODO: pick scans
+			for (let i = 0; i < scansMax; ++i) {
+				// TODO: better deciding whether to scan
+				// - when to be more/less aggressive?
+				// - when to overheat?
+				// - when to scan vs attack?
+				if (randItem([true, false, false])) continue;
+				if (
+					heatMax - shields - attacks.length - scans.length < 0 &&
+					heatMax <= 1
+				)
+					continue;
+				if (
+					heatMax - shields - attacks.length - scans.length < 0 &&
+					randItem([true, false, false, false, false, false])
+				)
+					continue;
+
+				const target = possibleTargets.pop();
+				if (!target) break;
+				scans.push(target);
+			}
 
 			// play enemy actions
 			shields; // TODO: save for next turn
