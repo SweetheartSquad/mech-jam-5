@@ -1938,6 +1938,7 @@ ${lastModule.description}`)}`
 			const btnReset = new BtnText(
 				'RESET',
 				() => {
+					this.screenFilter.flash(0.3, 400, eases.circOut);
 					this.actions.attacks.length = 0;
 					this.actions.scans.length = 0;
 					this.actions.shield = 0;
