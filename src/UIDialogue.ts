@@ -22,8 +22,8 @@ import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
 import { buttonify, clamp, lerp, setTextWrapped, smartify, tex } from './utils';
 
-const rateBase = 0.5;
-const rateLetter = 1;
+const rateBase = 0.75;
+const rateLetter = 0.5;
 const rateQuestionMultiplier = 1.4;
 const questionInflectionRange = 6;
 const volumeBase = 0.75;
