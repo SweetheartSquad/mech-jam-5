@@ -82,12 +82,6 @@ export function mechModuleParse(key: string, source: string) {
 					break;
 			}
 		});
-		if (mechanics.includes('cockpit')) {
-			cost += costPerCockpitCell;
-		}
-		if (mechanics.includes('attack')) {
-			cost += costPerAttack;
-		}
 	}
 	return {
 		name: key.replace(`module `, ''),
