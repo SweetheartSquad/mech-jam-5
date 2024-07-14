@@ -1061,8 +1061,7 @@ ${lastModule.description}`)}`
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {
-					// TODO: real error message
-					this.alert('you have NO cockpit!');
+					this.alert('NO COCKPIT DETECTED');
 					return;
 				}
 				destroy();
