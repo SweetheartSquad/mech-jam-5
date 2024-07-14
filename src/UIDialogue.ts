@@ -125,7 +125,7 @@ export class UIDialogue extends GameObject {
 		this.selected = undefined;
 		this.textText = new BitmapText({ text: this.strText, style: fontDialogue });
 		this.display.container.accessible = true;
-		this.display.container.on('pointerdown', (event) => {
+		this.display.container.on('click', (event) => {
 			if (event && event.button !== mouse.LEFT) return;
 			if (this.isOpen) this.complete();
 		});
