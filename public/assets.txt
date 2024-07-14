@@ -66,6 +66,7 @@ textures/module Bar2.png
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
 audio/voiceJudy.mp3
+audio/voiceRhiannon.mp3
 audio/voiceSongbird.mp3
 
 textures/portrait Danny.png
