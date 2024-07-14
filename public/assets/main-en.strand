@@ -65,6 +65,7 @@
 		if (match) {
 			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' '));
 			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
+			this.scene.dialogue.voice = match[1];
 			this.scene.dialogue.sayo(`${match[1]}:\n${text.substring(match[0].length)}`, actions);
 		} else {
 			this.scene.dialogue.sayo(text, actions);
