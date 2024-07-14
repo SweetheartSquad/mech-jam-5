@@ -296,10 +296,6 @@ this should never render
 ::main
 <<do
 	this.sfx('voiceDefault');
-
-	const objects = [
-		this.PropParallax({ texture: 'bg_parallax', offset: -1000000, mult: 1 }),
-	];
 	this.goto('close');
 
 	this.next = 'diplomat';

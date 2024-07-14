@@ -20,8 +20,6 @@ audio/voiceDefault.mp3
 textures/title.png
 textures/title2.png
 
-textures/bg_parallax.png
-
 textures/cell joint.png
 
 textures/head Block.png
