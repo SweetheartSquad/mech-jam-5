@@ -1215,7 +1215,7 @@ A thing
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 0
@@ -1227,7 +1227,7 @@ A huge L
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 0
@@ -1242,7 +1242,7 @@ A long squiggle
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 00
@@ -1258,7 +1258,7 @@ A double fork
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0.0
 000
@@ -1274,7 +1274,7 @@ A long L
 
 Some more text.
 ---
-750, heatsink
+auto, heatsink
 ---
 0
 0
