@@ -1875,16 +1875,17 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnAttack = new BtnText('AIM', async () => {
+			const btnAttack = new BtnText('AIM', async (e) => {
 				if (this.actions.attacks.length >= attacksMax) return;
 				const removeModal = this.modal();
 				const target = await this.pickTarget(true);
 				removeModal();
 				if (!target) return;
-				this.actions.attacks.push(target);
+				this.actions.attacks.push([target[0], target[1]]);
 				updateAttacks();
 				updateTargetGrid();
 				updateHeat();
+				if (target[2]) btnAttack.onClick(e);
 			});
 
 			const updateScans = () => {
@@ -1896,16 +1897,17 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnScan = new BtnText('SCAN', async () => {
+			const btnScan = new BtnText('SCAN', async (e) => {
 				if (this.actions.scans.length >= scansMax) return;
 				const removeModal = this.modal();
 				const target = await this.pickTarget(false);
 				removeModal();
 				if (!target) return;
-				this.actions.scans.push(target);
+				this.actions.scans.push([target[0], target[1]]);
 				updateScans();
 				updateTargetGrid();
 				updateHeat();
+				if (target[2]) btnScan.onClick(e);
 			});
 
 			const updateShields = () => {
@@ -2023,7 +2025,7 @@ ${lastModule.description}`)}`
 	}
 
 	pickTarget(includeRevealed: boolean) {
-		return new Promise<[number, number] | false>((r) => {
+		return new Promise<[number, number, boolean] | false>((r) => {
 			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
 				'enemy',
 				(btn, x, y) => {
@@ -2037,9 +2039,9 @@ ${lastModule.description}`)}`
 						btn.display.container.visible = false;
 						return;
 					}
-					btn.onClick = () => {
+					btn.onClick = (event) => {
 						destroy();
-						r([x, y]);
+						r([x, y, event.ctrlKey || event.shiftKey]);
 					};
 				}
 			);
