@@ -7,9 +7,10 @@ export class BtnText extends Btn {
 	constructor(
 		str: string,
 		onClick: ConstructorParameters<typeof Btn>[0],
-		title?: ConstructorParameters<typeof Btn>[2]
+		title?: ConstructorParameters<typeof Btn>[2],
+		texture = 'button'
 	) {
-		super(onClick, 'button', title || str);
+		super(onClick, texture, title || str);
 		this.text = new BitmapText({ text: str, style: fontDialogue });
 		this.display.container.addChild(this.text);
 		this.text.x -= this.text.width / 2;
