@@ -2299,6 +2299,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			shields: number;
 		}
 	) {
+		if (!attacks.length) return [];
+
 		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mech = who === 'player' ? this.mech : this.mechEnemy;
@@ -2326,6 +2328,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	}
 
 	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
+		if (!scans.length) return [];
+
 		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mech = who === 'player' ? this.mech : this.mechEnemy;
