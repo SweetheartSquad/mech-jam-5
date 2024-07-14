@@ -59,8 +59,10 @@ export function mechModuleParse(key: string, source: string) {
 					cost += costPerHeatsink;
 					break;
 			}
-			forCells(cells, () => {
+		});
+		forCells(cells, () => {
 			cost += costPerModuleCell;
+			mechanics.forEach((i) => {
 				switch (i) {
 					case 'cockpit':
 						cost += costPerCockpitCell;
