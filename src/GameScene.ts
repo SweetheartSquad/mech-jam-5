@@ -1599,8 +1599,7 @@ ${lastModule.description}`)}`
 				gridBtns,
 				gridBtnsByPos,
 			} = this.makeBtnGrid('enemy', (btn, x, y) => {
-				btn.enabled = false;
-				btn.spr.texture = tex('cell detect_filled');
+				btn.spr.texture = tex('cell target');
 				btn.display.container.tint = red;
 			});
 
