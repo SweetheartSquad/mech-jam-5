@@ -940,7 +940,7 @@ debug radar
 ::module cockpit 1
 A lil' cockpit.
 ---
-auto, cockpit
+auto, cockpit, flexible
 ---
 0
 
@@ -1010,23 +1010,19 @@ A weirdly shaped cockpit.
 
 Some more text.
 ---
-auto, radar
+auto, radar, flexible
 ---
 000
 
 ::module Single
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
-auto
+auto, flexible
 ---
 0
 
 ::module square
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto
 ---
@@ -1037,9 +1033,7 @@ auto
 1,0
 
 ::module rocket1
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, attack
 ---
@@ -1049,9 +1043,7 @@ auto, attack
 
 
 ::module crosshair
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, joint
 ---
@@ -1060,9 +1052,7 @@ auto, joint
 .0.
 
 ::module stair1
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, shield
 ---
@@ -1070,9 +1060,7 @@ auto, shield
 .00
 
 ::module stair2
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, shield
 ---
@@ -1080,9 +1068,7 @@ auto, shield
 000.
 
 ::module stair3
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, shield
 ---
@@ -1091,9 +1077,7 @@ auto, shield
 000.
 
 ::module stair4
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, shield
 ---
@@ -1102,11 +1086,9 @@ auto, shield
 000..
 
 ::module shapesies
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
-auto, heatsink
+auto, heatsink, awkward
 ---
 00000
 0..00
@@ -1115,11 +1097,9 @@ auto, heatsink
 3,1
 
 ::module whoa
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
-auto, heatsink
+auto, heatsink, awkward
 ---
 00..0
 0..00
@@ -1129,9 +1109,7 @@ auto, heatsink
 3,2
 
 ::module bucket1
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, heatsink
 ---
@@ -1143,11 +1121,9 @@ auto, heatsink
 2,0
 
 ::module bucket2
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
-auto, heatsink
+auto, heatsink, awkward
 ---
 00000
 ....0
@@ -1156,9 +1132,7 @@ auto, heatsink
 4,1
 
 ::module bucket3
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, heatsink
 ---
@@ -1170,9 +1144,7 @@ auto, heatsink
 0,1
 
 ::module l1
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, heatsink
 ---
@@ -1180,9 +1152,7 @@ auto, heatsink
 000
 
 ::module l2
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, heatsink
 ---
@@ -1193,11 +1163,9 @@ auto, heatsink
 0,2
 
 ::module l3
-A small cockpit.
-
-Some more text.
+TODO: description
 ---
-auto, heatsink
+auto, heatsink, flexible
 ---
 0
 00
@@ -1209,7 +1177,7 @@ A thing
 
 Some more text.
 ---
-auto, heatsink
+auto, heatsink, flexible
 ---
 00
 
@@ -1243,7 +1211,7 @@ A double fork
 
 Some more text.
 ---
-auto, heatsink
+auto, heatsink, awkward
 ---
 00.00
 .000.
