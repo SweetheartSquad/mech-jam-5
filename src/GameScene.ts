@@ -1102,6 +1102,9 @@ ${lastModule.description}`)}`
 				if (this.moduleIsDestroyed(i, this.battleGridEnemy)) {
 					this.modulesEnemy.container.children[idx].visible = true;
 					this.modulesEnemy.container.children[idx].tint = red;
+				} else if (this.moduleIsRevealed(i, this.battleGridEnemy)) {
+					this.modulesEnemy.container.children[idx].visible = true;
+					this.modulesEnemy.container.children[idx].tint = green;
 				} else {
 					this.modulesEnemy.container.children[idx].visible = false;
 				}
