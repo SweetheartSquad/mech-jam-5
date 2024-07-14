@@ -8,7 +8,7 @@ export const costPerJoint = 9;
 // modules
 export const costPerModuleCell = -3;
 export const costPerCockpitCell = 100;
-export const costPerArmourCell = 5;
+export const costPerArmourCell = 8;
 export const costPerJointExtendCell = 100;
 export const costPerAttack = 100;
 export const costPerRadar = 100;
