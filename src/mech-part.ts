@@ -127,6 +127,12 @@ export function mechPartParse(
 	let cost = Number(strCost);
 	if (Number.isNaN(cost)) {
 		cost = 0;
+	}
+	if (
+		Number.isNaN(Number(strCost)) ||
+		strCost.startsWith('+') ||
+		strCost.startsWith('-')
+	) {
 		forCells(cells, (x, y, cell) => {
 			cost += cell === '=' ? costPerJoint : costPerEmptyCell;
 		});

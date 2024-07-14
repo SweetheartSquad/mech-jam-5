@@ -38,6 +38,12 @@ export function mechModuleParse(key: string, source: string) {
 	let cost = Number(strCost);
 	if (Number.isNaN(cost)) {
 		cost = 0;
+	}
+	if (
+		Number.isNaN(Number(strCost)) ||
+		strCost.startsWith('+') ||
+		strCost.startsWith('-')
+	) {
 		mechanics.forEach((i) => {
 			switch (i) {
 				case 'attack':
