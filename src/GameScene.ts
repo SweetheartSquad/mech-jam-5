@@ -1001,12 +1001,15 @@ ${lastModule.description}`)}`
 				gap: 10,
 			});
 			const sprPadding = new Sprite(tex('blank'));
-			sprPadding.height = 100;
+			sprPadding.height = this.panelTip.height;
 			scroller.addChild(sprPadding);
 			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
 				uiModule.y += moduleD.pivot[1] * cellSize;
-				scroller.addChild(uiModule);
+				uiModule.x += moduleD.pivot[0] * cellSize;
+				const c = new Container();
+				c.addChild(uiModule);
+				scroller.addChild(c);
 				buttonify(uiModule, moduleD.name);
 				uiModule.addEventListener('pointerover', () => {
 					this.textTip.text = moduleD.name;
