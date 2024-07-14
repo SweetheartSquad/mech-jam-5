@@ -2481,13 +2481,6 @@ ${lastModule.description}${
 			// reveal scans
 			await this.scan('enemy', this.actions.scans);
 
-			// hit self from overheat
-			let overheat = this.getHeat() - this.actions.heatMax;
-			while (overheat-- > 0) {
-				await delay(100);
-				await this.overheat('player');
-			}
-
 			// expand hits to sever parts
 			await this.severParts('enemy');
 			this.reassemble();
