@@ -1601,6 +1601,10 @@ ${lastModule.description}`)}`
 			} = this.makeBtnGrid('enemy', (btn, x, y) => {
 				btn.spr.texture = tex('cell target');
 				btn.display.container.tint = red;
+				btn.spr.addEventListener('pointerover', () => {
+					this.textTip.text =
+						btn.display.container.tint === red ? 'QUEUED AIM' : 'QUEUED SCAN';
+				});
 			});
 
 			this.container.addChild(containerBtns);
