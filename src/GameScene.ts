@@ -2407,7 +2407,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			await delay(100);
 			let msg = 'SHIELDED';
 			if (shields-- > 0) {
-				// TODO: hit shield feedback
 				await this.zoop(who, x, y, red, msg);
 				log.push(msg);
 
@@ -2427,7 +2426,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				}
 				continue;
 			}
-			// TODO: hit feedback
 			const idx = Number(modules.grid[y][x]);
 			const hasModule = !Number.isNaN(idx);
 			const isJoint = mech.grid[y][x] === '=';
@@ -2450,7 +2448,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		const modules = who === 'player' ? this.modules : this.modulesEnemy;
 		for (let [x, y] of scans) {
 			await delay(100);
-			// TODO: scan feedback
 			const idx = Number(modules.grid[y][x]);
 			const hasModule = !Number.isNaN(idx);
 			const isJoint = mech.grid[y][x] === '=';
