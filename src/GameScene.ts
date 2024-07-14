@@ -1014,6 +1014,8 @@ ${lastModule.description}`)}`
 
 			const destroy = async () => {
 				document.removeEventListener('contextmenu', onContext);
+				dragging?.destroy();
+				removeFromArray(this.camera.scripts, dragger);
 
 				const tweens: Tween[] = [];
 				tweens.push(...this.transitionOut(panelInfo, 300));
@@ -1021,7 +1023,6 @@ ${lastModule.description}`)}`
 				await delay(300);
 				tweens.forEach((i) => TweenManager.abort(i));
 
-				removeFromArray(this.camera.scripts, dragger);
 				panelInfo.destroy();
 				btnDone.destroy();
 				btnBack.destroy();
