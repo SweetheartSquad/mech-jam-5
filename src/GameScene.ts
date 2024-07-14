@@ -370,7 +370,7 @@ export class GameScene {
 		});
 	}
 
-	alert(msg: string, confirm = 'OK') {
+	alert(msg: string, confirm = 'OK', tint = red) {
 		return new Promise<boolean>((r) => {
 			const closeModal = this.modal();
 			const panel = new Spr9('panel');
@@ -408,6 +408,8 @@ export class GameScene {
 			this.containerUI.addChild(panel);
 			panel.addChild(textMsg);
 			panel.addChild(btnConfirm.display.container);
+
+			panel.tint = tint;
 
 			const tweens: Tween[] = [];
 			tweens.push(...this.transitionIn(panel, 150));
