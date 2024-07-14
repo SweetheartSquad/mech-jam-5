@@ -1944,6 +1944,7 @@ ${lastModule.description}`)}`
 			const btnEnd = new BtnText('END', async () => {
 				if (
 					!this.actions.shield &&
+					!this.actions.scans.length &&
 					!this.actions.attacks.length &&
 					!(await this.confirm('Skip your turn?'))
 				)
