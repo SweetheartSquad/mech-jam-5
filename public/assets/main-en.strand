@@ -290,6 +290,13 @@ this should never render
 
 	this.next = 'diplomat';
 	this.scene.start();
+	this.scene.loadMech('player', {
+		head: 'Tallboy 2000',
+		chest: '1',
+		arms: '1',
+		legs: '2',
+		modules: [],
+	});
 >>
 
 

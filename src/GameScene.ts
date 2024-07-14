@@ -234,28 +234,21 @@ export class GameScene {
 	}
 
 	async start() {
-		await this.scenePrebuild();
 		this.mech = this.assembleParts(
-			randItem(this.pieces.heads),
-			randItem(this.pieces.chests),
-			randItem(this.pieces.arms),
-			randItem(this.pieces.legs)
+			this.pieces.heads[0],
+			this.pieces.chests[0],
+			this.pieces.arms[0],
+			this.pieces.legs[0]
+		);
+		this.mechEnemy = this.assembleParts(
+			this.pieces.heads[0],
+			this.pieces.chests[0],
+			this.pieces.arms[0],
+			this.pieces.legs[0]
 		);
 		this.modules = this.assembleModules(this.mech.grid, []);
-		this.mechEnemy = this.assembleParts(
-			randItem(this.pieces.heads),
-			randItem(this.pieces.chests),
-			randItem(this.pieces.arms),
-			randItem(this.pieces.legs)
-		);
 		this.modulesEnemy = this.assembleModules(this.mechEnemy.grid, []);
-		this.loadMech('player', {
-			head: 'Tallboy 2000',
-			chest: '1',
-			arms: '1',
-			legs: '2',
-			modules: [],
-		});
+		await this.scenePrebuild();
 		await this.pickParts();
 		await this.buildMech();
 		await this.scenePrefight();
