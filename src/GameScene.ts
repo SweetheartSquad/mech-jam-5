@@ -283,10 +283,19 @@ export class GameScene {
 		spr.width = size.x * 2;
 		spr.height = size.y * 2;
 		spr.anchor.x = spr.anchor.y = 0.5;
-		spr.alpha = opacity;
+		spr.alpha = 0;
+		const tween = TweenManager.tween(
+			spr,
+			'alpha',
+			opacity,
+			250,
+			undefined,
+			eases.cubicIn
+		);
 		spr.interactive = true;
 		this.containerUI.addChild(spr);
 		return () => {
+			TweenManager.abort(tween);
 			spr.destroy();
 		};
 	}
