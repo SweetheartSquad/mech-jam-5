@@ -11,7 +11,7 @@ import {
 	costPerRadar,
 	costPerShield,
 } from './costs';
-import { forCells, makeCellsTexture, parseLayout } from './layout';
+import { forCells, keyXY, makeCellsTexture, parseLayout } from './layout';
 import { tex } from './utils';
 
 export function mechModuleParse(key: string, source: string) {
@@ -32,7 +32,7 @@ export function mechModuleParse(key: string, source: string) {
 	});
 	let pivot: [number, number];
 	if (strPivot) {
-		pivot = strPivot.split(',').map((i) => parseInt(i)) as [number, number];
+		pivot = keyXY(strPivot);
 	} else {
 		pivot = [Math.floor(w / 2), Math.floor(h / 2)];
 	}

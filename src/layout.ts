@@ -63,7 +63,7 @@ export function flatten<T extends string>(
 		});
 	});
 	const bounds = Object.keys(map)
-		.map((i) => i.split(',').map((j) => Number(j)))
+		.map(keyXY)
 		.reduce(
 			(b, i) => {
 				b.minx = Math.min(b.minx, i[1]);
@@ -189,5 +189,5 @@ export function xyKey(x: number, y: number) {
 	return `${x},${y}`;
 }
 export function keyXY(key: string) {
-	return key.split(',').map((i) => parseInt(i, 10));
+	return key.split(',').map((i) => parseInt(i, 10)) as [number, number];
 }

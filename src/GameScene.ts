@@ -30,8 +30,10 @@ import {
 	flatten,
 	forCells,
 	getFlood,
+	keyXY,
 	replaceCells,
 	rotateCellsByDisplay,
+	xyKey,
 } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
@@ -964,7 +966,7 @@ ${lastModule.description}${
 				if (!dragging) return;
 				if (!target) return;
 				valid = true;
-				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
+				const [x, y] = keyXY(target.spr.label);
 
 				const moduleD = modulesByName[dragging.label];
 				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
