@@ -370,6 +370,50 @@ export class GameScene {
 		});
 	}
 
+	alert(msg: string, confirm = 'OK') {
+		return new Promise<boolean>((r) => {
+			const closeModal = this.modal();
+			const panel = new Spr9('panel');
+			const destroy = async () => {
+				tweens.forEach((i) => TweenManager.abort(i));
+				tweens.length = 0;
+				closeModal();
+				tweens.push(...this.transitionOut(panel, 150));
+				await delay(300);
+				tweens.forEach((i) => TweenManager.abort(i));
+				panel.destroy();
+				btnConfirm.destroy();
+			};
+			const btnConfirm = new BtnText(confirm, () => {
+				destroy();
+				r(true);
+			});
+
+			panel.width = size.x / 3 - 50;
+			const gap = 25;
+			const textMsg = new BitmapText({ text: '', style: fontDialogue });
+			textMsg.style.wordWrapWidth = panel.width - gap * 2;
+			textMsg.style.align = 'center';
+			setTextWrapped(textMsg, msg);
+			panel.x -= panel.width / 2;
+			textMsg.x += gap;
+			textMsg.x += (textMsg.style.wordWrapWidth - textMsg.width) / 2;
+			textMsg.y += gap;
+			btnConfirm.transform.x += panel.width / 2;
+			btnConfirm.transform.y += textMsg.height + gap * 3;
+			panel.height =
+				textMsg.height + btnConfirm.display.container.height + gap * 3;
+			panel.y -= panel.height / 2;
+
+			this.containerUI.addChild(panel);
+			panel.addChild(textMsg);
+			panel.addChild(btnConfirm.display.container);
+
+			const tweens: Tween[] = [];
+			tweens.push(...this.transitionIn(panel, 150));
+		});
+	}
+
 	scenePrebuild() {
 		this.setFocus(-size.x);
 		this.strand.goto(`${this.strand.next} prebuild`);
