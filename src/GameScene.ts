@@ -512,7 +512,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 
 	pickParts() {
 		this.setFocus(
-			-size.x / 3 + this.mech.container.x,
+			-size.x / 3 + this.mech.container.x + cellSize / 2,
 			undefined,
 			500,
 			eases.cubicInOut
@@ -786,7 +786,7 @@ ${lastPart.description}`)}`
 
 	placeModules() {
 		this.setFocus(
-			size.x / 3 + this.mech.container.x,
+			size.x / 3 + this.mech.container.x - cellSize / 2,
 			undefined,
 			500,
 			eases.cubicInOut
