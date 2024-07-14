@@ -1,5 +1,11 @@
 import eases from 'eases';
-import { BitmapText, Container, NineSliceSprite, Sprite } from 'pixi.js';
+import {
+	BitmapText,
+	Container,
+	Graphics,
+	NineSliceSprite,
+	Sprite,
+} from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
@@ -38,6 +44,7 @@ import {
 	flipMatrixH,
 	flipMatrixV,
 	formatCount,
+	lerp,
 	randItem,
 	relativeMouse,
 	removeFromArray,
@@ -2078,15 +2085,17 @@ ${lastModule.description}`)}`
 		this.reassemble();
 	}
 
-	async attack({
-		attacks,
-		grid,
-		shields,
-	}: {
-		attacks: [number, number][];
-		grid: string[][];
-		shields: number;
-	}) {
+	async attack(
+		who: 'player' | 'enemy',
+		{
+			attacks,
+			shields,
+		}: {
+			attacks: [number, number][];
+			shields: number;
+		}
+	) {
+		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		for (let [x, y] of attacks) {
 			await delay(100);
 			if (shields-- > 0) {
@@ -2094,15 +2103,18 @@ ${lastModule.description}`)}`
 				continue;
 			}
 			// TODO: hit feedback
+			await this.zoop(who, x, y);
 			grid[y][x] = 'X';
 			this.reassemble();
 		}
 	}
 
-	async scan({ scans, grid }: { scans: [number, number][]; grid: string[][] }) {
+	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
+		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		for (let [x, y] of scans) {
 			await delay(100);
 			// TODO: scan feedback
+			await this.zoop(who, x, y, green);
 			grid[y][x] = 'O';
 			this.reassemble();
 		}
@@ -2173,20 +2185,60 @@ ${lastModule.description}`)}`
 		});
 	}
 
+	async zoop(who: 'player' | 'enemy', x: number, y: number, tint = red) {
+		const p = (
+			who === 'player' ? this.damageBtns : this.damageBtnsEnemy
+		).gridBtnsByPos[y][x].display.container.toGlobal({ x: 0, y: 0 });
+		const g = new Graphics();
+
+		let s = { v: 0 };
+		TweenManager.tween(
+			s,
+			'v',
+			1,
+			500,
+			undefined,
+			(t) => eases.cubicInOut(t) * eases.backOut(t)
+		);
+		const m = Math.max(size.x, size.y);
+
+		const zoop = new Updater(this.camera, () => {
+			g.clear()
+				.beginPath()
+				.rect(
+					lerp(-m / 2, p.x - size.x / 2 - cellSize / 2, s.v),
+					lerp(-m / 2, p.y - size.y / 2 - cellSize / 2, s.v),
+					lerp(m, cellSize, s.v),
+					lerp(m, cellSize, s.v)
+				)
+				.stroke({
+					color: tint,
+					width: 2,
+					alpha: s.v,
+				})
+				.fill({
+					color: tint,
+					alpha: s.v * 0.5,
+				});
+		});
+		this.camera.scripts.push(zoop);
+		this.containerUI.addChild(g);
+		await delay(500);
+		removeFromArray(this.camera.scripts, zoop);
+		zoop.destroy?.();
+		g.destroy();
+	}
+
 	playActions() {
 		return new Promise<void>(async (r) => {
 			await this.alert('play actions'); // TODO: remove
 			let shields = 0; // TODO: get enemy shields from last turn
-			await this.attack({
+			await this.attack('enemy', {
 				attacks: this.actions.attacks,
 				shields,
-				grid: this.battleGridEnemy,
 			});
 			// reveal scans
-			await this.scan({
-				scans: this.actions.scans,
-				grid: this.battleGridEnemy,
-			});
+			await this.scan('enemy', this.actions.scans);
 
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
@@ -2265,10 +2317,9 @@ ${lastModule.description}`)}`
 			// play enemy actions
 			shields; // TODO: save for next turn
 
-			await this.attack({
+			await this.attack('player', {
 				attacks: attacks,
 				shields: this.actions.shield,
-				grid: this.battleGrid,
 			});
 
 			let overheat = this.getHeat() - heatMax;
@@ -2278,10 +2329,7 @@ ${lastModule.description}`)}`
 				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
 			}
 			// reveal scans
-			await this.scan({
-				scans,
-				grid: this.battleGrid,
-			});
+			await this.scan('player', scans);
 
 			// expand hits to sever parts
 			await this.severParts('player');
