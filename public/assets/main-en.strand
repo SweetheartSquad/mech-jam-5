@@ -74,6 +74,7 @@
 <<endif>>
 FLEETWOOD MECH
 [[START]]
+[[PORTRAIT TEST]]
 [[OPTIONS]]
 [[ABOUT]]
 
@@ -98,6 +99,19 @@ FOR "MECH JAM V"
 	this.music('bgm');
 	this.goto('main');
 >>
+
+::PORTRAIT TEST
+Songbird: hello
+>
+Danny: hello
+>
+Diane: hello
+>
+Judy: hello
+>
+Rhiannon: hello
+
+[[>start]]
 
 ::close
 this should never render

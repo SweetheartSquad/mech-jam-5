@@ -67,8 +67,11 @@ textures/module Bar.png
 textures/module Bar2.png
 
 
-textures/portrait Guy.png
-textures/portrait Guy angry.png
+textures/portrait Danny.png
+textures/portrait Diane.png
+textures/portrait Judy.png
+textures/portrait Rhiannon.png
+textures/portrait Songbird.png
 
 textures/scroll_track.png
 textures/scroll_thumb.png
