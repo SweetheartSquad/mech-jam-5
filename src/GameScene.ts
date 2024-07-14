@@ -871,7 +871,11 @@ ${lastPart.description}`)}`
 $${lastModule.cost} | ${lastModule.cellCount} CELLS
  
 ${lastModule.description}${
-						DEBUG ? `\n \nDEBUG TAGS: ${lastModule.tags.join(', ')}` : ''
+						DEBUG
+							? `\n \nDEBUG\n${lastModule.tags.join(', ')}\n$${
+									lastModule.cost / lastModule.cellCount
+							  }/CELL`
+							: ''
 					}`)}`
 				);
 			};
