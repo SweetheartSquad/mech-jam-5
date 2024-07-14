@@ -38,7 +38,16 @@ import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, MechD, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
-import { black, gray, green, greenHalf, red, redHalf, white } from './tints';
+import {
+	black,
+	blueHalf,
+	gray,
+	green,
+	greenHalf,
+	red,
+	redHalf,
+	white,
+} from './tints';
 import {
 	buttonify,
 	delay,
@@ -2305,6 +2314,47 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mech = who === 'player' ? this.mech : this.mechEnemy;
 		const modules = who === 'player' ? this.modules : this.modulesEnemy;
+
+		let shieldContainer: Container;
+		let shieldTween: Tween | null = null;
+		let destroyShield = () => {};
+		if (shields > 0) {
+			const { container, gridBtns } = this.makeBtnGrid(who, (btn) => {
+				btn.enabled = false;
+				btn.display.container.tint = blueHalf;
+				btn.spr.scale.x *= 2;
+				btn.spr.scale.y *= 2;
+				btn.spr.texture = tex('cell shield');
+			});
+			shieldContainer = container;
+			shieldTween = TweenManager.tween(
+				container,
+				'alpha',
+				0.2,
+				500,
+				0,
+				eases.cubicInOut
+			);
+			this.containerUI.addChild(container);
+			destroyShield = async () => {
+				destroyShield = () => {};
+				if (shieldTween) TweenManager.abort(shieldTween);
+				shieldTween = TweenManager.tween(
+					shieldContainer,
+					'alpha',
+					0,
+					500,
+					0.7,
+					eases.circOut
+				);
+				await delay(500);
+				TweenManager.abort(shieldTween);
+				container.destroy();
+				gridBtns.forEach((i) => i.destroy());
+			};
+			await delay(500);
+		}
+
 		for (let [x, y] of attacks) {
 			await delay(100);
 			let msg = 'SHIELDED';
@@ -2312,6 +2362,21 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				// TODO: hit shield feedback
 				await this.zoop(who, x, y, red, msg);
 				log.push(msg);
+
+				if (shields <= 0) {
+					shieldContainer.tint = redHalf;
+					destroyShield();
+				} else {
+					if (shieldTween) TweenManager.abort(shieldTween);
+					shieldTween = TweenManager.tween(
+						shieldContainer,
+						'alpha',
+						0.2,
+						500,
+						0.7,
+						eases.circOut
+					);
+				}
 				continue;
 			}
 			// TODO: hit feedback
@@ -2324,6 +2389,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			grid[y][x] = 'X';
 			this.reassemble();
 		}
+		destroyShield();
 		return log;
 	}
 
