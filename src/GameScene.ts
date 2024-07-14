@@ -1473,7 +1473,6 @@ ${lastModule.description}`)}`
 		module: GameScene['modules']['placed'][number],
 		cells: string[][]
 	) {
-		// TODO: check connected to cockpit
 		let destroyed = true;
 		this.forPlacedModuleCells(module, (x, y) => {
 			if (!destroyed) return;
