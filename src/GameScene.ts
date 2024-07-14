@@ -38,7 +38,7 @@ import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, MechD, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
-import { gray, green, greenHalf, red, redHalf, white } from './tints';
+import { black, gray, green, greenHalf, red, redHalf, white } from './tints';
 import {
 	buttonify,
 	delay,
@@ -2257,6 +2257,9 @@ ${lastModule.description}${
 		}
 	) {
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
+		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
+		const modulesGrid =
+			who === 'player' ? this.modules.grid : this.modulesEnemy.grid;
 		for (let [x, y] of attacks) {
 			await delay(100);
 			if (shields-- > 0) {
@@ -2264,7 +2267,10 @@ ${lastModule.description}${
 				continue;
 			}
 			// TODO: hit feedback
-			await this.zoop(who, x, y);
+			const idx = Number(modulesGrid[y][x]);
+			const hasModule = !Number.isNaN(idx);
+			const isJoint = mechGrid[y][x] === '=';
+			await this.zoop(who, x, y, red, hasModule || isJoint ? 'HIT' : 'EMPTY');
 			grid[y][x] = 'X';
 			this.reassemble();
 		}
@@ -2272,10 +2278,22 @@ ${lastModule.description}${
 
 	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
+		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
+		const modulesGrid =
+			who === 'player' ? this.modules.grid : this.modulesEnemy.grid;
 		for (let [x, y] of scans) {
 			await delay(100);
 			// TODO: scan feedback
-			await this.zoop(who, x, y, green);
+			const idx = Number(modulesGrid[y][x]);
+			const hasModule = !Number.isNaN(idx);
+			const isJoint = mechGrid[y][x] === '=';
+			await this.zoop(
+				who,
+				x,
+				y,
+				green,
+				hasModule || isJoint ? 'REVEALED' : 'EMPTY'
+			);
 			grid[y][x] = 'O';
 			this.reassemble();
 		}
@@ -2346,10 +2364,18 @@ ${lastModule.description}${
 		});
 	}
 
-	async zoop(who: 'player' | 'enemy', x: number, y: number, tint = red) {
+	async zoop(
+		who: 'player' | 'enemy',
+		x: number,
+		y: number,
+		tint = red,
+		text: string
+	) {
 		const p = (
 			who === 'player' ? this.damageBtns : this.damageBtnsEnemy
 		).gridBtnsByPos[y][x].display.container.toGlobal({ x: 0, y: 0 });
+		p.x -= size.x / 2;
+		p.y -= size.y / 2;
 		const g = new Graphics();
 
 		let s = { v: 0 };
@@ -2367,8 +2393,8 @@ ${lastModule.description}${
 			g.clear()
 				.beginPath()
 				.rect(
-					lerp(-m / 2, p.x - size.x / 2 - cellSize / 2, s.v),
-					lerp(-m / 2, p.y - size.y / 2 - cellSize / 2, s.v),
+					lerp(-m / 2, p.x - cellSize / 2, s.v),
+					lerp(-m / 2, p.y - cellSize / 2, s.v),
 					lerp(m, cellSize, s.v),
 					lerp(m, cellSize, s.v)
 				)
@@ -2388,6 +2414,46 @@ ${lastModule.description}${
 		removeFromArray(this.camera.scripts, zoop);
 		zoop.destroy?.();
 		g.destroy();
+		this.textPop(text, p.x, p.y);
+	}
+
+	async textPop(text: string, x: number, y: number, tint = white) {
+		const container = new Container();
+		const textHit1 = new BitmapText({ text, style: fontDialogue });
+		const textHit2 = new BitmapText({ text, style: fontDialogue });
+		const textHit3 = new BitmapText({ text, style: fontDialogue });
+		textHit1.tint = black;
+		textHit2.tint = black;
+		textHit3.tint = tint;
+		container.addChild(textHit1);
+		container.addChild(textHit2);
+		container.addChild(textHit3);
+		textHit1.x += 1;
+		textHit2.y += 1;
+		this.containerUI.addChild(container);
+		container.x = x;
+		container.y = y;
+		const tween1 = TweenManager.tween(
+			container,
+			'y',
+			y - 10,
+			2000,
+			undefined,
+			eases.cubicIn
+		);
+		await delay(1500);
+		const tween2 = TweenManager.tween(
+			container,
+			'alpha',
+			0,
+			500,
+			undefined,
+			eases.cubicIn
+		);
+		await delay(500);
+		TweenManager.abort(tween1);
+		TweenManager.abort(tween2);
+		container.destroy();
 	}
 
 	playActions() {
