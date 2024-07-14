@@ -2273,7 +2273,6 @@ ${lastModule.description}`)}`
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
-				// TODO: animation
 				await delay(100);
 				await this.overheat('player');
 			}
@@ -2374,7 +2373,6 @@ ${lastModule.description}`)}`
 
 			let overheat = this.getHeat() - heatMax;
 			while (overheat-- > 0) {
-				// TODO: animation
 				await delay(100);
 				await this.overheat('enemy');
 			}
