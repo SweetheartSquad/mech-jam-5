@@ -2070,7 +2070,11 @@ ${lastModule.description}`)}`
 		);
 	}
 
-	overheat(placed: GameScene['modules']['placed'], grid: string[][]) {
+	overheat(who: 'player' | 'enemy') {
+		const [placed, grid] =
+			who === 'player'
+				? [this.modules.placed, this.battleGrid]
+				: [this.modulesEnemy.placed, this.battleGridEnemy];
 		// find heatsinks
 		const target = shuffle(
 			placed.filter((i) => i.module.tags.includes('heatsink'))
@@ -2083,6 +2087,7 @@ ${lastModule.description}`)}`
 		// destroy part
 		this.forPlacedModuleCells(target, (x, y) => {
 			grid[y][x] = 'X';
+			this.zoop(who, x, y);
 		});
 		this.reassemble();
 	}
@@ -2247,7 +2252,7 @@ ${lastModule.description}`)}`
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				await this.overheat(this.modules.placed, this.battleGrid);
+				await this.overheat('player');
 			}
 
 			// expand hits to sever parts
@@ -2328,7 +2333,7 @@ ${lastModule.description}`)}`
 			while (overheat-- > 0) {
 				// TODO: animation
 				await delay(100);
-				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+				await this.overheat('enemy');
 			}
 			// reveal scans
 			await this.scan('player', scans);
