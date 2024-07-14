@@ -6,3 +6,4 @@ export const redHalf = 0xff6666;
 export const green = 0x00ff00;
 export const greenHalf = 0x66ff66;
 export const blue = 0x0000ff;
+export const blueHalf = 0x6666ff;
