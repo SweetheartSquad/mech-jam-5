@@ -838,7 +838,9 @@ ${lastPart.description}`)}`
 			eases.cubicInOut
 		);
 		return new Promise<boolean>(async (donePlacingModules) => {
-			const modules = this.pieces.modules.map((i) => this.getModule(i));
+			const modules = this.pieces.modules
+				.map((i) => this.getModule(i))
+				.filter((i) => DEBUG || !i.tags.includes('debug'));
 			const modulesByName = modules.reduce<{
 				[key: string]: (typeof modules)[number];
 			}>((acc, i) => {
