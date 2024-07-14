@@ -2301,9 +2301,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	) {
 		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
-		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
-		const modulesGrid =
-			who === 'player' ? this.modules.grid : this.modulesEnemy.grid;
+		const mech = who === 'player' ? this.mech : this.mechEnemy;
+		const modules = who === 'player' ? this.modules : this.modulesEnemy;
 		for (let [x, y] of attacks) {
 			await delay(100);
 			let msg = 'SHIELDED';
@@ -2314,9 +2313,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				continue;
 			}
 			// TODO: hit feedback
-			const idx = Number(modulesGrid[y][x]);
+			const idx = Number(modules.grid[y][x]);
 			const hasModule = !Number.isNaN(idx);
-			const isJoint = mechGrid[y][x] === '=';
+			const isJoint = mech.grid[y][x] === '=';
 			msg = hasModule || isJoint ? 'HIT' : 'MISS';
 			await this.zoop(who, x, y, red, msg);
 			log.push(msg);
@@ -2329,15 +2328,14 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
 		const log: string[] = [];
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
-		const mechGrid = who === 'player' ? this.mech.grid : this.mechEnemy.grid;
-		const modulesGrid =
-			who === 'player' ? this.modules.grid : this.modulesEnemy.grid;
+		const mech = who === 'player' ? this.mech : this.mechEnemy;
+		const modules = who === 'player' ? this.modules : this.modulesEnemy;
 		for (let [x, y] of scans) {
 			await delay(100);
 			// TODO: scan feedback
-			const idx = Number(modulesGrid[y][x]);
+			const idx = Number(modules.grid[y][x]);
 			const hasModule = !Number.isNaN(idx);
-			const isJoint = mechGrid[y][x] === '=';
+			const isJoint = mech.grid[y][x] === '=';
 			const msg = hasModule || isJoint ? 'REVEALED' : 'MISS';
 			log.push(msg);
 			await this.zoop(who, x, y, green, msg);
