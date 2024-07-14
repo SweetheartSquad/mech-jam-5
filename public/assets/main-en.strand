@@ -330,7 +330,9 @@ todo diplomat prefight stuff
         { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  }
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
     ]
 });>>
 
