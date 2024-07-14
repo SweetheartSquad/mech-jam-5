@@ -600,8 +600,10 @@ blah blah blah
 ---
 auto
 ---
-===
-=.=
+.===
+==.==
+==.==
+.===
 
 ::chest 4
 blah blah blah
@@ -1209,6 +1211,80 @@ Some more text.
 ---
 750, heatsink
 ---
+0
+00
+---
+0,1
+
+::module 2by1
+A thing
+
+Some more text.
+---
+750, heatsink
+---
+0
+0
+---
+0,1
+
+::module hugeL
+A huge L
+
+Some more text.
+---
+750, heatsink
+---
+0
+0
+0
+0
+000000
+---
+0,1
+
+::module longsquig
+A long squiggle
+
+Some more text.
+---
+750, heatsink
+---
+0
+00
+.0
+.0
+.0
+.0
+---
+0,1
+
+::module doubleFork
+A double fork
+
+Some more text.
+---
+750, heatsink
+---
+0.0
+000
+.0
+000
+0.0
+
+---
+0,1
+
+::module longL
+A long L
+
+Some more text.
+---
+750, heatsink
+---
+0
+0
+0
 0
 00
 ---
