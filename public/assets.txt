@@ -18,8 +18,6 @@ audio/voiceDefault.mp3
 textures/title.png
 textures/title2.png
 
-textures/cell joint.png
-
 textures/head Block.png
 textures/head Tee.png
 textures/head Small.png
@@ -50,6 +48,7 @@ textures/cell detect_empty.png
 textures/cell detect_filled.png
 textures/cell target.png
 textures/cell shield.png
+textures/cell joint.png
 
 textures/module debug cockpit.png
 textures/module debug attack.png
