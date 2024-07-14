@@ -1972,18 +1972,23 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnAttack = new BtnText('AIM', async (e) => {
-				if (this.actions.attacks.length >= attacksMax) return;
-				const removeModal = this.modal();
-				const target = await this.pickTarget(true);
-				removeModal();
-				if (!target) return;
-				this.actions.attacks.push([target[0], target[1]]);
-				updateAttacks();
-				updateTargetGrid();
-				updateHeat();
-				if (target[2]) btnAttack.onClick(e);
-			});
+			const btnAttack = new BtnText(
+				'AIM',
+				async (e) => {
+					if (this.actions.attacks.length >= attacksMax) return;
+					const removeModal = this.modal();
+					const target = await this.pickTarget(true);
+					removeModal();
+					if (!target) return;
+					this.actions.attacks.push([target[0], target[1]]);
+					updateAttacks();
+					updateTargetGrid();
+					updateHeat();
+					if (target[2]) btnAttack.onClick(e);
+				},
+				undefined,
+				'buttonCombat'
+			);
 
 			const updateScans = () => {
 				btnScan.setText(`SCAN\n (${scansMax - this.actions.scans.length})`);
@@ -1994,18 +1999,23 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnScan = new BtnText('SCAN', async (e) => {
-				if (this.actions.scans.length >= scansMax) return;
-				const removeModal = this.modal();
-				const target = await this.pickTarget(false);
-				removeModal();
-				if (!target) return;
-				this.actions.scans.push([target[0], target[1]]);
-				updateScans();
-				updateTargetGrid();
-				updateHeat();
-				if (target[2]) btnScan.onClick(e);
-			});
+			const btnScan = new BtnText(
+				'SCAN',
+				async (e) => {
+					if (this.actions.scans.length >= scansMax) return;
+					const removeModal = this.modal();
+					const target = await this.pickTarget(false);
+					removeModal();
+					if (!target) return;
+					this.actions.scans.push([target[0], target[1]]);
+					updateScans();
+					updateTargetGrid();
+					updateHeat();
+					if (target[2]) btnScan.onClick(e);
+				},
+				undefined,
+				'buttonCombat'
+			);
 
 			const updateShields = () => {
 				if (shieldsAmt) {
@@ -2029,7 +2039,8 @@ ${lastModule.description}`)}`
 					updateShields();
 					updateHeat();
 				},
-				'toggle shields'
+				'toggle shields',
+				'buttonCombat'
 			);
 
 			const btnReset = new BtnText(
@@ -2045,20 +2056,26 @@ ${lastModule.description}`)}`
 					updateTargetGrid();
 					updateHeat();
 				},
-				'reset actions'
+				'reset actions',
+				'buttonCombat'
 			);
 
-			const btnEnd = new BtnText('END', async () => {
-				if (
-					!this.actions.shield &&
-					!this.actions.scans.length &&
-					!this.actions.attacks.length &&
-					!(await this.confirm('Skip your turn?'))
-				)
-					return;
-				destroy();
-				r();
-			});
+			const btnEnd = new BtnText(
+				'CONFIRM',
+				async () => {
+					if (
+						!this.actions.shield &&
+						!this.actions.scans.length &&
+						!this.actions.attacks.length &&
+						!(await this.confirm('Skip your turn?'))
+					)
+						return;
+					destroy();
+					r();
+				},
+				undefined,
+				'buttonCombat'
+			);
 
 			btnEnd.transform.y +=
 				size.y / 2 - btnEnd.display.container.height / 2 - 5;
