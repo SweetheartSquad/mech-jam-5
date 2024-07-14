@@ -33,7 +33,7 @@ export class UIDialogue extends GameObject {
 		top: 175,
 		bottom: 175,
 		left: 260,
-		right: 225,
+		right: 235,
 	};
 
 	sprScrim: Sprite;
