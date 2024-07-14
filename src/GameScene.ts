@@ -339,13 +339,15 @@ export class GameScene {
 			btnCancel.text.x += btnCancel.text.width;
 			btnCancel.display.container.alpha = 0.8;
 
+			panel.width = size.x / 3 - 50;
+			const gap = 25;
 			const textMsg = new BitmapText({ text: '', style: fontDialogue });
-			textMsg.style.wordWrapWidth = 250;
+			textMsg.style.wordWrapWidth = panel.width - gap * 2;
+			textMsg.style.align = 'center';
 			setTextWrapped(textMsg, msg);
-			panel.width = 300;
 			panel.x -= panel.width / 2;
-			const gap = (panel.width - textMsg.style.wordWrapWidth) / 2;
 			textMsg.x += gap;
+			textMsg.x += (textMsg.style.wordWrapWidth - textMsg.width) / 2;
 			textMsg.y += gap;
 			btnConfirm.transform.x -=
 				btnConfirm.display.container.width / 2 + gap / 2;
