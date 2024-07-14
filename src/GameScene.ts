@@ -1149,11 +1149,11 @@ ${lastModule.description}`)}`
 			if (i.children.length) i.visible = false;
 		});
 
-		// TODO: position based on game state
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
 		this.mech.container.y += size.y * 0.45;
 		this.mechEnemy.container.x += Math.floor(size.x * (1 / 5));
 		this.mechEnemy.container.y += size.y * 0.45;
+		this.mechEnemy.container.visible = this.battleGridEnemy.length > 0;
 
 		this.modules.container.x = this.mech.container.x;
 		this.modules.container.y = this.mech.container.y;
