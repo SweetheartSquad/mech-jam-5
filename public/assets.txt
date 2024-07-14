@@ -67,6 +67,8 @@ textures/module Tee.png
 textures/module Bar.png
 textures/module Bar2.png
 
+textures/module extender 1.png
+
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
 audio/voiceJudy.mp3

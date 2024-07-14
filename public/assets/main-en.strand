@@ -1260,7 +1260,7 @@ auto, heatsink
 ---
 0,1
 
-::module longL
+::module extender 1
 A long L
 
 Some more text.
