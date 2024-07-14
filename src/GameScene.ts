@@ -983,22 +983,24 @@ ${lastModule.description}`)}`
 				scroller.destroy();
 				gridBtns.forEach((i) => i.destroy());
 			};
-			const btnBack = new BtnText('BACK', () => {
-				if (this.modules.placed.length) {
-					// TODO: proper ui
-					if (!window.confirm('this will remove all modules, are you sure?'))
-						return;
-				}
+			const btnBack = new BtnText('BACK', async () => {
+				if (
+					this.modules.placed.length &&
+					!(await this.confirm(
+						'Go back to part selection? This will remove all currently placed modules.'
+					))
+				)
+					return;
 				destroy();
 				this.screenFilter.flash(0.3, 400, eases.circOut);
 				donePlacingModules(false);
 			});
-			const btnReset = new BtnText('RESET', () => {
-				if (this.modules.placed.length) {
-					// TODO: proper ui
-					if (!window.confirm('this will remove all modules, are you sure?'))
-						return;
-				}
+			const btnReset = new BtnText('RESET', async () => {
+				if (
+					this.modules.placed.length &&
+					!(await this.confirm('Remove all currently placed modules?'))
+				)
+					return;
 				this.modules.placed = [];
 				this.reassemble();
 				this.screenFilter.flash(0.3, 200, eases.circOut);
@@ -1893,11 +1895,13 @@ ${lastModule.description}`)}`
 				'reset actions'
 			);
 
-			const btnEnd = new BtnText('END', () => {
-				if (!this.actions.shield && !this.actions.attacks.length) {
-					// TODO: proper UI
-					if (!window.confirm('Really skip your turn?')) return;
-				}
+			const btnEnd = new BtnText('END', async () => {
+				if (
+					!this.actions.shield &&
+					!this.actions.attacks.length &&
+					!(await this.confirm('Skip your turn?'))
+				)
+					return;
 				destroy();
 				r();
 			});
