@@ -839,8 +839,8 @@ ${lastModule.description}`)}`
 				gridBtnsByPos,
 			} = this.makeBtnGrid('player', (btn, x, y, cell) => {
 				if (cell === '=') {
-					btn.spr.texture = tex('cell joint');
-					btn.enabled = false;
+					btn.texture = 'cell joint';
+					btn.spr.texture = tex(btn.texture);
 				}
 				btn.onClick = (event) => {
 					const copying = event.shiftKey || event.ctrlKey;
@@ -885,9 +885,14 @@ ${lastModule.description}`)}`
 				btn.spr.addEventListener('pointerover', () => {
 					target = btn;
 					checkPlacement();
+					const idx = Number(this.modules.grid[y][x]);
+					if (Number.isNaN(idx)) {
+						this.textTip.text =
+							this.mech.grid[y][x] === '=' ? 'joint' : 'empty cell';
+						return;
+					}
+					this.textTip.text = this.modules.placed[idx].module.name;
 					if (!dragging) {
-						const idx = Number(this.modules.grid[y][x]);
-						if (Number.isNaN(idx)) return;
 						this.modules.container.children[idx].alpha = 0.5;
 					}
 				});
@@ -906,7 +911,7 @@ ${lastModule.description}`)}`
 				forCells(gridBtnsByPos, (x, y, btn) => {
 					if (!btn) return;
 					btn.spr.tint = white;
-					if (btn !== target && btn.enabled)
+					if (btn !== target && btn.texture === 'cell button')
 						btn.spr.texture = tex('cell button_normal');
 				});
 				if (!dragging) return;
@@ -945,7 +950,7 @@ ${lastModule.description}`)}`
 					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (!btnNeighbour) return;
 					btnNeighbour.spr.tint = valid ? green : red;
-					if (btnNeighbour !== target && btnNeighbour.enabled)
+					if (btnNeighbour !== target && btnNeighbour.texture === 'cell button')
 						btnNeighbour.spr.texture = tex('cell button_over');
 				});
 			};
