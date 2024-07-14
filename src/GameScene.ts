@@ -288,8 +288,9 @@ export class GameScene {
 		});
 	}
 
-	modal(opacity = 0.25) {
-		const spr = new Sprite(tex('black'));
+	modal(opacity = 0.25, tint = black) {
+		const spr = new Sprite(tex('white'));
+		spr.tint = tint;
 		spr.width = size.x * 2;
 		spr.height = size.y * 2;
 		spr.anchor.x = spr.anchor.y = 0.5;
