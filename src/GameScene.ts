@@ -2063,7 +2063,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				'AIM',
 				async (e) => {
 					if (this.actions.attacks.length >= attacksMax) return;
-					const removeModal = this.modal();
+					const removeModal = this.modal(undefined, red);
 					const target = await this.pickTarget(true);
 					removeModal();
 					if (!target) return;
@@ -2090,7 +2090,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				'SCAN',
 				async (e) => {
 					if (this.actions.scans.length >= scansMax) return;
-					const removeModal = this.modal();
+					const removeModal = this.modal(undefined, greenHalf);
 					const target = await this.pickTarget(false);
 					removeModal();
 					if (!target) return;
