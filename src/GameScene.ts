@@ -1804,6 +1804,8 @@ ${lastModule.description}${
 		) as typeof this.battleGrid;
 		this.reassemble();
 
+		let shieldsEnemy;
+
 		do {
 			await this.pickActions();
 			const log: string[] = [];
@@ -1816,7 +1818,7 @@ ${lastModule.description}${
 			if (lost) {
 				this.strand.won = false;
 			} else {
-				log.push(...(await this.playActions()));
+				log.push(...(await this.playActions(shieldsEnemy)));
 			}
 			const won = !this.modulesEnemy.placed.some(
 				(i) =>
@@ -1846,7 +1848,10 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			++turnCount;
 			log.length = 0;
 
-			await this.enemyActions();
+			const [shields, logEnemy] = await this.enemyActions();
+			log.push(...logEnemy);
+			shieldsEnemy = shields;
+
 			lost = !this.modules.placed.some(
 				(i) =>
 					i.module.tags.includes('cockpit') &&
@@ -2513,10 +2518,10 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		});
 	}
 
-	playActions() {
+	playActions(shieldsEnemy: number) {
 		return new Promise<string[]>(async (r) => {
 			const log: string[] = [];
-			let shields = 0; // TODO: get enemy shields from last turn
+			let shields = shieldsEnemy;
 			log.push(
 				...(await this.attack('enemy', {
 					attacks: this.actions.attacks,
@@ -2535,7 +2540,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	}
 
 	enemyActions() {
-		return new Promise<string[]>(async (r) => {
+		return new Promise<{ shields: number; log: string[] }>(async (r) => {
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
