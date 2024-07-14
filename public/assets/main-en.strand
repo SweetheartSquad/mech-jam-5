@@ -51,15 +51,11 @@
 	}
 
 	this.Area('empty', []);
-	this.Area('intro', [
-		this.Prop({ texture: 'bg_ship', scale: 1, x: 100, y: -110, offset: -1000000 }),
-	]);
 
 	// start
 	this.started=true;
 	this.tween(this.scene.dialogue.sprBg, 'alpha', 1, 500);
 	this.tween(this.scene.border.display.container, 'alpha', 1, 500);
-	this.scene.goto({ area: 'intro' });
 
 	// add syntax sugar for passages like `Guy angry: Blah blah.`
 	const check = /(\w+)(\s+\w*)?:\s*/;

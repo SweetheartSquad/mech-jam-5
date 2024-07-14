@@ -21,7 +21,6 @@ textures/title.png
 textures/title2.png
 
 textures/bg_parallax.png
-textures/bg_ship.png
 
 textures/cell joint.png
 
