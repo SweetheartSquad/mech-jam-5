@@ -1804,7 +1804,7 @@ ${lastModule.description}${
 		) as typeof this.battleGrid;
 		this.reassemble();
 
-		let shieldsEnemy;
+		let shieldsEnemy = 0;
 
 		do {
 			await this.pickActions();
@@ -1848,9 +1848,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			++turnCount;
 			log.length = 0;
 
-			const [shields, logEnemy] = await this.enemyActions();
-			log.push(...logEnemy);
-			shieldsEnemy = shields;
+			const enemyResult = await this.enemyActions();
+			log.push(...enemyResult.log);
+			shieldsEnemy = enemyResult.shields;
 
 			lost = !this.modules.placed.some(
 				(i) =>
