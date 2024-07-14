@@ -1140,7 +1140,7 @@ ${lastModule.description}${
 			this.container.addChild(containerBtns);
 			this.container.addChild(containerScrollers);
 			containerScrollers.addChild(scroller.container);
-			containerScrollers.x = size.x / 3 - tex('scroll_thumb').width;
+			containerScrollers.x = 220;
 			this.containerUI.addChild(panelInfo);
 			panelInfo.addChild(btnDone.display.container);
 			panelInfo.addChild(btnBack.display.container);
