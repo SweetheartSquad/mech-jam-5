@@ -73,6 +73,8 @@
 	};
 >>
 <<endif>>
+<<do this.showL('')>>
+<<do this.showR('')>>
 FLEETWOOD MECH
 [[START]]
 [[PORTRAIT TEST]]
@@ -84,13 +86,16 @@ idk if we have any?
 [[BACK|this.back()]]
 
 ::ABOUT
+<<do this.showR('sweetheart squad')>>
 MADE BY
   SEAN
     MICHAEL
       IAN
-        OF "SWEET<<print '\u0003'>>HEART SQUAD"
+        OF "SWEETHEART SQUAD"
  
 FOR "MECH JAM V"
+[[MORE MECH JAM ENTRIES|window.open('https://itch.io/jam/mechjam5/entries', '_blank')]]
+[[MORE SWEETHEART SQUAD GAMES|window.open('https://sweetheartsquad.itch.io', '_blank')]]
 [[BACK|this.back()]]
 
 ::START
