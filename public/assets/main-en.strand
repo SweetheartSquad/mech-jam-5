@@ -947,7 +947,7 @@ auto, cockpit
 ::module cockpit 2
 A standard cockpit.
 ---
-auto, , cockpit
+auto, cockpit
 ---
 00
 00
