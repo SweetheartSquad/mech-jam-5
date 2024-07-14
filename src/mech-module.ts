@@ -60,6 +60,7 @@ export function mechModuleParse(key: string, source: string) {
 					break;
 			}
 			forCells(cells, () => {
+			cost += costPerModuleCell;
 				switch (i) {
 					case 'cockpit':
 						cost += costPerCockpitCell;
@@ -67,8 +68,6 @@ export function mechModuleParse(key: string, source: string) {
 					case 'armour':
 						cost += costPerArmourCell;
 						break;
-					default:
-						cost += costPerModuleCell;
 				}
 			});
 		});
