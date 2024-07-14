@@ -189,5 +189,5 @@ export function xyKey(x: number, y: number) {
 	return `${x},${y}`;
 }
 export function keyXY(key: string) {
-	return key.split(',').map((i) => parseInt(i, 10)) as [number, number];
+	return key.split(',').map((i) => Number(i)) as [number, number];
 }
