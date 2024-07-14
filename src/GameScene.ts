@@ -1061,8 +1061,8 @@ ${lastModule.description}`)}`
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {
-					// TODO: proper ui
-					window.alert('you have NO cockpit!');
+					// TODO: real error message
+					this.alert('you have NO cockpit!');
 					return;
 				}
 				destroy();
@@ -2175,7 +2175,7 @@ ${lastModule.description}`)}`
 	playActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
-			window.alert('play actions');
+			await this.alert('play actions'); // TODO: remove
 			let shields = 0; // TODO: get enemy shields from last turn
 			await this.attack({
 				attacks: this.actions.attacks,
@@ -2207,7 +2207,7 @@ ${lastModule.description}`)}`
 	enemyActions() {
 		// TODO
 		return new Promise<void>(async (r) => {
-			window.alert('enemy turn');
+			await this.alert('enemy turn'); // TODO: remove
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
