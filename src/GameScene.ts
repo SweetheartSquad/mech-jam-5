@@ -1181,26 +1181,87 @@ ${lastModule.description}`)}`
 		this.modulesEnemy.container.x += this.mechEnemy.gridDimensions.x * cellSize;
 		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
 
-		// TODO: better destroyed module display
 		this.damageBtns?.container.destroy();
 		this.damageBtns?.gridBtns.forEach((i) => i.destroy());
 		if (this.battleGrid.length) {
 			this.damageBtns = this.makeBtnGrid('player', (btn, x, y, cell) => {
-				if (this.battleGrid[y][x] === 'X') {
+				const idx = Number(this.modules.grid[y][x]);
+				const hasModule = !Number.isNaN(idx);
+				const isJoint = this.mech.grid[y][x] === '=';
+				const isEmpty = !isJoint && !hasModule;
+				const isDestroyed = this.battleGrid[y][x] === 'X';
+				const isRevealed = this.battleGrid[y][x] === 'O';
+				const isFullyDestroyed =
+					isDestroyed &&
+					((hasModule &&
+						this.moduleIsDestroyed(
+							this.modules.placed[idx],
+							this.battleGrid
+						)) ||
+						isJoint);
+				const isFullyRevealed =
+					isRevealed &&
+					((hasModule &&
+						this.moduleIsRevealed(this.modules.placed[idx], this.battleGrid)) ||
+						isJoint);
+				const name = hasModule
+					? this.modules.placed[idx].module.name
+					: isJoint
+					? 'joint'
+					: 'empty';
+				if (isFullyDestroyed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = red;
+					} else {
+						btn.display.container.alpha = 0;
+					}
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `${name} (destroyed)`;
+					});
+				} else if (isFullyRevealed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = green;
+					} else {
+						btn.display.container.alpha = 0;
+					}
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `${name} (revealed)`;
+					});
+				} else if (isDestroyed) {
+					btn.spr.texture = tex(isEmpty ? 'cell detect_empty' : 'cell damaged');
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (revealed)'
+							: `${name} (damaged)`;
+					});
+					btn.spr.tint = isEmpty ? gray : redHalf;
+				} else if (isRevealed) {
 					btn.spr.texture = tex(
-						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
-							? 'cell damaged'
-							: 'cell detect_empty'
+						isEmpty ? 'cell detect_empty' : 'cell detect_filled'
 					);
-					btn.enabled = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (revealed)'
+							: `${name} (revealed)`;
+					});
+					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
-					btn.display.container.visible = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (hidden)'
+							: `${name} (hidden)`;
+					});
+					btn.spr.alpha = 0;
 				}
 			});
 			this.container.addChild(this.damageBtns.container);
 			this.modules.placed.forEach((i, idx) => {
 				if (this.moduleIsDestroyed(i, this.battleGrid)) {
 					this.modules.container.children[idx].tint = red;
+				} else if (this.moduleIsRevealed(i, this.battleGrid)) {
+					this.modules.container.children[idx].tint = green;
 				}
 			});
 		}
