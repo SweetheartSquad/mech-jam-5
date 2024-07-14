@@ -134,7 +134,7 @@ export class Game {
 			resolution: 1,
 			clearBeforeRender: true,
 			backgroundColor: 0x000000,
-			preference: 'webgl', // TODO: remove when compatible with webgpu
+			preference: 'webgl',
 		});
 
 		// preload fonts

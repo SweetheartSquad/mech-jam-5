@@ -16,9 +16,6 @@ export class CustomFilter<
 			getType(value),
 		]);
 		super({
-			// gpuProgram: GpuProgram.from({
-			// 	// TODO: webgpu shaders
-			// }),
 			glProgram: GlProgram.from({
 				vertex: defaultFilterVert,
 				fragment: fragmentSource,
