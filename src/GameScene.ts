@@ -2240,9 +2240,13 @@ ${lastModule.description}${
 			.filter((i) => !this.moduleIsDestroyed(i, grid))[0];
 		if (!target) return; // already dead
 		// destroy part
+		let msg = false;
 		this.forPlacedModuleCells(target, (x, y) => {
 			grid[y][x] = 'X';
-			this.zoop(who, x, y);
+			if (!msg) {
+				msg = true;
+				this.zoop(who, x, y, red, 'OVERHEATED');
+			}
 		});
 		this.reassemble();
 	}
