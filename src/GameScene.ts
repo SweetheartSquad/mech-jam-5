@@ -433,7 +433,7 @@ export class GameScene {
 
 	pieces: Record<'heads' | 'arms' | 'legs' | 'chests' | 'modules', string[]>;
 
-	costMax = 1000;
+	costMax = 10000;
 
 	mech!: ReturnType<GameScene['assembleParts']>;
 	modules!: ReturnType<GameScene['assembleModules']>;
