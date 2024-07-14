@@ -1,5 +1,11 @@
 import eases from 'eases';
-import { BitmapText, Container, NineSliceSprite, Sprite } from 'pixi.js';
+import {
+	BitmapText,
+	Container,
+	Graphics,
+	NineSliceSprite,
+	Sprite,
+} from 'pixi.js';
 import { Area } from './Area';
 import { Border } from './Border';
 import { Btn } from './Btn';
@@ -38,6 +44,7 @@ import {
 	flipMatrixH,
 	flipMatrixV,
 	formatCount,
+	lerp,
 	randItem,
 	relativeMouse,
 	removeFromArray,
@@ -227,28 +234,21 @@ export class GameScene {
 	}
 
 	async start() {
-		await this.scenePrebuild();
 		this.mech = this.assembleParts(
-			randItem(this.pieces.heads),
-			randItem(this.pieces.chests),
-			randItem(this.pieces.arms),
-			randItem(this.pieces.legs)
+			this.pieces.heads[0],
+			this.pieces.chests[0],
+			this.pieces.arms[0],
+			this.pieces.legs[0]
+		);
+		this.mechEnemy = this.assembleParts(
+			this.pieces.heads[0],
+			this.pieces.chests[0],
+			this.pieces.arms[0],
+			this.pieces.legs[0]
 		);
 		this.modules = this.assembleModules(this.mech.grid, []);
-		this.mechEnemy = this.assembleParts(
-			randItem(this.pieces.heads),
-			randItem(this.pieces.chests),
-			randItem(this.pieces.arms),
-			randItem(this.pieces.legs)
-		);
 		this.modulesEnemy = this.assembleModules(this.mechEnemy.grid, []);
-		this.loadMech('player', {
-			head: 'Tallboy 2000',
-			chest: '1',
-			arms: '1',
-			legs: '2',
-			modules: [],
-		});
+		await this.scenePrebuild();
 		await this.pickParts();
 		await this.buildMech();
 		await this.scenePrefight();
@@ -370,7 +370,7 @@ export class GameScene {
 		});
 	}
 
-	alert(msg: string, confirm = 'OK') {
+	alert(msg: string, confirm = 'OK', tint = red) {
 		return new Promise<boolean>((r) => {
 			const closeModal = this.modal();
 			const panel = new Spr9('panel');
@@ -408,6 +408,8 @@ export class GameScene {
 			this.containerUI.addChild(panel);
 			panel.addChild(textMsg);
 			panel.addChild(btnConfirm.display.container);
+
+			panel.tint = tint;
 
 			const tweens: Tween[] = [];
 			tweens.push(...this.transitionIn(panel, 150));
@@ -830,8 +832,8 @@ ${lastModule.description}`)}`
 				gridBtnsByPos,
 			} = this.makeBtnGrid('player', (btn, x, y, cell) => {
 				if (cell === '=') {
-					btn.spr.texture = tex('cell joint');
-					btn.enabled = false;
+					btn.texture = 'cell joint';
+					btn.spr.texture = tex(btn.texture);
 				}
 				btn.onClick = (event) => {
 					const copying = event.shiftKey || event.ctrlKey;
@@ -876,9 +878,14 @@ ${lastModule.description}`)}`
 				btn.spr.addEventListener('pointerover', () => {
 					target = btn;
 					checkPlacement();
+					const idx = Number(this.modules.grid[y][x]);
+					if (Number.isNaN(idx)) {
+						this.textTip.text =
+							this.mech.grid[y][x] === '=' ? 'joint' : 'empty cell';
+						return;
+					}
+					this.textTip.text = this.modules.placed[idx].module.name;
 					if (!dragging) {
-						const idx = Number(this.modules.grid[y][x]);
-						if (Number.isNaN(idx)) return;
 						this.modules.container.children[idx].alpha = 0.5;
 					}
 				});
@@ -897,7 +904,7 @@ ${lastModule.description}`)}`
 				forCells(gridBtnsByPos, (x, y, btn) => {
 					if (!btn) return;
 					btn.spr.tint = white;
-					if (btn !== target && btn.enabled)
+					if (btn !== target && btn.texture === 'cell button')
 						btn.spr.texture = tex('cell button_normal');
 				});
 				if (!dragging) return;
@@ -936,7 +943,7 @@ ${lastModule.description}`)}`
 					const btnNeighbour = gridBtnsByPos[y + y2 - o[1]]?.[x + x2 - o[0]];
 					if (!btnNeighbour) return;
 					btnNeighbour.spr.tint = valid ? green : red;
-					if (btnNeighbour !== target && btnNeighbour.enabled)
+					if (btnNeighbour !== target && btnNeighbour.texture === 'cell button')
 						btnNeighbour.spr.texture = tex('cell button_over');
 				});
 			};
@@ -964,6 +971,15 @@ ${lastModule.description}`)}`
 					dragging.scale.y *= -1;
 					checkPlacement();
 				}
+				if (input.flipC) {
+					if (displayToPlacementProps(dragging).turns % 2) {
+						dragging.scale.x *= -1;
+						checkPlacement();
+					} else {
+						dragging.scale.y *= -1;
+						checkPlacement();
+					}
+				}
 				if (input.rotateR) {
 					dragging.rotation += Math.PI / 2;
 					dragging.rotation %= Math.PI * 2;
@@ -983,12 +999,15 @@ ${lastModule.description}`)}`
 				gap: 10,
 			});
 			const sprPadding = new Sprite(tex('blank'));
-			sprPadding.height = 100;
+			sprPadding.height = this.panelTip.height;
 			scroller.addChild(sprPadding);
 			modules.forEach((moduleD) => {
 				const uiModule = makeModule(moduleD);
 				uiModule.y += moduleD.pivot[1] * cellSize;
-				scroller.addChild(uiModule);
+				uiModule.x += moduleD.pivot[0] * cellSize;
+				const c = new Container();
+				c.addChild(uiModule);
+				scroller.addChild(c);
 				buttonify(uiModule, moduleD.name);
 				uiModule.addEventListener('pointerover', () => {
 					this.textTip.text = moduleD.name;
@@ -1055,15 +1074,13 @@ ${lastModule.description}`)}`
 			const btnDone = new BtnText('DONE', () => {
 				// who needs raw data when you have formatted text
 				if (this.getGeneralInfo().includes('!!!')) {
-					// TODO: real error message
-					this.alert('too expensive!');
+					this.alert('INSUFFICIENT FUNDS');
 					return;
 				}
 				if (
 					!this.modules.placed.some((i) => i.module.tags.includes('cockpit'))
 				) {
-					// TODO: real error message
-					this.alert('you have NO cockpit!');
+					this.alert('NO COCKPIT DETECTED');
 					return;
 				}
 				destroy();
@@ -1149,11 +1166,11 @@ ${lastModule.description}`)}`
 			if (i.children.length) i.visible = false;
 		});
 
-		// TODO: position based on game state
 		this.mech.container.x -= Math.floor(size.x * (1 / 5));
 		this.mech.container.y += size.y * 0.45;
 		this.mechEnemy.container.x += Math.floor(size.x * (1 / 5));
 		this.mechEnemy.container.y += size.y * 0.45;
+		this.mechEnemy.container.visible = this.battleGridEnemy.length > 0;
 
 		this.modules.container.x = this.mech.container.x;
 		this.modules.container.y = this.mech.container.y;
@@ -1165,26 +1182,87 @@ ${lastModule.description}`)}`
 		this.modulesEnemy.container.x += this.mechEnemy.gridDimensions.x * cellSize;
 		this.modulesEnemy.container.y += this.mechEnemy.gridDimensions.y * cellSize;
 
-		// TODO: better destroyed module display
 		this.damageBtns?.container.destroy();
 		this.damageBtns?.gridBtns.forEach((i) => i.destroy());
 		if (this.battleGrid.length) {
 			this.damageBtns = this.makeBtnGrid('player', (btn, x, y, cell) => {
-				if (this.battleGrid[y][x] === 'X') {
+				const idx = Number(this.modules.grid[y][x]);
+				const hasModule = !Number.isNaN(idx);
+				const isJoint = this.mech.grid[y][x] === '=';
+				const isEmpty = !isJoint && !hasModule;
+				const isDestroyed = this.battleGrid[y][x] === 'X';
+				const isRevealed = this.battleGrid[y][x] === 'O';
+				const isFullyDestroyed =
+					isDestroyed &&
+					((hasModule &&
+						this.moduleIsDestroyed(
+							this.modules.placed[idx],
+							this.battleGrid
+						)) ||
+						isJoint);
+				const isFullyRevealed =
+					isRevealed &&
+					((hasModule &&
+						this.moduleIsRevealed(this.modules.placed[idx], this.battleGrid)) ||
+						isJoint);
+				const name = hasModule
+					? this.modules.placed[idx].module.name
+					: isJoint
+					? 'joint'
+					: 'empty';
+				if (isFullyDestroyed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = red;
+					} else {
+						btn.display.container.alpha = 0;
+					}
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `${name} (destroyed)`;
+					});
+				} else if (isFullyRevealed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = green;
+					} else {
+						btn.display.container.alpha = 0;
+					}
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `${name} (revealed)`;
+					});
+				} else if (isDestroyed) {
+					btn.spr.texture = tex(isEmpty ? 'cell detect_empty' : 'cell damaged');
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (revealed)'
+							: `${name} (damaged)`;
+					});
+					btn.spr.tint = isEmpty ? gray : redHalf;
+				} else if (isRevealed) {
 					btn.spr.texture = tex(
-						this.mech.grid[y][x] === '=' || this.modules.grid[y][x] !== 'x'
-							? 'cell damaged'
-							: 'cell detect_empty'
+						isEmpty ? 'cell detect_empty' : 'cell detect_filled'
 					);
-					btn.enabled = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (revealed)'
+							: `${name} (revealed)`;
+					});
+					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
-					btn.display.container.visible = false;
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty
+							? 'empty cell (hidden)'
+							: `${name} (hidden)`;
+					});
+					btn.spr.alpha = 0;
 				}
 			});
 			this.container.addChild(this.damageBtns.container);
 			this.modules.placed.forEach((i, idx) => {
 				if (this.moduleIsDestroyed(i, this.battleGrid)) {
 					this.modules.container.children[idx].tint = red;
+				} else if (this.moduleIsRevealed(i, this.battleGrid)) {
+					this.modules.container.children[idx].tint = green;
 				}
 			});
 		}
@@ -1762,7 +1840,6 @@ ${lastModule.description}`)}`
 	}
 
 	pickActions() {
-		// TODO
 		return new Promise<void>((r) => {
 			// reset
 			this.actions.shield = 0;
@@ -1807,6 +1884,10 @@ ${lastModule.description}`)}`
 						text: i.toString(10),
 						style: fontMechInfo,
 					});
+					const textCount2 = new BitmapText({
+						text: i.toString(10),
+						style: fontMechInfo,
+					});
 					const sprHeatBg = new Sprite(tex('heatbar empty'));
 					sprHeatBg.anchor.x = 0.5;
 					sprHeatBg.y -= (sprHeatBg.height - 5) * i;
@@ -1818,7 +1899,16 @@ ${lastModule.description}`)}`
 					}
 					textCount.x += sprHeatBg.width / 2 + 2;
 					textCount.y += sprHeatBg.height / 2;
+					textCount2.x -= sprHeatBg.width / 2 + 2;
+					textCount2.x -= textCount.width - 1;
+					textCount2.y += sprHeatBg.height / 2;
+					textCount.x = Math.floor(textCount.x);
+					textCount2.x = Math.floor(textCount2.x);
+					textCount.y = Math.floor(textCount.y);
+					textCount2.y = Math.floor(textCount2.y);
 					sprHeatBg.addChild(textCount);
+					sprHeatBg.addChild(textCount);
+					sprHeatBg.addChild(textCount2);
 					containerHeat.addChild(sprHeatBg);
 				}
 				for (let i = 0; i < heat; ++i) {
@@ -1869,16 +1959,17 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnAttack = new BtnText('AIM', async () => {
+			const btnAttack = new BtnText('AIM', async (e) => {
 				if (this.actions.attacks.length >= attacksMax) return;
 				const removeModal = this.modal();
 				const target = await this.pickTarget(true);
 				removeModal();
 				if (!target) return;
-				this.actions.attacks.push(target);
+				this.actions.attacks.push([target[0], target[1]]);
 				updateAttacks();
 				updateTargetGrid();
 				updateHeat();
+				if (target[2]) btnAttack.onClick(e);
 			});
 
 			const updateScans = () => {
@@ -1890,16 +1981,17 @@ ${lastModule.description}`)}`
 				}
 			};
 
-			const btnScan = new BtnText('SCAN', async () => {
+			const btnScan = new BtnText('SCAN', async (e) => {
 				if (this.actions.scans.length >= scansMax) return;
 				const removeModal = this.modal();
 				const target = await this.pickTarget(false);
 				removeModal();
 				if (!target) return;
-				this.actions.scans.push(target);
+				this.actions.scans.push([target[0], target[1]]);
 				updateScans();
 				updateTargetGrid();
 				updateHeat();
+				if (target[2]) btnScan.onClick(e);
 			});
 
 			const updateShields = () => {
@@ -1930,6 +2022,7 @@ ${lastModule.description}`)}`
 			const btnReset = new BtnText(
 				'RESET',
 				() => {
+					this.screenFilter.flash(0.3, 400, eases.circOut);
 					this.actions.attacks.length = 0;
 					this.actions.scans.length = 0;
 					this.actions.shield = 0;
@@ -1945,6 +2038,7 @@ ${lastModule.description}`)}`
 			const btnEnd = new BtnText('END', async () => {
 				if (
 					!this.actions.shield &&
+					!this.actions.scans.length &&
 					!this.actions.attacks.length &&
 					!(await this.confirm('Skip your turn?'))
 				)
@@ -2016,7 +2110,7 @@ ${lastModule.description}`)}`
 	}
 
 	pickTarget(includeRevealed: boolean) {
-		return new Promise<[number, number] | false>((r) => {
+		return new Promise<[number, number, boolean] | false>((r) => {
 			const { container: containerBtns, gridBtns } = this.makeBtnGrid(
 				'enemy',
 				(btn, x, y) => {
@@ -2030,9 +2124,9 @@ ${lastModule.description}`)}`
 						btn.display.container.visible = false;
 						return;
 					}
-					btn.onClick = () => {
+					btn.onClick = (event) => {
 						destroy();
-						r([x, y]);
+						r([x, y, event.ctrlKey || event.shiftKey]);
 					};
 				}
 			);
@@ -2061,7 +2155,11 @@ ${lastModule.description}`)}`
 		);
 	}
 
-	overheat(placed: GameScene['modules']['placed'], grid: string[][]) {
+	overheat(who: 'player' | 'enemy') {
+		const [placed, grid] =
+			who === 'player'
+				? [this.modules.placed, this.battleGrid]
+				: [this.modulesEnemy.placed, this.battleGridEnemy];
 		// find heatsinks
 		const target = shuffle(
 			placed.filter((i) => i.module.tags.includes('heatsink'))
@@ -2074,19 +2172,22 @@ ${lastModule.description}`)}`
 		// destroy part
 		this.forPlacedModuleCells(target, (x, y) => {
 			grid[y][x] = 'X';
+			this.zoop(who, x, y);
 		});
 		this.reassemble();
 	}
 
-	async attack({
-		attacks,
-		grid,
-		shields,
-	}: {
-		attacks: [number, number][];
-		grid: string[][];
-		shields: number;
-	}) {
+	async attack(
+		who: 'player' | 'enemy',
+		{
+			attacks,
+			shields,
+		}: {
+			attacks: [number, number][];
+			shields: number;
+		}
+	) {
+		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		for (let [x, y] of attacks) {
 			await delay(100);
 			if (shields-- > 0) {
@@ -2094,15 +2195,18 @@ ${lastModule.description}`)}`
 				continue;
 			}
 			// TODO: hit feedback
+			await this.zoop(who, x, y);
 			grid[y][x] = 'X';
 			this.reassemble();
 		}
 	}
 
-	async scan({ scans, grid }: { scans: [number, number][]; grid: string[][] }) {
+	async scan(who: 'player' | 'enemy', scans: [number, number][]) {
+		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		for (let [x, y] of scans) {
 			await delay(100);
 			// TODO: scan feedback
+			await this.zoop(who, x, y, green);
 			grid[y][x] = 'O';
 			this.reassemble();
 		}
@@ -2173,28 +2277,66 @@ ${lastModule.description}`)}`
 		});
 	}
 
+	async zoop(who: 'player' | 'enemy', x: number, y: number, tint = red) {
+		const p = (
+			who === 'player' ? this.damageBtns : this.damageBtnsEnemy
+		).gridBtnsByPos[y][x].display.container.toGlobal({ x: 0, y: 0 });
+		const g = new Graphics();
+
+		let s = { v: 0 };
+		TweenManager.tween(
+			s,
+			'v',
+			1,
+			500,
+			undefined,
+			(t) => eases.cubicInOut(t) * eases.backOut(t)
+		);
+		const m = Math.max(size.x, size.y);
+
+		const zoop = new Updater(this.camera, () => {
+			g.clear()
+				.beginPath()
+				.rect(
+					lerp(-m / 2, p.x - size.x / 2 - cellSize / 2, s.v),
+					lerp(-m / 2, p.y - size.y / 2 - cellSize / 2, s.v),
+					lerp(m, cellSize, s.v),
+					lerp(m, cellSize, s.v)
+				)
+				.stroke({
+					color: tint,
+					width: 2,
+					alpha: s.v,
+				})
+				.fill({
+					color: tint,
+					alpha: s.v * 0.5,
+				});
+		});
+		this.camera.scripts.push(zoop);
+		this.containerUI.addChild(g);
+		await delay(500);
+		removeFromArray(this.camera.scripts, zoop);
+		zoop.destroy?.();
+		g.destroy();
+	}
+
 	playActions() {
-		// TODO
 		return new Promise<void>(async (r) => {
 			await this.alert('play actions'); // TODO: remove
 			let shields = 0; // TODO: get enemy shields from last turn
-			await this.attack({
+			await this.attack('enemy', {
 				attacks: this.actions.attacks,
 				shields,
-				grid: this.battleGridEnemy,
 			});
 			// reveal scans
-			await this.scan({
-				scans: this.actions.scans,
-				grid: this.battleGridEnemy,
-			});
+			await this.scan('enemy', this.actions.scans);
 
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
-				// TODO: animation
 				await delay(100);
-				await this.overheat(this.modules.placed, this.battleGrid);
+				await this.overheat('player');
 			}
 
 			// expand hits to sever parts
@@ -2206,13 +2348,12 @@ ${lastModule.description}`)}`
 	}
 
 	enemyActions() {
-		// TODO
 		return new Promise<void>(async (r) => {
 			await this.alert('enemy turn'); // TODO: remove
 			const tags = this.modulesEnemy.placed
 				.filter((i) => !this.moduleIsDestroyed(i, this.battleGridEnemy))
 				.flatMap((i) => i.module.tags);
-			const { attacksMax, shieldsAmt, heatMax } =
+			const { attacksMax, scansMax, shieldsAmt, heatMax } =
 				this.tagsToPossibleActions(tags);
 			let shields = 0;
 			let attacks: [number, number][] = [];
@@ -2262,28 +2403,43 @@ ${lastModule.description}`)}`
 				attacks.push(target);
 			}
 
-			// TODO: pick scans
+			for (let i = 0; i < scansMax; ++i) {
+				// TODO: better deciding whether to scan
+				// - when to be more/less aggressive?
+				// - when to overheat?
+				// - when to scan vs attack?
+				if (randItem([true, false, false])) continue;
+				if (
+					heatMax - shields - attacks.length - scans.length < 0 &&
+					heatMax <= 1
+				)
+					continue;
+				if (
+					heatMax - shields - attacks.length - scans.length < 0 &&
+					randItem([true, false, false, false, false, false])
+				)
+					continue;
+
+				const target = possibleTargets.pop();
+				if (!target) break;
+				scans.push(target);
+			}
 
 			// play enemy actions
 			shields; // TODO: save for next turn
 
-			await this.attack({
+			await this.attack('player', {
 				attacks: attacks,
 				shields: this.actions.shield,
-				grid: this.battleGrid,
 			});
 
 			let overheat = this.getHeat() - heatMax;
 			while (overheat-- > 0) {
-				// TODO: animation
 				await delay(100);
-				await this.overheat(this.modulesEnemy.placed, this.battleGridEnemy);
+				await this.overheat('enemy');
 			}
 			// reveal scans
-			await this.scan({
-				scans,
-				grid: this.battleGrid,
-			});
+			await this.scan('player', scans);
 
 			// expand hits to sever parts
 			await this.severParts('player');

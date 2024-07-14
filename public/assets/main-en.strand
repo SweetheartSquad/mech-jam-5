@@ -290,6 +290,13 @@ this should never render
 
 	this.next = 'diplomat';
 	this.scene.start();
+	this.scene.loadMech('player', {
+		head: 'Tallboy 2000',
+		chest: '1',
+		arms: '1',
+		legs: '2',
+		modules: [],
+	});
 >>
 
 
@@ -330,7 +337,9 @@ todo diplomat prefight stuff
         { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  }
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
     ]
 });>>
 
@@ -1147,5 +1156,43 @@ Some more text.
 0...
 0...
 0000
+---
+0,1
+
+::module l1
+A small cockpit.
+
+Some more text.
+---
+750, heatsink
+---
+0
+0
+00
+---
+0,1
+
+::module l2
+A small cockpit.
+
+Some more text.
+---
+750, heatsink
+---
+0
+0
+000
+---
+0,1
+
+::module l3
+A small cockpit.
+
+Some more text.
+---
+750, heatsink
+---
+0
+00
 ---
 0,1

@@ -1,0 +1,152 @@
+{
+    "head": "Tallboy 2000",
+    "chest": "4",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        {
+            "name": "whoa",
+            "x": 7,
+            "y": 12,
+            "flipH": false,
+            "flipV": false,
+            "turns": 1
+        },
+        {
+            "name": "stair1",
+            "x": 9,
+            "y": 12,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "debug attack",
+            "x": 7,
+            "y": 10,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "cockpit 2",
+            "x": 5,
+            "y": 12,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Bar",
+            "x": 10,
+            "y": 19,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Bar",
+            "x": 4,
+            "y": 19,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Tee",
+            "x": 7,
+            "y": 4,
+            "flipH": false,
+            "flipV": false,
+            "turns": 2
+        },
+        {
+            "name": "Bar2",
+            "x": 8,
+            "y": 2,
+            "flipH": false,
+            "flipV": false,
+            "turns": 3
+        },
+        {
+            "name": "Bar2",
+            "x": 6,
+            "y": 2,
+            "flipH": false,
+            "flipV": false,
+            "turns": 3
+        },
+        {
+            "name": "armour 2",
+            "x": 10,
+            "y": 22,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "armour 2",
+            "x": 5,
+            "y": 22,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Single",
+            "x": 8,
+            "y": 10,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "cockpit 2",
+            "x": 13,
+            "y": 10,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "cockpit 2",
+            "x": 5,
+            "y": 24,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "armour 1",
+            "x": 1,
+            "y": 10,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "armour 1",
+            "x": 1,
+            "y": 8,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "armour 1",
+            "x": 13,
+            "y": 7,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Bar",
+            "x": 10,
+            "y": 25,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        }
+    ]
+}

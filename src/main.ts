@@ -60,8 +60,11 @@ export function getInput() {
 			keys.isJustDown(KEYS.Q) ||
 			gamepads.isJustDown(Buttons.LB) ||
 			mouse.wheelY < 0,
+		flipC:
+			keys.isJustDown(KEYS.F) ||
+			(mouse.isJustDown() && mouse.button === mouse.MIDDLE),
 		flipH: keys.isJustDown(KEYS.H),
-		flipV: keys.isJustDown(KEYS.F) || keys.isJustDown(KEYS.V),
+		flipV: keys.isJustDown(KEYS.V),
 	};
 
 	if (
