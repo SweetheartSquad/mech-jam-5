@@ -1813,6 +1813,10 @@ ${lastModule.description}`)}`
 						text: i.toString(10),
 						style: fontMechInfo,
 					});
+					const textCount2 = new BitmapText({
+						text: i.toString(10),
+						style: fontMechInfo,
+					});
 					const sprHeatBg = new Sprite(tex('heatbar empty'));
 					sprHeatBg.anchor.x = 0.5;
 					sprHeatBg.y -= (sprHeatBg.height - 5) * i;
@@ -1824,7 +1828,16 @@ ${lastModule.description}`)}`
 					}
 					textCount.x += sprHeatBg.width / 2 + 2;
 					textCount.y += sprHeatBg.height / 2;
+					textCount2.x -= sprHeatBg.width / 2 + 2;
+					textCount2.x -= textCount.width - 1;
+					textCount2.y += sprHeatBg.height / 2;
+					textCount.x = Math.floor(textCount.x);
+					textCount2.x = Math.floor(textCount2.x);
+					textCount.y = Math.floor(textCount.y);
+					textCount2.y = Math.floor(textCount2.y);
 					sprHeatBg.addChild(textCount);
+					sprHeatBg.addChild(textCount);
+					sprHeatBg.addChild(textCount2);
 					containerHeat.addChild(sprHeatBg);
 				}
 				for (let i = 0; i < heat; ++i) {
