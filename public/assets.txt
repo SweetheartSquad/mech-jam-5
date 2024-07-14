@@ -12,8 +12,6 @@ textures/sweetheart squad.png
 
 font/fontfnt.fnt
 
-textures/img_cheryl.jpg
-
 audio/bgm.mp3
 audio/voiceDefault.mp3
 
