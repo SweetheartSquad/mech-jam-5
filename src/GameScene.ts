@@ -31,7 +31,7 @@ import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
 import { makePart, MechD, mechPartParse, MechD as PartD } from './mech-part';
 import { Scroller } from './scroller';
-import { gray, green, red, white } from './tints';
+import { gray, green, greenHalf, red, redHalf, white } from './tints';
 import {
 	buttonify,
 	delay,
@@ -1064,35 +1064,66 @@ ${lastModule.description}`)}`
 		if (this.battleGridEnemy.length) {
 			this.damageBtnsEnemy = this.makeBtnGrid('enemy', (btn, x, y, cell) => {
 				const idx = Number(this.modulesEnemy.grid[y][x]);
-				if (
-					!Number.isNaN(idx) &&
-					this.moduleIsDestroyed(
-						this.modulesEnemy.placed[idx],
-						this.battleGridEnemy
-					)
-				) {
-					btn.display.container.alpha = 0;
+				const hasModule = !Number.isNaN(idx);
+				const isJoint = this.mechEnemy.grid[y][x] === '=';
+				const isEmpty = !isJoint && !hasModule;
+				const isDestroyed = this.battleGridEnemy[y][x] === 'X';
+				const isRevealed = this.battleGridEnemy[y][x] === 'O';
+				const isFullyDestroyed =
+					isDestroyed &&
+					((hasModule &&
+						this.moduleIsDestroyed(
+							this.modulesEnemy.placed[idx],
+							this.battleGridEnemy
+						)) ||
+						isJoint);
+				const isFullyRevealed =
+					isRevealed &&
+					((hasModule &&
+						this.moduleIsRevealed(
+							this.modulesEnemy.placed[idx],
+							this.battleGridEnemy
+						)) ||
+						isJoint);
+				const name = hasModule
+					? this.modulesEnemy.placed[idx].module.name
+					: isJoint
+					? 'joint'
+					: 'empty';
+				if (isFullyDestroyed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = red;
+					} else {
+						btn.display.container.alpha = 0;
+					}
 					btn.spr.addEventListener('pointerover', () => {
-						this.textTip.text = this.modulesEnemy.placed[idx].module.name;
+						this.textTip.text = `${name} (destroyed)`;
 					});
-				} else if (
-					this.battleGridEnemy[y][x] === 'X' ||
-					this.battleGridEnemy[y][x] === 'O'
-				) {
-					const damaged = this.battleGridEnemy[y][x] === 'X';
-					const filled =
-						this.mechEnemy.grid[y][x] === '=' ||
-						this.modulesEnemy.grid[y][x] !== 'x';
+				} else if (isFullyRevealed) {
+					if (isJoint) {
+						btn.spr.texture = tex('cell joint');
+						btn.spr.tint = green;
+					} else {
+						btn.display.container.alpha = 0;
+					}
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = `${name} (scanned)`;
+					});
+				} else if (isDestroyed) {
+					btn.spr.texture = tex(isEmpty ? 'cell detect_empty' : 'cell damaged');
+					btn.spr.addEventListener('pointerover', () => {
+						this.textTip.text = isEmpty ? 'empty cell' : 'part damaged';
+					});
+					btn.spr.tint = isEmpty ? gray : redHalf;
+				} else if (isRevealed) {
 					btn.spr.texture = tex(
-						filled
-							? `cell ${damaged ? 'damaged' : 'detect_filled'}`
-							: 'cell detect_empty'
+						isEmpty ? 'cell detect_empty' : 'cell detect_filled'
 					);
 					btn.spr.addEventListener('pointerover', () => {
-						this.textTip.text = filled
-							? `part ${damaged ? 'damaged' : 'detected'}`
-							: 'empty cell';
+						this.textTip.text = isEmpty ? 'empty cell' : `${name} (scanned)`;
 					});
+					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
 					btn.display.container.visible = false;
 				}
