@@ -1,0 +1,120 @@
+{
+    "head": "4",
+    "chest": "6",
+    "arms": "7",
+    "legs": "6",
+    "modules": [
+        {
+            "name": "stair4",
+            "x": 7,
+            "y": 17,
+            "flipH": false,
+            "flipV": false,
+            "turns": 3
+        },
+        {
+            "name": "rocket1",
+            "x": 6,
+            "y": 19,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "armour 3",
+            "x": 13,
+            "y": 19,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "cockpit 1",
+            "x": 13,
+            "y": 14,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "bucket2",
+            "x": 10,
+            "y": 7,
+            "flipH": false,
+            "flipV": false,
+            "turns": 3
+        },
+        {
+            "name": "Bar",
+            "x": 10,
+            "y": 10,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "cockpit 2",
+            "x": 13,
+            "y": 7,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "square",
+            "x": 6,
+            "y": 0,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "stair1",
+            "x": 9,
+            "y": 3,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "crosshair",
+            "x": 17,
+            "y": 8,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "stair1",
+            "x": 20,
+            "y": 8,
+            "flipH": false,
+            "flipV": true,
+            "turns": 1
+        },
+        {
+            "name": "armour 1",
+            "x": 13,
+            "y": 5,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        },
+        {
+            "name": "Tee",
+            "x": 2,
+            "y": 8,
+            "flipH": false,
+            "flipV": false,
+            "turns": 3
+        },
+        {
+            "name": "Single",
+            "x": 3,
+            "y": 7,
+            "flipH": false,
+            "flipV": false,
+            "turns": 0
+        }
+    ]
+}
