@@ -859,7 +859,9 @@ ${lastPart.description}`)}`
  
 $${lastModule.cost} | ${lastModule.cellCount} CELLS
  
-${lastModule.description}`)}`
+${lastModule.description}${
+						DEBUG ? `\n \nDEBUG TAGS: ${lastModule.tags.join(', ')}` : ''
+					}`)}`
 				);
 			};
 
