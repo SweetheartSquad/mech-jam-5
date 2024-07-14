@@ -485,6 +485,9 @@ SPACE: ${formatCount(freeCells, allCells)}
 					const part = this.getPart(i);
 					const spr = new Sprite(part.tex);
 					buttonify(spr, i);
+					spr.addEventListener('pointerover', () => {
+						this.textTip.text = part.name;
+					});
 					spr.addEventListener('click', () => {
 						lastPart = part;
 						switch (type) {
