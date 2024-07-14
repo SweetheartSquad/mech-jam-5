@@ -152,7 +152,6 @@ export class StrandE extends Strand {
 	}
 
 	restart() {
-		// TODO: persist language in storage instead of here so it works across refresh?
 		const { language } = this.scene.strand;
 		setScene(() => {
 			const scene = new GameScene();
