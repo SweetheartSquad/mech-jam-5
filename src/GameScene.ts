@@ -1806,7 +1806,7 @@ ${lastModule.description}${
 
 		do {
 			await this.pickActions();
-			await this.playActions();
+			await this.playOverheat();
 			{
 				const lost = !this.modules.placed.some(
 					(i) =>
@@ -1818,6 +1818,7 @@ ${lastModule.description}${
 					return;
 				}
 			}
+			await this.playActions();
 			const won = !this.modulesEnemy.placed.some(
 				(i) =>
 					i.module.tags.includes('cockpit') &&
@@ -2454,6 +2455,19 @@ ${lastModule.description}${
 		TweenManager.abort(tween1);
 		TweenManager.abort(tween2);
 		container.destroy();
+	}
+
+	playOverheat() {
+		return new Promise<void>(async (r) => {
+			// hit self from overheat
+			let overheat = this.getHeat() - this.actions.heatMax;
+			while (overheat-- > 0) {
+				await delay(100);
+				await this.overheat('player');
+			}
+			this.reassemble();
+			r();
+		});
 	}
 
 	playActions() {
