@@ -1055,8 +1055,7 @@ ${lastModule.description}`)}`
 			const btnDone = new BtnText('DONE', () => {
 				// who needs raw data when you have formatted text
 				if (this.getGeneralInfo().includes('!!!')) {
-					// TODO: real error message
-					this.alert('too expensive!');
+					this.alert('INSUFFICIENT FUNDS');
 					return;
 				}
 				if (
