@@ -1876,12 +1876,16 @@ ${lastModule.description}`)}`
 			containerHeat.addEventListener('pointerover', () => {
 				this.textTip.text = `HEAT: ${formatCount(this.getHeat(), heatMax)}`;
 			});
+			const heatTweens: Tween[] = [];
 			const updateHeat = () => {
+				heatTweens.forEach((i) => TweenManager.abort(i));
+				heatTweens.length = 0;
 				containerHeat.children.forEach((i) => {
 					i.destroy({ children: true });
 					containerHeat.removeChild(i);
 				});
 				containerHeat.children.length = 0;
+				containerHeat.scale.y = 1;
 				const heat = this.getHeat();
 				for (let i = 0; i < Math.max(heat, heatMax); ++i) {
 					const textCount = new BitmapText({
@@ -1914,6 +1918,7 @@ ${lastModule.description}`)}`
 					sprHeatBg.addChild(textCount);
 					sprHeatBg.addChild(textCount2);
 					containerHeat.addChild(sprHeatBg);
+					heatTweens.push(...this.transitionIn(sprHeatBg, i * 50));
 				}
 				for (let i = 0; i < heat; ++i) {
 					const sprHeatFill = new Sprite(tex('heatbar full'));
@@ -1928,6 +1933,10 @@ ${lastModule.description}`)}`
 						sprHeatFill.tint = green;
 					}
 					containerHeat.addChild(sprHeatFill);
+					heatTweens.push(...this.transitionIn(sprHeatFill, i * 50));
+				}
+				while (-containerHeat.y + containerHeat.height > size.y / 2) {
+					containerHeat.scale.y *= 0.9;
 				}
 				if (heat > 0) {
 					btnReset.display.container.tint = white;
@@ -2087,6 +2096,7 @@ ${lastModule.description}`)}`
 				];
 				await delay(700);
 				tweens.forEach((i) => TweenManager.abort(i));
+				heatTweens.forEach((i) => TweenManager.abort(i));
 
 				containerHeat.destroy();
 				btnAttack.destroy();
