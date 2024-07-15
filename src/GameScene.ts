@@ -698,7 +698,11 @@ SPACE: ${formatCount(freeCells, allCells)}
  
 ${lastPart.cost}$ | ${lastPart.cellCount} CELLS
  
-${lastPart.description}`)}`
+${lastPart.description}`)}${
+						DEBUG
+							? `\n \nDEBUG\n$${lastPart.cost / lastPart.cellCount}/CELL`
+							: ''
+					}`
 				);
 			};
 			update();
