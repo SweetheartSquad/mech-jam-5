@@ -594,6 +594,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 			textType.x -= textType.width / 2;
 			textType.y -= textType.height / 2;
 
+			let tween: Tween;
 			const {
 				container: containerScrollersCycler,
 				btnNext,
@@ -602,7 +603,15 @@ SPACE: ${formatCount(freeCells, allCells)}
 				(scroller, idx) => {
 					[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 						(i) => {
+							if (tween) TweenManager.abort(tween);
 							i.container.visible = false;
+							tween = TweenManager.tween(
+								scroller.container,
+								'alpha',
+								1,
+								200,
+								0
+							);
 							scroller.container.visible = true;
 						}
 					);
@@ -731,6 +740,7 @@ ${lastPart.description}`)}${
 				await delay(300);
 				tweens.forEach((i) => TweenManager.abort(i));
 
+				if (tween) TweenManager.abort(tween);
 				[scrollerHeads, scrollerChests, scrollerArms, scrollerLegs].forEach(
 					(i) => {
 						i.destroy();
