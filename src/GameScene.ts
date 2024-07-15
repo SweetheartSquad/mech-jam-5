@@ -2507,21 +2507,16 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			gridExtended[y][x] = '=';
 		});
 
-		const severedHead = getFlood(gridExtended, ...mech.connections.head).every(
-			([x, y]) => grid[y][x] === 'X'
-		);
-		const severedArmL = getFlood(gridExtended, ...mech.connections.armL).every(
-			([x, y]) => grid[y][x] === 'X'
-		);
-		const severedArmR = getFlood(gridExtended, ...mech.connections.armR).every(
-			([x, y]) => grid[y][x] === 'X'
-		);
-		const severedLegL = getFlood(gridExtended, ...mech.connections.legL).every(
-			([x, y]) => grid[y][x] === 'X'
-		);
-		const severedLegR = getFlood(gridExtended, ...mech.connections.legR).every(
-			([x, y]) => grid[y][x] === 'X'
-		);
+		const neck = getFlood(gridExtended, ...mech.connections.head);
+		const severedHead = neck.every(([x, y]) => grid[y][x] === 'X');
+		const shoulderL = getFlood(gridExtended, ...mech.connections.armL);
+		const severedArmL = shoulderL.every(([x, y]) => grid[y][x] === 'X');
+		const shoulderR = getFlood(gridExtended, ...mech.connections.armR);
+		const severedArmR = shoulderR.every(([x, y]) => grid[y][x] === 'X');
+		const hipL = getFlood(gridExtended, ...mech.connections.legL);
+		const severedLegL = hipL.every(([x, y]) => grid[y][x] === 'X');
+		const hipR = getFlood(gridExtended, ...mech.connections.legR);
+		const severedLegR = hipR.every(([x, y]) => grid[y][x] === 'X');
 		const cockpits = modules.placed.filter(
 			(i) =>
 				i.module.tags.includes('cockpit') && !this.moduleIsDestroyed(i, grid)
@@ -2555,6 +2550,17 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			if (cell === 'LL' && !poweredLegL) grid[y][x] = 'X';
 			if (cell === 'LR' && !poweredLegR) grid[y][x] = 'X';
 		});
+
+		if (!poweredHead && !poweredChest)
+			neck.forEach(([x, y]) => (grid[y][x] = 'X'));
+		if (!poweredArmL && !poweredChest)
+			shoulderL.forEach(([x, y]) => (grid[y][x] = 'X'));
+		if (!poweredArmR && !poweredChest)
+			shoulderR.forEach(([x, y]) => (grid[y][x] = 'X'));
+		if (!poweredLegL && !poweredChest)
+			hipL.forEach(([x, y]) => (grid[y][x] = 'X'));
+		if (!poweredLegR && !poweredChest)
+			hipR.forEach(([x, y]) => (grid[y][x] = 'X'));
 	}
 
 	async zoop(
