@@ -194,6 +194,7 @@ lol you lost
 <<else>>
 <<do this.next = 'signal failure'>>
 <<do
+	this.scene.costMax += 1000;
 	this.scene.locked['module debug locked'] = false;
 	this.scene.locked['head debug locked'] = false;
 >>

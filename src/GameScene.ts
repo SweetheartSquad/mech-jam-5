@@ -95,6 +95,9 @@ export class GameScene {
 
 	panelTip: NineSliceSprite;
 	textTip: BitmapText;
+
+	costMax = costMax;
+
 	locked: { [key: string]: boolean } = {};
 
 	setFocus(
@@ -489,7 +492,7 @@ export class GameScene {
 			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
 		return `
 - TOTALS
-PRICE:  ${formatCount(cost, costMax).replace(/\s*$/, '$')}
+PRICE:  ${formatCount(cost, this.costMax).replace(/\s*$/, '$')}
 SPACE: ${formatCount(freeCells, allCells)}
 
 ---------------------
