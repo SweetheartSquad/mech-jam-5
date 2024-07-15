@@ -638,6 +638,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 							this.textTip.text = part.name;
 						});
 						spr.addEventListener('click', () => {
+							if (lastPart === part) return;
 							lastPart = part;
 							switch (type) {
 								case 'head':
