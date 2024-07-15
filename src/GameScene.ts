@@ -2856,7 +2856,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					// 1/6 chance to overheat
 					if (
 						remainingHeat <= 0 &&
-						randItem([true, false, false, false, false, false])
+						randItem([false, true, true, true, true, true])
 					)
 						continue;
 
@@ -2905,7 +2905,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					// 1/6 chance to overheat
 					if (
 						remainingHeat <= 0 &&
-						randItem([true, false, false, false, false, false])
+						randItem([false, true, true, true, true, true])
 					)
 						continue;
 
