@@ -1059,7 +1059,7 @@ auto, joint
 00
 .00000
 
-::module doubleFork
+::module sink 4
 A double fork
 TODO: description
 ---
