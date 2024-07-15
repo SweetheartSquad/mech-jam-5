@@ -976,7 +976,7 @@ auto, heatsink
 ---
 2,0
 
-::module bucket2
+::module sink 2
 TODO: description
 ---
 auto, heatsink, awkward
