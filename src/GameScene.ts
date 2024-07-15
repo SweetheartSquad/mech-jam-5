@@ -920,19 +920,34 @@ ${lastPart.description}`)}${
 
 			let lastModule: ModuleD = modules[0];
 			const updateInfo = () => {
+				const possibleActions = this.tagsToPossibleActions(
+					this.modules.placed.flatMap((i) => i.module.tags)
+				);
 				setTextWrapped(
 					textInfo,
-					`${this.getGeneralInfo()}${smartify(`"${lastModule.name}"
+					`${this.getGeneralInfo()}
+${possibleActions.attacksMax
+	.toString(10)
+	.padStart(2, '0')} AIM     | ${possibleActions.scansMax
+						.toString(10)
+						.padStart(2, '0')} SCAN
+${possibleActions.shieldsAmt
+	.toString(10)
+	.padStart(2, '0')} SHIELD | ${possibleActions.heatMax
+						.toString(10)
+						.padStart(2, '0')} HEAT
+---------------------
+${smartify(`"${lastModule.name}"
  
 ${lastModule.cost}$ | ${lastModule.cellCount} CELLS
  
 ${lastModule.description}${
-						DEBUG
-							? `\n \nDEBUG\n${lastModule.tags.join(', ')}\n${(
-									lastModule.cost / lastModule.cellCount
-							  ).toFixed(2)}$/CELL`
-							: ''
-					}`)}`
+	DEBUG
+		? `\n \nDEBUG\n${lastModule.tags.join(', ')}\n${(
+				lastModule.cost / lastModule.cellCount
+		  ).toFixed(2)}$/CELL`
+		: ''
+}`)}`
 				);
 			};
 
