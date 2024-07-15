@@ -1053,3 +1053,14 @@ auto, joint
 ---
 .....0
 000000
+
+::module fork
+A fork
+
+Some more text.
+---
+auto, heatsink, awkward
+---
+00
+.00
+00
