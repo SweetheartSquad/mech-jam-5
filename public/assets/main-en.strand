@@ -964,7 +964,7 @@ auto, heatsink, awkward
 ---
 3,2
 
-::module bucket1
+::module sink 3
 TODO: description
 ---
 auto, heatsink

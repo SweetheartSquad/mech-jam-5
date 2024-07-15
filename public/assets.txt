@@ -86,6 +86,7 @@ textures/module shield 3.png
 
 textures/module sink 1.png
 textures/module sink 2.png
+textures/module sink 3.png
 
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
