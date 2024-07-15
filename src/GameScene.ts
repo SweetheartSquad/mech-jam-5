@@ -2708,6 +2708,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				shields = shieldsAmt;
 			}
 
+			// targeting knowledge
 			const knownTargets: { [key: string]: string[] } = {};
 			const likelyTargets: { [key: string]: string[] } = {};
 			forCells(this.battleGrid, (x, y, cell) => {
@@ -2751,75 +2752,113 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					});
 				}
 			});
-
-			const scoreMap: { [key: string]: number | undefined } = {
-				empty: -1,
-				armour: -2,
-				'hidden module': 3,
-				'destroyed module': 2,
-				cockpit: 100,
-				attack: 10,
-				heatsink: 10,
-				radar: 10,
-				joint: 5,
-			};
-
-			const scoredTargets: { x: number; y: number; score: number }[] = [];
-			forCells(this.battleGrid, (x, y, cell) => {
-				if (cell === 'X') return;
-				let score = Math.random() * 0.5; // rng offset equal scores
-				const known = knownTargets[xyKey(x, y)] || [];
-				const likely = likelyTargets[xyKey(x, y)] || [];
-				known.forEach((i) => {
-					score += (scoreMap[i] || 0) * 2;
-				});
-				likely.forEach((i) => {
-					score += scoreMap[i] || 0;
-				});
-				scoredTargets.push({ x, y, score });
+			forCells(this.battleGrid, (x, y) => {
+				const key = xyKey(x, y);
+				if (knownTargets[key]?.length) delete likelyTargets[key];
 			});
 
-			const possibleTargets = scoredTargets
-				.sort((a, b) => a.score - b.score)
-				.map((i) => [i.x, i.y] as [number, number]);
+			// attacks
+			{
+				const scoreMap: { [key: string]: number | undefined } = {
+					empty: -1,
+					armour: -2,
+					'hidden module': 3,
+					'destroyed module': 2,
+					cockpit: 100,
+					attack: 10,
+					heatsink: 10,
+					radar: 10,
+					joint: 5,
+				};
 
-			for (let i = 0; i < attacksMax; ++i) {
-				// TODO: better deciding whether to shoot
-				// - when to be more/less aggressive?
-				// - when to overheat?
-				if (randItem([true, false, false])) continue;
-				if (heatMax - shields - attacks.length < 0 && heatMax <= 1) continue;
-				if (
-					heatMax - shields - attacks.length < 0 &&
-					randItem([true, false, false, false, false, false])
-				)
-					continue;
+				const scoredTargets: { x: number; y: number; score: number }[] = [];
+				forCells(this.battleGrid, (x, y, cell) => {
+					if (cell === 'X') return;
+					let score = Math.random() * 0.5; // rng offset equal scores
+					const known = knownTargets[xyKey(x, y)] || [];
+					const likely = likelyTargets[xyKey(x, y)] || [];
+					known.forEach((i) => {
+						score += (scoreMap[i] || 0) * 2;
+					});
+					likely.forEach((i) => {
+						score += scoreMap[i] || 0;
+					});
+					scoredTargets.push({ x, y, score });
+				});
 
-				const target = possibleTargets.pop();
-				if (!target) break;
-				attacks.push(target);
+				const possibleTargets = scoredTargets
+					.sort((a, b) => a.score - b.score)
+					.map((i) => [i.x, i.y] as [number, number]);
+
+				for (let i = 0; i < attacksMax; ++i) {
+					// TODO: better deciding whether to shoot
+					// - when to be more/less aggressive?
+					// - when to overheat?
+					if (randItem([true, false, false])) continue;
+					if (heatMax - shields - attacks.length < 0 && heatMax <= 1) continue;
+					if (
+						heatMax - shields - attacks.length < 0 &&
+						randItem([true, false, false, false, false, false])
+					)
+						continue;
+
+					const target = possibleTargets.pop();
+					if (!target) break;
+					attacks.push(target);
+				}
 			}
 
-			for (let i = 0; i < scansMax; ++i) {
-				// TODO: better deciding whether to scan
-				// - when to be more/less aggressive?
-				// - when to overheat?
-				// - when to scan vs attack?
-				if (randItem([true, false, false])) continue;
-				if (
-					heatMax - shields - attacks.length - scans.length < 0 &&
-					heatMax <= 1
-				)
-					continue;
-				if (
-					heatMax - shields - attacks.length - scans.length < 0 &&
-					randItem([true, false, false, false, false, false])
-				)
-					continue;
+			// scans
+			{
+				const scoreMap: { [key: string]: number | undefined } = {
+					empty: -1,
+					armour: -2,
+					'hidden module': 5,
+					'destroyed module': 2,
+					cockpit: 10,
+					attack: 3,
+					heatsink: 3,
+					radar: 3,
+					joint: 3,
+				};
 
-				const target = possibleTargets.pop();
-				if (!target) break;
-				scans.push(target);
+				const scoredTargets: { x: number; y: number; score: number }[] = [];
+				forCells(this.battleGrid, (x, y, cell) => {
+					if (cell !== '?') return;
+					if (attacks.some((i) => x === i[0] && y === i[1])) return;
+					let score = Math.random() * 0.5; // rng offset equal scores
+					const likely = likelyTargets[xyKey(x, y)] || [];
+					likely.forEach((i) => {
+						score += scoreMap[i] || 0;
+					});
+					scoredTargets.push({ x, y, score });
+				});
+
+				const possibleTargets = scoredTargets
+					.sort((a, b) => a.score - b.score)
+					.map((i) => [i.x, i.y] as [number, number]);
+
+				for (let i = 0; i < scansMax; ++i) {
+					// TODO: better deciding whether to scan
+					// - when to be more/less aggressive?
+					// - when to overheat?
+					// - when to scan vs attack?
+					if (randItem([true, false, false])) continue;
+					if (
+						heatMax - shields - attacks.length - scans.length < 0 &&
+						heatMax <= 1
+					)
+						continue;
+					if (
+						heatMax - shields - attacks.length - scans.length < 0 &&
+						randItem([true, false, false, false, false, false])
+					)
+						continue;
+
+					const target = possibleTargets.pop();
+					if (!target) break;
+					scans.push(target);
+				}
 			}
 
 			// play enemy actions
