@@ -69,6 +69,7 @@ textures/module Bar2.png
 textures/module extender 1.png
 textures/module extender 2.png
 textures/module extender 3.png
+textures/module rocket 1.png
 
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3

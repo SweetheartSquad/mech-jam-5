@@ -859,7 +859,7 @@ auto
 ---
 1,0
 
-::module rocket1
+::module rocket 1
 TODO: description
 ---
 auto, attack
