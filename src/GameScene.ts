@@ -613,6 +613,17 @@ SPACE: ${formatCount(freeCells, allCells)}
 								0
 							);
 							scroller.container.visible = true;
+							// scroll to currently selected part
+							scroller.scrollTo(
+								(scroller.containerScroll.children.find(
+									(c) =>
+										c.label === `head ${this.mech.headD.name}` ||
+										c.label === `chest ${this.mech.chestD.name}` ||
+										c.label === `arm ${this.mech.armLD.name}` ||
+										c.label === `leg ${this.mech.legLD.name}`
+								)?.y || 0) -
+									scroller.sprMask.height / 2
+							);
 						}
 					);
 					textType.text = smartify(
@@ -642,6 +653,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					.forEach((i) => {
 						const part = this.getPart(i);
 						const spr = new Sprite(part.tex);
+						spr.label = i;
 						buttonify(spr, i);
 						spr.addEventListener('pointerover', () => {
 							this.textTip.text = part.name;
