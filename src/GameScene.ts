@@ -2702,11 +2702,13 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			let scans: [number, number][] = [];
 
 			// pick enemy actions
-			// TODO: better deciding whether to enable shields
-			// - early or after reveals?
-			if (shieldsAmt < heatMax && randItem([true, false])) {
+
+			// shields
+			// 2/3 chance to toggle shields safely
+			if (shieldsAmt < heatMax && randItem([true, true, false])) {
 				shields = shieldsAmt;
 			} else if (
+				// 1/6 chance to toggle shields when it would overheat without losing the match
 				shieldsAmt > heatMax &&
 				heatMax > 1 &&
 				randItem([true, false, false, false, false, false])
@@ -2805,13 +2807,15 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					.map((i) => [i.x, i.y] as [number, number]);
 
 				for (let i = 0; i < attacksMax; ++i) {
-					// TODO: better deciding whether to shoot
-					// - when to be more/less aggressive?
-					// - when to overheat?
-					if (randItem([true, false, false])) continue;
-					if (heatMax - shields - attacks.length < 0 && heatMax <= 1) continue;
+					const remainingHeat = heatMax - shields - attacks.length;
+					// 1/3 chance to skip shot in favour of later scan
+					if (scansMax >= remainingHeat && randItem([true, false, false]))
+						continue;
+					// never overheat when it would lose the match
+					if (remainingHeat <= 0 && heatMax <= 1) continue;
+					// 1/6 chance to overheat
 					if (
-						heatMax - shields - attacks.length < 0 &&
+						remainingHeat <= 0 &&
 						randItem([true, false, false, false, false, false])
 					)
 						continue;
@@ -2854,18 +2858,13 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					.map((i) => [i.x, i.y] as [number, number]);
 
 				for (let i = 0; i < scansMax; ++i) {
-					// TODO: better deciding whether to scan
-					// - when to be more/less aggressive?
-					// - when to overheat?
-					// - when to scan vs attack?
-					if (randItem([true, false, false])) continue;
+					const remainingHeat =
+						heatMax - shields - attacks.length - scans.length;
+					// never overheat when it would lose the match
+					if (remainingHeat <= 0 && heatMax <= 1) continue;
+					// 1/6 chance to overheat
 					if (
-						heatMax - shields - attacks.length - scans.length < 0 &&
-						heatMax <= 1
-					)
-						continue;
-					if (
-						heatMax - shields - attacks.length - scans.length < 0 &&
+						remainingHeat <= 0 &&
 						randItem([true, false, false, false, false, false])
 					)
 						continue;
