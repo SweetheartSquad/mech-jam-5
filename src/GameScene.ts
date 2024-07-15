@@ -949,6 +949,7 @@ ${lastModule.description}${
 							module = this.modules.placed.splice(idx, 1)[0];
 						}
 						this.reassemble();
+						updateReset();
 						const newDrag = startDragging(module.module);
 						newDrag.rotation = (module.turns / 4) * Math.PI * 2;
 						newDrag.scale.x *= module.flipH ? -1 : 1;
@@ -970,6 +971,7 @@ ${lastModule.description}${
 							target = null;
 						}
 						this.reassemble();
+						updateReset();
 						checkPlacement();
 						updateInfo();
 					}
@@ -1161,15 +1163,19 @@ ${lastModule.description}${
 				donePlacingModules(false);
 			});
 			const btnReset = new BtnText('RESET', async () => {
-				if (
-					this.modules.placed.length &&
-					!(await this.confirm('Remove all currently placed modules?'))
-				)
+				if (!this.modules.placed.length) return;
+				if (!(await this.confirm('Remove all currently placed modules?')))
 					return;
 				this.modules.placed = [];
 				this.reassemble();
+				updateReset();
 				this.screenFilter.flash(0.3, 200, eases.circOut);
 			});
+			const updateReset = () => {
+				btnReset.display.container.tint = this.modules.placed.length
+					? white
+					: gray;
+			};
 			const btnDone = new BtnText('DONE', () => {
 				// who needs raw data when you have formatted text
 				if (this.getGeneralInfo().includes('!!!')) {
@@ -1216,6 +1222,7 @@ ${lastModule.description}${
 
 			updateInfo();
 			this.reassemble();
+			updateReset();
 
 			const closeModal = this.modal(0);
 			panelInfo.visible = false;
