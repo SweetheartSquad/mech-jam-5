@@ -487,7 +487,7 @@ export class GameScene {
 			this.modules.placed.reduce((acc, i) => acc + i.module.cost, 0);
 		return `
 - TOTALS
-PRICE:  ${formatCount(cost, costMax)}
+PRICE:  ${formatCount(cost, costMax).replace(/\s*$/, '$')}
 SPACE: ${formatCount(freeCells, allCells)}
 
 ---------------------
@@ -696,7 +696,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 					textInfo,
 					`${this.getGeneralInfo()}${smartify(`"${lastPart.name}"
  
-$${lastPart.cost} | ${lastPart.cellCount} CELLS
+${lastPart.cost}$ | ${lastPart.cellCount} CELLS
  
 ${lastPart.description}`)}`
 				);
@@ -876,7 +876,7 @@ ${lastPart.description}`)}`
 					textInfo,
 					`${this.getGeneralInfo()}${smartify(`"${lastModule.name}"
  
-$${lastModule.cost} | ${lastModule.cellCount} CELLS
+${lastModule.cost}$ | ${lastModule.cellCount} CELLS
  
 ${lastModule.description}${
 						DEBUG
