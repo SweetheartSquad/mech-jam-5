@@ -59,6 +59,7 @@ import {
 	formatCount,
 	lerp,
 	randItem,
+	randRange,
 	relativeMouse,
 	removeFromArray,
 	rotateMatrixClockwise,
@@ -2742,21 +2743,45 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			let attacks: [number, number][] = [];
 			let scans: [number, number][] = [];
 			let overheating = 0;
-			for (let i = 0; i < maxOverheat; ++i) {
-				if (randItem([true, false, false, false, false, false])) ++overheating;
+			let defensive = false;
+			let aggressive = false;
+			// enemy is defensive if a cockpit is exposed
+			forCells(this.battleGridEnemy, (x, y, cell) => {
+				if (cell !== 'O') return;
+				const idx = Number(this.modulesEnemy.grid[y][x]);
+				if (Number.isNaN(idx)) return;
+				if (this.modulesEnemy.placed[idx].module.tags.includes('cockpit'))
+					defensive = true;
+			});
+			// enemy is aggressive if a cockpit is exposed
+			forCells(this.battleGrid, (x, y, cell) => {
+				if (cell !== 'O') return;
+				const idx = Number(this.modules.grid[y][x]);
+				if (Number.isNaN(idx)) return;
+				if (this.modules.placed[idx].module.tags.includes('cockpit'))
+					aggressive = true;
+			});
+
+			const overheatChance = aggressive ? 3 : defensive ? 6 : 20;
+			let rolling = true;
+			while (rolling && overheating < maxOverheat) {
+				if (randRange(0, overheatChance) < 1) {
+					++overheating;
+				} else {
+					rolling = false;
+				}
 			}
 
 			// pick enemy actions
 
 			// shields
 			// 2/3 chance to toggle shields safely
-			if (shieldsAmt < heatMax && randItem([true, true, false])) {
-				shields = shieldsAmt;
-			} else if (
-				// 1/6 chance to toggle shields when it would overheat without losing the match
-				shieldsAmt < heatMax + overheating &&
-				randItem([true, false, false, false, false, false])
+			if (
+				shieldsAmt < heatMax &&
+				(defensive || randItem([true, true, false]))
 			) {
+				shields = shieldsAmt;
+			} else if (shieldsAmt < heatMax + overheating && defensive) {
 				overheating -= shieldsAmt;
 				shields = shieldsAmt;
 			}
@@ -2822,9 +2847,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					.fill('scan')
 					.concat(new Array(attacksMax).fill('attack'))
 			);
-			// favour attacks 2/3
+			// favour attacks 1/3
 			for (let i = 0; i < attacksMax; ++i) {
-				if (randItem([true, true, false])) {
+				if (randItem([true, false, false])) {
 					possibleActions.splice(possibleActions.lastIndexOf('attack'), 1);
 					possibleActions.unshift('attack');
 				}
