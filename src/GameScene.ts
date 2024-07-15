@@ -2816,6 +2816,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			{
 				const scoreMap: { [key: string]: number | undefined } = {
 					empty: -1,
+					'joint bias': Math.random() * 0.1, // like the player, enemy "knows" where joints are
 					armour: -2,
 					'hidden module': 3,
 					'destroyed module': 2,
@@ -2824,7 +2825,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					heatsink: 10,
 					radar: 10,
 					joint: 5,
-					'joint bias': 0.1, // like the player, enemy "knows" where joints are
 				};
 
 				const scoredTargets: { x: number; y: number; score: number }[] = [];
@@ -2870,7 +2870,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			{
 				const scoreMap: { [key: string]: number | undefined } = {
 					empty: -1,
-					armour: -2,
+					'joint bias': -2, // like the player, enemy "knows" where joints are
+					armour: -3,
 					'hidden module': 5,
 					'destroyed module': 2,
 					cockpit: 10,
@@ -2878,7 +2879,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					heatsink: 3,
 					radar: 3,
 					joint: 3,
-					'joint bias': -0.5, // like the player, enemy "knows" where joints are
 				};
 
 				const scoredTargets: { x: number; y: number; score: number }[] = [];
