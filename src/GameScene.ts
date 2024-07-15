@@ -1211,7 +1211,9 @@ ${lastModule.description}${
 		this.modules.container.destroy({ children: true });
 		this.modules = this.assembleModules(
 			this.mech.grid,
-			this.modules?.placed || []
+			(this.modules?.placed || []).sort(
+				(a, b) => a.y + a.x * 0.01 - (b.y + b.x * 0.01)
+			)
 		);
 		this.container.addChildAt(this.mech.container, 0);
 		this.container.addChild(this.modules.container);
