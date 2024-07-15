@@ -943,7 +943,7 @@ ${lastModule.description}${
 					}
 					this.textTip.text = this.modules.placed[idx].module.name;
 					if (!dragging) {
-						this.modules.container.children[idx].alpha = 0.5;
+						this.modules.container.children[idx].tint = greenHalf;
 					}
 				});
 				btn.spr.addEventListener('pointerout', () => {
@@ -952,7 +952,7 @@ ${lastModule.description}${
 					checkPlacement();
 					const idx = Number(this.modules.grid[y][x]);
 					if (Number.isNaN(idx)) return;
-					this.modules.container.children[idx].alpha = 1;
+					this.modules.container.children[idx].tint = white;
 				});
 			});
 
@@ -1748,8 +1748,10 @@ ${lastModule.description}${
 	getPlacedModule(i: GameScene['modules']['placed'][number]) {
 		let cells = i.module.cells;
 		cells = rotateMatrixClockwise(cells, i.turns);
-		if (i.flipH) cells = flipMatrixH(cells);
-		if (i.flipV) cells = flipMatrixV(cells);
+		const flip = [i.flipH, i.flipV];
+		if (i.turns % 2) flip.reverse();
+		if (flip[0]) cells = flipMatrixH(cells);
+		if (flip[1]) cells = flipMatrixV(cells);
 		const o = i.module.pivot.slice();
 		if (i.flipH) {
 			o[0] = i.module.w - o[0] - 1;
