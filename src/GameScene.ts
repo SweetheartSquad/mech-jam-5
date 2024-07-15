@@ -680,10 +680,10 @@ SPACE: ${formatCount(freeCells, allCells)}
 							scroller.containerScroll.children.forEach((j) => {
 								j.tint = white;
 							});
-							spr.tint = green;
+							spr.tint = greenHalf;
 							update();
 						});
-						if (i === `${type} ${current}`) spr.tint = green;
+						if (i === `${type} ${current}`) spr.tint = greenHalf;
 						scroller.addChild(spr);
 					});
 			});
