@@ -1191,7 +1191,7 @@ A huge L
 
 Some more text.
 ---
-auto, heatsink
+auto, joint
 ---
 0
 0
@@ -1206,7 +1206,7 @@ A long squiggle
 
 Some more text.
 ---
-auto, heatsink
+auto, joint
 ---
 00
 .00000
@@ -1227,7 +1227,7 @@ A long L
 
 Some more text.
 ---
-auto, heatsink
+auto, joint
 ---
 .....0
 000000
