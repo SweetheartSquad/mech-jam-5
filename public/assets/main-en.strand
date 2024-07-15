@@ -391,7 +391,7 @@ auto
 ::chest 1
 blah blah blah
 ---
--250
+-150
 ---
 ...=
 ...0..
@@ -493,7 +493,7 @@ auto
 ::chest 9
 blah blah blah
 ---
--500
+-200
 ---
 .=.
 0.0
