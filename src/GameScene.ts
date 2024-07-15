@@ -700,7 +700,9 @@ ${lastPart.cost}$ | ${lastPart.cellCount} CELLS
  
 ${lastPart.description}`)}${
 						DEBUG
-							? `\n \nDEBUG\n$${lastPart.cost / lastPart.cellCount}/CELL`
+							? `\n \nDEBUG\n${(lastPart.cost / lastPart.cellCount).toFixed(
+									2
+							  )}$/CELL`
 							: ''
 					}`
 				);
@@ -884,9 +886,9 @@ ${lastModule.cost}$ | ${lastModule.cellCount} CELLS
  
 ${lastModule.description}${
 						DEBUG
-							? `\n \nDEBUG\n${lastModule.tags.join(', ')}\n$${
+							? `\n \nDEBUG\n${lastModule.tags.join(', ')}\n${(
 									lastModule.cost / lastModule.cellCount
-							  }/CELL`
+							  ).toFixed(2)}$/CELL`
 							: ''
 					}`)}`
 				);
