@@ -943,7 +943,7 @@ ${lastModule.description}${
 					}
 					this.textTip.text = this.modules.placed[idx].module.name;
 					if (!dragging) {
-						this.modules.container.children[idx].alpha = 0.5;
+						this.modules.container.children[idx].tint = greenHalf;
 					}
 				});
 				btn.spr.addEventListener('pointerout', () => {
@@ -952,7 +952,7 @@ ${lastModule.description}${
 					checkPlacement();
 					const idx = Number(this.modules.grid[y][x]);
 					if (Number.isNaN(idx)) return;
-					this.modules.container.children[idx].alpha = 1;
+					this.modules.container.children[idx].tint = white;
 				});
 			});
 
