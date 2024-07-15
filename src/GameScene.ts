@@ -2917,7 +2917,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const log: string[] = [];
 
 			// overheat
-			let overheat = this.getHeat() - heatMax;
+			let overheat = attacks.length + scans.length + shields - heatMax;
 			while (overheat-- > 0) {
 				await delay(500);
 				await this.overheat('enemy');
