@@ -766,6 +766,7 @@ debug radar
 
 ::module cockpit 1
 A lil' cockpit.
+TODO: description
 ---
 auto, cockpit, flexible
 ---
@@ -773,6 +774,7 @@ auto, cockpit, flexible
 
 ::module cockpit 2
 A standard cockpit.
+TODO: description
 ---
 auto, cockpit
 ---
@@ -781,6 +783,7 @@ auto, cockpit
 
 ::module cockpit 3
 A big cockpit.
+TODO: description
 ---
 auto, cockpit
 ---
@@ -813,9 +816,7 @@ auto, armour
 000
 
 ::module Tee
-A weirdly shaped cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, attack
 ---
@@ -824,18 +825,14 @@ auto, attack
 .0.
 
 ::module Bar
-A weirdly shaped cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, radar
 ---
 0000
 
 ::module Bar2
-A weirdly shaped cockpit.
-
-Some more text.
+TODO: description
 ---
 auto, radar, flexible
 ---
@@ -1001,8 +998,7 @@ auto, heatsink, flexible
 
 ::module 2by1
 A thing
-
-Some more text.
+TODO: description
 ---
 auto, heatsink, flexible
 ---
@@ -1010,8 +1006,7 @@ auto, heatsink, flexible
 
 ::module extender 3
 A huge L
-
-Some more text.
+TODO: description
 ---
 auto, joint
 ---
@@ -1025,8 +1020,7 @@ auto, joint
 
 ::module extender 2
 A long squiggle
-
-Some more text.
+TODO: description
 ---
 auto, joint
 ---
@@ -1035,8 +1029,7 @@ auto, joint
 
 ::module doubleFork
 A double fork
-
-Some more text.
+TODO: description
 ---
 auto, heatsink, awkward
 ---
@@ -1046,8 +1039,7 @@ auto, heatsink, awkward
 
 ::module extender 1
 A long L
-
-Some more text.
+TODO: description
 ---
 auto, joint
 ---
@@ -1056,8 +1048,7 @@ auto, joint
 
 ::module fork
 A fork
-
-Some more text.
+TODO: description
 ---
 auto, heatsink, awkward
 ---
