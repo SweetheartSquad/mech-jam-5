@@ -2737,9 +2737,14 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				.flatMap((i) => i.module.tags);
 			const { attacksMax, scansMax, shieldsAmt, heatMax } =
 				this.tagsToPossibleActions(tags);
+			const maxOverheat = heatMax - 1;
 			let shields = 0;
 			let attacks: [number, number][] = [];
 			let scans: [number, number][] = [];
+			let overheating = 0;
+			for (let i = 0; i < maxOverheat; ++i) {
+				if (randItem([true, false, false, false, false, false])) ++overheating;
+			}
 
 			// pick enemy actions
 
@@ -2749,9 +2754,10 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				shields = shieldsAmt;
 			} else if (
 				// 1/6 chance to toggle shields when it would overheat without losing the match
-				shieldsAmt - heatMax > heatMax &&
+				shieldsAmt < heatMax + overheating &&
 				randItem([true, false, false, false, false, false])
 			) {
+				overheating -= shieldsAmt;
 				shields = shieldsAmt;
 			}
 
@@ -2811,6 +2817,30 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				if (knownTargets[key]?.length) delete likelyTargets[key];
 			});
 
+			const possibleActions = shuffle(
+				new Array(scansMax)
+					.fill('scan')
+					.concat(new Array(attacksMax).fill('attack'))
+			);
+			// favour attacks 2/3
+			for (let i = 0; i < attacksMax; ++i) {
+				if (randItem([true, true, false])) {
+					possibleActions.splice(possibleActions.lastIndexOf('attack'), 1);
+					possibleActions.unshift('attack');
+				}
+			}
+			const actualActions = possibleActions.slice(
+				0,
+				Math.max(0, heatMax + overheating - shields)
+			);
+			const [actualAttacksMax, actualScansMax] = actualActions.reduce(
+				(acc, i) => [
+					acc[0] + (i === 'attack' ? 1 : 0),
+					acc[1] + (i === 'scan' ? 1 : 0),
+				],
+				[0, 0]
+			);
+
 			// attacks
 			{
 				const scoreMap: { [key: string]: number | undefined } = {
@@ -2845,20 +2875,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					.sort((a, b) => a.score - b.score)
 					.map((i) => [i.x, i.y] as [number, number]);
 
-				for (let i = 0; i < attacksMax; ++i) {
-					const remainingHeat = heatMax - shields - attacks.length;
-					// 1/3 chance to skip shot in favour of later scan
-					if (scansMax >= remainingHeat && randItem([true, false, false]))
-						continue;
-					// never overheat when it would lose the match
-					if (remainingHeat <= 0 && heatMax <= 1) continue;
-					// 1/6 chance to overheat
-					if (
-						remainingHeat <= 0 &&
-						randItem([false, true, true, true, true, true])
-					)
-						continue;
-
+				for (let i = 0; i < actualAttacksMax; ++i) {
 					const target = possibleTargets.pop();
 					if (!target) break;
 					attacks.push(target);
@@ -2896,18 +2913,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					.sort((a, b) => a.score - b.score)
 					.map((i) => [i.x, i.y] as [number, number]);
 
-				for (let i = 0; i < scansMax; ++i) {
-					const remainingHeat =
-						heatMax - shields - attacks.length - scans.length;
-					// never overheat when it would lose the match
-					if (remainingHeat <= 0 && heatMax <= 1) continue;
-					// 1/6 chance to overheat
-					if (
-						remainingHeat <= 0 &&
-						randItem([false, true, true, true, true, true])
-					)
-						continue;
-
+				for (let i = 0; i < actualScansMax; ++i) {
 					const target = possibleTargets.pop();
 					if (!target) break;
 					scans.push(target);
