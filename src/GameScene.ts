@@ -2699,8 +2699,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
 			while (overheat-- > 0) {
-				await delay(500);
 				await this.overheat('player');
+				await delay(500);
 				log.push('OVERHEATED');
 			}
 			r(log);
@@ -2919,8 +2919,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			// overheat
 			let overheat = attacks.length + scans.length + shields - heatMax;
 			while (overheat-- > 0) {
-				await delay(500);
 				await this.overheat('enemy');
+				await delay(500);
 				log.push('OVERHEATED');
 			}
 
