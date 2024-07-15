@@ -29,17 +29,6 @@
 
 <<if !this.started>>
 <<do
-	// save location on refresh when debugging
-	if (this.debug && !window.debugUnload) {
-		window.debugUnload = true;
-		window.addEventListener('beforeunload', () => {
-			// if (window.scene.strand.cleared) return;
-			// window.scene.strand.savestate.area = window.scene.strand.scene.area;
-			// window.scene.strand.savestate.x = window.scene.strand.scene.player.transform.x;
-			// window.scene.strand.savestate.y = window.scene.strand.scene.player.transform.y;
-			// window.scene.strand.save();
-		});
-	}
 	// middle mouse click to go back in debug
 	if (this.debug && !window.debugBack) {
 		window.debugBack = true;
