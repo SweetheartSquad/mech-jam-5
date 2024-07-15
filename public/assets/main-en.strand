@@ -907,7 +907,7 @@ auto, joint
 000
 .0.
 
-::module stair1
+::module shield 1
 TODO: description
 ---
 auto, shield
@@ -915,7 +915,7 @@ auto, shield
 00.
 .00
 
-::module stair2
+::module shield 2
 TODO: description
 ---
 auto, shield
@@ -923,7 +923,7 @@ auto, shield
 .000
 000.
 
-::module stair3
+::module shield 3
 TODO: description
 ---
 auto, shield
