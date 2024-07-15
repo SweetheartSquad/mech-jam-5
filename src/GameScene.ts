@@ -30,8 +30,11 @@ import {
 	flatten,
 	forCells,
 	getFlood,
+	getNeighbours,
+	keyXY,
 	replaceCells,
 	rotateCellsByDisplay,
+	xyKey,
 } from './layout';
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
@@ -816,7 +819,7 @@ ${lastPart.description}`)}`
 		const noop = () => {};
 		forCells(grid, (x, y, cell) => {
 			const btn = new Btn(noop, 'cell button');
-			btn.spr.label = `${x},${y}`;
+			btn.spr.label = xyKey(x, y);
 			btn.transform.x = x * cellSize;
 			btn.transform.y = y * cellSize;
 			container.addChild(btn.display.container);
@@ -964,7 +967,7 @@ ${lastModule.description}${
 				if (!dragging) return;
 				if (!target) return;
 				valid = true;
-				const [x, y] = target.spr.label.split(',').map((i) => Number(i));
+				const [x, y] = keyXY(target.spr.label);
 
 				const moduleD = modulesByName[dragging.label];
 				const draggingCells = rotateCellsByDisplay(moduleD.cells, dragging);
@@ -2690,19 +2693,80 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				shields = shieldsAmt;
 			}
 
-			// pick targets
-			// TODO: better deciding what to target
-			// prioritize:
-			// 1. revealed parts
-			// 2. around partially destroyed parts
-			// 3. random
-			let possibleTargets: [number, number][] = [];
+			const knownTargets: { [key: string]: string[] } = {};
+			const likelyTargets: { [key: string]: string[] } = {};
 			forCells(this.battleGrid, (x, y, cell) => {
-				if (cell !== 'X') {
-					possibleTargets.push([x, y]);
+				if (cell === '?') return;
+				const destroyed = cell === 'X';
+				const revealed = cell === 'O';
+				const hasModule = this.modules.grid[y][x] !== 'x';
+				const neighbours = getNeighbours(this.battleGrid, x, y).filter(
+					(i) => this.battleGrid[i[1]][i[0]] === '?'
+				);
+				let tags = [];
+				if (this.mech.grid[y][x] === '=') {
+					tags.push('joint');
+				} else if (hasModule) {
+					const idx = Number(this.modules.grid[y][x]);
+					if (!Number.isNaN(idx)) {
+						if (
+							this.moduleIsDestroyed(this.modules.placed[idx], this.battleGrid)
+						) {
+							tags.push('destroyed module');
+						} else if (revealed) {
+							tags.push(...this.modules.placed[idx].module.tags);
+						} else {
+							tags.push('hidden module');
+						}
+					}
+				} else {
+					tags.push('empty');
+				}
+
+				if (tags.length) {
+					if (!destroyed) {
+						const key = xyKey(x, y);
+						knownTargets[key] = knownTargets[key] || [];
+						knownTargets[key].push(...tags);
+					}
+					neighbours.forEach((i) => {
+						const key = xyKey(...i);
+						likelyTargets[key] = likelyTargets[key] || [];
+						likelyTargets[key].push(...tags);
+					});
 				}
 			});
-			possibleTargets = shuffle(possibleTargets);
+
+			const scoreMap: { [key: string]: number | undefined } = {
+				empty: -1,
+				armour: -2,
+				'hidden module': 3,
+				'destroyed module': 2,
+				cockpit: 100,
+				attack: 10,
+				heatsink: 10,
+				radar: 10,
+				joint: 5,
+			};
+
+			const scoredTargets: { x: number; y: number; score: number }[] = [];
+			forCells(this.battleGrid, (x, y, cell) => {
+				if (cell === 'X') return;
+				let score = Math.random() * 0.5; // rng offset equal scores
+				const known = knownTargets[xyKey(x, y)] || [];
+				const likely = likelyTargets[xyKey(x, y)] || [];
+				known.forEach((i) => {
+					score += (scoreMap[i] || 0) * 2;
+				});
+				likely.forEach((i) => {
+					score += scoreMap[i] || 0;
+				});
+				scoredTargets.push({ x, y, score });
+			});
+
+			const possibleTargets = scoredTargets
+				.sort((a, b) => a.score - b.score)
+				.map((i) => [i.x, i.y] as [number, number]);
 
 			for (let i = 0; i < attacksMax; ++i) {
 				// TODO: better deciding whether to shoot

@@ -63,7 +63,7 @@ export function flatten<T extends string>(
 		});
 	});
 	const bounds = Object.keys(map)
-		.map((i) => i.split(',').map((j) => Number(j)))
+		.map(keyXY)
 		.reduce(
 			(b, i) => {
 				b.minx = Math.min(b.minx, i[1]);
@@ -122,9 +122,9 @@ export function getFlood<T>(cells: T[][], x: number, y: number) {
 	const result: [number, number][] = [];
 	const target = cells[y][x];
 	const checked: { [key: string]: boolean } = {};
-	checked[`${x},${y}`] = false;
+	checked[xyKey(x, y)] = false;
 	const check = (x: number, y: number): void => {
-		const key = `${x},${y}`;
+		const key = xyKey(x, y);
 		if (checked[key]) return;
 		if (cells[y]?.[x] !== target) return;
 		result.push([x, y]);
@@ -183,4 +183,11 @@ export function makeCellsTexture(cells: string[][]) {
 
 	cache[key] = game.app.renderer.extract.texture(g);
 	return cache[key];
+}
+
+export function xyKey(x: number, y: number) {
+	return `${x},${y}`;
+}
+export function keyXY(key: string) {
+	return key.split(',').map((i) => Number(i)) as [number, number];
 }
