@@ -2767,7 +2767,6 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const possibleTargets = scoredTargets
 				.sort((a, b) => a.score - b.score)
 				.map((i) => [i.x, i.y] as [number, number]);
-			console.log({ scoredTargets, possibleTargets });
 
 			for (let i = 0; i < attacksMax; ++i) {
 				// TODO: better deciding whether to shoot
