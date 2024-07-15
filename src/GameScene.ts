@@ -2758,6 +2758,13 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					});
 				}
 			});
+			forCells(this.mech.grid, (x, y, cell) => {
+				if (cell === '=') {
+					const key = xyKey(x, y);
+					likelyTargets[key] = likelyTargets[key] || [];
+					likelyTargets[key].push('joint bias');
+				}
+			});
 			forCells(this.battleGrid, (x, y) => {
 				const key = xyKey(x, y);
 				if (knownTargets[key]?.length) delete likelyTargets[key];
@@ -2775,6 +2782,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					heatsink: 10,
 					radar: 10,
 					joint: 5,
+					'joint bias': 0.1, // like the player, enemy "knows" where joints are
 				};
 
 				const scoredTargets: { x: number; y: number; score: number }[] = [];
@@ -2826,6 +2834,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					heatsink: 3,
 					radar: 3,
 					joint: 3,
+					'joint bias': -0.5, // like the player, enemy "knows" where joints are
 				};
 
 				const scoredTargets: { x: number; y: number; score: number }[] = [];
