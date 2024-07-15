@@ -38,7 +38,7 @@ char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=5 id=32 x=0 y=18     /
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=5 id=33 x=9 y=18     // !
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=6 id=34 x=18 y=18    // "
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=35 x=27 y=18    // #
-char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=7 id=36 x=36 y=18    // $
+char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=36 x=36 y=18    // $
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=37 x=45 y=18    // %
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=8 id=38 x=54 y=18    // &
 char page=0 width=8 height=8 xoffset=0 yoffset=0 xadvance=4 id=39 x=63 y=18    // '
