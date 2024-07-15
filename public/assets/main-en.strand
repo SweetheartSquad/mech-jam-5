@@ -141,6 +141,9 @@ this should never render
 		legs: '2',
 		modules: [],
 	});
+
+	this.scene.locked['module debug locked'] = true;
+	this.scene.locked['head debug locked'] = true;
 >>
 
 
@@ -190,6 +193,10 @@ lol you lost
 [[>close]]
 <<else>>
 <<do this.next = 'signal failure'>>
+<<do
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
 wow you won
 [[>close]]
 <<endif>>
@@ -762,6 +769,30 @@ debug radar
 1, radar, debug
 ---
 0
+
+::module debug locked
+debug module to test module locking
+---
+1, debug
+---
+.000.
+0...0
+00000
+00000
+00000
+00000
+
+::head debug locked
+debug head to test part locking
+---
+auto
+---
+.000.
+0...0
+00000
+00=00
+0===0
+00=00
 
 
 ::module cockpit 1

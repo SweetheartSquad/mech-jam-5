@@ -95,6 +95,8 @@ export class GameScene {
 
 	panelTip: NineSliceSprite;
 	textTip: BitmapText;
+	locked: { [key: string]: boolean } = {};
+
 	setFocus(
 		x: number,
 		y?: number,
@@ -623,40 +625,42 @@ SPACE: ${formatCount(freeCells, allCells)}
 				const sprPadding = new Sprite(tex('blank'));
 				sprPadding.height = 100;
 				scroller.addChild(sprPadding);
-				pieces.forEach((i) => {
-					const part = this.getPart(i);
-					const spr = new Sprite(part.tex);
-					buttonify(spr, i);
-					spr.addEventListener('pointerover', () => {
-						this.textTip.text = part.name;
-					});
-					spr.addEventListener('click', () => {
-						lastPart = part;
-						switch (type) {
-							case 'head':
-								this.mech.headD = part;
-								break;
-							case 'chest':
-								this.mech.chestD = part;
-								break;
-							case 'arm':
-								this.mech.armLD = part;
-								this.mech.armRD = this.getPart(i, true);
-								break;
-							case 'leg':
-								this.mech.legLD = part;
-								this.mech.legRD = this.getPart(i, true);
-								break;
-						}
-						scroller.containerScroll.children.forEach((j) => {
-							j.tint = white;
+				pieces
+					.filter((i) => !this.locked[i])
+					.forEach((i) => {
+						const part = this.getPart(i);
+						const spr = new Sprite(part.tex);
+						buttonify(spr, i);
+						spr.addEventListener('pointerover', () => {
+							this.textTip.text = part.name;
 						});
-						spr.tint = green;
-						update();
+						spr.addEventListener('click', () => {
+							lastPart = part;
+							switch (type) {
+								case 'head':
+									this.mech.headD = part;
+									break;
+								case 'chest':
+									this.mech.chestD = part;
+									break;
+								case 'arm':
+									this.mech.armLD = part;
+									this.mech.armRD = this.getPart(i, true);
+									break;
+								case 'leg':
+									this.mech.legLD = part;
+									this.mech.legRD = this.getPart(i, true);
+									break;
+							}
+							scroller.containerScroll.children.forEach((j) => {
+								j.tint = white;
+							});
+							spr.tint = green;
+							update();
+						});
+						if (i === `${type} ${current}`) spr.tint = green;
+						scroller.addChild(spr);
 					});
-					if (i === `${type} ${current}`) spr.tint = green;
-					scroller.addChild(spr);
-				});
 			});
 
 			const textInfo = new BitmapText({ text: '', style: fontDialogue });
@@ -853,6 +857,7 @@ ${lastPart.description}`)}${
 		);
 		return new Promise<boolean>(async (donePlacingModules) => {
 			const modules = this.pieces.modules
+				.filter((i) => !this.locked[i])
 				.map((i) => this.getModule(i))
 				.filter((i) => DEBUG || !i.tags.includes('debug'));
 			const modulesByName = modules.reduce<{
