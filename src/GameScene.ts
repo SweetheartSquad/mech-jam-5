@@ -2906,6 +2906,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 					attacks.push(target);
 				}
 			}
+			attacks.reverse(); // reverse attacks so shields block lowest priority targets
 
 			// scans
 			{
