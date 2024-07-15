@@ -18,10 +18,6 @@ audio/voiceDefault.mp3
 textures/title.png
 textures/title2.png
 
-textures/head Block.png
-textures/head Tee.png
-textures/head Small.png
-textures/head Smaller.png
 textures/chest 1.png
 textures/head Tallboy 2000.png
 textures/arm 1.png
