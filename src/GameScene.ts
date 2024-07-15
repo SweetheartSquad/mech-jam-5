@@ -2788,7 +2788,10 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				.flatMap((i) => i.module.tags);
 			const { attacksMax, scansMax, shieldsAmt, heatMax } =
 				this.tagsToPossibleActions(tags);
-			const maxOverheat = heatMax - 1;
+			const maxOverheat =
+				this.modulesEnemy.placed.filter((i) =>
+					i.module.tags.includes('heatsink')
+				).length - 1;
 			let shields = 0;
 			let attacks: [number, number][] = [];
 			let scans: [number, number][] = [];
