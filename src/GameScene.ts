@@ -2749,8 +2749,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				shields = shieldsAmt;
 			} else if (
 				// 1/6 chance to toggle shields when it would overheat without losing the match
-				shieldsAmt > heatMax &&
-				heatMax > 1 &&
+				shieldsAmt - heatMax > heatMax &&
 				randItem([true, false, false, false, false, false])
 			) {
 				shields = shieldsAmt;
