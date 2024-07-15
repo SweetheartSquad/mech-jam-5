@@ -2506,6 +2506,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			this.reassemble();
 		}
 		destroyShield();
+		await delay(500);
 		return log;
 	}
 
@@ -2527,6 +2528,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			grid[y][x] = hasModule || isJoint ? 'O' : 'X';
 			this.reassemble();
 		}
+		await delay(500);
 		return log;
 	}
 
