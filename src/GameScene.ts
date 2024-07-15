@@ -7,6 +7,7 @@ import {
 	Sprite,
 } from 'pixi.js';
 import { Area } from './Area';
+import { sfx } from './Audio';
 import { Border } from './Border';
 import { Btn } from './Btn';
 import { BtnText } from './BtnText';
@@ -331,6 +332,7 @@ export class GameScene {
 
 	confirm(msg: string, confirm = 'OK', cancel = 'NVM') {
 		return new Promise<boolean>((r) => {
+			sfx('sfx_click2', { rate: randRange(1.5, 1.6) });
 			const closeModal = this.modal();
 			const panel = new Spr9('panel');
 			const destroy = async () => {
@@ -349,6 +351,7 @@ export class GameScene {
 				r(true);
 			});
 			const btnCancel = new BtnText(cancel, () => {
+				sfx('sfx_click1', { rate: randRange(0.5, 0.6) });
 				destroy();
 				r(false);
 			});
@@ -390,6 +393,7 @@ export class GameScene {
 
 	alert(msg: string, confirm = 'OK', tint = red) {
 		return new Promise<boolean>((r) => {
+			sfx('sfx_click2', { rate: randRange(1.5, 1.6) });
 			const closeModal = this.modal();
 			const panel = new Spr9('panel');
 			const destroy = async () => {
@@ -403,6 +407,7 @@ export class GameScene {
 				btnConfirm.destroy();
 			};
 			const btnConfirm = new BtnText(confirm, () => {
+				sfx('sfx_click1', { rate: randRange(1.5, 1.6) });
 				destroy();
 				r(true);
 			});
@@ -548,12 +553,14 @@ SPACE: ${formatCount(freeCells, allCells)}
 			) => {
 				let index = items.indexOf(selected);
 				const btnPrev = new Btn(() => {
+					sfx('sfx_click4', { rate: randRange(0.9, 1.1) + 0.5 });
 					--index;
 					if (index < 0) index = items.length - 1;
 					update(items[index], index);
 				}, 'buttonArrow');
 				btnPrev.display.container.scale.x *= -1;
 				const btnNext = new Btn(() => {
+					sfx('sfx_click4', { rate: randRange(0.9, 1.1) + 0.5 });
 					++index;
 					index %= items.length;
 					update(items[index], index);
@@ -661,6 +668,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 						});
 						spr.addEventListener('click', () => {
 							if (lastPart === part) return;
+							sfx('sfx_click2', { rate: randRange(0.9, 1.1) });
 							lastPart = part;
 							switch (type) {
 								case 'head':
@@ -740,6 +748,7 @@ ${lastPart.description}`)}${
 			update();
 
 			const btnDone = new BtnText('DONE', async () => {
+				sfx('sfx_click2', { rate: randRange(0.5, 0.6) });
 				btnDone.enabled = false;
 				btnNext.enabled = false;
 				btnPrev.enabled = false;
@@ -900,6 +909,7 @@ ${lastPart.description}`)}${
 
 			const onContext = (event: MouseEvent) => {
 				if (!dragging) return;
+				sfx('sfx_click5', { volume: 0.5, rate: randRange(0.5, 0.6) });
 				event.preventDefault();
 				dragging.destroy();
 				dragging = null;
@@ -959,6 +969,7 @@ ${lastModule.description}${
 						checkPlacement();
 					} else if (valid && target && dragging) {
 						// place selected module
+						sfx('sfx_click2', { rate: randRange(1.4, 1.5) });
 						const moduleD = modulesByName[dragging.label];
 						this.modules.placed.push({
 							module: moduleD,
@@ -1051,6 +1062,7 @@ ${lastModule.description}${
 			};
 
 			const startDragging = (moduleD: ModuleD) => {
+				sfx('sfx_click5', { rate: randRange(0.7, 0.8) });
 				dragging = makeModule(moduleD);
 				dragging.alpha = 0.5;
 				this.containerUI.addChild(dragging);
@@ -1066,28 +1078,34 @@ ${lastModule.description}${
 				dragging.x = rm.x - size.x / 2;
 				dragging.y = rm.y - size.y / 2;
 				if (input.flipH) {
+					sfx('sfx_click1', { volume: 0.25, rate: randRange(1.5, 1.6) });
 					dragging.scale.x *= -1;
 					checkPlacement();
 				}
 				if (input.flipV) {
+					sfx('sfx_click1', { volume: 0.25, rate: randRange(1.2, 1.3) });
 					dragging.scale.y *= -1;
 					checkPlacement();
 				}
 				if (input.flipC) {
 					if (displayToPlacementProps(dragging).turns % 2) {
+						sfx('sfx_click1', { volume: 0.25, rate: randRange(1.5, 1.6) });
 						dragging.scale.x *= -1;
 						checkPlacement();
 					} else {
+						sfx('sfx_click1', { volume: 0.25, rate: randRange(1.2, 1.3) });
 						dragging.scale.y *= -1;
 						checkPlacement();
 					}
 				}
 				if (input.rotateR) {
+					sfx('sfx_click1', { volume: 0.25, rate: randRange(1.5, 1.6) });
 					dragging.rotation += Math.PI / 2;
 					dragging.rotation %= Math.PI * 2;
 					checkPlacement();
 				}
 				if (input.rotateL) {
+					sfx('sfx_click1', { volume: 0.25, rate: randRange(1.2, 1.3) });
 					dragging.rotation -= Math.PI / 2;
 					if (dragging.rotation < 0) dragging.rotation += Math.PI * 2;
 					checkPlacement();
@@ -1159,6 +1177,7 @@ ${lastModule.description}${
 					))
 				)
 					return;
+				sfx('sfx_click2', { rate: randRange(0.5, 0.6) });
 				destroy();
 				this.screenFilter.flash(0.3, 400, eases.circOut);
 				donePlacingModules(false);
@@ -1167,6 +1186,7 @@ ${lastModule.description}${
 				if (!this.modules.placed.length) return;
 				if (!(await this.confirm('Remove all currently placed modules?')))
 					return;
+				sfx('sfx_click2', { rate: randRange(0.6, 0.7) });
 				this.modules.placed = [];
 				this.reassemble();
 				updateReset();
@@ -1189,6 +1209,7 @@ ${lastModule.description}${
 					this.alert('NO COCKPIT DETECTED');
 					return;
 				}
+				sfx('sfx_click2', { rate: randRange(0.5, 0.6) });
 				destroy();
 				this.screenFilter.flash(0.5, 500, eases.circOut);
 				donePlacingModules(true);
@@ -2479,6 +2500,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			let msg = 'SHIELDED';
 			if (shields-- > 0) {
 				await this.zoop(who, x, y, red, msg);
+				sfx('sfx_shield', { rate: randRange(0.9, 1.1) });
 				log.push(msg);
 
 				if (shields <= 0) {
@@ -2502,6 +2524,11 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const isJoint = mech.grid[y][x] === '=';
 			msg = hasModule || isJoint ? 'HIT' : 'MISS';
 			await this.zoop(who, x, y, red, msg);
+			if (msg === 'HIT') {
+				sfx('sfx_hit', { rate: randRange(0.9, 1.1) });
+			} else {
+				sfx('sfx_miss', { rate: randRange(0.6, 0.62) });
+			}
 			log.push(msg);
 			grid[y][x] = 'X';
 			this.reassemble();
@@ -2526,6 +2553,11 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const msg = hasModule || isJoint ? 'REVEALED' : 'MISS';
 			log.push(msg);
 			await this.zoop(who, x, y, green, msg);
+			if (msg === 'REVEALED') {
+				sfx('sfx_scan', { rate: randRange(0.9, 1.1) });
+			} else {
+				sfx('sfx_miss', { rate: randRange(0.6, 0.62) });
+			}
 			grid[y][x] = hasModule || isJoint ? 'O' : 'X';
 			this.reassemble();
 		}
@@ -2701,6 +2733,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const log: string[] = [];
 			// hit self from overheat
 			let overheat = this.getHeat() - this.actions.heatMax;
+			if (overheat > 0) {
+				sfx('sfx_overheat', { rate: randRange(0.9, 1.1) });
+			}
 			while (overheat-- > 0) {
 				await this.overheat('player');
 				await delay(500);
@@ -2951,6 +2986,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 
 			// overheat
 			let overheat = attacks.length + scans.length + shields - heatMax;
+			if (overheat > 0) {
+				sfx('sfx_overheat', { rate: randRange(0.9, 1.1) });
+			}
 			while (overheat-- > 0) {
 				await this.overheat('enemy');
 				await delay(500);

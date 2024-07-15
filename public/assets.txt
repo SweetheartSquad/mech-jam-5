@@ -15,6 +15,17 @@ font/fontfnt.fnt
 audio/bgm.mp3
 audio/voiceDefault.mp3
 
+audio/sfx_click1.mp3
+audio/sfx_click2.mp3
+audio/sfx_click3.mp3
+audio/sfx_click4.mp3
+audio/sfx_click5.mp3
+audio/sfx_hit.mp3
+audio/sfx_miss.mp3
+audio/sfx_overheat.mp3
+audio/sfx_scan.mp3
+audio/sfx_shield.mp3
+
 textures/title.png
 textures/title2.png
 
