@@ -758,26 +758,23 @@ auto
 module definitions below
 
 
-::module cockpit 1
-A lil' cockpit.
-TODO: description
+::module Compact Cockpit
+Cold, cramped, a prison without walls... but it keeps the lights on.
 ---
 auto, cockpit, flexible
 ---
 0
 
-::module cockpit 2
-A standard cockpit.
-TODO: description
+::module Comfortable Cockpit
+Sometimes you only need one to have fun, but some redundancy can't hurt.
 ---
 auto, cockpit
 ---
 00
 00
 
-::module cockpit 3
-A big cockpit.
-TODO: description
+::module Commander's Cockpit
+Discounted from a decommissioned orbital platform. Comes with backup monitors, seats wrapped in velvet, and a voided warranty.
 ---
 auto, cockpit, awkward
 ---
