@@ -102,8 +102,12 @@ audio/voiceSongbird.mp3
 textures/portrait Danny.png
 textures/portrait Diane.png
 textures/portrait Judy.png
+textures/portrait Madge.png
+textures/portrait Murrow.png
 textures/portrait Rhiannon.png
+textures/portrait Sara.png
 textures/portrait Songbird.png
+textures/portrait Woman of 1000 Years.png
 
 textures/scroll_track.png
 textures/scroll_thumb.png

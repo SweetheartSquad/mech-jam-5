@@ -47,12 +47,13 @@
 	this.tween(this.scene.border.display.container, 'alpha', 1, 500);
 
 	// add syntax sugar for passages like `Guy angry: Blah blah.`
-	const check = /(\w+)(\s+\w*)?:\s*/;
+	const check = /(\w+|".*?")(\s+\w*)?:\s*/;
 	this.scene.dialogue.sayo = this.scene.dialogue.say;
 	this.scene.dialogue.say = (text, actions) => {
 		const match = check.exec(text);
+		console.log(match, text);
 		if (match) {
-			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' '));
+			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' ').replace('"','').replace('"',''));
 			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
 			this.scene.dialogue.voice = match[1];
 			this.scene.dialogue.sayo(`${match[1].toUpperCase()}:\n${text.substring(match[0].length)}`, actions);
@@ -111,7 +112,8 @@ Murrow: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egesta
 Rhiannon: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
 >
 Sara: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
-
+>
+"Woman of 1000 Years": Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
 [[>start]]
 
 ::close
