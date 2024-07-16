@@ -2051,15 +2051,13 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	};
 
 	tagsToPossibleActions(tags: string[]) {
-		let attacksMax = 0;
+		let attacksMax = 1;
 		let scansMax = 0;
 		let shieldsAmt = 0;
-		let heatMax = 0;
+		let heatMax = 1;
 		tags.forEach((tag) => {
 			switch (tag) {
 				case 'cockpit':
-					++attacksMax;
-					++heatMax;
 					break;
 				case 'heatsink':
 					++heatMax;
