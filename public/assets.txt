@@ -99,7 +99,9 @@ textures/module sink 7.png
 textures/module Bar.png
 textures/module Bar2.png
 textures/module radar 1.png
-
+textures/module radar 2.png
+textures/module radar 3.png
+textures/module radar 4.png
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
 audio/voiceJudy.mp3

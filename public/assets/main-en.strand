@@ -894,7 +894,7 @@ auto, shield, shield, shield, awkward
 ..00
 000..
 
-::module Bar2
+::module radar 2
 TODO: description
  
 SCAN +1
@@ -904,7 +904,7 @@ auto, radar, flexible
 000
 
 
-::module fork
+::module radar 3
 A fork
 TODO: description
  
@@ -916,7 +916,7 @@ auto, radar, radar
 .00
 00
 
-::module square
+::module radar 4
 TODO: description
  
 SCAN +3
