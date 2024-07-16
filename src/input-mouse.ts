@@ -93,6 +93,7 @@ export class Mouse {
 	}
 
 	onDown = (event: MouseEvent): void => {
+		event.preventDefault();
 		this.button = event.button > -1 ? event.button : this.button;
 		if (!this.down) {
 			this.down = true;
