@@ -64,24 +64,24 @@ textures/module debug shield.png
 textures/module debug heat.png
 textures/module debug joint.png
 textures/module debug radar.png
-textures/module cockpit 1.png
-textures/module cockpit 2.png
-textures/module cockpit 3.png
+
+textures/module Compact Cockpit.png
+textures/module Comfortable Cockpit.png
+textures/module Commander's Cockpit.png
+
 textures/module Cheap Plating.png
 textures/module Standard Plating.png
 textures/module Superior Plating.png
-textures/module Tee.png
-textures/module Bar.png
-textures/module Bar2.png
 
 textures/module extender 1.png
 textures/module extender 2.png
 textures/module extender 3.png
 textures/module extender 4.png
 
-textures/module rocket 1.png
-textures/module crosshair.png
-textures/module gun.png
+textures/module Enchanter.png
+textures/module Big Love.png
+textures/module Heartless Challenge.png
+textures/module Sweet Omega.png
 
 textures/module shield 1.png
 textures/module shield 2.png
@@ -96,6 +96,8 @@ textures/module sink 5.png
 textures/module sink 6.png
 textures/module sink 7.png
 
+textures/module Bar.png
+textures/module Bar2.png
 textures/module radar 1.png
 
 audio/voiceDanny.mp3

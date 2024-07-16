@@ -758,26 +758,23 @@ auto
 module definitions below
 
 
-::module cockpit 1
-A lil' cockpit.
-TODO: description
+::module Compact Cockpit
+Cold, cramped, a prison without walls... but it keeps the lights on.
 ---
 auto, cockpit, flexible
 ---
 0
 
-::module cockpit 2
-A standard cockpit.
-TODO: description
+::module Comfortable Cockpit
+Sometimes you only need one to have fun, but some redundancy can't hurt.
 ---
 auto, cockpit
 ---
 00
 00
 
-::module cockpit 3
-A big cockpit.
-TODO: description
+::module Commander's Cockpit
+Discounted from a decommissioned orbital platform. Comes with backup monitors, seats wrapped in velvet, and a voided warranty.
 ---
 auto, cockpit, awkward
 ---
@@ -809,8 +806,10 @@ auto, armour, awkward
 000
 000
 
-::module Tee
-TODO: description
+::module Enchanter
+Her shots ring like a bell through the night.
+ 
+AIM +1
 ---
 auto, attack
 ---
@@ -818,8 +817,10 @@ auto, attack
 .0.
 .0.
 
-::module rocket 1
-TODO: description
+::module Big Love
+She's somewhere between a pneumatic drill and a sharpened knife.
+ 
+AIM +1
 ---
 auto, attack
 ---
@@ -828,8 +829,10 @@ auto, attack
 000
 
 
-::module crosshair
-TODO: description
+::module Heartless Challenge
+She'll break down your mech. She'll shatter your illusions.
+ 
+AIM +2
 ---
 auto, attack, attack
 ---
@@ -838,8 +841,10 @@ auto, attack, attack
 .0.
 
 
-::module gun
-TODO: description
+::module Sweet Omega
+She'll bring you joy. You know she can destroy.
+ 
+AIM +2
 ---
 auto, attack, attack
 ---
@@ -849,6 +854,8 @@ auto, attack, attack
 
 ::module shield 1
 TODO: description
+ 
+SHIELD +1
 ---
 auto, shield
 ---
@@ -857,6 +864,8 @@ auto, shield
 
 ::module shield 2
 TODO: description
+ 
+SHIELD +2
 ---
 auto, shield, shield
 ---
@@ -865,6 +874,8 @@ auto, shield, shield
 
 ::module shield 3
 TODO: description
+ 
+SHIELD +3
 ---
 auto, shield, shield, shield
 ---
@@ -874,6 +885,8 @@ auto, shield, shield, shield
 
 ::module shield 4
 TODO: description
+ 
+SHIELD +3
 ---
 auto, shield, shield, shield, awkward
 ---
@@ -881,8 +894,57 @@ auto, shield, shield, shield, awkward
 ..00
 000..
 
+::module Bar2
+TODO: description
+ 
+SCAN +1
+---
+auto, radar, flexible
+---
+000
+
+
+::module fork
+A fork
+TODO: description
+ 
+SCAN +2
+---
+auto, radar, radar
+---
+00
+.00
+00
+
+::module square
+TODO: description
+ 
+SCAN +3
+---
+auto, radar, radar, radar
+---
+000
+0.0
+000
+---
+1,0
+
+::module radar 1
+A double fork
+TODO: description
+ 
+SCAN +4
+---
+auto, radar, radar, radar, radar, awkward
+---
+00.00
+.000.
+00.00
+
 ::module sink 5
 TODO: description
+ 
+HEAT +1
 ---
 auto, heatsink, flexible
 ---
@@ -893,6 +955,8 @@ auto, heatsink, flexible
 
 ::module sink 6
 TODO: description
+ 
+HEAT +2
 ---
 auto, heatsink, heatsink
 ---
@@ -904,6 +968,8 @@ auto, heatsink, heatsink
 
 ::module sink 2
 TODO: description
+ 
+HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
 ---
@@ -915,6 +981,8 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 3
 TODO: description
+ 
+HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
 ---
@@ -927,6 +995,8 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 1
 TODO: description
+ 
+HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
 ---
@@ -939,6 +1009,8 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 4
 TODO: description
+ 
+HEAT +3
 ---
 auto, heatsink, heatsink, heatsink, awkward
 ---
@@ -950,6 +1022,8 @@ auto, heatsink, heatsink, heatsink, awkward
 
 ::module sink 7
 TODO: description
+ 
+HEAT +4
 ---
 auto, heatsink, heatsink, heatsink, heatsink, awkward
 ---
@@ -1000,45 +1074,6 @@ auto, joint, awkward
 000000
 ---
 0,4
-
-::module radar 2
-TODO: description
----
-auto, radar, flexible
----
-000
-
-
-::module radar 3
-A fork
-TODO: description
----
-auto, radar, radar
----
-00
-.00
-00
-
-::module radar 1
-A double fork
-TODO: description
----
-auto, radar, radar, radar, radar, awkward
----
-00.00
-.000.
-00.00
-
-::module radar 4
-TODO: description
----
-auto, radar, radar, radar
----
-000
-0.0
-000
----
-1,0
 
 
 
