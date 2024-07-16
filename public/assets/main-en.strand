@@ -872,7 +872,7 @@ auto, shield, shield, shield
 .00
 000.
 
-::module stair4
+::module shield 4
 TODO: description
 ---
 auto, shield, shield, shield, awkward
