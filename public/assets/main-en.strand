@@ -729,6 +729,292 @@ auto
 module definitions below
 
 
+::module cockpit 1
+A lil' cockpit.
+TODO: description
+---
+auto, cockpit, flexible
+---
+0
+
+::module cockpit 2
+A standard cockpit.
+TODO: description
+---
+auto, cockpit
+---
+00
+00
+
+::module cockpit 3
+A big cockpit.
+TODO: description
+---
+auto, cockpit, awkward
+---
+000
+000
+000
+
+::module Cheap Plating
+Scraps of bronze hastily fashioned into defensive plating by the nearest star. A solid one-two block.
+---
+auto, armour, flexible
+---
+00
+
+::module Standard Plating
+Modular steel, available anywhere this side of the Kuiper belt. The best defense is a big ol' slate of gun-metal grey.
+---
+auto, armour
+---
+00
+00
+
+::module Superior Plating
+A premium panel of interlocking nanocarbon alloys. Stronger than a magic spell and wider than the widest sea.
+---
+auto, armour, awkward
+---
+000
+000
+000
+
+::module Tee
+TODO: description
+---
+auto, attack
+---
+000
+.0.
+.0.
+
+::module rocket 1
+TODO: description
+---
+auto, attack
+---
+.0.
+000
+000
+
+
+::module crosshair
+TODO: description
+---
+auto, attack, attack
+---
+.0.
+000
+.0.
+
+
+::module x
+TODO: description
+---
+auto, attack, attack
+---
+.0
+00000
+.0
+
+::module shield 1
+TODO: description
+---
+auto, shield
+---
+00.
+.00
+
+::module shield 2
+TODO: description
+---
+auto, shield, shield
+---
+.000
+000.
+
+::module shield 3
+TODO: description
+---
+auto, shield, shield, shield
+---
+.000
+.00
+000.
+
+::module stair4
+TODO: description
+---
+auto, shield, shield, shield, awkward
+---
+...000
+..00
+000..
+
+::module l3
+TODO: description
+---
+auto, heatsink, flexible
+---
+0
+00
+---
+0,1
+
+::module l2
+TODO: description
+---
+auto, heatsink, heatsink
+---
+00
+0
+000
+---
+0,2
+
+::module sink 2
+TODO: description
+---
+auto, heatsink, heatsink, heatsink
+---
+00000
+....0
+00000
+---
+4,1
+
+::module sink 3e3123
+TODO: description
+---
+auto, heatsink, heatsink, heatsink
+---
+00000
+0...0
+0...0
+....0
+---
+2,0
+
+::module sink 1
+TODO: description
+---
+auto, heatsink, heatsink, heatsink
+---
+0000
+0...
+0...
+0000
+---
+0,1
+
+::module shapesies
+TODO: description
+---
+auto, heatsink, heatsink, heatsink, awkward
+---
+00000
+0..00
+..000
+---
+3,1
+
+::module whoa
+TODO: description
+---
+auto, heatsink, heatsink, heatsink, heatsink, awkward
+---
+00..0
+0..00
+0..00
+00000
+---
+3,2
+
+
+::module l1
+TODO: description
+---
+auto, joint, flexible
+---
+0
+000
+
+::module extender 2
+A long squiggle
+TODO: description
+---
+auto, joint
+---
+00
+.00000
+
+::module extender 1
+A long L
+TODO: description
+---
+auto, joint
+---
+.....0
+000000
+
+::module extender 3
+A huge L
+TODO: description
+---
+auto, joint, awkward
+---
+0
+0
+0
+0
+000000
+---
+0,4
+
+::module Bar2
+TODO: description
+---
+auto, radar, flexible
+---
+000
+
+
+::module fork
+A fork
+TODO: description
+---
+auto, radar, radar
+---
+00
+.00
+00
+
+::module sink 4
+A double fork
+TODO: description
+---
+auto, radar, radar, radar, radar, awkward
+---
+00.00
+.000.
+00.00
+
+::module square
+TODO: description
+---
+auto, radar, radar, radar
+---
+000
+0.0
+000
+---
+1,0
+
+
+
+
+
 ::module debug cockpit
 debug cockpit
 ---
@@ -794,296 +1080,3 @@ auto
 00=00
 0===0
 00=00
-
-
-::module cockpit 1
-A lil' cockpit.
-TODO: description
----
-auto, cockpit, flexible
----
-0
-
-::module cockpit 2
-A standard cockpit.
-TODO: description
----
-auto, cockpit
----
-00
-00
-
-::module cockpit 3
-A big cockpit.
-TODO: description
----
-auto, cockpit
----
-000
-000
-000
-
-::module Cheap Plating
-Scraps of bronze hastily fashioned into defensive plating by the nearest star. A solid one-two block.
----
-auto, armour, flexible
----
-00
-
-::module Standard Plating
-Modular steel, available anywhere this side of the Kuiper belt. The best defense is a big ol' slate of gun-metal grey.
----
-auto, armour
----
-00
-00
-
-::module Superior Plating
-A premium panel of interlocking nanocarbon alloys. Stronger than a magic spell and wider than the widest sea.
----
-auto, armour
----
-000
-000
-000
-
-::module Tee
-TODO: description
----
-auto, attack
----
-000
-.0.
-.0.
-
-::module Bar
-TODO: description
----
-auto, radar
----
-0000
-
-::module Bar2
-TODO: description
----
-auto, radar, flexible
----
-000
-
-::module Single
-TODO: description
----
-auto, flexible
----
-0
-
-::module square
-TODO: description
----
-auto
----
-000
-0.0
-000
----
-1,0
-
-::module rocket 1
-TODO: description
----
-auto, attack
----
-.0.
-000
-000
-
-
-::module crosshair
-TODO: description
----
-auto, joint
----
-.0.
-000
-.0.
-
-::module shield 1
-TODO: description
----
-auto, shield
----
-00.
-.00
-
-::module shield 2
-TODO: description
----
-auto, shield
----
-.000
-000.
-
-::module shield 3
-TODO: description
----
-auto, shield
----
-.000
-.00
-000.
-
-::module stair4
-TODO: description
----
-auto, shield
----
-...000
-..00
-000..
-
-::module shapesies
-TODO: description
----
-auto, heatsink, awkward
----
-00000
-0..00
-..000
----
-3,1
-
-::module whoa
-TODO: description
----
-auto, heatsink, awkward
----
-00..0
-0..00
-0..00
-00000
----
-3,2
-
-::module sink 3
-TODO: description
----
-auto, heatsink
----
-00000
-0...0
-0...0
-0...0
----
-2,0
-
-::module sink 2
-TODO: description
----
-auto, heatsink, awkward
----
-00000
-....0
-00000
----
-4,1
-
-::module sink 1
-TODO: description
----
-auto, heatsink
----
-0000
-0...
-0...
-0000
----
-0,1
-
-::module l1
-TODO: description
----
-auto, heatsink
----
-0
-000
-
-::module l2
-TODO: description
----
-auto, heatsink
----
-0
-0
-000
----
-0,2
-
-::module l3
-TODO: description
----
-auto, heatsink, flexible
----
-0
-00
----
-0,1
-
-::module 2by1
-A thing
-TODO: description
----
-auto, heatsink, flexible
----
-00
-
-::module extender 3
-A huge L
-TODO: description
----
-auto, joint
----
-0
-0
-0
-0
-000000
----
-0,4
-
-::module extender 2
-A long squiggle
-TODO: description
----
-auto, joint
----
-00
-.00000
-
-::module sink 4
-A double fork
-TODO: description
----
-auto, heatsink, awkward
----
-00.00
-.000.
-00.00
-
-::module extender 1
-A long L
-TODO: description
----
-auto, joint
----
-.....0
-000000
-
-::module fork
-A fork
-TODO: description
----
-auto, heatsink, awkward
----
-00
-.00
-00
