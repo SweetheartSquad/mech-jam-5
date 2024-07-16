@@ -948,7 +948,7 @@ auto, heatsink, heatsink, heatsink, awkward
 ---
 3,1
 
-::module whoa
+::module sink 7
 TODO: description
 ---
 auto, heatsink, heatsink, heatsink, heatsink, awkward
