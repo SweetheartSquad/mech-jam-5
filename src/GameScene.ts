@@ -2940,7 +2940,11 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				(defensive || randItem([true, true, false]))
 			) {
 				shields = shieldsAmt;
-			} else if (shieldsAmt < heatMax + overheating && defensive) {
+			} else if (
+				shieldsAmt < heatMax + overheating &&
+				defensive &&
+				randItem([true, true, false])
+			) {
 				overheating -= shieldsAmt;
 				shields = shieldsAmt;
 			}
