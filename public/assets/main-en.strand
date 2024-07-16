@@ -1001,7 +1001,7 @@ auto, joint, awkward
 ---
 0,4
 
-::module Bar2
+::module radar 2
 TODO: description
 ---
 auto, radar, flexible
@@ -1009,7 +1009,7 @@ auto, radar, flexible
 000
 
 
-::module fork
+::module radar 3
 A fork
 TODO: description
 ---
@@ -1029,7 +1029,7 @@ auto, radar, radar, radar, radar, awkward
 .000.
 00.00
 
-::module square
+::module radar 4
 TODO: description
 ---
 auto, radar, radar, radar
