@@ -2871,14 +2871,15 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		return new Promise<string[]>(async (r) => {
 			const log: string[] = [];
 			let shields = shieldsEnemy;
+			// reveal scans
+			log.push(...(await this.scan('enemy', this.actions.scans)));
+			// play attacks
 			log.push(
 				...(await this.attack('enemy', {
 					attacks: this.actions.attacks,
 					shields,
 				}))
 			);
-			// reveal scans
-			log.push(...(await this.scan('enemy', this.actions.scans)));
 
 			// expand hits to sever parts
 			await this.severParts('enemy');
@@ -3120,14 +3121,15 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				log.push('OVERHEATED');
 			}
 
+			// reveal scans
+			log.push(...(await this.scan('player', scans)));
+			// play attacks
 			log.push(
 				...(await this.attack('player', {
 					attacks: attacks,
 					shields: this.actions.shield,
 				}))
 			);
-			// reveal scans
-			log.push(...(await this.scan('player', scans)));
 
 			// expand hits to sever parts
 			await this.severParts('player');
