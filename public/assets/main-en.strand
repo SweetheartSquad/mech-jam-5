@@ -854,7 +854,7 @@ auto, attack, attack
 
 ::module shield 1
 TODO: description
-
+ 
 SHIELD +1
 ---
 auto, shield
@@ -864,7 +864,7 @@ auto, shield
 
 ::module shield 2
 TODO: description
-
+ 
 SHIELD +2
 ---
 auto, shield, shield
@@ -874,7 +874,7 @@ auto, shield, shield
 
 ::module shield 3
 TODO: description
-
+ 
 SHIELD +3
 ---
 auto, shield, shield, shield
@@ -885,7 +885,7 @@ auto, shield, shield, shield
 
 ::module shield 4
 TODO: description
-
+ 
 SHIELD +3
 ---
 auto, shield, shield, shield, awkward
@@ -896,7 +896,7 @@ auto, shield, shield, shield, awkward
 
 ::module Bar2
 TODO: description
-
+ 
 SCAN +1
 ---
 auto, radar, flexible
@@ -907,7 +907,7 @@ auto, radar, flexible
 ::module fork
 A fork
 TODO: description
-
+ 
 SCAN +2
 ---
 auto, radar, radar
@@ -918,7 +918,7 @@ auto, radar, radar
 
 ::module square
 TODO: description
-
+ 
 SCAN +3
 ---
 auto, radar, radar, radar
@@ -932,7 +932,7 @@ auto, radar, radar, radar
 ::module radar 1
 A double fork
 TODO: description
-
+ 
 SCAN +4
 ---
 auto, radar, radar, radar, radar, awkward
@@ -943,7 +943,7 @@ auto, radar, radar, radar, radar, awkward
 
 ::module sink 5
 TODO: description
-
+ 
 HEAT +1
 ---
 auto, heatsink, flexible
@@ -955,7 +955,7 @@ auto, heatsink, flexible
 
 ::module sink 6
 TODO: description
-
+ 
 HEAT +2
 ---
 auto, heatsink, heatsink
@@ -968,7 +968,7 @@ auto, heatsink, heatsink
 
 ::module sink 2
 TODO: description
-
+ 
 HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
@@ -981,7 +981,7 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 3
 TODO: description
-
+ 
 HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
@@ -995,7 +995,7 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 1
 TODO: description
-
+ 
 HEAT +3
 ---
 auto, heatsink, heatsink, heatsink
@@ -1009,7 +1009,7 @@ auto, heatsink, heatsink, heatsink
 
 ::module sink 4
 TODO: description
-
+ 
 HEAT +3
 ---
 auto, heatsink, heatsink, heatsink, awkward
@@ -1022,7 +1022,7 @@ auto, heatsink, heatsink, heatsink, awkward
 
 ::module sink 7
 TODO: description
-
+ 
 HEAT +4
 ---
 auto, heatsink, heatsink, heatsink, heatsink, awkward
