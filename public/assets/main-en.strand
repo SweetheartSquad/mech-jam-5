@@ -47,12 +47,14 @@
 	this.tween(this.scene.border.display.container, 'alpha', 1, 500);
 
 	// add syntax sugar for passages like `Guy angry: Blah blah.`
+	let portrait = '';
 	const check = /(\w+|".*?")(\s+\w*)?:\s*/;
 	this.scene.dialogue.sayo = this.scene.dialogue.say;
 	this.scene.dialogue.say = (text, actions) => {
 		const match = check.exec(text);
 		if (match) {
-			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' ').replace('"','').replace('"',''));
+			portrait = ['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' ').replace('"','').replace('"','');
+			this[match[1] === 'Songbird' ? 'showL' : 'showR'](portrait);
 			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
 			this.scene.dialogue.voice = (match[1] || '').replace('"','').replace('"','');
 			this.scene.dialogue.sayo(`${match[1].toUpperCase()}:\n${text.substring(match[0].length)}`, actions);
@@ -60,6 +62,34 @@
 			this.scene.dialogue.sayo(text, actions);
 		}
 	};
+
+
+	// blinking and lip flaps
+	// this.blinking = false;
+	// this.timeoutBlinking;
+	this.scene.dialogue.scripts.push({
+		gameObject: this.scene.dialogue,
+		update: () => {
+			if (!portrait) return;
+			// if (!this.timeoutBlinking) {
+			// 	this.timeoutBlinking = setTimeout(() => {
+			// 		this.blinking = !this.blinking;
+			// 		this.timeoutBlinking = null;
+			// 	}, this.blinking ? 100 : 2000+Math.random()*4000);
+			// };
+
+			const letter = this.scene.dialogue.strText[scene.dialogue.pos];
+			const isLetter = letter && letter.replace(/[^\w]/, '');
+			const toggler = portrait.includes('Songbird') ? this.scene.dialogue.togglerL : this.scene.dialogue.togglerR;
+			if (isLetter) {
+				toggler.active.setAnimation(`${portrait} open`);
+			// } else if (this.blinking && this.portrait !== 'tsade') {
+			// 	toggler.active.setAnimation(`portrait ${this.portrait} ${this.face} blink`);
+			} else {
+				toggler.active.setAnimation(portrait);
+			}
+		},
+	});
 >>
 <<endif>>
 <<do this.showL('')>>
