@@ -51,7 +51,6 @@
 	this.scene.dialogue.sayo = this.scene.dialogue.say;
 	this.scene.dialogue.say = (text, actions) => {
 		const match = check.exec(text);
-		console.log(match, text);
 		if (match) {
 			this[match[1] === 'Songbird' ? 'showL' : 'showR'](['portrait', match[1], match[2] ].filter(i => i).map(i => i.trim()).join(' ').replace('"','').replace('"',''));
 			requestAnimationFrame(() => this.scene.dialogue.pos = match[1].length+2);
