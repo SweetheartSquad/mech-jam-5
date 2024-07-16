@@ -80,6 +80,7 @@ textures/module extender 3.png
 
 textures/module rocket 1.png
 textures/module crosshair.png
+textures/module gun.png
 
 textures/module shield 1.png
 textures/module shield 2.png
