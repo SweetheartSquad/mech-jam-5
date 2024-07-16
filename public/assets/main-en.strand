@@ -806,9 +806,9 @@ auto, armour, awkward
 000
 000
 
-::module Tee
-TODO: description
-
+::module Enchanter
+Her shots ring like a bell through the night.
+ 
 AIM +1
 ---
 auto, attack
@@ -817,9 +817,9 @@ auto, attack
 .0.
 .0.
 
-::module rocket 1
-TODO: description
-
+::module Big Love
+She's somewhere between a pneumatic drill and a sharpened knife.
+ 
 AIM +1
 ---
 auto, attack
@@ -829,9 +829,9 @@ auto, attack
 000
 
 
-::module crosshair
-TODO: description
-
+::module Heartless Challenge
+She'll break down your mech. She'll shatter your illusions.
+ 
 AIM +2
 ---
 auto, attack, attack
@@ -841,9 +841,9 @@ auto, attack, attack
 .0.
 
 
-::module gun
-TODO: description
-
+::module Sweet Omega
+She'll bring you joy. You know she can destroy.
+ 
 AIM +2
 ---
 auto, attack, attack
