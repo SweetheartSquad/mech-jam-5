@@ -679,6 +679,20 @@ SPACE: ${formatCount(freeCells, allCells)}
 						spr.label = i;
 						buttonify(spr, i);
 						spr.addEventListener('pointerover', () => {
+							setTextWrapped(
+								textInfo,
+								`${this.getGeneralInfo()}${smartify(`"${part.name}"
+ 
+${part.cost}$ | ${part.cellCount} CELLS
+ 
+${part.description}`)}${
+									DEBUG
+										? `\n \nDEBUG\n${(part.cost / part.cellCount).toFixed(
+												2
+										  )}$/CELL`
+										: ''
+								}`
+							);
 							this.textTip.text = part.name;
 							sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 							spr.alpha = 0.8;
@@ -750,21 +764,6 @@ SPACE: ${formatCount(freeCells, allCells)}
 				});
 				containerBtns = btns.container;
 				this.container.addChild(btns.container);
-
-				setTextWrapped(
-					textInfo,
-					`${this.getGeneralInfo()}${smartify(`"${lastPart.name}"
- 
-${lastPart.cost}$ | ${lastPart.cellCount} CELLS
- 
-${lastPart.description}`)}${
-						DEBUG
-							? `\n \nDEBUG\n${(lastPart.cost / lastPart.cellCount).toFixed(
-									2
-							  )}$/CELL`
-							: ''
-					}`
-				);
 			};
 			update();
 
@@ -1173,6 +1172,8 @@ ${lastModule.description}${
 					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 					uiModule.alpha = 0.8;
 					this.textTip.text = moduleD.name;
+					lastModule = moduleD;
+					updateInfo();
 				});
 				uiModule.addEventListener('pointerout', () => {
 					uiModule.alpha = 1;
