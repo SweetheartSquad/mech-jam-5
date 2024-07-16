@@ -6,9 +6,10 @@ import {
 	NineSliceSprite,
 	Sprite,
 } from 'pixi.js';
+import { sfx } from './Audio';
 import { Spr9 } from './Spr9';
 import { Tween, TweenManager } from './Tweens';
-import { clamp, lerp, relativeMouse, tex } from './utils';
+import { clamp, lerp, randRange, relativeMouse, tex } from './utils';
 
 export class Scroller {
 	container: Container;
@@ -97,7 +98,13 @@ export class Scroller {
 		this.containerScroll.interactive = true;
 	}
 
+	lastScroll = Date.now();
 	scrollTo(y: number, duration = 0) {
+		const now = Date.now();
+		if (now - this.lastScroll > 50) {
+			sfx('sfx_click1', { volume: 0.1, rate: randRange(1.1, 1.2) });
+			this.lastScroll = now;
+		}
 		this.scrollTop = clamp(0, y, this.scrollHeight - this.sprMask.height);
 		this.tweens.forEach((i) => TweenManager.abort(i));
 		this.tweens.length = 0;

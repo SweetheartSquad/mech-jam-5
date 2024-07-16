@@ -20,7 +20,15 @@ import { size } from './config';
 import { fontDialogue } from './font';
 import { KEYS, keys } from './input-keys';
 import { getActiveScene, getInput, mouse } from './main';
-import { buttonify, clamp, lerp, setTextWrapped, smartify, tex } from './utils';
+import {
+	buttonify,
+	clamp,
+	lerp,
+	randRange,
+	setTextWrapped,
+	smartify,
+	tex,
+} from './utils';
 
 const rateBase = 0.75;
 const rateLetter = 0.5;
@@ -305,6 +313,8 @@ export class UIDialogue extends GameObject {
 			buttonify(t, strText || 'continue');
 
 			t.on('pointerover', () => {
+				if (this.choices.length > 1 && this.containerChoices.alpha > 0.5)
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 				t.alpha = 0.75;
 				this.selected = idx;
 			});

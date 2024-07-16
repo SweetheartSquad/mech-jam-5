@@ -40,7 +40,7 @@ import {
 import { error, warn } from './logger';
 import { getInput, mouse } from './main';
 import { makeModule, mechModuleParse, ModuleD } from './mech-module';
-import { makePart, MechD, mechPartParse, MechD as PartD } from './mech-part';
+import { makePart, MechD, mechPartParse } from './mech-part';
 import { Scroller } from './scroller';
 import {
 	black,
@@ -360,6 +360,12 @@ export class GameScene {
 			btnCancel.text.x += btnCancel.text.width;
 			btnCancel.display.container.alpha = 0.8;
 
+			[btnConfirm, btnCancel].forEach((i) =>
+				i.spr.on('pointerover', () =>
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) })
+				)
+			);
+
 			panel.width = size.x / 3 - 50;
 			const gap = 25;
 			const textMsg = new BitmapText({ text: '', style: fontDialogue });
@@ -411,6 +417,9 @@ export class GameScene {
 				destroy();
 				r(true);
 			});
+			btnConfirm.spr.on('pointerover', () =>
+				sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) })
+			);
 
 			panel.width = size.x / 3 - 50;
 			const gap = 25;
@@ -565,6 +574,12 @@ SPACE: ${formatCount(freeCells, allCells)}
 					index %= items.length;
 					update(items[index], index);
 				}, 'buttonArrow');
+				btnPrev.spr.on('pointerover', () => {
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
+				});
+				btnNext.spr.on('pointerover', () => {
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
+				});
 				const container = new Container();
 				btnPrev.transform.x -= btnPrev.display.container.width / 2;
 				btnNext.transform.x += btnNext.display.container.width / 2;
@@ -665,6 +680,11 @@ SPACE: ${formatCount(freeCells, allCells)}
 						buttonify(spr, i);
 						spr.addEventListener('pointerover', () => {
 							this.textTip.text = part.name;
+							sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
+							spr.alpha = 0.8;
+						});
+						spr.addEventListener('pointerout', () => {
+							spr.alpha = 1;
 						});
 						spr.addEventListener('click', () => {
 							if (lastPart === part) return;
@@ -720,6 +740,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 						btn.spr.texture = tex('cell joint');
 					}
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						if (cell === '=') {
 							this.textTip.text = 'joint';
 						} else if (cell === '0') {
@@ -775,6 +796,9 @@ ${lastPart.description}`)}${
 				panelInfo.destroy();
 
 				closeModal();
+			});
+			btnDone.spr.on('pointerover', () => {
+				sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 			});
 			const containerScrollers = new Container();
 			this.containerUI.addChild(containerScrollers);
@@ -1004,6 +1028,7 @@ ${lastModule.description}${
 					}
 				};
 				btn.spr.addEventListener('pointerover', () => {
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 					target = btn;
 					checkPlacement();
 					const idx = Number(this.modules.grid[y][x]);
@@ -1145,7 +1170,12 @@ ${lastModule.description}${
 				scroller.addChild(c);
 				buttonify(uiModule, moduleD.name);
 				uiModule.addEventListener('pointerover', () => {
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
+					uiModule.alpha = 0.8;
 					this.textTip.text = moduleD.name;
+				});
+				uiModule.addEventListener('pointerout', () => {
+					uiModule.alpha = 1;
 				});
 				uiModule.addEventListener('pointerdown', (event) => {
 					if (event && event.button !== mouse.LEFT) return;
@@ -1198,7 +1228,8 @@ ${lastModule.description}${
 				donePlacingModules(false);
 			});
 			const btnReset = new BtnText('RESET', async () => {
-				if (!this.modules.placed.length) return;
+				if (!this.modules.placed.length)
+					return sfx('sfx_click1', { volume: 0.2, rate: randRange(0.5, 0.6) });
 				if (!(await this.confirm('Remove all currently placed modules?')))
 					return;
 				sfx('sfx_click2', { rate: randRange(0.6, 0.7) });
@@ -1229,6 +1260,12 @@ ${lastModule.description}${
 				this.screenFilter.flash(0.5, 500, eases.circOut);
 				donePlacingModules(true);
 			});
+
+			[btnBack, btnDone, btnReset].forEach((i) =>
+				i.spr.on('pointerover', () =>
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) })
+				)
+			);
 
 			const containerScrollers = new Container();
 			this.container.addChild(containerBtns);
@@ -1368,6 +1405,7 @@ ${lastModule.description}${
 						btn.display.container.alpha = 0;
 					}
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = `${name} (destroyed)`;
 					});
 				} else if (isFullyRevealed) {
@@ -1378,11 +1416,13 @@ ${lastModule.description}${
 						btn.display.container.alpha = 0;
 					}
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = `${name} (revealed)`;
 					});
 				} else if (isDestroyed) {
 					btn.spr.texture = tex(isEmpty ? 'cell detect_empty' : 'cell damaged');
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = isEmpty
 							? 'empty cell (revealed)'
 							: `${name} (damaged)`;
@@ -1400,6 +1440,7 @@ ${lastModule.description}${
 					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = isEmpty
 							? 'empty cell (hidden)'
 							: `${name} (hidden)`;
@@ -1455,6 +1496,7 @@ ${lastModule.description}${
 						btn.display.container.alpha = 0;
 					}
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = `${name} (destroyed)`;
 					});
 				} else if (isFullyRevealed) {
@@ -1465,6 +1507,7 @@ ${lastModule.description}${
 						btn.display.container.alpha = 0;
 					}
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = `${name} (scanned)`;
 					});
 				} else if (isDestroyed) {
@@ -1478,12 +1521,14 @@ ${lastModule.description}${
 						isEmpty ? 'cell detect_empty' : 'cell detect_filled'
 					);
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = isEmpty ? 'empty cell' : `${name} (scanned)`;
 					});
 					btn.spr.tint = isEmpty ? gray : greenHalf;
 				} else {
 					btn.display.container.visible = false;
 					btn.spr.addEventListener('pointerover', () => {
+						sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 						this.textTip.text = `unknown`;
 					});
 				}
@@ -2048,6 +2093,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				btn.spr.texture = tex('cell target');
 				btn.display.container.tint = red;
 				btn.spr.addEventListener('pointerover', () => {
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 					this.textTip.text =
 						btn.display.container.tint === red ? 'QUEUED AIM' : 'QUEUED SCAN';
 				});
@@ -2064,6 +2110,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const containerHeat = new Container();
 			buttonify(containerHeat);
 			containerHeat.addEventListener('pointerover', () => {
+				sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 				this.textTip.text = `HEAT: ${formatCount(this.getHeat(), heatMax)}`;
 			});
 			const heatTweens: Tween[] = [];
@@ -2162,19 +2209,36 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 				}
 			};
 
+			let targeting = false;
 			const btnAttack = new BtnText(
 				'AIM',
 				async (e) => {
-					if (this.actions.attacks.length >= attacksMax) return;
+					if (this.actions.attacks.length >= attacksMax) {
+						targeting = false;
+						return sfx('sfx_click1', {
+							volume: 0.2,
+							rate: randRange(0.5, 0.6),
+						});
+					}
+					if (!targeting) {
+						targeting = true;
+						sfx('sfx_woop', { volume: 0.5, rate: randRange(0.95, 1.05) });
+					}
 					const removeModal = this.modal(undefined, red);
 					const target = await this.pickTarget(true);
 					removeModal();
-					if (!target) return;
+					if (!target) {
+						targeting = false;
+						return;
+					}
 					this.actions.attacks.push([target[0], target[1]]);
 					updateAttacks();
 					updateTargetGrid();
 					updateHeat();
 					if (target[2]) btnAttack.onClick(e);
+					else {
+						targeting = false;
+					}
 				},
 				undefined,
 				'buttonCombat'
@@ -2192,16 +2256,32 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const btnScan = new BtnText(
 				'SCAN',
 				async (e) => {
-					if (this.actions.scans.length >= scansMax) return;
+					if (this.actions.scans.length >= scansMax) {
+						targeting = false;
+						return sfx('sfx_click1', {
+							volume: 0.2,
+							rate: randRange(0.5, 0.6),
+						});
+					}
+					if (!targeting) {
+						targeting = true;
+						sfx('sfx_woop', { volume: 0.5, rate: randRange(0.95, 1.05) });
+					}
 					const removeModal = this.modal(undefined, greenHalf);
 					const target = await this.pickTarget(false);
 					removeModal();
-					if (!target) return;
+					if (!target) {
+						targeting = false;
+						return;
+					}
 					this.actions.scans.push([target[0], target[1]]);
 					updateScans();
 					updateTargetGrid();
 					updateHeat();
 					if (target[2]) btnScan.onClick(e);
+					else {
+						targeting = false;
+					}
 				},
 				undefined,
 				'buttonCombat'
@@ -2225,7 +2305,16 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			const btnToggleShield = new BtnText(
 				'shields',
 				() => {
-					if (!shieldsAmt) return;
+					if (!shieldsAmt)
+						return sfx('sfx_click1', {
+							volume: 0.2,
+							rate: randRange(0.5, 0.6),
+						});
+					sfx('sfx_click2', {
+						rate: this.actions.shield
+							? randRange(1.5, 1.6)
+							: randRange(1.1, 1.2),
+					});
 					this.actions.shield = this.actions.shield ? 0 : shieldsAmt;
 					updateShields();
 					updateHeat();
@@ -2242,7 +2331,11 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 						!this.actions.scans.length &&
 						!this.actions.shield
 					)
-						return;
+						return sfx('sfx_click1', {
+							volume: 0.2,
+							rate: randRange(0.5, 0.6),
+						});
+					sfx('sfx_click2', { rate: randRange(0.6, 0.7) });
 					this.screenFilter.flash(0.3, 400, eases.circOut);
 					this.actions.attacks.length = 0;
 					this.actions.scans.length = 0;
@@ -2297,6 +2390,12 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			this.containerUI.addChild(containerHeat);
 			containerHeat.y =
 				btnReset.transform.y - btnReset.display.container.height;
+
+			[btnReset, btnAttack, btnScan, btnToggleShield, btnEnd].forEach((i) =>
+				i.spr.on('pointerover', () =>
+					sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) })
+				)
+			);
 
 			const destroy = async () => {
 				const closeModal = this.modal(0);
@@ -2357,6 +2456,12 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 						btn.display.container.alpha = 0.5;
 					}
 					btn.onClick = (event) => {
+						sfx('sfx_scan', {
+							volume: 0.75,
+							rate:
+								1 +
+								(this.actions.attacks.length + this.actions.scans.length) / 20,
+						});
 						destroy();
 						r([x, y, event.ctrlKey || event.shiftKey]);
 					};
@@ -2510,12 +2615,13 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			await delay(500);
 		}
 
-		for (let [x, y] of attacks) {
+		for (let i = 0; i < attacks.length; ++i) {
+			const [x, y] = attacks[i];
 			await delay(100);
 			let msg = 'SHIELDED';
 			if (shields-- > 0) {
 				await this.zoop(who, x, y, red, msg);
-				sfx('sfx_shield', { rate: randRange(0.9, 1.1) });
+				sfx('sfx_shield', { rate: 1 + i / 20 });
 				log.push(msg);
 
 				if (shields <= 0) {
@@ -2540,9 +2646,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			msg = hasModule || isJoint ? 'HIT' : 'MISS';
 			await this.zoop(who, x, y, red, msg);
 			if (msg === 'HIT') {
-				sfx('sfx_hit', { rate: randRange(0.9, 1.1) });
+				sfx('sfx_hit', { rate: 1 + i / 20 });
 			} else {
-				sfx('sfx_miss', { rate: randRange(0.6, 0.62) });
+				sfx('sfx_miss', { rate: 1 + i / 20 });
 			}
 			log.push(msg);
 			grid[y][x] = 'X';
@@ -2560,7 +2666,8 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		const grid = who === 'player' ? this.battleGrid : this.battleGridEnemy;
 		const mech = who === 'player' ? this.mech : this.mechEnemy;
 		const modules = who === 'player' ? this.modules : this.modulesEnemy;
-		for (let [x, y] of scans) {
+		for (let i = 0; i < scans.length; ++i) {
+			const [x, y] = scans[i];
 			await delay(100);
 			const idx = Number(modules.grid[y][x]);
 			const hasModule = !Number.isNaN(idx);
@@ -2569,9 +2676,9 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 			log.push(msg);
 			await this.zoop(who, x, y, green, msg);
 			if (msg === 'REVEALED') {
-				sfx('sfx_scan', { rate: randRange(0.9, 1.1) });
+				sfx('sfx_scan', { rate: 1 + i / 20 });
 			} else {
-				sfx('sfx_miss', { rate: randRange(0.6, 0.62) });
+				sfx('sfx_miss', { rate: 1 + i / 20 });
 			}
 			grid[y][x] = hasModule || isJoint ? 'O' : 'X';
 			this.reassemble();
