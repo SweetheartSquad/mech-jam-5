@@ -937,7 +937,7 @@ auto, heatsink, heatsink, heatsink
 ---
 0,1
 
-::module shapesies
+::module sink 4
 TODO: description
 ---
 auto, heatsink, heatsink, heatsink, awkward
@@ -1019,7 +1019,7 @@ auto, radar, radar
 .00
 00
 
-::module sink 4
+::module radar 1
 A double fork
 TODO: description
 ---
