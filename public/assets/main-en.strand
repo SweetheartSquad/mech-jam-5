@@ -881,7 +881,7 @@ auto, shield, shield, shield, awkward
 ..00
 000..
 
-::module l3
+::module sink 5
 TODO: description
 ---
 auto, heatsink, flexible
@@ -891,7 +891,7 @@ auto, heatsink, flexible
 ---
 0,1
 
-::module l2
+::module sink 6
 TODO: description
 ---
 auto, heatsink, heatsink

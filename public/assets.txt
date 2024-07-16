@@ -91,6 +91,8 @@ textures/module sink 1.png
 textures/module sink 2.png
 textures/module sink 3.png
 textures/module sink 4.png
+textures/module sink 5.png
+textures/module sink 6.png
 
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
