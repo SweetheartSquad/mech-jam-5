@@ -1035,7 +1035,7 @@ auto, heatsink, heatsink, heatsink, heatsink, awkward
 3,2
 
 
-::module l1
+::module extender 4
 TODO: description
 ---
 auto, joint, flexible
