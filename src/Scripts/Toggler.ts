@@ -55,7 +55,7 @@ export class Toggler extends Script {
 			y = 0,
 			scale = 1,
 			animate = true,
-			freq = 1 / 400,
+			freq = 1 / 100,
 			alpha = 1,
 			flip = false,
 		}: {
