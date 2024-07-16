@@ -913,7 +913,7 @@ auto, heatsink, heatsink, heatsink
 ---
 4,1
 
-::module sink 3e3123
+::module sink 3
 TODO: description
 ---
 auto, heatsink, heatsink, heatsink
