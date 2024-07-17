@@ -801,6 +801,8 @@ ${part.description}`)}${
 				btnNext.destroy();
 				btnPrev.destroy();
 				panelInfo.destroy();
+				pulse.destroy?.();
+				removeFromArray(this.camera.scripts, pulse);
 
 				closeModal();
 			});
