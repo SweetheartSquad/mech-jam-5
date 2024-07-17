@@ -46,10 +46,10 @@ textures/chest Golden Casket.png
 textures/arm Sone ka Sparsh.png
 textures/leg Aurum Calcibus.png
 
-textures/head Block.png
-textures/arm 9.png
-textures/leg 5.png
-textures/chest 4.png
+textures/head Hot of Head.png
+textures/chest Brisk of Body.png
+textures/arm Swift of Swipe.png
+textures/leg Fleet of Foot.png
 
 textures/leg 1.png
 
