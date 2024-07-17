@@ -941,8 +941,8 @@ auto, radar, radar, radar, radar, awkward
 .000.
 00.00
 
-::module sink 5
-TODO: description
+::module HSNK-L
+The love that burns.
  
 HEAT +1
 ---
@@ -953,8 +953,8 @@ auto, heatsink, flexible
 ---
 0,1
 
-::module sink 6
-TODO: description
+::module HSNK-J
+A rock against the storm.
  
 HEAT +2
 ---
@@ -966,8 +966,8 @@ auto, heatsink, heatsink
 ---
 0,2
 
-::module sink 2
-TODO: description
+::module HSNK-V
+For days when the rain is gone.
  
 HEAT +3
 ---
@@ -979,8 +979,8 @@ auto, heatsink, heatsink, heatsink
 ---
 4,1
 
-::module sink 3
-TODO: description
+::module HSNK-U
+The bright burning truth.
  
 HEAT +3
 ---
@@ -993,8 +993,8 @@ auto, heatsink, heatsink, heatsink
 ---
 2,0
 
-::module sink 1
-TODO: description
+::module HSNK-C
+The ocean as your blanket.
  
 HEAT +3
 ---
@@ -1007,8 +1007,8 @@ auto, heatsink, heatsink, heatsink
 ---
 0,1
 
-::module sink 4
-TODO: description
+::module HSNK-G
+Cold as the black of night.
  
 HEAT +3
 ---
@@ -1020,8 +1020,8 @@ auto, heatsink, heatsink, heatsink, awkward
 ---
 3,1
 
-::module sink 7
-TODO: description
+::module HSNK-Q
+Not even the sun can burn me now.
  
 HEAT +4
 ---
