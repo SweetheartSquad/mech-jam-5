@@ -1183,7 +1183,14 @@ mechs below here
     "chest": "Golden Casket",
     "arms": "Sone ka Sparsh",
     "legs": "Aurum Calcibus",
-    "modules": [], // TODO: fill out
+    "modules": [
+        { "name": "Sweet Omega", "x": 7, "y": 2,"flipH": false,"flipV": false,"turns": 3 },
+        { "name": "D.MOD-MKI", "x": 2, "y": 9,"flipH": false,"flipV": true,"turns": 1 },
+        { "name": "Standard Plating", "x": 13, "y": 9,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-V", "x": 7, "y": 10,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "Comfortable Cockpit", "x": 3, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
+    ],
 })>>
 
 ::Family Man
