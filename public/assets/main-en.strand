@@ -301,25 +301,21 @@ Songbird: We'll see about that.
 Songbird: Alright, I'm ready to go.
 >
 Madge: Ready to lose, you mean.
+// GOLD DUST WOMAN
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "head": "Masque D'Or",
+    "chest": "Golden Casket",
+    "arms": "Sone ka Sparsh",
+    "legs": "Aurum Calcibus",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
+        { "name": "Sweet Omega", "x": 7, "y": 2,"flipH": false,"flipV": false,"turns": 3 },
+        { "name": "D.MOD-MKI", "x": 2, "y": 9,"flipH": false,"flipV": true,"turns": 1 },
+        { "name": "Standard Plating", "x": 13, "y": 9,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-V", "x": 7, "y": 10,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "Comfortable Cockpit", "x": 3, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+})>>
 
 [[>close]]
 
@@ -401,25 +397,21 @@ Songbird: ...Fine.
 Songbird: Okay, Danny. I'm ready. But I--
 >
 Danny: Homewrecker! You will taste defeat this day!!
+// STATION MAN
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "head": "Compound Carapace",
+    "chest": "Thoracic Trunk",
+    "arms": "Predatory Pincers",
+    "legs": "Beetle Boots",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
+        { "name": "Radial Array","x": 9,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-J","x": 0,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-L","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "D.MOD-MKI","x": 5,"y": 7,"flipH": true,"flipV": false,"turns": 1 },
+        { "name": "Comfortable Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+})>>
 
 [[>close]]
 
@@ -513,25 +505,25 @@ Rhiannon: Get in your mech.
 Songbird: Rhiannon, I swear I didn't say anything about you.
 >
 Rhiannon: You will take a bullet for every lie you've told.
+// ROAD RUNNER
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "head": "Peckish Lump",
+    "chest": "Whet Appetite",
+    "arms": "Tarless Feather",
+    "legs": "Hollowed Leap",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
+        {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 7,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "D.MOD-MKI","x": 3,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
+        {"name": "D.MOD-MKI","x": 5,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
+        {"name": "OverSight","x": 5,"y": 10,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Cheap Plating","x": 0,"y": 11,"flipH": false,"flipV": false,"turns": 2 },
+        {"name": "Cheap Plating","x": 2,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Cheap Plating","x": 8,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "HSNK-J","x": 2,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Sweet Omega","x": 7,"y": 17,"flipH": false,"flipV": false,"turns": 1 },
+    ],
+})>>
 
 [[>close]]
 
@@ -633,25 +625,22 @@ Songbird: Alright, just get in the arena.
 Songbird: Right. Let's do this.
 >
 Murrow: DIE!!!
+// FAMILY MAN
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "head": "Hot of Head",
+    "chest": "Brisk of Body",
+    "arms": "Swift of Swipe",
+    "legs": "Fleet of Foot",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
+        {"name": "Cheap Plating","x": 8,"y": 0,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Comfortable Cockpit","x": 7,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Flexible Brace","x": 6,"y": 4,"flipH": false,"flipV": false,"turns": 2 },
+        {"name": "HSNK-L","x": 13,"y": 4,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "DoubleSight","x": 1,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+})>>
 
 [[>close]]
 
@@ -1822,75 +1811,6 @@ auto
 
 ::mechs
 mechs below here
-
-::Station Man
-<<do this.scene.loadMech('enemy', {
-    "head": "Compound Carapace",
-    "chest": "Thoracic Trunk",
-    "arms": "Predatory Pincers",
-    "legs": "Beetle Boots",
-    "modules": [
-        { "name": "Radial Array","x": 9,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "HSNK-J","x": 0,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "HSNK-L","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 1 },
-        { "name": "D.MOD-MKI","x": 5,"y": 7,"flipH": true,"flipV": false,"turns": 1 },
-        { "name": "Comfortable Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
-    ],
-})>>
-
-::Gold Dust Woman
-<<do this.scene.loadMech('enemy', {
-    "head": "Masque D'Or",
-    "chest": "Golden Casket",
-    "arms": "Sone ka Sparsh",
-    "legs": "Aurum Calcibus",
-    "modules": [
-        { "name": "Sweet Omega", "x": 7, "y": 2,"flipH": false,"flipV": false,"turns": 3 },
-        { "name": "D.MOD-MKI", "x": 2, "y": 9,"flipH": false,"flipV": true,"turns": 1 },
-        { "name": "Standard Plating", "x": 13, "y": 9,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "HSNK-V", "x": 7, "y": 10,"flipH": false,"flipV": false,"turns": 1 },
-        { "name": "Comfortable Cockpit", "x": 3, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
-    ],
-})>>
-
-::Family Man
-<<do this.scene.loadMech('enemy', {
-    "head": "Hot of Head",
-    "chest": "Brisk of Body",
-    "arms": "Swift of Swipe",
-    "legs": "Fleet of Foot",
-    "modules": [
-        {"name": "Cheap Plating","x": 8,"y": 0,"flipH": false,"flipV": false,"turns": 3 },
-        {"name": "Comfortable Cockpit","x": 7,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Flexible Brace","x": 6,"y": 4,"flipH": false,"flipV": false,"turns": 2 },
-        {"name": "HSNK-L","x": 13,"y": 4,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "DoubleSight","x": 1,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Standard Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
-    ],
-})>>
-
-::Road Runner
-<<do this.scene.loadMech('enemy', {
-    "head": "Peckish Lump",
-    "chest": "Whet Appetite",
-    "arms": "Tarless Feather",
-    "legs": "Hollowed Leap",
-    "modules": [
-        {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Standard Plating","x": 7,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "D.MOD-MKI","x": 3,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
-        {"name": "D.MOD-MKI","x": 5,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
-        {"name": "OverSight","x": 5,"y": 10,"flipH": false,"flipV": false,"turns": 1 },
-        {"name": "Cheap Plating","x": 0,"y": 11,"flipH": false,"flipV": false,"turns": 2 },
-        {"name": "Cheap Plating","x": 2,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
-        {"name": "Cheap Plating","x": 8,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
-        {"name": "HSNK-J","x": 2,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Sweet Omega","x": 7,"y": 17,"flipH": false,"flipV": false,"turns": 1 },
-    ],
-})>>
 
 ::Purple Dancer
 <<do this.scene.loadMech('enemy', {
