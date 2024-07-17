@@ -41,10 +41,10 @@ textures/chest Thoracic Trunk.png
 textures/arm Predatory Pincers.png
 textures/leg Beetle Boots.png
 
-textures/head 5.png
-textures/chest 8.png
-textures/arm 4.png
-textures/leg 8.png
+textures/head Masque D'Or.png
+textures/chest Golden Casket.png
+textures/arm Sone ka Sparsh.png
+textures/leg Aurum Calcibus.png
 
 textures/leg 1.png
 
