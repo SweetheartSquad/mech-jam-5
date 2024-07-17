@@ -66,6 +66,11 @@ textures/head The Crooked.png
 // textures/arm The White Knuckles.png
 // textures/leg The Dipped Toes.png
 
+// textures/head ?.png
+// textures/chest ?.png
+// textures/arm ?.png
+// textures/leg ?.png
+
 textures/leg 1.png
 
 textures/button_normal.png
