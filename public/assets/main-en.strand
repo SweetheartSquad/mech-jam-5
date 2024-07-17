@@ -377,7 +377,7 @@ auto
 .00000.
 ...=...
 
-::head 4
+::head Compound Carapace
 blah blah blah
 ---
 auto
@@ -442,7 +442,7 @@ blah blah blah
 ..=0=
 ....
 
-::chest 2
+::chest Thoracic Trunk
 blah blah blah
 ---
 auto
@@ -552,7 +552,7 @@ auto
 .0.
 
 
-::arm 2
+::arm Predatory Pincers
 blah blah blah
 ---
 auto
@@ -670,7 +670,7 @@ auto
 .0.
 00.
 
-::leg 4
+::leg Beetle Boots
 blah blah blah
 ---
 auto
