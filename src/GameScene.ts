@@ -2869,6 +2869,7 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 	}
 
 	async bigTextPop(text: string, x: number, y: number, tint = white) {
+		sfx('sfx_click2', { rate: randRange(2.5, 2.6) });
 		text = smartify(text);
 		const container = new Container();
 		const textHit1 = new BitmapText({ text, style: fontx6 });
