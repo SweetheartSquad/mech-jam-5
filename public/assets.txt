@@ -83,10 +83,10 @@ textures/module Big Love.png
 textures/module Heartless Challenge.png
 textures/module Sweet Omega.png
 
-textures/module shield 1.png
-textures/module shield 2.png
-textures/module shield 3.png
-textures/module shield 4.png
+textures/module D.MOD-MKI.png
+textures/module D.MOD-MKII.png
+textures/module D.MOD-MKIII.png
+textures/module D.MOD-MMAO.png
 
 textures/module sink 1.png
 textures/module sink 2.png

@@ -852,8 +852,9 @@ auto, attack, attack
 00000
 .0
 
-::module shield 1
-TODO: description
+::module D.MOD-MKI
+Basic defensive module.
+Tagline: 'Heart beating like a hammer? D.MOD has your back!'
  
 SHIELD +1
 ---
@@ -862,8 +863,9 @@ auto, shield
 .00
 00.
 
-::module shield 2
-TODO: description
+::module D.MOD-MKII
+Second generation defensive module.
+Tagline: 'You won't be jumping at shadows with this on your side!'
  
 SHIELD +2
 ---
@@ -872,8 +874,8 @@ auto, shield, shield
 .000
 000.
 
-::module shield 3
-TODO: description
+::module D.MOD-MKIII
+Top-line defensive module. The original name 'Diamond Eye' was dropped, with test markets citing poor brand recognition.
  
 SHIELD +3
 ---
@@ -883,8 +885,8 @@ auto, shield, shield, shield
 .00
 000.
 
-::module shield 4
-TODO: description
+::module D.MOD-MMAO
+Experimental defensive module. Just a segmentation-focused prototype, but that's enough for me.
  
 SHIELD +3
 ---
