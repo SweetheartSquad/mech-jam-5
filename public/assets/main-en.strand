@@ -1035,35 +1035,32 @@ auto, heatsink, heatsink, heatsink, heatsink, awkward
 3,2
 
 
-::module extender 4
-TODO: description
+::module Flexible Brace
+Simple silver springs to reinforce adjacent joints.
 ---
 auto, joint, flexible
 ---
 0
 000
 
-::module extender 2
-A long squiggle
-TODO: description
+::module Endoskeletal Brace
+Modular joint reinforcement forged in a white flame for extra durability.
 ---
 auto, joint
 ---
 00
 .00000
 
-::module extender 1
-A long L
-TODO: description
+::module Exoskeletal Brace
+Magnetic stability enhancers to keep your mech together.
 ---
 auto, joint
 ---
 .....0
 000000
 
-::module extender 3
-A huge L
-TODO: description
+::module Double-Jointed Brace
+You'll never break this chain.
 ---
 auto, joint, awkward
 ---

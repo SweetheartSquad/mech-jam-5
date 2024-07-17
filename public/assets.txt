@@ -77,11 +77,6 @@ textures/module Cheap Plating.png
 textures/module Standard Plating.png
 textures/module Superior Plating.png
 
-textures/module extender 1.png
-textures/module extender 2.png
-textures/module extender 3.png
-textures/module extender 4.png
-
 textures/module Enchanter.png
 textures/module Big Love.png
 textures/module Heartless Challenge.png
@@ -104,6 +99,11 @@ textures/module HSNK-U.png
 textures/module HSNK-C.png
 textures/module HSNK-G.png
 textures/module HSNK-Q.png
+
+textures/module Flexible Brace.png
+textures/module Endoskeletal Brace.png
+textures/module Exoskeletal Brace.png
+textures/module Double-Jointed Brace.png
 
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
