@@ -747,8 +747,8 @@ ${part.description}`)}${
 
 			const pulse = new Updater(this.camera, () => {
 				if (!containerBtns) return;
-				containerBtns.alpha = eases.cubicInOut(
-					Math.sin(Date.now() / 250) * 0.4 + 0.6
+				containerBtns.alpha = eases.cubicOut(
+					Math.sin(Date.now() / 350) * 0.5 + 0.6
 				);
 			});
 			this.camera.scripts.push(pulse);
