@@ -52,6 +52,7 @@ textures/arm Swift of Swipe.png
 textures/leg Fleet of Foot.png
 
 textures/head Peckish Lump.png
+textures/chest Whet Appetite.png
 
 textures/leg 1.png
 

@@ -538,8 +538,8 @@ auto
 00000
 =...=
 
-::chest 9
-TODO: description
+::chest Whet Appetite
+Got to be free baby. A small stomach is easily sated.
 ---
 -200
 ---
@@ -1213,7 +1213,7 @@ mechs below here
 ::Road Runner
 <<do this.scene.loadMech('enemy', {
     "head": "Peckish Lump",
-    "chest": "9", // TODO: names
+    "chest": "Whet Appetite",
     "arms": "7", // TODO: names
     "legs": "7", // TODO: names
     "modules": [
