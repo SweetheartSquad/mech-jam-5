@@ -1228,11 +1228,6 @@ mechs below here
 // TODO: da whole thing
 })>>
 
-::Sara
-<<do this.scene.loadMech('enemy', {
-// TODO: da whole thing
-})>>
-
 ::Sentimental Lady
 <<do this.scene.loadMech('enemy', {
 // TODO: da whole thing
