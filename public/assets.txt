@@ -93,13 +93,14 @@ textures/module DoubleSight.png
 textures/module Radial Array.png
 textures/module OverSight.png
 
-textures/module sink 1.png
-textures/module sink 2.png
-textures/module sink 3.png
-textures/module sink 4.png
-textures/module sink 5.png
-textures/module sink 6.png
-textures/module sink 7.png
+textures/module HSNK-L.png
+textures/module HSNK-J.png
+textures/module HSNK-V.png
+textures/module HSNK-U.png
+textures/module HSNK-C.png
+textures/module HSNK-G.png
+textures/module HSNK-Q.png
+
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
 audio/voiceJudy.mp3
