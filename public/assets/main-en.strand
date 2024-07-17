@@ -279,6 +279,8 @@ Songbird: It reminds me of a match I had with Madge last week...
 
 
 ::time travel prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"TIME TRAVEL"']).then(() => this.goto('time travel prebuild2'))>>
 
 ::time travel prebuild2
@@ -356,7 +358,7 @@ Songbird: Can't wait.
 
 ::time travel next
 Songbird: Alright, I'm gonna hit the showers. See you later.
-<<do this.next = 'signal failure'>>
+<<do this.next = 'weird fiction'>>
 <<do
 	this.scene.costMax += 1000;
 	this.scene.locked['module debug locked'] = false;
@@ -367,6 +369,8 @@ Songbird: Alright, I'm gonna hit the showers. See you later.
 
 
 ::weird fiction prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"WEIRD FICTION"']).then(() => this.goto('weird fiction prebuild2'))>>
 
 ::weird fiction prebuild2
@@ -479,6 +483,8 @@ Songbird: I wonder if it's true. Is Madge seeing someone else?
 
 
 ::arena prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"ARENA"']).then(() => this.goto('arena prebuild2'))>>
 
 ::arena prebuild2
@@ -607,6 +613,8 @@ Songbird: Wait... don't tell me.
 
 
 ::shifting sands prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"SHIFTING SANDS"']).then(() => this.goto('shifting sands prebuild2'))>>
 
 ::shifting sands prebuild2
@@ -720,6 +728,8 @@ Songbird: I didn't even do anything to him!
 
 
 ::cosmonaut prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"COSMONAUT"']).then(() => this.goto('cosmonaut prebuild2'))>>
 
 ::cosmonaut prebuild2
@@ -781,6 +791,8 @@ todo
 
 
 ::relax prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"RELAX"']).then(() => this.goto('relax prebuild2'))>>
 
 ::relax prebuild2
@@ -843,6 +855,8 @@ todo
 
 
 ::signal failure prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"SIGNAL FAILURE"']).then(() => this.goto('signal failure prebuild2'))>>
 
 ::signal failure prebuild2
@@ -899,6 +913,8 @@ wow you won
 
 
 ::resurrection prebuild
+<<do this.showL('');this.portrait=''>>
+<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"RESURRECTION"']).then(() => this.goto('resurrection prebuild2'))>>
 
 ::resurrection prebuild2
