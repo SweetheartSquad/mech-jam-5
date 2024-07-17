@@ -57,7 +57,7 @@ textures/arm Tarless Feather.png
 textures/leg Hollowed Leap.png
 
 textures/head The Crooked.png
-// textures/chest The Beaten.png
+textures/chest The Beaten.png
 // textures/arm The Spoken.png
 // textures/leg The Put Down.png
 
