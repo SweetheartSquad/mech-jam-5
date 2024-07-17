@@ -303,7 +303,7 @@ part definitions below
 
 
 ::head Block
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -312,7 +312,7 @@ auto
 .=.
 
 ::head Tee
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -322,7 +322,7 @@ auto
 ..=..
 
 ::head Small
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -331,7 +331,7 @@ auto
 =
 
 ::head Smaller
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -339,7 +339,7 @@ auto
 =
 
 ::head Tallboy 2000
-A menacing, angular head unit. Towers above foes. It's staring, daring them to go for the mechanical jugular.
+Tall enough to reach for the stars. It's staring, daring you to go for the mechanical jugular.
 ---
 auto
 ---
@@ -353,7 +353,7 @@ auto
 .=..
 
 ::head 2
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -365,7 +365,7 @@ auto
 ..=..
 
 ::head 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -377,8 +377,8 @@ auto
 .00000.
 ...=...
 
-::head 4
-blah blah blah
+::head Compound Carapace
+TODO: description
 ---
 auto
 ---
@@ -389,7 +389,7 @@ auto
 ....===
 
 ::head 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -401,7 +401,7 @@ auto
 ..=...
 
 ::head 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -413,7 +413,7 @@ auto
 ....=
 
 ::head 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -425,8 +425,8 @@ auto
 .00000.
 ..===..
 
-::chest 1
-blah blah blah
+::chest Tallboy 0200
+Tall enough to reach for the stars. Dangerously, arrogantly elongated.
 ---
 -150
 ---
@@ -442,8 +442,8 @@ blah blah blah
 ..=0=
 ....
 
-::chest 2
-blah blah blah
+::chest Thoracic Trunk
+TODO: description
 ---
 auto
 ---
@@ -454,7 +454,7 @@ auto
 0=0=0
 
 ::chest 3
-blah blah blah
+TODO: description
 ---
 +1000
 ---
@@ -464,7 +464,7 @@ blah blah blah
 .===
 
 ::chest 4
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -477,7 +477,7 @@ auto
 ..=0=..
 
 ::chest 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -490,7 +490,7 @@ auto
 =00...00=
 
 ::chest 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -504,7 +504,7 @@ auto
 ..=0.0=
 
 ::chest 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -516,7 +516,7 @@ auto
 =000.000=
 
 ::chest 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -528,7 +528,7 @@ auto
 =...=
 
 ::chest 9
-blah blah blah
+TODO: description
 ---
 -200
 ---
@@ -540,8 +540,8 @@ blah blah blah
 0.0
 =.=
 
-::arm 1
-blah blah blah
+::arm Tallboy 0020
+Tall enough to reach for the stars. Its fist is begging, dying to grasp above.
 ---
 auto
 ---
@@ -552,8 +552,8 @@ auto
 .0.
 
 
-::arm 2
-blah blah blah
+::arm Predatory Pincers
+TODO: description
 ---
 auto
 ---
@@ -561,7 +561,7 @@ auto
 0=
 
 ::arm 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -571,7 +571,7 @@ auto
 00...
 
 ::arm 4
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -580,7 +580,7 @@ auto
 00..
 
 ::arm 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -590,7 +590,7 @@ auto
 .00
 
 ::arm 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -600,7 +600,7 @@ auto
 ...0
 
 ::arm 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -609,7 +609,7 @@ auto
 0.0.
 
 ::arm 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -619,7 +619,7 @@ auto
 .0
 
 ::arm 9
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -629,7 +629,7 @@ auto
 00..
 
 ::leg 1
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -642,8 +642,8 @@ auto
 .00
 
 
-::leg 2
-blah blah blah
+::leg Tallboy 0002
+Tall enough to reach for the stars. These legs go all the way up.
 ---
 auto
 ---
@@ -661,7 +661,7 @@ auto
 00
 
 ::leg 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -670,8 +670,8 @@ auto
 .0.
 00.
 
-::leg 4
-blah blah blah
+::leg Beetle Boots
+TODO: description
 ---
 auto
 ---
@@ -684,7 +684,7 @@ auto
 00.
 
 ::leg 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -697,7 +697,7 @@ auto
 000
 
 ::leg 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -711,7 +711,7 @@ auto
 0000
 
 ::leg 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -723,7 +723,7 @@ auto
 .0
 
 ::leg 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -735,7 +735,7 @@ auto
 000
 
 ::leg 9
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -1035,35 +1035,32 @@ auto, heatsink, heatsink, heatsink, heatsink, awkward
 3,2
 
 
-::module extender 4
-TODO: description
+::module Flexible Brace
+Simple silver springs to reinforce adjacent joints.
 ---
 auto, joint, flexible
 ---
 0
 000
 
-::module extender 2
-A long squiggle
-TODO: description
+::module Endoskeletal Brace
+Modular joint reinforcement forged in a white flame for extra durability.
 ---
 auto, joint
 ---
 00
 .00000
 
-::module extender 1
-A long L
-TODO: description
+::module Exoskeletal Brace
+Magnetic stability enhancers to keep your mech together.
 ---
 auto, joint
 ---
 .....0
 000000
 
-::module extender 3
-A huge L
-TODO: description
+::module Double-Jointed Brace
+You'll never break this chain.
 ---
 auto, joint, awkward
 ---

@@ -636,17 +636,23 @@ SPACE: ${formatCount(freeCells, allCells)}
 								0
 							);
 							scroller.container.visible = true;
-							// scroll to currently selected part
-							scroller.scrollTo(
-								(scroller.containerScroll.children.find(
-									(c) =>
-										c.label === `head ${this.mech.headD.name}` ||
-										c.label === `chest ${this.mech.chestD.name}` ||
-										c.label === `arm ${this.mech.armLD.name}` ||
-										c.label === `leg ${this.mech.legLD.name}`
-								)?.y || 0) -
-									scroller.sprMask.height / 2
+
+							const currentPart = scroller.containerScroll.children.find(
+								(c) =>
+									c.label === `head ${this.mech.headD.name}` ||
+									c.label === `chest ${this.mech.chestD.name}` ||
+									c.label === `arm ${this.mech.armLD.name}` ||
+									c.label === `leg ${this.mech.legLD.name}`
 							);
+							if (currentPart) {
+								// scroll to currently selected part
+								scroller.scrollTo(
+									(currentPart?.y || 0) - scroller.sprMask.height / 2
+								);
+								// update info
+								const part = this.getPart(currentPart.label);
+								updateInfo(part);
+							}
 						}
 					);
 					textType.text = smartify(
@@ -679,20 +685,7 @@ SPACE: ${formatCount(freeCells, allCells)}
 						spr.label = i;
 						buttonify(spr, i);
 						spr.addEventListener('pointerover', () => {
-							setTextWrapped(
-								textInfo,
-								`${this.getGeneralInfo()}${smartify(`"${part.name}"
- 
-${part.cost}$ | ${part.cellCount} CELLS
- 
-${part.description}`)}${
-									DEBUG
-										? `\n \nDEBUG\n${(part.cost / part.cellCount).toFixed(
-												2
-										  )}$/CELL`
-										: ''
-								}`
-							);
+							updateInfo(part);
 							this.textTip.text = part.name;
 							sfx('sfx_click1', { volume: 0.2, rate: randRange(1.5, 1.6) });
 							spr.alpha = 0.8;
@@ -775,6 +768,21 @@ ${part.description}`)}${
 			};
 			update();
 
+			const updateInfo = (part: MechD) => {
+				setTextWrapped(
+					textInfo,
+					`${this.getGeneralInfo()}${smartify(`"${part.name}"
+ 
+${part.cost}$ | ${part.cellCount} CELLS
+ 
+${part.description}`)}${
+						DEBUG
+							? `\n \nDEBUG\n${(part.cost / part.cellCount).toFixed(2)}$/CELL`
+							: ''
+					}`
+				);
+			};
+
 			const btnDone = new BtnText('DONE', async () => {
 				sfx('sfx_click2', { rate: randRange(0.5, 0.6) });
 				btnDone.enabled = false;
@@ -845,6 +853,7 @@ ${part.description}`)}${
 			sprPanel.x -= sprPanel.width / 2;
 			sprPanel.y -= sprPanel.height / 2;
 			containerScrollersCycler.addChildAt(sprPanel, 0);
+			updateInfo(lastPart);
 
 			const closeModal = this.modal(0);
 			this.transitionIn(panelInfo, 400);

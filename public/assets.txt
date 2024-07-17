@@ -30,19 +30,19 @@ audio/sfx_woop.mp3
 textures/title.png
 textures/title2.png
 
-textures/chest 1.png
-textures/chest 2.png
-textures/chest 8.png
 textures/head Tallboy 2000.png
-textures/arm 1.png
-textures/arm 2.png
-textures/arm 4.png
+textures/chest Tallboy 0200.png
+textures/arm Tallboy 0020.png
+textures/leg Tallboy 0002.png
+
+
+textures/head Compound Carapace.png
+textures/chest Thoracic Trunk.png
+textures/arm Predatory Pincers.png
+textures/leg Beetle Boots.png
+
 textures/leg 1.png
-textures/leg 2.png
-textures/leg 4.png
-textures/leg 8.png
-textures/head 4.png
-textures/head 5.png
+
 textures/button_normal.png
 textures/button_over.png
 textures/button_down.png
@@ -80,11 +80,6 @@ textures/module Cheap Plating.png
 textures/module Standard Plating.png
 textures/module Superior Plating.png
 
-textures/module extender 1.png
-textures/module extender 2.png
-textures/module extender 3.png
-textures/module extender 4.png
-
 textures/module Enchanter.png
 textures/module Big Love.png
 textures/module Heartless Challenge.png
@@ -107,6 +102,11 @@ textures/module HSNK-U.png
 textures/module HSNK-C.png
 textures/module HSNK-G.png
 textures/module HSNK-Q.png
+
+textures/module Flexible Brace.png
+textures/module Endoskeletal Brace.png
+textures/module Exoskeletal Brace.png
+textures/module Double-Jointed Brace.png
 
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
