@@ -58,8 +58,8 @@ textures/leg Hollowed Leap.png
 
 textures/head The Crooked.png
 textures/chest The Beaten.png
-// textures/arm The Spoken.png
-// textures/leg The Put Down.png
+textures/arm The Spoken.png
+textures/leg The Put Down.png
 
 // textures/head The Blue Face.png
 // textures/chest The Blackboiled Heart.png
