@@ -173,11 +173,11 @@ this should never render
 	this.next = 'diplomat';
 	this.scene.start();
 	this.scene.loadMech('player', {
-		"head": "Tallboy 2000",
-		"chest": "Tallboy 0200",
-		"arms": "Tallboy 0020",
-		"legs": "Tallboy 0002",
-		modules: [],
+		"head": "Bunted Snow",
+		"chest": "Scrubbed Wren",
+		"arms": "Maggoty Pie",
+		"legs": "Warbled Marsh",
+		"modules": [],
 	});
 
 	this.scene.locked['module debug locked'] = true;
