@@ -179,9 +179,6 @@ this should never render
 		"legs": "Warbled Marsh",
 		"modules": [],
 	});
-
-	this.scene.locked['module debug locked'] = true;
-	this.scene.locked['head debug locked'] = true;
 >>
 
 
@@ -272,8 +269,6 @@ Songbird: It reminds me of a match I had with Madge last week...
 <<do this.next = 'time travel'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -358,8 +353,6 @@ Songbird: Alright, I'm gonna hit the showers. See you later.
 <<do this.next = 'weird fiction'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -467,8 +460,6 @@ Songbird: I wonder if it's true. Is Madge seeing someone else?
 <<do this.next = 'arena'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -597,8 +588,6 @@ Songbird: Wait... don't tell me.
 <<do this.next = 'shifting sands'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -709,8 +698,6 @@ Songbird: I didn't even do anything to him!
 <<do this.next = 'cosmonaut'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -770,8 +757,6 @@ todo
 <<do this.next = 'relax'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -834,8 +819,6 @@ todo
 <<do this.next = 'signal failure'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -956,8 +939,6 @@ todo
 <<do this.next = 'end'>>
 <<do
 	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
 >>
 [[>close]]
 
@@ -1829,31 +1810,6 @@ debug radar
 1, radar, debug
 ---
 0
-
-::module debug locked
-debug module to test module locking
----
-1, debug
----
-.000.
-0...0
-00000
-00000
-00000
-00000
-
-::head debug locked
-debug head to test part locking
----
-auto
----
-.000.
-0...0
-00000
-00=00
-0===0
-00=00
-
 
 
 ::mechs
