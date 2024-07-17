@@ -96,8 +96,6 @@ textures/module sink 5.png
 textures/module sink 6.png
 textures/module sink 7.png
 
-textures/module Bar.png
-textures/module Bar2.png
 textures/module radar 1.png
 textures/module radar 2.png
 textures/module radar 3.png
