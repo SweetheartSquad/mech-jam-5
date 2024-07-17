@@ -1252,7 +1252,19 @@ mechs below here
 
 ::diane2
 <<do this.scene.loadMech('enemy', {
-// TODO: da whole thing
+    "head": "Tallboy 2000",
+    "chest": "Tallboy 0200",
+    "arms": "Tallboy 0020",
+    "legs": "Tallboy 0002",
+    "modules": [
+        {"name": "DoubleSight","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "HSNK-L","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 2 },
+        {"name": "Enchanter","x": 8,"y": 10,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Cheap Plating","x": 2,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "D.MOD-MKII","x": 10,"y": 20,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Comfortable Cockpit","x": 5,"y": 21,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "HSNK-L","x": 4,"y": 29,"flipH": false,"flipV": false,"turns": 0 },
+    ],
 })>>
 
 ::old mech
