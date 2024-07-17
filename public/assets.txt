@@ -57,6 +57,15 @@ textures/arm Tarless Feather.png
 textures/leg Hollowed Leap.png
 
 textures/head The Crooked.png
+// textures/chest The Beaten.png
+// textures/arm The Spoken.png
+// textures/leg The Put Down.png
+
+// textures/head The Blue Face
+// textures/chest The Blackboiled Heart
+// textures/arm The White Knuckles
+// textures/leg The Dipped Toes
+
 textures/leg 1.png
 
 textures/button_normal.png
