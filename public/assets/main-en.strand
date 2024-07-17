@@ -600,8 +600,8 @@ auto
 00
 .00
 
-::arm 6
-TODO: description
+::arm Tarless Feather
+Got to be free baby. The wings of your will can take you anywhere.
 ---
 auto
 ---
@@ -1214,7 +1214,7 @@ mechs below here
 <<do this.scene.loadMech('enemy', {
     "head": "Peckish Lump",
     "chest": "Whet Appetite",
-    "arms": "7", // TODO: names
+    "arms": "Tarless Feather",
     "legs": "7", // TODO: names
     "modules": [
         {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
