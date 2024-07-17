@@ -31,11 +31,13 @@ textures/title.png
 textures/title2.png
 
 textures/chest 1.png
+textures/chest 2.png
 textures/head Tallboy 2000.png
 textures/arm 1.png
+textures/arm 2.png
 textures/leg 1.png
 textures/leg 2.png
-
+textures/leg 4.png
 textures/head 4.png
 
 textures/button_normal.png
