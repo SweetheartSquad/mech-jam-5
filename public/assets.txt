@@ -66,12 +66,10 @@ textures/chest The Blackboiled Heart.png
 textures/arm The White Knuckles.png
 textures/leg The Dipped Toes.png
 
-// textures/head ?.png
-// textures/chest ?.png
-// textures/arm ?.png
-// textures/leg ?.png
-
-textures/leg 1.png
+textures/head Year 0001.png
+textures/chest Year 0080.png
+textures/arm Year 0717.png
+textures/leg Year 0999.png
 
 textures/button_normal.png
 textures/button_over.png
