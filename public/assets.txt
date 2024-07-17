@@ -30,11 +30,15 @@ audio/sfx_woop.mp3
 textures/title.png
 textures/title2.png
 
+textures/head Bunted Snow.png
+textures/chest Scrubbed Wren.png
+textures/arm Maggoty Pie.png
+textures/leg Warbled Marsh.png
+
 textures/head Tallboy 2000.png
 textures/chest Tallboy 0200.png
 textures/arm Tallboy 0020.png
 textures/leg Tallboy 0002.png
-
 
 textures/head Compound Carapace.png
 textures/chest Thoracic Trunk.png
