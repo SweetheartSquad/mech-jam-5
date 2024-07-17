@@ -41,6 +41,11 @@ textures/chest Thoracic Trunk.png
 textures/arm Predatory Pincers.png
 textures/leg Beetle Boots.png
 
+textures/head 5.png
+textures/chest 8.png
+textures/arm 4.png
+textures/leg 8.png
+
 textures/leg 1.png
 
 textures/button_normal.png
