@@ -1155,3 +1155,105 @@ auto
 00=00
 0===0
 00=00
+
+
+
+::mechs
+mechs below here
+
+::Station Man
+<<do this.scene.loadMech('enemy', {
+    "head": "Compound Carapace",
+    "chest": "Thoracic Trunk",
+    "arms": "Predatory Pincers",
+    "legs": "Beetle Boots",
+    "modules": [
+        { "name": "Radial Array","x": 9,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-J","x": 0,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-L","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "D.MOD-MKI","x": 5,"y": 7,"flipH": true,"flipV": false,"turns": 1 },
+        { "name": "Comfortable Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+})>>
+
+::Gold Dust Woman
+<<do this.scene.loadMech('enemy', {
+    "head": "Masque D'Or",
+    "chest": "Golden Casket",
+    "arms": "Sone ka Sparsh",
+    "legs": "Aurum Calcibus",
+    "modules": [], // TODO: fill out
+})>>
+
+::Family Man
+<<do this.scene.loadMech('enemy', {
+    "head": "Hot of Head",
+    "chest": "Brisk of Body",
+    "arms": "Swift of Swipe",
+    "legs": "Fleet of Foot",
+    "modules": [
+        {"name": "Cheap Plating","x": 8,"y": 0,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Comfortable Cockpit","x": 7,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Flexible Brace","x": 6,"y": 4,"flipH": false,"flipV": false,"turns": 2 },
+        {"name": "HSNK-L","x": 13,"y": 4,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "DoubleSight","x": 1,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+})>>
+
+::Road Runner
+<<do this.scene.loadMech('enemy', {
+    "head": "Peckish Lump",
+    "chest": "9", // TODO: names
+    "arms": "7", // TODO: names
+    "legs": "7", // TODO: names
+    "modules": [
+        {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 7,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "D.MOD-MKI","x": 3,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
+        {"name": "D.MOD-MKI","x": 5,"y": 4,"flipH": false,"flipV": true,"turns": 0 },
+        {"name": "OverSight","x": 5,"y": 10,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Cheap Plating","x": 0,"y": 11,"flipH": false,"flipV": false,"turns": 2 },
+        {"name": "Cheap Plating","x": 2,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Cheap Plating","x": 8,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "HSNK-J","x": 2,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Sweet Omega","x": 7,"y": 17,"flipH": false,"flipV": false,"turns": 1 },
+    ],
+})>>
+
+::Purple Dancer
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::Sara
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::Sentimental Lady
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::Woman of 1000 Years
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::Peacekeeper
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::diane2
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
+
+::old mech
+<<do this.scene.loadMech('enemy', {
+// TODO: da whole thing
+})>>
