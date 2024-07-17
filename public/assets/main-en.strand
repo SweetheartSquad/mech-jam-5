@@ -699,7 +699,7 @@ Songbird: He totalled it! What am I supposed to do now?
 >
 Songbird: Hmm...
 >
-Songbird: I guess there's the old model I put in storage.
+Songbird: I guess there's that old model in the workshop.
 >
 Songbird: That'll have to do until I can get this thing fixed.
 >
@@ -723,11 +723,27 @@ Songbird: I didn't even do anything to him!
 <<do this.titleCard(['SORTIE BEGIN:', '"COSMONAUT"']).then(() => this.goto('cosmonaut prebuild2'))>>
 
 ::cosmonaut prebuild2
-todo
+Songbird: Ugh, this mech is terrible.
+>
+Songbird: I don't know who in their right mind would use this.
+>
+Judy: I'd recognize that crappy mech anywhere.
+>
+Judy: Garcia, you dog! I told you this was my turf now.
+>
+Songbird: What? I'm not Garcia! I'm Songbird!
+>
+Judy: Don't be stupid. Who else would pilot that piece of garbage?
+>
+Songbird: I don't even know how to use this thing!
+>
+Judy: You always were a coward, Garcia! You're not getting out of this one.
 [[>close]]
 
 ::cosmonaut prefight
-todo
+Songbird: Okay, I guess I don't have a choice. Time to fight.
+>
+Judy: I'm going to crush you, Garcia!
 <<do this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "1",
@@ -758,15 +774,49 @@ todo
 <<endif>>
 
 ::cosmonaut won
-todo
+Judy: I lost? There's no way! You've never won against me before!
+>
+Songbird: That's because I'm NOT GARCIA! I'm Songbird! My mech got destroyed, I just pulled this out of storage to try it.
+>
+Judy: I... guess that makes sense.
+>
+Judy: Sorry. She must have left it here here when she skipped town. 
+>
+Judy: I guess Garcia wouldn't be stupid enough to come back after... well. What she did.
+>
+Judy: She's my ex. It's a long story.
 <<do this.goto('cosmonaut next')>>
 
 ::cosmonaut lost
-todo
+Judy: You'd better run now, Garcia, before you lose more than your dignity.
+>
+Songbird: Hold on! I'm coming out of the cockpit. I'm not Garcia!
+>
+Songbird: See?
+>
+Judy: ...Oh. Uh, sorry. That was Garcia's mech, I just figured...
+>
+Songbird: My mech just got totalled, and this is the only mech we have in storage. I just thought I'd try it out.
+>
+Judy: Well, that used to be my ex's mech. She was a real piece of work.
+>
+Judy: I guess she left it here when she skipped town.
 <<do this.goto('cosmonaut next')>>
 
 ::cosmonaut next
-todo
+Judy: I'm Judy, by the way. 
+>
+Songbird: I'm Songbird.
+>
+Judy: Sorry about all of this. 
+>
+Songbird: It's fine. You're not the first person to fight me over a misunderstanding today.
+>
+Judy: Really? What happened?
+>
+Songbird: Well, I was just training, when--
+>
+Sara: Who the hell are you? And what are you doing to my sister?!
 <<do this.next = 'relax'>>
 <<do
 	this.scene.costMax += 1000;
@@ -781,16 +831,32 @@ todo
 
 
 ::relax prebuild
-<<do this.showL('');this.portrait=''>>
-<<do this.showR('');this.portrait=''>>
 <<do this.titleCard(['SORTIE BEGIN:', '"RELAX"']).then(() => this.goto('relax prebuild2'))>>
 
 ::relax prebuild2
-todo
+Judy: Sara! Chill! It's not Garcia.
+>
+Sara: I don't care who you are. Stop picking on my little sister.
+>
+Songbird: We just had a short duel! It's no big deal.
+>
+Sara: That's what they all say. 
+>
+Judy: Sara, it's not like that.
+>
+Sara: You gotta stop letting these losers take advantage of you, Judy!
+>
+Sara: But until you do, I'll pulverize every last one of them!!
+>
+Sara: Get ready, loser! You just picked a fight with the Sisters of the Moon!!
+>
+Songbird: Ugh, here we go again...
 [[>close]]
 
 ::relax prefight
-todo
+Songbird: Alright, let's just get this over with.
+>
+Sara: I'll get YOU over with!!
 <<do this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "1",
@@ -822,15 +888,41 @@ todo
 <<endif>>
 
 ::relax won
-todo
+Sara: What!! How did I lose to a loser like you?!
+>
+Songbird: I guess you met your match.
+
 <<do this.goto('relax next')>>
 
 ::relax lost
-todo
+Sara: Hah! That's what you get for messing with the Sisters of the Moon.
+>
+Songbird: Ugh...
 <<do this.goto('relax next')>>
 
 ::relax next
-todo
+Judy: Sara, seriously! We only fought because I thought it was Garcia in that mech!
+>
+Judy: I appreciate you standing up for me, but you didn't need to. Apologize to Songbird.
+>
+Sara: Hmph... guess I'll swallow my pride. Sorry.
+>
+Songbird: Thanks, I guess.
+>
+Songbird: Look, no offense, but it's been a long day. I'm going to put this old mech back in storage.
+>
+Songbird: We can talk about all this later.
+>
+Judy: Sorry again, Songbird.
+>
+Sara: Yeah. Sorry.
+>
+Songbird: Why is there so much drama in this community?
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: I'm just here to battle mechs.
+>
+Songbird: Well, at least all of this is over.
 <<do this.next = 'signal failure'>>
 <<do
 	this.scene.costMax += 1000;
@@ -850,11 +942,69 @@ todo
 <<do this.titleCard(['SORTIE BEGIN:', '"SIGNAL FAILURE"']).then(() => this.goto('signal failure prebuild2'))>>
 
 ::signal failure prebuild2
-todo signal failure prebuild stuff
+Songbird: Ah, it's a beautiful day today.
+>
+Songbird: I finally got my mech all fixed up after what Murrow did to it weeks ago...
+>
+Songbird: And I'm ready to get back in the ring.
+>
+Songbird: Diane said she had an opponent set up for me today. I wonder who it'll be. 
+>
+Murrow: SONGBIRD!!
+>
+Songbird: Oh no.
+>
+Danny: We're baaaack...
+>
+Madge: And we're mad as hell!
+>
+Rhiannon: Me too.
+>
+Songbird: You've got to be kidding me.
+>
+Danny: After you ruined all our lives...
+>
+Madge: We decided to combine forces...
+>
+Rhiannon: And combine our mechs...
+>
+Murrow: To defeat the source of all our problems!!
+>
+Songbird: Oh my god.
+>
+Songbird: I had NOTHING to do with any of this!
+>
+Songbird: You were all horny and cheating on each other and that's somehow MY fault??
+>
+Songbird: I'm not fighting you. This is ridiculous.
+>
+Danny: Oh but you have to!
+>
+Madge: Diane set this up as an official match.
+>
+Murrow: If you don't accept our duel, then you're disqualified from all matches this season!
+>
+Rhiannon: You can't wriggle out of this one.
+>
+Songbird: Apparently I can't wriggle out of ANY fight...
+>
+Songbird: But fine. You guys have pissed me off for the last time.
+>
+Songbird: I'm going to put an end to this, once and for all.
 [[>close]]
 
 ::signal failure prefight
-todo signal failure prefight stuff
+Songbird: Okay. Time to end this.
+>
+Danny: For you, there'll be no more crying.
+>
+Madge: For you, the sun won't be shining.
+>
+Rhiannon: We know the score...
+>
+Murrow: And we wish you all the hate in the world.
+>
+Songbird: Did you rehearse this??
 <<do this.scene.loadMech('enemy', {
 	"head": "7",
 	"chest": "9",
@@ -887,18 +1037,75 @@ todo signal failure prefight stuff
 [[>close]]
 
 ::signal failure postfight
-todo signal failure postfight stuff
-<<if !this.won>>
-lol you lost
-[[>close]]
+<<if this.won>>
+<<do this.goto('signal failure won')>>
 <<else>>
-<<do this.next = 'resurrection'>>
-wow you won
-[[>close]]
+<<do this.goto('signal failure lost')>>
 <<endif>>
 
+::signal failure won
 
+::signal failure lost
+Danny: We won!
+>
+Madge: Take that, Songbird!
+>
+Rhiannon: The tables have turned.
+>
+Murrow: HAH!!
+>
+Songbird: You're all out of your minds!
+>
+Songbird: I didn't do anything to any of you! We used to be friends!
+>
+Danny: Let's get out of here.
+>
+Madge: You know, we make a pretty good team.
+>
+Rhiannon: Are you saying...
+>
+Madge: What if we were all... seeing each other?
+>
+Murrow: Like a polycule?
+>
+Danny: The Pulverizing Polycule!
+>
+Rhiannon: Good name.
+>
+Madge: So we're all in?
+>
+Murrow: YES!!
+>
+Songbird: This is ridiculous.
+>
+Songbird: Does nobody else see how ridiculous this is??
+>
+Madge: Shut up, Songbird.
+>
+Murrow: Yeah, shut up!
+>
+Danny: C'mon gang, let's go get some smoothies.
+>
+Madge: See you never, Songbird.
+<<do this.goto('signal failure next')>>
 
+::signal failure next
+Songbird: I give them two weeks, tops.
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: Why were they my opponent anyway? Didn't Diane set this fight up?
+>
+Songbird: Why would Diane agree to any of this?
+>
+Diane: I can answer that.
+>
+Songbird: Diane!
+<<do this.next = 'resurrection'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
 
 
 
@@ -908,11 +1115,73 @@ wow you won
 <<do this.titleCard(['SORTIE BEGIN:', '"RESURRECTION"']).then(() => this.goto('resurrection prebuild2'))>>
 
 ::resurrection prebuild2
-todo
+Songbird: What's going on, Diane?
+>
+Songbird: What did you do?
+>
+Diane: How do you think I keep the fights interesting, season after season?
+>
+Diane: I've been engineering this all from behind the scenes.
+>
+Diane: I told Danny to fight you. Then I told him about Rhiannon, and told Rhiannon it was you.
+>
+Diane: I told Murrow to destroy your mech, so you'd have to use Garcia's old clunker.
+>
+Diane: Then I told Judy that Garcia was back.
+>
+Songbird: I can't believe it. I trusted you.
+>
+Songbird: You taught me everything I know. Why would you use me like this?
+>
+Diane: You know how my mech is named "Woman of 1000 Years"?
+>
+"Woman of 1000 Years": That's not my mech's name. It's mine.
+> 
+"Woman of 1000 Years": I have been chained to this planet for millenia, forced to walk the earth like a ghost.
+>
+"Woman of 1000 Years": Do you know how dull it is? Day after day, year after year...
+>
+"Woman of 1000 Years": So I made you.
+>
+"Woman of 1000 Years": My little Songbird.
+>
+"Woman of 1000 Years": I made you the perfect fighter.
+>
+Songbird: What are you talking about??
+>
+"Woman of 1000 Years": I made you in my image...
+>
+"Woman of 1000 Years": And I made your little friends...
+>
+"Woman of 1000 Years": All for my entertainment.
+>
+Songbird: You're diabolical. 
+>
+Songbird: I won't let you get away with this!
+>
+"Woman of 1000 Years": You're going to fight me, Songbird? At my full strength? Don't make me laugh.
+>
+"Woman of 1000 Years": I made you. I can destroy you, too.
+>
+Songbird: I'll destroy you. I'll break your spell and free my friends from your machinations!
+>
+"Woman of 1000 Years": Hmm. How interesting...
+>
+"Woman of 1000 Years": I like interesting.
+>
+"Woman of 1000 Years": Let's see how well you've learned your lessons.
 [[>close]]
 
 ::resurrection prefight
-todo
+Songbird: Alright, Diane. You're going down.
+>
+"Woman of 1000 Years": How could you. Your own mother...
+>
+Songbird: You're not my mother!
+>
+"Woman of 1000 Years": My beautiful child. My sleepless child... so trusting. Too trusting.
+>
+"Woman of 1000 Years": Will you be the landslide that brings me down?
 <<do this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "1",
@@ -944,15 +1213,82 @@ todo
 <<endif>>
 
 ::resurrection won
-todo
+"Woman of 1000 Years": My child... you have defeated me.
+>
+Songbird: I'm not your child.
+>
+"Woman of 1000 Years": You are a beautiful child, and I am a fool once more...
+>
+"Woman of 1000 Years": Can you send me away?
+>
+Songbird: You have no power over me anymore.
+>
+"Woman of 1000 Years": I've been trapped for so many years, I thought I'd never get to leave...
+>
+"Woman of 1000 Years": But now you're sending me away. Just as I hoped...
+>
+Songbird: What are you talking about? Diane??
 <<do this.goto('relax next')>>
 
 ::resurrection lost
-todo
+"Woman of 1000 Years": I've failed again.
+>
+"Woman of 1000 Years": I've failed to make a child who could defeat me...
+>
+Songbird: What are you talking about?
+>
+"Woman of 1000 Years": I can only leave this world if my child defeats me.
+>
+Songbird: Do you... want to leave this world?
+>
+"Woman of 1000 Years": I'm tired, Songbird. I want to leave.
+>
+"Woman of 1000 Years": But you have lost.
+>
+"Woman of 1000 Years": Unless... you kill me by your hand.
+>
+Songbird: What??
+>
+"Woman of 1000 Years": No more mechs, child. Come to my cockpit, take the knife from my sheath, and free me.
+>
+Songbird: I'm... not going to kill you. I can't.
+>
+Diane: Please, Songbird. I beg you. Put me out of my misery.
+>
+Diane: You and your friends will be free to live your lives.
+>
+Songbird: I... I can't.
+>
+Diane: You can, Songbird. I know you can.
+>
+Songbird: ...
+>
+Songbird: Okay.
+>
+Diane: Thank you, Songbird. Come to me.
 <<do this.goto('relax next')>>
 
 ::resurrection next
-todo
+"Woman of 1000 Years": Mirror in the sky, what is love? Can the child within my heart rise above?
+>
+Diane: I can feel the years disappearing. Thank you, Songbird. 
+>
+Diane: Goodbye.
+>
+Songbird: It's over.
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: She's gone.
+>
+Songbird: I was created by a mad god, forced to live out her fantasies...
+>
+Songbird: And now I'm free.
+>
+Songbird: ...
+>
+Songbird: ...
+>
+Songbird: I guess I need a new hobby.
 <<do this.next = 'end'>>
 <<do
 	this.scene.costMax += 1000;
@@ -965,7 +1301,7 @@ todo
 
 
 ::end prefight
-todo ending
+THE END
 
 
 
