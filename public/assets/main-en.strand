@@ -303,7 +303,7 @@ part definitions below
 
 
 ::head Block
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -312,7 +312,7 @@ auto
 .=.
 
 ::head Tee
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -322,7 +322,7 @@ auto
 ..=..
 
 ::head Small
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -331,7 +331,7 @@ auto
 =
 
 ::head Smaller
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -353,7 +353,7 @@ auto
 .=..
 
 ::head 2
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -365,7 +365,7 @@ auto
 ..=..
 
 ::head 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -378,7 +378,7 @@ auto
 ...=...
 
 ::head Compound Carapace
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -389,7 +389,7 @@ auto
 ....===
 
 ::head 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -401,7 +401,7 @@ auto
 ..=...
 
 ::head 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -413,7 +413,7 @@ auto
 ....=
 
 ::head 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -426,7 +426,7 @@ auto
 ..===..
 
 ::chest Tallboy 0200
-blah blah blah
+TODO: description
 ---
 -150
 ---
@@ -443,7 +443,7 @@ blah blah blah
 ....
 
 ::chest Thoracic Trunk
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -454,7 +454,7 @@ auto
 0=0=0
 
 ::chest 3
-blah blah blah
+TODO: description
 ---
 +1000
 ---
@@ -464,7 +464,7 @@ blah blah blah
 .===
 
 ::chest 4
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -477,7 +477,7 @@ auto
 ..=0=..
 
 ::chest 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -490,7 +490,7 @@ auto
 =00...00=
 
 ::chest 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -504,7 +504,7 @@ auto
 ..=0.0=
 
 ::chest 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -516,7 +516,7 @@ auto
 =000.000=
 
 ::chest 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -528,7 +528,7 @@ auto
 =...=
 
 ::chest 9
-blah blah blah
+TODO: description
 ---
 -200
 ---
@@ -541,7 +541,7 @@ blah blah blah
 =.=
 
 ::arm Tallboy 0020
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -553,7 +553,7 @@ auto
 
 
 ::arm Predatory Pincers
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -561,7 +561,7 @@ auto
 0=
 
 ::arm 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -571,7 +571,7 @@ auto
 00...
 
 ::arm 4
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -580,7 +580,7 @@ auto
 00..
 
 ::arm 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -590,7 +590,7 @@ auto
 .00
 
 ::arm 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -600,7 +600,7 @@ auto
 ...0
 
 ::arm 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -609,7 +609,7 @@ auto
 0.0.
 
 ::arm 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -619,7 +619,7 @@ auto
 .0
 
 ::arm 9
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -629,7 +629,7 @@ auto
 00..
 
 ::leg 1
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -643,7 +643,7 @@ auto
 
 
 ::leg Tallboy 0002
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -661,7 +661,7 @@ auto
 00
 
 ::leg 3
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -671,7 +671,7 @@ auto
 00.
 
 ::leg Beetle Boots
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -684,7 +684,7 @@ auto
 00.
 
 ::leg 5
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -697,7 +697,7 @@ auto
 000
 
 ::leg 6
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -711,7 +711,7 @@ auto
 0000
 
 ::leg 7
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -723,7 +723,7 @@ auto
 .0
 
 ::leg 8
-blah blah blah
+TODO: description
 ---
 auto
 ---
@@ -735,7 +735,7 @@ auto
 000
 
 ::leg 9
-blah blah blah
+TODO: description
 ---
 auto
 ---
