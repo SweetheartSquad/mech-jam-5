@@ -36,6 +36,8 @@ textures/arm 1.png
 textures/leg 1.png
 textures/leg 2.png
 
+textures/head 4.png
+
 textures/button_normal.png
 textures/button_over.png
 textures/button_down.png
