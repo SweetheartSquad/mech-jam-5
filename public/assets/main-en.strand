@@ -376,7 +376,7 @@ auto
 ..=..
 
 ::head Peckish Lump
-Got to be free baby. The eyes are purely decorative.
+Got to be free, baby. Your eyes aren't all that see the sights.
 ---
 auto
 ---
@@ -539,7 +539,7 @@ auto
 =...=
 
 ::chest Whet Appetite
-Got to be free baby. A small stomach is easily sated.
+Got to be free, baby. A small stomach is easily sated.
 ---
 -200
 ---
@@ -601,7 +601,7 @@ auto
 .00
 
 ::arm Tarless Feather
-Got to be free baby. The wings of your will can take you anywhere.
+Got to be free, baby. The wings of your will can take you anywhere.
 ---
 auto
 ---
@@ -721,8 +721,8 @@ auto
 0000
 0000
 
-::leg 7
-TODO: description
+::leg Hollowed Leap
+Got to be free, baby. The lightest step is the only one worth taking.
 ---
 auto
 ---
@@ -1220,7 +1220,7 @@ mechs below here
     "head": "Peckish Lump",
     "chest": "Whet Appetite",
     "arms": "Tarless Feather",
-    "legs": "7", // TODO: names
+    "legs": "Hollowed Leap",
     "modules": [
         {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Standard Plating","x": 7,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
