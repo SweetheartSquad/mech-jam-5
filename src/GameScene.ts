@@ -24,7 +24,7 @@ import { V } from './VMath';
 import { cellSize, size } from './config';
 import { costMax } from './costs';
 import { DEBUG } from './debug';
-import { fontDialogue, fontMechInfo } from './font';
+import { fontDialogue, fontMechInfo, fontx6 } from './font';
 import {
 	copyCells,
 	displayToPlacementProps,
@@ -2843,6 +2843,49 @@ MISS: ${log.filter((i) => i === 'MISS').length}
 		textHit1.x += 1;
 		textHit2.y += 1;
 		this.containerUI.addChild(container);
+		container.x = x;
+		container.y = y;
+		const tween1 = TweenManager.tween(
+			container,
+			'y',
+			y - 10,
+			2000,
+			undefined,
+			eases.cubicIn
+		);
+		await delay(1500);
+		const tween2 = TweenManager.tween(
+			container,
+			'alpha',
+			0,
+			500,
+			undefined,
+			eases.cubicIn
+		);
+		await delay(500);
+		TweenManager.abort(tween1);
+		TweenManager.abort(tween2);
+		container.destroy();
+	}
+
+	async bigTextPop(text: string, x: number, y: number, tint = white) {
+		text = smartify(text);
+		const container = new Container();
+		const textHit1 = new BitmapText({ text, style: fontx6 });
+		const textHit2 = new BitmapText({ text, style: fontx6 });
+		const textHit3 = new BitmapText({ text, style: fontx6 });
+		textHit1.x -= textHit1.width / 2;
+		textHit2.x -= textHit2.width / 2;
+		textHit3.x -= textHit3.width / 2;
+		textHit1.tint = black;
+		textHit2.tint = black;
+		textHit3.tint = tint;
+		container.addChild(textHit1);
+		container.addChild(textHit2);
+		container.addChild(textHit3);
+		textHit1.x += 6;
+		textHit2.y += 6;
+		game.app.stage.addChild(container);
 		container.x = x;
 		container.y = y;
 		const tween1 = TweenManager.tween(
