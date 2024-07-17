@@ -100,7 +100,8 @@
 <<endif>>
 <<do this.showL('');this.portrait=''>>
 <<do this.showR('');this.portrait=''>>
-FLEETWOOD MECH
+BLOOD in the SKY
+DEAD OR ALIVE
 [[START]]
 [[PORTRAIT TEST]]
 [[OPTIONS]]
