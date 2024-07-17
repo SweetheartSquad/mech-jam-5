@@ -1324,11 +1324,11 @@ They know the score. You can't see them in the schematic view, but I put flames 
 ---
 auto
 ---
-.0=
-.00
-.00
-.00
-..0
+0=
+00
+00
+00
+.0
 
 ::leg Year 0999
 Do they still admire your silvered ways as you show them what it means to wander?
