@@ -12,6 +12,15 @@ export const fontDialogue: Partial<TextStyle> = {
 	lineHeight: size * 2 * 1.25,
 	letterSpacing: 0,
 };
+export const fontx6: Partial<TextStyle> = {
+	fontFamily: 'fontfnt',
+	fontSize: size * 6,
+	padding: 0,
+	fill: white,
+	align: 'left',
+	lineHeight: size * 6 * 1.25,
+	letterSpacing: 0,
+};
 export const fontMechInfo: Partial<TextStyle> = {
 	fontFamily: 'fontfnt',
 	fontSize: size,

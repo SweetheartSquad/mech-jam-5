@@ -63,6 +63,14 @@
 		}
 	};
 
+	this.titleCard = async (texts) => {
+		for (let i = 0; i < texts.length; ++i) {
+			this.scene.bigTextPop(texts[i], this.size.x/2, this.size.y/2+(i-1)*50);
+			await this.delay(1000);
+		}
+		await this.delay(1000);
+	};
+
 
 	// blinking and lip flaps
 	// this.blinking = false;
@@ -188,6 +196,9 @@ actual written scenes below
 
 
 ::diplomat prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"DIPLOMAT"']).then(() => this.goto('diplomat prebuild2'))>>
+
+::diplomat prebuild2
 todo diplomat prebuild stuff
 [[>close]]
 
@@ -302,8 +313,8 @@ part definitions below
 
 
 
-::head Block
-TODO: description
+::head Hot of Head
+I am what I am. I always have been.
 ---
 auto
 ---
@@ -463,8 +474,8 @@ TODO: description
 ==.==
 .===
 
-::chest 4
-TODO: description
+::chest Brisk of Body
+I am what I am. And I still am.
 ---
 auto
 ---
@@ -618,8 +629,8 @@ auto
 00
 .0
 
-::arm 9
-TODO: description
+::arm Swift of Swipe
+I am what I am. I always will be.
 ---
 auto
 ---
@@ -683,8 +694,8 @@ auto
 .00
 00.
 
-::leg 5
-TODO: description
+::leg Fleet of Foot
+I am what I am. Can you say the same?
 ---
 auto
 ---
