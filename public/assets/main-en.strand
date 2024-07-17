@@ -721,8 +721,8 @@ auto
 0000
 0000
 
-::leg 7
-TODO: description
+::leg Hollowed Leap
+Got to be free baby. The lightest step is the only one worth taking.
 ---
 auto
 ---
@@ -1220,7 +1220,7 @@ mechs below here
     "head": "Peckish Lump",
     "chest": "Whet Appetite",
     "arms": "Tarless Feather",
-    "legs": "7", // TODO: names
+    "legs": "Hollowed Leap",
     "modules": [
         {"name": "Compact Cockpit","x": 2,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Standard Plating","x": 7,"y": 2,"flipH": false,"flipV": false,"turns": 0 },

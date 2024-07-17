@@ -54,6 +54,7 @@ textures/leg Fleet of Foot.png
 textures/head Peckish Lump.png
 textures/chest Whet Appetite.png
 textures/arm Tarless Feather.png
+textures/leg Hollowed Leap.png
 
 textures/leg 1.png
 
