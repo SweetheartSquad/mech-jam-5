@@ -425,7 +425,7 @@ auto
 .00000.
 ..===..
 
-::chest 1
+::chest Tallboy 0200
 blah blah blah
 ---
 -150
@@ -540,7 +540,7 @@ blah blah blah
 0.0
 =.=
 
-::arm 1
+::arm Tallboy 0020
 blah blah blah
 ---
 auto
@@ -642,7 +642,7 @@ auto
 .00
 
 
-::leg 2
+::leg Tallboy 0002
 blah blah blah
 ---
 auto

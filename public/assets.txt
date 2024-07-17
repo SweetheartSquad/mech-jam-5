@@ -31,7 +31,9 @@ textures/title.png
 textures/title2.png
 
 textures/head Tallboy 2000.png
-textures/chest 1.png
+textures/chest Tallboy 0200.png
+textures/arm Tallboy 0020.png
+textures/leg Tallboy 0002.png
 
 
 textures/head Compound Carapace.png
@@ -39,9 +41,7 @@ textures/chest Thoracic Trunk.png
 textures/arm Predatory Pincers.png
 textures/leg Beetle Boots.png
 
-textures/arm 1.png
 textures/leg 1.png
-textures/leg 2.png
 
 textures/button_normal.png
 textures/button_over.png
