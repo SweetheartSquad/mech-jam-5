@@ -85,10 +85,15 @@ textures/module Big Love.png
 textures/module Heartless Challenge.png
 textures/module Sweet Omega.png
 
-textures/module shield 1.png
-textures/module shield 2.png
-textures/module shield 3.png
-textures/module shield 4.png
+textures/module D.MOD-MKI.png
+textures/module D.MOD-MKII.png
+textures/module D.MOD-MKIII.png
+textures/module D.MOD-MMAO.png
+
+textures/module Aerial Array.png
+textures/module DoubleSight.png
+textures/module Radial Array.png
+textures/module OverSight.png
 
 textures/module sink 1.png
 textures/module sink 2.png
@@ -97,13 +102,6 @@ textures/module sink 4.png
 textures/module sink 5.png
 textures/module sink 6.png
 textures/module sink 7.png
-
-textures/module Bar.png
-textures/module Bar2.png
-textures/module radar 1.png
-textures/module radar 2.png
-textures/module radar 3.png
-textures/module radar 4.png
 audio/voiceDanny.mp3
 audio/voiceDiane.mp3
 audio/voiceJudy.mp3

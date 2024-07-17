@@ -852,8 +852,9 @@ auto, attack, attack
 00000
 .0
 
-::module shield 1
-TODO: description
+::module D.MOD-MKI
+Basic defensive module.
+Tagline: 'Heart beating like a hammer? D.MOD has your back!'
  
 SHIELD +1
 ---
@@ -862,8 +863,9 @@ auto, shield
 .00
 00.
 
-::module shield 2
-TODO: description
+::module D.MOD-MKII
+Second generation defensive module.
+Tagline: 'You won't be jumping at shadows with this on your side!'
  
 SHIELD +2
 ---
@@ -872,8 +874,8 @@ auto, shield, shield
 .000
 000.
 
-::module shield 3
-TODO: description
+::module D.MOD-MKIII
+Top-line defensive module. The original name 'Diamond Eye' was dropped, with test markets citing poor brand recognition.
  
 SHIELD +3
 ---
@@ -883,8 +885,8 @@ auto, shield, shield, shield
 .00
 000.
 
-::module shield 4
-TODO: description
+::module D.MOD-MMAO
+Experimental defensive module. Just a segmentation-focused prototype, but that's enough for me.
  
 SHIELD +3
 ---
@@ -894,8 +896,8 @@ auto, shield, shield, shield, awkward
 ..00
 000..
 
-::module radar 2
-TODO: description
+::module Aerial Array
+A single row of antennae, all it takes to listen to the wind blow.
  
 SCAN +1
 ---
@@ -904,9 +906,8 @@ auto, radar, flexible
 000
 
 
-::module radar 3
-A fork
-TODO: description
+::module DoubleSight
+Bifurcated sensors see the face behind the mask.
  
 SCAN +2
 ---
@@ -916,8 +917,8 @@ auto, radar, radar
 .00
 00
 
-::module radar 4
-TODO: description
+::module Radial Array
+Compressed crystalline knowledge radiates through its circuitry.
  
 SCAN +3
 ---
@@ -929,9 +930,8 @@ auto, radar, radar, radar
 ---
 1,0
 
-::module radar 1
-A double fork
-TODO: description
+::module OverSight
+Picks up visions and dreams from midnight on the other side of the world.
  
 SCAN +4
 ---
