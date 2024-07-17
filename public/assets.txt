@@ -56,6 +56,7 @@ textures/chest Whet Appetite.png
 textures/arm Tarless Feather.png
 textures/leg Hollowed Leap.png
 
+textures/head The Crooked.png
 textures/leg 1.png
 
 textures/button_normal.png
