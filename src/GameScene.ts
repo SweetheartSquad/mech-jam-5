@@ -412,7 +412,7 @@ export class GameScene {
 				panel.destroy();
 				btnConfirm.destroy();
 			};
-			const btnConfirm = new BtnText(confirm, () => {
+			const btnConfirm = new BtnText(smartify(confirm), () => {
 				sfx('sfx_click1', { rate: randRange(1.5, 1.6) });
 				destroy();
 				r(true);
@@ -426,7 +426,7 @@ export class GameScene {
 			const textMsg = new BitmapText({ text: '', style: fontDialogue });
 			textMsg.style.wordWrapWidth = panel.width - gap * 2;
 			textMsg.style.align = 'center';
-			setTextWrapped(textMsg, msg);
+			setTextWrapped(textMsg, smartify(msg));
 			panel.x -= panel.width / 2;
 			textMsg.x += gap;
 			textMsg.x += (textMsg.style.wordWrapWidth - textMsg.width) / 2;

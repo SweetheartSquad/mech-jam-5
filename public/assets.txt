@@ -71,6 +71,11 @@ textures/chest Year 0080.png
 textures/arm Year 0717.png
 textures/leg Year 0999.png
 
+textures/head Broken Away.png
+textures/chest Crashed Out.png
+textures/arm Made Escape.png
+textures/leg Devilled Run.png
+
 textures/button_normal.png
 textures/button_over.png
 textures/button_down.png
