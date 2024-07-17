@@ -1044,6 +1044,18 @@ Songbird: Did you rehearse this??
 <<endif>>
 
 ::signal failure won
+Songbird: Oh, thank god it's over.
+>
+Danny: Hey! You cheated!
+>
+Madge: How could you possibly have beaten all four of us??
+>
+Murrow: CHEATER!!
+>
+Rhiannon: Unbelievable.
+>
+Songbird: We used to be friends! Do you really think that I would cheat?
+<<do this.goto('signal failure next')>>
 
 ::signal failure lost
 Danny: We won!
@@ -1057,8 +1069,10 @@ Murrow: HAH!!
 Songbird: You're all out of your minds!
 >
 Songbird: I didn't do anything to any of you! We used to be friends!
->
-Danny: Let's get out of here.
+<<do this.goto('signal failure next')>>
+
+::signal failure next
+Danny: Whatever. Let's get out of here.
 >
 Madge: You know, we make a pretty good team.
 >
@@ -1087,9 +1101,7 @@ Murrow: Yeah, shut up!
 Danny: C'mon gang, let's go get some smoothies.
 >
 Madge: See you never, Songbird.
-<<do this.goto('signal failure next')>>
-
-::signal failure next
+>
 Songbird: I give them two weeks, tops.
 <<do this.showR('');this.portrait=''>>
 >
