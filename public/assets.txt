@@ -62,7 +62,7 @@ textures/arm The Spoken.png
 textures/leg The Put Down.png
 
 textures/head The Blue Face.png
-// textures/chest The Blackboiled Heart.png
+textures/chest The Blackboiled Heart.png
 // textures/arm The White Knuckles.png
 // textures/leg The Dipped Toes.png
 
