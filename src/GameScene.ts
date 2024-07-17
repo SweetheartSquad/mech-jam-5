@@ -744,12 +744,20 @@ ${part.description}`)}${
 			panelInfo.addChild(textInfo);
 
 			let containerBtns = new Container();
+
+			const pulse = new Updater(this.camera, () => {
+				if (!containerBtns) return;
+				containerBtns.alpha = eases.cubicInOut(
+					Math.sin(Date.now() / 250) * 0.4 + 0.6
+				);
+			});
+			this.camera.scripts.push(pulse);
+
 			const update = () => {
 				this.reassemble();
 
 				containerBtns.destroy();
 				const btns = this.makeBtnGrid('player', (btn, x, y, cell) => {
-					btn.spr.alpha = 0.4;
 					if (cell === '=') {
 						btn.spr.texture = tex('cell joint');
 					}
