@@ -164,10 +164,10 @@ this should never render
 	this.next = 'diplomat';
 	this.scene.start();
 	this.scene.loadMech('player', {
-		head: 'Tallboy 2000',
-		chest: '1',
-		arms: '1',
-		legs: '2',
+		"head": "Tallboy 2000",
+		"chest": "Tallboy 0200",
+		"arms": "Tallboy 0020",
+		"legs": "Tallboy 0002",
 		modules: [],
 	});
 
@@ -195,9 +195,9 @@ todo diplomat prebuild stuff
 todo diplomat prefight stuff
 <<do this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "chest": "Tallboy 0200",
+    "arms": "Tallboy 0020",
+    "legs": "Tallboy 0002",
     "modules": [
         { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
