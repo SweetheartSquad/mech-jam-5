@@ -1099,6 +1099,18 @@ auto
 .00000.
 ..===..
 
+::chest Beginner
+Stock Mecha chest piece.
+---
+auto
+---
+...=
+=00000=
+..000
+..000
+..000
+..=0=
+
 ::chest Tallboy 0200
 Tall enough to reach for the stars. Dangerously, arrogantly elongated.
 ---
@@ -1217,6 +1229,16 @@ Got to be free, baby. A small stomach is easily sated.
 0.0
 =.=
 
+::arm Beginner
+Stock Mecha part.
+---
+auto
+---
+.0=
+000
+00
+0
+
 ::arm Tallboy 0020
 Tall enough to reach for the stars. Its fist is begging, dying to grasp above.
 ---
@@ -1305,6 +1327,17 @@ auto
 00.=
 .00=
 00..
+
+::leg Beginner
+Stock Mecha part.
+---
+auto
+---
+.0=
+.00
+.00
+.00
+..0
 
 ::leg Year 0999
 Do they still admire your silvered ways as you show them what it means to wander?
