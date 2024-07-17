@@ -199,11 +199,21 @@ actual written scenes below
 <<do this.titleCard(['SORTIE BEGIN:', '"DIPLOMAT"']).then(() => this.goto('diplomat prebuild2'))>>
 
 ::diplomat prebuild2
-todo diplomat prebuild stuff
+Diane: Songbird, good to see you. Doing some afternoon training? 
+>
+Songbird: Oh, Diane! Hey. Yeah, I was just practicing some moves.
+>
+Diane: Perhaps you'd like a sparring partner?
+>
+Songbird: Sure. Just give me a sec to adjust my loadout.
 [[>close]]
 
 ::diplomat prefight
-todo diplomat prefight stuff
+Songbird: Alright, I'm ready to go.
+>
+Diane: Standard match rules. I'll pull my punches a little, but I won't just let you win.
+>
+Songbird: Understood. 
 <<do this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "Tallboy 0200",
@@ -227,23 +237,615 @@ todo diplomat prefight stuff
 [[>close]]
 
 ::diplomat postfight
-todo diplomat postfight stuff
-<<if !this.won>>
-lol you lost
-[[>close]]
+<<if this.won>>
+<<do this.goto('diplomat won')>>
 <<else>>
+<<do this.goto('diplomat lost')>>
+<<endif>>
+
+::diplomat lost
+Songbird: Ah, I messed that up.
+>
+Diane: Not every fight is a win, Songbird. But you pick yourself back up and try again.
+>
+Diane: Hmm, although not with me. I'm late for something. See you around, Songbird.
+<<do this.goto('diplomat next')>>
+
+::diplomat won
+Diane: Impressive, Songbird. You've really been working on your skills.
+>
+Songbird: Thanks. Of course, I wouldn't be here without your training.
+>
+Diane: I just put you on the right path. The hard work has been yours.
+>
+Diane: Hmm, I have to go take care of something. See you around, Songbird.
+<<do this.goto('diplomat next')>>
+
+::diplomat next
+Songbird: Bye, Diane.
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: Whew. That match was intense.
+>
+Songbird: It reminds me of a match I had with Madge last week...
+<<do this.next = 'time travel'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+::time travel prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"TIME TRAVEL"']).then(() => this.goto('time travel prebuild2'))>>
+
+::time travel prebuild2
+Madge: Alright, Songbird. We doing this or not? 
+>
+Songbird: Give me a sec, Madge. Jeez. I'm still tuning my mech.
+>
+Songbird: Where's Danny today?
+>
+Madge: What am I, his keeper? He's probably at home.
+>
+Songbird: Okay. I didn't mean anything by it.
+>
+Madge: I'll worry about my boyfriend. You worry about how I'm about to kick your ass.
+>
+Songbird: We'll see about that.
+[[>close]]
+
+::time travel prefight
+Songbird: Alright, I'm ready to go.
+>
+Madge: Ready to lose, you mean.
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+::time travel postfight
+<<if this.won>>
+<<do this.goto('time travel won')>>
+<<else>>
+<<do this.goto('time travel lost')>>
+<<endif>>
+
+::time travel lost
+Songbird: Whoof. Is it over now?
+>
+Madge: Hah! Did I break you down, Songbird? Shatter your illusions?
+>
+Madge: Better pick up the pieces and go home.
+>
+Songbird: Damn, Madge. You're ruthless.
+>
+Madge: Winner's privilege. You can trash talk me next time you win. If that ever happens.
+>
+Songbird: Okay, okay. Next time.
+<<do this.goto('time travel next')>>
+
+::time travel won
+Madge: Argh! You got me, Songbird.
+>
+Songbird: Better take that silver spoon and dig your grave.
+>
+Madge: Laugh it up, buddy. I'll get you next time. I'll make you cry.
+>
+Songbird: Can't wait. 
+<<do this.goto('time travel next')>>
+
+::time travel next
+Songbird: Alright, I'm gonna hit the showers. See you later.
 <<do this.next = 'signal failure'>>
 <<do
 	this.scene.costMax += 1000;
 	this.scene.locked['module debug locked'] = false;
 	this.scene.locked['head debug locked'] = false;
 >>
-wow you won
 [[>close]]
+
+
+
+::weird fiction prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"WEIRD FICTION"']).then(() => this.goto('weird fiction prebuild2'))>>
+
+::weird fiction prebuild2
+Danny: Songbird! I have a bone to pick with you.
+>
+Songbird: Danny? What's wrong?
+>
+Danny: You've been making time with my girl.
+>
+Songbird: What? Madge?
+>
+Danny: Everyone keeps telling me she's been seeing someone behind me back.
+>
+Danny: And I know you and she were here last week... canoodling, I assume!!
+>
+Songbird: Canoodling? We had one match in our mechs and then I went home.
+>
+Songbird: Danny, I'm not sleeping with Madge.
+>
+Danny: Don't play dumb with me, Songbird! I challenge you to a duel!
+>
+Danny: A duel of honour!!
+>
+Songbird: Danny, I seriously don't know what you're talking about.
+>
+Danny: Prepare yourself, knave!
+>
+Songbird: ...Fine.
+[[>close]]
+
+::weird fiction prefight
+Songbird: Okay, Danny. I'm ready. But I--
+>
+Danny: Homewrecker! You will taste defeat this day!!
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+::weird fiction postfight
+<<if this.won>>
+<<do this.goto('weird fiction won')>>
+<<else>>
+<<do this.goto('weird fiction lost')>>
 <<endif>>
+
+::weird fiction won
+Danny: You... bastard.
+>
+Danny: First you steal my girl... then my dignity.
+>
+Songbird: Danny! Madge and I are just friends.
+>
+Songbird: If she's seeing someone, it's not me.
+>
+Danny: I... fine.
+>
+Danny: Maybe it's someone else.
+>
+Danny: You win this round, Songbird. But if you're lying to me, so help me...
+<<do this.goto('weird fiction next')>>
+
+::weird fiction lost
+Danny: Hah! Take that, you toad.
+>
+Danny: Madge is mine now.
+>
+Songbird: Danny! Madge and I are just friends.
+>
+Songbird: If she's seeing someone, it's not me.
+>
+Danny: I don't care. Stay away from her.
+>
+Danny: If i so much as see you near her, so help me...
+<<do this.goto('weird fiction next')>>
+
+::weird fiction next
+<<do this.showR('');this.portrait=''>>
+Songbird: ...
+>
+Songbird: That was... something.
+>
+Songbird: I wonder if it's true. Is Madge seeing someone else?
+<<do this.next = 'arena'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
+::arena prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"ARENA"']).then(() => this.goto('arena prebuild2'))>>
+
+::arena prebuild2
+Songbird: Oh hey, Rhiannon. You here to train?
+>
+Rhiannon: Did you tell Danny about me and Madge?!
+>
+Songbird: I-- what? He came in here yelling about Madge and--
+>
+Rhiannon: So you did? 
+>
+Songbird: No! He thought I was with Madge.
+>
+Rhiannon: And you ratted me out to save yourself.
+>
+Songbird: Wait, you're the one who's been with Madge?
+>
+Rhiannon: That act isn't going to work, Songbird. I know it was you.
+>
+Rhiannon: You just couldn't let me have this.
+>
+Rhiannon: We were friends. Equals. We came up through all this together.
+>
+Rhiannon: You were the one person I could trust, in and out of the ring.
+>
+Rhiannon: But now, I'm going to destroy you.
+>
+Rhiannon: Get in your mech.
+[[>close]]
+
+::arena prefight
+Songbird: Rhiannon, I swear I didn't say anything about you.
+>
+Rhiannon: You will take a bullet for every lie you've told.
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+::arena postfight
+<<if this.won>>
+<<do this.goto('arena won')>>
+<<else>>
+<<do this.goto('arena lost')>>
+<<endif>>
+
+::arena won
+Rhiannon: ...
+>
+Songbird: You wouldn't listen. I told you I had nothing to do with this.
+>
+Rhiannon: ...
+>
+Rhiannon: That may be true.
+<<do this.goto('arena next')>>
+
+::arena lost
+Rhiannon: This is what happens to rats. 
+>
+Songbird: Rhiannon! I have nothing to do with this. I didn't even know...
+>
+Rhiannon: Enough lies.
+>
+Rhiannon: And even if you didn't...
+<<do this.goto('arena next')>>
+
+::arena next
+Rhiannon: Danny found out. So it's over. My life is over.
+>
+Madge: No it's not.
+>
+Songbird: Madge! 
+>
+Rhiannon: Baby!
+>
+Madge: Screw Danny. He's a drip. I told him to get lost.
+>
+Rhiannon: So you mean...
+>
+Madge: Yes. I chose you.
+>
+Rhiannon: And I accept.
+>
+Songbird: ...
+>
+Songbird: Are we done here?
+>
+Rhiannon: Yes. Madge? Let's go.
+>
+Madge: Okay, baby. Bye, Songbird.
+>
+Songbird: ...
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: What the hell is happening around here?
+>
+Songbird: Wasn't Rhiannon dating Murrow?
+>
+Songbird: Wait... don't tell me.
+<<do this.next = 'shifting sands'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
+::shifting sands prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"SHIFTING SANDS"']).then(() => this.goto('shifting sands prebuild2'))>>
+
+::shifting sands prebuild2
+Murrow: SONGBIRD!!!
+>
+Songbird: I don't have anything to do with this, Murrow.
+>
+Murrow: LIAR!!!
+>
+Songbird: Rhiannon just left with Madge. Go talk to them about it.
+>
+Murrow: Everything was fine until YOU talked to Danny!
+>
+Murrow: We lived in blissful ignorance! You ruined that! You ruined everything!!
+>
+Songbird: Okay, I don't have time for this. Are you going to fight me?
+>
+Murrow: I'M GOING TO KILL YOU!!
+>
+Songbird: Alright, just get in the arena.
+[[>close]]
+
+::shifting sands prefight
+Songbird: Right. Let's do this.
+>
+Murrow: DIE!!!
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+::shifting sands postfight
+<<if this.won>>
+<<do this.goto('shifting sands won')>>
+<<else>>
+<<do this.goto('shifting sands lost')>>
+<<endif>>
+
+::shifting sands won
+Murrow: NO!!!
+>
+Songbird: Murrow, just go. This is between you and Rhiannon, not me.
+>
+Murrow: NO! YOU WILL PERISH!!
+
+<<do this.goto('shifting sands next')>>
+
+::shifting sands lost
+Murrow: I'LL DESTROY YOU!!
+>
+Songbird: Murrow, the fight is over. You win.
+>
+Murrow: THAT'S NOT ENOUGH!!
+<<do this.goto('shifting sands next')>>
+
+::shifting sands next
+Songbird: Murrow--
+>
+Songbird: MURROW!! STOP!!
+>
+Murrow: IF I DON'T GET RHIANNON, YOU DON'T GET A MECH!!
+>
+Songbird: YOU'RE DESTROYING IT!
+>
+Murrow: GOOD! You don't deserve it!
+>
+Songbird: Oh my god.
+>
+Murrow: GOODBYE, SONGBIRD! FOREVER!!
+>
+Songbird: Get out of here, you dick!
+<<do this.showR('');this.portrait=''>>
+>
+Songbird: He totalled it! What am I supposed to do now?
+>
+Songbird: Hmm...
+>
+Songbird: I guess there's the old model I put in storage.
+>
+Songbird: That'll have to do until I can get this thing fixed.
+>
+Songbird: Jeez, it's going to cost a fortune to replace some of this.
+>
+Songbird: I didn't even do anything to him!
+<<do this.next = 'cosmonaut'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
+::cosmonaut prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"COSMONAUT"']).then(() => this.goto('cosmonaut prebuild2'))>>
+
+::cosmonaut prebuild2
+todo
+[[>close]]
+
+::cosmonaut prefight
+todo
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+::cosmonaut postfight
+<<if this.won>>
+<<do this.goto('cosmonaut won')>>
+<<else>>
+<<do this.goto('cosmonaut lost')>>
+<<endif>>
+
+::cosmonaut won
+todo
+<<do this.goto('cosmonaut next')>>
+
+::cosmonaut lost
+todo
+<<do this.goto('cosmonaut next')>>
+
+::cosmonaut next
+todo
+<<do this.next = 'relax'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
+
+
+::relax prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"RELAX"']).then(() => this.goto('relax prebuild2'))>>
+
+::relax prebuild2
+todo
+[[>close]]
+
+::relax prefight
+todo
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+
+::relax postfight
+<<if this.won>>
+<<do this.goto('relax won')>>
+<<else>>
+<<do this.goto('relax lost')>>
+<<endif>>
+
+::relax won
+todo
+<<do this.goto('relax next')>>
+
+::relax lost
+todo
+<<do this.goto('relax next')>>
+
+::relax next
+todo
+<<do this.next = 'signal failure'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
 
 
 ::signal failure prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"SIGNAL FAILURE"']).then(() => this.goto('signal failure prebuild2'))>>
+
+::signal failure prebuild2
 todo signal failure prebuild stuff
 [[>close]]
 
@@ -286,23 +888,78 @@ todo signal failure postfight stuff
 lol you lost
 [[>close]]
 <<else>>
-<<do this.next = 'end'>>
+<<do this.next = 'resurrection'>>
 wow you won
 [[>close]]
 <<endif>>
 
 
+
+
+
+
+::resurrection prebuild
+<<do this.titleCard(['SORTIE BEGIN:', '"RESURRECTION"']).then(() => this.goto('resurrection prebuild2'))>>
+
+::resurrection prebuild2
+todo
+[[>close]]
+
+::resurrection prefight
+todo
+<<do this.scene.loadMech('enemy', {
+    "head": "Tallboy 2000",
+    "chest": "1",
+    "arms": "1",
+    "legs": "2",
+    "modules": [
+        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+    ]
+});>>
+
+[[>close]]
+
+
+::resurrection postfight
+<<if this.won>>
+<<do this.goto('relax won')>>
+<<else>>
+<<do this.goto('relax lost')>>
+<<endif>>
+
+::resurrection won
+todo
+<<do this.goto('relax next')>>
+
+::resurrection lost
+todo
+<<do this.goto('relax next')>>
+
+::resurrection next
+todo
+<<do this.next = 'end'>>
+<<do
+	this.scene.costMax += 1000;
+	this.scene.locked['module debug locked'] = false;
+	this.scene.locked['head debug locked'] = false;
+>>
+[[>close]]
+
+
+
+
 ::end prefight
 todo ending
-
-
-
-
-
-
-
-
-
 
 
 
