@@ -1229,21 +1229,17 @@ Songbird: You're not my mother!
 <<do
 this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
+    "chest": "Tallboy 0200",
+    "arms": "Tallboy 0020",
+    "legs": "Tallboy 0002",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
+        { "name": "DoubleSight","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "HSNK-L","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 2 },
+        { "name": "Enchanter","x": 8,"y": 10,"flipH": false,"flipV": false,"turns": 3 },
+        { "name": "Cheap Plating","x": 2,"y": 11,"flipH": false,"flipV": false,"turns": 1 },
+        { "name": "D.MOD-MKII","x": 10,"y": 20,"flipH": false,"flipV": false,"turns": 3 },
+        { "name": "Comfortable Cockpit","x": 5,"y": 21,"flipH": false,"flipV": false,"turns": 0 },
+        { "name": "HSNK-L","x": 4,"y": 29,"flipH": false,"flipV": false,"turns": 0 },
     ]
 });
 this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
