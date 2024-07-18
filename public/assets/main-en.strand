@@ -98,7 +98,7 @@
 	});
 >>
 <<endif>>
-<<do this.showL('');this.portrait=''>>
+<<do this.showL('title', { x: this.size.x/2-this.scene.dialogue.togglerL.container.x });this.portrait=''>>
 <<do this.showR('');this.portrait=''>>
 BLOOD in the SKY
 DEAD OR ALIVE
