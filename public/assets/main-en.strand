@@ -1212,7 +1212,7 @@ Songbird: I'll destroy you. I'll break your spell and free my friends from your 
 "Woman of 1000 Years": Let's see how well you've learned your lessons.
 >
 <<do
-	this.goto('close').then(() => this.scene.alert('This is it.', undefined, 0x0000ff));
+	this.goto('close').then(() => this.scene.alert('This is it.', undefined, 0xff0000));
 >>
 
 ::resurrection prefight
