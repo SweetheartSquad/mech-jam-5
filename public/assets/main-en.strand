@@ -133,23 +133,23 @@ FOR "MECH JAM V"
 >>
 
 ::PORTRAIT TEST
-Songbird: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Songbird: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Danny: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Danny: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Diane: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Diane: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Judy: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Judy: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Madge: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Madge: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Murrow: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Murrow: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Rhiannon: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Rhiannon: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-Sara: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+Sara: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 >
-"Woman of 1000 Years": Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra 
+"Woman of 1000 Years": Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed egestas justo, vitae lacinia nulla. Curabitur semper, ligula viverra dictum placerat, ex ex pharetra
 [[>start]]
 
 ::close
@@ -210,7 +210,7 @@ actual written scenes below
 <<do this.titleCard(['SORTIE BEGIN:', '"DIPLOMAT"']).then(() => this.goto('diplomat prebuild2'))>>
 
 ::diplomat prebuild2
-Diane: Songbird, good to see you. Doing some afternoon training? 
+Diane: Songbird, good to see you. Doing some afternoon training?
 >
 Songbird: Oh, Diane! Hey. Yeah, I was just practicing some moves.
 >
@@ -224,7 +224,7 @@ Songbird: Alright, I'm ready to go.
 >
 Diane: Standard match rules. I'll pull my punches a little, but I won't just let you win.
 >
-Songbird: Understood. 
+Songbird: Understood.
 >
 <<do
 this.scene.loadMech('enemy', {
@@ -282,7 +282,7 @@ Songbird: It reminds me of a match I had with Madge last week...
 <<do this.titleCard(['SORTIE BEGIN:', '"TIME TRAVEL"']).then(() => this.goto('time travel prebuild2'))>>
 
 ::time travel prebuild2
-Madge: Alright, Songbird. We doing this or not? 
+Madge: Alright, Songbird. We doing this or not?
 >
 Songbird: Give me a sec, Madge. Jeez. I'm still tuning my mech.
 >
@@ -357,7 +357,7 @@ Songbird: Better take that silver spoon and dig your grave.
 >
 Madge: Laugh it up, buddy. I'll get you next time. I'll make you cry.
 >
-Songbird: Can't wait. 
+Songbird: Can't wait.
 <<do this.goto('time travel next')>>
 
 ::time travel next
@@ -493,7 +493,7 @@ Rhiannon: Did you tell Danny about me and Madge?!
 >
 Songbird: I- what? He came in here yelling about Madge and-
 >
-Rhiannon: So you did? 
+Rhiannon: So you did?
 >
 Songbird: No! He thought I was with Madge.
 >
@@ -567,7 +567,7 @@ Rhiannon: That may be true.
 <<do this.goto('arena next')>>
 
 ::arena lost
-Rhiannon: This is what happens to rats. 
+Rhiannon: This is what happens to rats.
 >
 Songbird: Rhiannon! I have nothing to do with this. I didn't even know...
 >
@@ -581,7 +581,7 @@ Rhiannon: Danny found out. So it's over. My life is over.
 >
 Madge: No it's not.
 >
-Songbird: Madge! 
+Songbird: Madge!
 >
 Rhiannon: Baby!
 >
@@ -818,7 +818,7 @@ Songbird: That's because I'm NOT GARCIA! I'm Songbird! My mech got destroyed, I 
 >
 Judy: I... guess that makes sense.
 >
-Judy: Sorry. She must have left it here here when she skipped town. 
+Judy: Sorry. She must have left it here here when she skipped town.
 >
 Judy: I guess Garcia wouldn't be stupid enough to come back after... well. What she did.
 >
@@ -842,11 +842,11 @@ Judy: I guess she left it here when she skipped town.
 <<do this.goto('cosmonaut next')>>
 
 ::cosmonaut next
-Judy: I'm Judy, by the way. 
+Judy: I'm Judy, by the way.
 >
 Songbird: I'm Songbird.
 >
-Judy: Sorry about all of this. 
+Judy: Sorry about all of this.
 >
 Songbird: It's fine. You're not the first person to fight me over a misunderstanding today.
 >
@@ -873,7 +873,7 @@ Sara: I don't care who you are. Stop picking on my little sister.
 >
 Songbird: We just had a short duel! It's no big deal.
 >
-Sara: That's what they all say. 
+Sara: That's what they all say.
 >
 Judy: Sara, it's not like that.
 >
@@ -981,7 +981,7 @@ Songbird: I finally got my mech all fixed up after what Murrow did to it weeks a
 >
 Songbird: And I'm ready to get back in the ring.
 >
-Songbird: Diane said she had an opponent set up for me today. I wonder who it'll be. 
+Songbird: Diane said she had an opponent set up for me today. I wonder who it'll be.
 >
 Murrow: SONGBIRD!!
 >
@@ -1175,7 +1175,7 @@ Songbird: You taught me everything I know. Why would you use me like this?
 Diane: You know how my mech is named "Woman of 1000 Years"?
 >
 "Woman of 1000 Years": That's not my mech's name. It's mine.
-> 
+>
 "Woman of 1000 Years": I have been chained to this planet for millenia, forced to walk the earth like a ghost.
 >
 "Woman of 1000 Years": Do you know how dull it is? Day after day, year after year...
@@ -1194,7 +1194,7 @@ Songbird: What are you talking about??
 >
 "Woman of 1000 Years": All for my entertainment.
 >
-Songbird: You're diabolical. 
+Songbird: You're diabolical.
 >
 Songbird: I won't let you get away with this!
 >
@@ -1315,7 +1315,7 @@ Diane: Thank you, Songbird. Come to me.
 ::resurrection next
 "Woman of 1000 Years": Mirror in the sky, what is love? Can the child within my heart rise above?
 >
-Diane: I can feel the years disappearing. Thank you, Songbird. 
+Diane: I can feel the years disappearing. Thank you, Songbird.
 >
 Diane: Goodbye.
 >
