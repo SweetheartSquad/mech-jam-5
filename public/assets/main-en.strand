@@ -273,9 +273,6 @@ Songbird: Whew. That match was intense.
 >
 Songbird: It reminds me of a match I had with Madge last week...
 <<do this.next = 'time travel'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -369,9 +366,6 @@ Songbird: Can't wait.
 ::time travel next
 Songbird: Alright, I'm gonna hit the showers. See you later.
 <<do this.next = 'weird fiction'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -476,9 +470,6 @@ Songbird: That was... something.
 >
 Songbird: I wonder if it's true. Is Madge seeing someone else?
 <<do this.next = 'arena'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -604,9 +595,6 @@ Songbird: Wasn't Rhiannon dating Murrow?
 >
 Songbird: Wait... don't tell me.
 <<do this.next = 'shifting sands'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -714,9 +702,6 @@ Songbird: Jeez, it's going to cost a fortune to replace some of this.
 >
 Songbird: I didn't even do anything to him!
 <<do this.next = 'cosmonaut'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -823,9 +808,6 @@ Songbird: Well, I was just training, when--
 >
 Sara: Who the hell are you? And what are you doing to my sister?!
 <<do this.next = 'relax'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -927,9 +909,6 @@ Songbird: I'm just here to battle mechs.
 >
 Songbird: Well, at least all of this is over.
 <<do this.next = 'signal failure'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -1303,9 +1282,6 @@ Songbird: ...
 >
 Songbird: I guess I need a new hobby.
 <<do this.next = 'end'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
