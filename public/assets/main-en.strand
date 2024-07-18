@@ -112,23 +112,30 @@ DEAD OR ALIVE
 [[ABOUT]]
 
 ::HOW TO PLAY
-Dialogue Controls:
-	Next: SPACEBAR / LEFT MOUSE BUTTON
+<<do
+	this.sfx('voiceDefault');
+	this.showL('');
+	this.showR('');
+	this.portrait='';
+>>
+[[PLACING MODULES]]
+[[COMBAT]]
+[[BACK|this.back()]]
 
-Parts Selection Controls:
-	Select: LEFT MOUSE BUTTON
+::PLACING MODULES
+Select   LMB
+Deselect   RMB
+Rotate Module   SCROLL / Q / D
+Flip Module   MMB / F / V / H
+ 
+Hold SHIFT to duplicate selected module.
+[[BACK|this.back()]]
 
-Module Selection Controls:
-	Select: LEFT MOUSE BUTTON
-	De-Select: RIGHT MOUSE BUTTON
-	Rotate Module: SCROLL WHEEL / Q / D
-	Flip Module: F / V / H
-	Hold SHIFT while placing to duplicate selected module
-
-Combat Controls:
-	Select: LEFT MOUSE BUTTON
-	Back: RIGHT MOUSE BUTTON
-	Repeat Action: SHIFT + LEFT MOUSE BUTTON
+::COMBAT
+Select - LMB
+Back - RMB
+Repeat Action - SHIFT + LMB
+[[BACK|this.back()]]
 
 	
 [[BACK|this.back()]]
