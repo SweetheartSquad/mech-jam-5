@@ -28,7 +28,7 @@ audio/sfx_shield.mp3
 audio/sfx_woop.mp3
 
 textures/title.png
-textures/title2.png
+textures/end.png
 
 textures/head Bunted Snow.png
 textures/chest Scrubbed Wren.png

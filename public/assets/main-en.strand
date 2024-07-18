@@ -1298,14 +1298,27 @@ Diane: Thank you, Songbird. Come to me.
 <<do this.goto('resurrection next')>>
 
 ::resurrection next
+<<do this.sfx('sfx_hit', { volume: 0.2, rate: 0.5 }); this.scene.screenFilter.flash(0.3, 400, this.ease.circOut)>>
 "Woman of 1000 Years": Mirror in the sky, what is love? Can the child within my heart rise above?
 >
+<<do this.sfx('sfx_hit', { volume: 0.3, rate: 0.6 }); this.scene.screenFilter.flash(0.4, 400, this.ease.circOut)>>
 Diane: I can feel the years disappearing. Thank you, Songbird.
 >
 Diane: Goodbye.
 >
+<<do
+	this.music('');
+	this.showR('');this.portrait=''
+	this.sfx('sfx_hit', { volume: 1, rate: 0.75 }); this.scene.screenFilter.flash(0.7, 2000, this.ease.cubicInOut);
+	this.delay(200).then(() => {this.sfx('sfx_hit', { volume: 0.5, rate: 0.5 }) });
+	this.delay(400).then(() => {this.sfx('sfx_hit', { volume: 0.25, rate: 0.25 }) });
+	this.delay(3000).then(() => {
+		this.goto('resurrection next2');
+	});
+>>
+
+::resurrection next2
 Songbird: It's over.
-<<do this.showR('');this.portrait=''>>
 >
 Songbird: She's gone.
 >
@@ -1318,14 +1331,21 @@ Songbird: ...
 Songbird: ...
 >
 Songbird: I guess I need a new hobby.
-<<do this.next = 'end'>>
-[[>close]]
+>
+<<do (async () => {
+	this.portrait = '';
+	this.showL('end', { x: this.size.x/2-this.scene.dialogue.togglerL.container.x, duration: 3000 });
+	await this.delay(2000);
+	await this.titleCard(['THE END']);
+	await this.delay(500);
+	this.goto('resurrection next3');
+})()>>
 
 
+::resurrection next3
+[[Restart?|window.location.reload()]]
 
 
-::end prefight
-THE END
 
 
 
