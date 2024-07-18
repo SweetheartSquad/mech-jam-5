@@ -225,6 +225,7 @@ Songbird: Alright, I'm ready to go.
 Diane: Standard match rules. I'll pull my punches a little, but I won't just let you win.
 >
 Songbird: Understood. 
+// WOMAN OF 1000 YEARS
 <<do this.scene.loadMech('enemy', {
     "head": "Year 0001",
     "chest": "Year 0080",
