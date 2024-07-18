@@ -760,10 +760,11 @@ Judy: You always were a coward, Garcia! You're not getting out of this one.
 	this.scene.locked['chest Crashed Out'] = false;
 	this.scene.locked['arm Made Escape'] = false;
 	this.scene.locked['leg Devilled Run'] = false;
-	this.oldLocked = this.locked;
-	this.locked = {};
-	[].concat(this.scene.heads, this.scene.chests, this.scene.arms, this.scene.legs).forEach(i => {
-		this.locked[i] = true;
+	this.scene.saveLocks();
+	this.oldLocked = this.scene.locked;
+	this.scene.locked = {};
+	[].concat(this.scene.pieces.heads, this.scene.pieces.chests, this.scene.pieces.arms, this.scene.pieces.legs).forEach(i => {
+		this.scene.locked[i] = true;
 	});
 	this.scene.locked['head Broken Away'] = false;
 	this.scene.locked['chest Crashed Out'] = false;
