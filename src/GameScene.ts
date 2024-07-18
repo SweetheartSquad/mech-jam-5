@@ -616,13 +616,19 @@ SPACE: ${formatCount(freeCells, allCells)}
 			const scrollerChests = new Scroller({
 				width: 300,
 				height: size.y,
-				gap: 10,
+				gap: 20,
 			});
 			const scrollerArms = new Scroller({
 				width: 300,
 				height: size.y,
-				gap: 10,
+				gap: -50,
 			});
+
+			{
+				const sprPadding = new Sprite(tex('blank'));
+				sprPadding.height = 150;
+				scrollerArms.addChild(sprPadding);
+			}
 			const scrollerLegs = new Scroller({
 				width: 300,
 				height: size.y,
@@ -741,7 +747,19 @@ SPACE: ${formatCount(freeCells, allCells)}
 						if (i === `${type} ${current}`) spr.tint = greenHalf;
 						scroller.addChild(spr);
 					});
+
+				{
+					const sprPadding = new Sprite(tex('blank'));
+					sprPadding.height = 50;
+					scroller.addChild(sprPadding);
+				}
 			});
+
+			{
+				const sprPadding = new Sprite(tex('blank'));
+				sprPadding.height = 150;
+				scrollerArms.addChild(sprPadding);
+			}
 
 			const textInfo = new BitmapText({ text: '', style: fontDialogue });
 			textInfo.style.wordWrapWidth = size.x / 3 - 32;

@@ -145,7 +145,7 @@ export class Scroller {
 		this.containerScroll.removeChild(this.sprBg);
 		let r!: U[0];
 		children.forEach((child) => {
-			r = r || this.containerScroll.addChild(child);
+			r = r || this.containerScroll.addChildAt(child, 0);
 			child.y += this.scrollHeight;
 			this.scrollHeight += child.height + this.scrollGap;
 		});
