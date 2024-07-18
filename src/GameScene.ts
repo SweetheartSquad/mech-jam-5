@@ -253,7 +253,7 @@ export class GameScene {
 		this.containerUI.addChild(this.panelTip);
 	}
 
-	async start() {
+	async start(playerMech: Parameters<GameScene['loadMech']>[1]) {
 		this.mech = this.assembleParts(
 			this.pieces.heads[0],
 			this.pieces.chests[0],
@@ -268,6 +268,9 @@ export class GameScene {
 		);
 		this.modules = this.assembleModules(this.mech.grid, []);
 		this.modulesEnemy = this.assembleModules(this.mechEnemy.grid, []);
+
+		this.loadMech('player', playerMech);
+
 		await this.scenePrebuild();
 		await this.pickParts();
 		await this.buildMech();

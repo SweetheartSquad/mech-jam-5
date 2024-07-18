@@ -171,8 +171,7 @@ this should never render
 	this.goto('close');
 
 	this.next = 'diplomat';
-	this.scene.start();
-	this.scene.loadMech('player', {
+	this.scene.start({
 		"head": "Bunted Snow",
 		"chest": "Scrubbed Wren",
 		"arms": "Maggoty Pie",
