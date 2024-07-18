@@ -224,6 +224,10 @@ this.scene.loadMech('enemy', {
         {"name": "Comfortable Cockpit","x": 8,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
     ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
 >>
 
@@ -314,6 +318,10 @@ this.scene.loadMech('enemy', {
         { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
     ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"GOLD DUST WOMAN"']).then(() => this.goto('close'));
 >>
 
@@ -416,6 +424,10 @@ this.scene.loadMech('enemy', {
         { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
     ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"STATION MAN"']).then(() => this.goto('close'));
 >>
 
@@ -532,6 +544,10 @@ this.scene.loadMech('enemy', {
         { "name": "Sweet Omega","x": 9,"y": 18,"flipH": false,"flipV": false,"turns": 1 },
     ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"ROAD RUNNER"']).then(() => this.goto('close'));
 >>
 
@@ -655,6 +671,10 @@ this.scene.loadMech('enemy', {
         {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
     ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"FAMILY MAN"']).then(() => this.goto('close'));
 >>
 
@@ -798,6 +818,10 @@ this.scene.loadMech('enemy', {
     { "name": "D.MOD-MKII","x": 12,"y": 17,"flipH": false,"flipV": false,"turns": 3 },
   ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"TEMPORARY ONE"','VS','"PURPLE DANCER"']).then(() => this.goto('close'));
 >>
 
@@ -913,6 +937,10 @@ this.scene.loadMech('enemy', {
     { "name": "Big Love","x": 5,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
   ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"SENTIMENTAL LADY"']).then(() => this.goto('close'));
 >>
 
@@ -1063,6 +1091,10 @@ this.scene.loadMech('enemy', {
     { "name": "Compact Cockpit","x": 9,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
   ],
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"PEACEKEEPER"']).then(() => this.goto('close'));
 >>
 
@@ -1240,6 +1272,10 @@ this.scene.loadMech('enemy', {
         { "name": "HSNK-L","x": 4,"y": 29,"flipH": false,"flipV": false,"turns": 0 },
     ]
 });
+this.sfx('sfx_scan', { rate: .4, volume: .4 });
+this.delay(1000).then(() => this.sfx('sfx_scan', { rate: .4, volume: .4 }));
+this.delay(2000).then(() => this.sfx('sfx_scan', { rate: 1, volume: .4 }));
+this.scene.screenFilter.flash(0.25, 400, this.ease.circOut);
 this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
 >>
 
