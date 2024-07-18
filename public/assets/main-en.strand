@@ -409,7 +409,7 @@ Songbird: ...Fine.
 >>
 
 ::weird fiction prefight
-Songbird: Okay, Danny. I'm ready. But I--
+Songbird: Okay, Danny. I'm ready. But I-
 >
 Danny: Homewrecker! You will taste defeat this day!!
 >
@@ -491,7 +491,7 @@ Songbird: Oh hey, Rhiannon. You here to train?
 >
 Rhiannon: Did you tell Danny about me and Madge?!
 >
-Songbird: I-- what? He came in here yelling about Madge and--
+Songbird: I- what? He came in here yelling about Madge and-
 >
 Rhiannon: So you did? 
 >
@@ -697,7 +697,7 @@ Murrow: THAT'S NOT ENOUGH!!
 <<do this.goto('shifting sands next')>>
 
 ::shifting sands next
-Songbird: Murrow--
+Songbird: Murrow-
 >
 Songbird: MURROW!! STOP!!
 >
@@ -852,7 +852,7 @@ Songbird: It's fine. You're not the first person to fight me over a misunderstan
 >
 Judy: Really? What happened?
 >
-Songbird: Well, I was just training, when--
+Songbird: Well, I was just training, when-
 >
 Sara: Who the hell are you? And what are you doing to my sister?!
 <<do this.next = 'relax'>>
