@@ -105,13 +105,6 @@ textures/cell target.png
 textures/cell shield.png
 textures/cell joint.png
 
-textures/module debug cockpit.png
-textures/module debug attack.png
-textures/module debug shield.png
-textures/module debug heat.png
-textures/module debug joint.png
-textures/module debug radar.png
-
 textures/module Compact Cockpit.png
 textures/module Comfortable Cockpit.png
 textures/module Commander's Cockpit.png
