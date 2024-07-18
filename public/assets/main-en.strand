@@ -299,6 +299,7 @@ Songbird: Okay. I didn't mean anything by it.
 Madge: I'll worry about my boyfriend. You worry about how I'm about to kick your ass.
 >
 Songbird: We'll see about that.
+>
 <<do
 	this.scene.locked['head Year 0001'] = false;
 	this.scene.locked['head Year 0080'] = false;
@@ -312,8 +313,10 @@ Songbird: We'll see about that.
 Songbird: Alright, I'm ready to go.
 >
 Madge: Ready to lose, you mean.
+>
+<<do
 // GOLD DUST WOMAN
-<<do this.scene.loadMech('enemy', {
+this.scene.loadMech('enemy', {
     "head": "Masque D'Or",
     "chest": "Golden Casket",
     "arms": "Sone ka Sparsh",
@@ -326,7 +329,9 @@ Madge: Ready to lose, you mean.
         { "name": "Comfortable Cockpit", "x": 3, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
+});
+this.titleCard(['"SONGBIRD"','VS','"GOLD DUST WOMAN"']).then(() => this.goto('close'));
+>>
 
 [[>close]]
 
