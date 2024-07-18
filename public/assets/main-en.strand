@@ -675,6 +675,7 @@ Murrow: NO! YOU WILL PERISH!!
 <<do this.goto('shifting sands next')>>
 
 ::shifting sands lost
+<<do this.sfx('sfx_hit', { volume: 0.2, rate: 0.75 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)>>
 Murrow: I'LL DESTROY YOU!!
 >
 Songbird: Murrow, the fight is over. You win.
@@ -683,14 +684,23 @@ Murrow: THAT'S NOT ENOUGH!!
 <<do this.goto('shifting sands next')>>
 
 ::shifting sands next
+<<do this.sfx('sfx_hit', { volume: 0.2, rate: 0.75 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)>>
 Songbird: Murrow-
 >
+<<do this.sfx('sfx_hit', { volume: 0.3, rate: 0.8 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)>>
 Songbird: MURROW!! STOP!!
 >
+<<do this.sfx('sfx_hit', { volume: 0.4, rate: 0.75 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)>>
+<<do this.delay(1300).then(() => {this.sfx('sfx_hit', { volume: 0.3, rate: 0.9 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)})>>
+<<do this.delay(1500).then(() => {this.sfx('sfx_hit', { volume: 0.5, rate: 0.8 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)})>>
+<<do this.delay(1700).then(() => {this.sfx('sfx_hit', { volume: 0.6, rate: 1.2 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)})>>
 Murrow: IF I DON'T GET RHIANNON, YOU DON'T GET A MECH!!
 >
+<<do this.sfx('sfx_hit', { volume: 0.6, rate: 0.9 }); this.scene.screenFilter.flash(0.25, 400, this.ease.circOut)>>
 Songbird: YOU'RE DESTROYING IT!
 >
+<<do this.sfx('sfx_hit', { volume: 1, rate: 0.8 }); this.scene.screenFilter.flash(0.75, 2000, this.ease.circOut);>>
+<<do this.sfx('sfx_hit', { volume: 0.5, rate: 0.5 });>>
 Murrow: GOOD! You don't deserve it!
 >
 Songbird: Oh my god.
