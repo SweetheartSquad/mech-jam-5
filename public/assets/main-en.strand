@@ -758,6 +758,10 @@ Judy: You always were a coward, Garcia! You're not getting out of this one.
 	this.scene.locked['head Brisk of Body'] = false;
 	this.scene.locked['head Swift of Swipe'] = false;
 	this.scene.locked['head Fleet of Foot'] = false;
+	this.scene.locked['head Broken Away'] = false;
+	this.scene.locked['head Crashed Out'] = false;
+	this.scene.locked['head Made Escape'] = false;
+	this.scene.locked['head Devilled Run'] = false;
 	this.oldLocked = this.locked;
 	this.locked = {};
 	[].concat(this.scene.heads, this.scene.chests, this.scene.arms, this.scene.legs).forEach(i => {
@@ -781,64 +785,24 @@ Judy: You always were a coward, Garcia! You're not getting out of this one.
 Songbird: Okay, I guess I don't have a choice. Time to fight.
 >
 Judy: I'm going to crush you, Garcia!
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
   "head": "The Crooked",
   "chest": "The Beaten",
   "arms": "The Spoken",
   "legs": "The Put Down",
   "modules": [
-    {
-      "name": "Enchanter",
-      "x": 8,
-      "y": 3,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Cheap Plating",
-      "x": 11,
-      "y": 8,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Comfortable Cockpit",
-      "x": 6,
-      "y": 9,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "HSNK-G",
-      "x": 8,
-      "y": 12,
-      "flipH": false,
-      "flipV": false,
-      "turns": 1
-    },
-    {
-      "name": "Enchanter",
-      "x": 5,
-      "y": 17,
-      "flipH": false,
-      "flipV": false,
-      "turns": 2
-    },
-    {
-      "name": "D.MOD-MKII",
-      "x": 12,
-      "y": 17,
-      "flipH": false,
-      "flipV": false,
-      "turns": 3
-    }
-  ]
-});>>
-
-[[>close]]
+    { "name": "Enchanter","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Cheap Plating","x": 11,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Comfortable Cockpit","x": 6,"y": 9,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-G","x": 8,"y": 12,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Enchanter","x": 5,"y": 17,"flipH": false,"flipV": false,"turns": 2 },
+    { "name": "D.MOD-MKII","x": 12,"y": 17,"flipH": false,"flipV": false,"turns": 3 },
+  ],
+});
+this.titleCard(['"TEMPORARY ONE"','VS','"PURPLE DANCER"']).then(() => this.goto('close'));
+>>
 
 ::cosmonaut postfight
 <<if this.won>>
@@ -920,62 +884,38 @@ Sara: But until you do, I'll pulverize every last one of them!!
 Sara: Get ready, loser! You just picked a fight with the Sisters of the Moon!!
 >
 Songbird: Ugh, here we go again...
-[[>close]]
+>
+<<do
+	this.scene.locked = this.oldLocked;
+	this.scene.locked['head The Crooked'] = false;
+	this.scene.locked['head The Beaten'] = false;
+	this.scene.locked['head The Spoken'] = false;
+	this.scene.locked['head The Put Down'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('Mech parts restored.\nNew mech parts:\n"FAMILY MAN", "PURPLE DANCER"', undefined, 0x00ff00));
+>>
 
 ::relax prefight
 Songbird: Alright, let's just get this over with.
 >
 Sara: I'll get YOU over with!!
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
   "head": "The Blue Face",
   "chest": "The Blackboiled Heart",
   "arms": "The White Knuckles",
   "legs": "The Dipped Toes",
   "modules": [
-    {
-      "name": "Superior Plating",
-      "x": 7,
-      "y": 1,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Aerial Array",
-      "x": 7,
-      "y": 4,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "HSNK-L",
-      "x": 14,
-      "y": 10,
-      "flipH": false,
-      "flipV": false,
-      "turns": 2
-    },
-    {
-      "name": "Compact Cockpit",
-      "x": 8,
-      "y": 15,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Big Love",
-      "x": 5,
-      "y": 17,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    }
-  ]
-});>>
-
-[[>close]]
+    { "name": "Superior Plating","x": 7,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Aerial Array","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-L","x": 14,"y": 10,"flipH": false,"flipV": false,"turns": 2 },
+    { "name": "Compact Cockpit","x": 8,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Big Love","x": 5,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+  ],
+});
+this.titleCard(['"SONGBIRD"','VS','"SENTIMENTAL LADY"']).then(() => this.goto('close'));
+>>
 
 
 ::relax postfight
@@ -1084,7 +1024,15 @@ Songbird: Apparently I can't wriggle out of ANY fight...
 Songbird: But fine. You guys have pissed me off for the last time.
 >
 Songbird: I'm going to put an end to this, once and for all.
-[[>close]]
+>
+<<do
+	this.scene.locked['head The Blue Face'] = false;
+	this.scene.locked['head The Blackboiled Heart'] = false;
+	this.scene.locked['head The White Knuckles'] = false;
+	this.scene.locked['head The Dipped Toes'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"SENTIMENTAL LADY"', undefined, 0x00ff00));
+>>
 
 ::signal failure prefight
 Songbird: Okay. Time to end this.
@@ -1098,79 +1046,26 @@ Rhiannon: We know the score...
 Murrow: And we wish you all the hate in the world.
 >
 Songbird: Did you rehearse this??
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
   "head": "Compound Carapace",
   "chest": "The Blackboiled Heart",
   "arms": "Swift of Swipe",
   "legs": "Hollowed Leap",
   "modules": [
-    {
-      "name": "Aerial Array",
-      "x": 3,
-      "y": 1,
-      "flipH": false,
-      "flipV": false,
-      "turns": 1
-    },
-    {
-      "name": "Compact Cockpit",
-      "x": 0,
-      "y": 7,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "HSNK-L",
-      "x": 11,
-      "y": 7,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Compact Cockpit",
-      "x": 12,
-      "y": 9,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Heartless Challenge",
-      "x": 3,
-      "y": 13,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "HSNK-J",
-      "x": 8,
-      "y": 13,
-      "flipH": false,
-      "flipV": false,
-      "turns": 1
-    },
-    {
-      "name": "Compact Cockpit",
-      "x": 4,
-      "y": 15,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    },
-    {
-      "name": "Compact Cockpit",
-      "x": 9,
-      "y": 17,
-      "flipH": false,
-      "flipV": false,
-      "turns": 0
-    }
-  ]
-})>>
-[[>close]]
+    { "name": "Aerial Array","x": 3,"y": 1,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Compact Cockpit","x": 0,"y": 7,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-L","x": 11,"y": 7,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Compact Cockpit","x": 12,"y": 9,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Heartless Challenge","x": 3,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-J","x": 8,"y": 13,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Compact Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Compact Cockpit","x": 9,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+  ],
+});
+this.titleCard(['"SONGBIRD"','VS','"PEACEKEEPER"']).then(() => this.goto('close'));
+>>
 
 ::signal failure postfight
 <<if this.won>>
@@ -1318,7 +1213,10 @@ Songbird: I'll destroy you. I'll break your spell and free my friends from your 
 "Woman of 1000 Years": I like interesting.
 >
 "Woman of 1000 Years": Let's see how well you've learned your lessons.
-[[>close]]
+>
+<<do
+	this.goto('close').then(() => this.scene.alert('This is it.', undefined, 0x0000ff));
+>>
 
 ::resurrection prefight
 Songbird: Alright, Diane. You're going down.
@@ -1330,7 +1228,9 @@ Songbird: You're not my mother!
 "Woman of 1000 Years": My beautiful child. My sleepless child... so trusting. Too trusting.
 >
 "Woman of 1000 Years": Will you be the landslide that brings me down?
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "1",
     "arms": "1",
@@ -1348,9 +1248,9 @@ Songbird: You're not my mother!
         { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
         { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
     ]
-});>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
+>>
 
 
 ::resurrection postfight
