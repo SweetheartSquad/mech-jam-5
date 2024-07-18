@@ -225,8 +225,10 @@ Songbird: Alright, I'm ready to go.
 Diane: Standard match rules. I'll pull my punches a little, but I won't just let you win.
 >
 Songbird: Understood. 
+>
 // WOMAN OF 1000 YEARS
-<<do this.scene.loadMech('enemy', {
+<<do
+this.scene.loadMech('enemy', {
     "head": "Year 0001",
     "chest": "Year 0080",
     "arms": "Year 0717",
@@ -234,9 +236,9 @@ Songbird: Understood.
     "modules": [
         {"name": "Comfortable Cockpit","x": 8,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
     ],
-});>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
+>>
 
 ::diplomat postfight
 <<if this.won>>
