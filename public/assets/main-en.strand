@@ -226,7 +226,6 @@ Diane: Standard match rules. I'll pull my punches a little, but I won't just let
 >
 Songbird: Understood. 
 >
-// WOMAN OF 1000 YEARS
 <<do
 this.scene.loadMech('enemy', {
     "head": "Year 0001",
@@ -303,7 +302,7 @@ Songbird: We'll see about that.
 	this.scene.locked['head Year 0717'] = false;
 	this.scene.locked['head Year 0999'] = false;
 	this.scene.saveLocks();
-	this.goto('close').then(() => this.scene.alert('New mech parts:\n"Woman of 1000 Years"', undefined, 0x00ff00));
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"WOMAN OF 1000 YEARS"', undefined, 0x00ff00));
 >>
 
 ::time travel prefight
@@ -329,8 +328,6 @@ this.scene.loadMech('enemy', {
 });
 this.titleCard(['"SONGBIRD"','VS','"GOLD DUST WOMAN"']).then(() => this.goto('close'));
 >>
-
-[[>close]]
 
 ::time travel postfight
 <<if this.won>>
@@ -401,14 +398,23 @@ Songbird: Danny, I seriously don't know what you're talking about.
 Danny: Prepare yourself, knave!
 >
 Songbird: ...Fine.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Masque D\'Or'] = false;
+	this.scene.locked['head Golden Casket'] = false;
+	this.scene.locked['head Sone ka Sparsh'] = false;
+	this.scene.locked['head Aurum Calcibus'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"GOLD DUST WOMAN"', undefined, 0x00ff00));
+>>
 
 ::weird fiction prefight
 Songbird: Okay, Danny. I'm ready. But I--
 >
 Danny: Homewrecker! You will taste defeat this day!!
-// STATION MAN
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Compound Carapace",
     "chest": "Thoracic Trunk",
     "arms": "Predatory Pincers",
@@ -421,9 +427,9 @@ Danny: Homewrecker! You will taste defeat this day!!
         { "name": "Comfortable Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"STATION MAN"']).then(() => this.goto('close'));
+>>
 
 ::weird fiction postfight
 <<if this.won>>
@@ -506,14 +512,23 @@ Rhiannon: You were the one person I could trust, in and out of the ring.
 Rhiannon: But now, I'm going to destroy you.
 >
 Rhiannon: Get in your mech.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Compound Carapace'] = false;
+	this.scene.locked['head Thoracic Trunk'] = false;
+	this.scene.locked['head Predatory Pincers'] = false;
+	this.scene.locked['head Beetle Boots'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"STATION MAN"', undefined, 0x00ff00));
+>>
 
 ::arena prefight
 Songbird: Rhiannon, I swear I didn't say anything about you.
 >
 Rhiannon: You will take a bullet for every lie you've told.
-// ROAD RUNNER
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Peckish Lump",
     "chest": "Whet Appetite",
     "arms": "Tarless Feather",
@@ -530,9 +545,9 @@ Rhiannon: You will take a bullet for every lie you've told.
         {"name": "HSNK-J","x": 2,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Sweet Omega","x": 7,"y": 17,"flipH": false,"flipV": false,"turns": 1 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"ROAD RUNNER"']).then(() => this.goto('close'));
+>>
 
 ::arena postfight
 <<if this.won>>
@@ -623,14 +638,23 @@ Songbird: Okay, I don't have time for this. Are you going to fight me?
 Murrow: I'M GOING TO KILL YOU!!
 >
 Songbird: Alright, just get in the arena.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Peckish Lump'] = false;
+	this.scene.locked['head Whet Appetite'] = false;
+	this.scene.locked['head Tarless Feather'] = false;
+	this.scene.locked['head Hollowed Leap'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"ROAD RUNNER"', undefined, 0x00ff00));
+>>
 
 ::shifting sands prefight
 Songbird: Right. Let's do this.
 >
 Murrow: DIE!!!
-// FAMILY MAN
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Hot of Head",
     "chest": "Brisk of Body",
     "arms": "Swift of Swipe",
@@ -644,9 +668,9 @@ Murrow: DIE!!!
         {"name": "Standard Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"FAMILY MAN"']).then(() => this.goto('close'));
+>>
 
 ::shifting sands postfight
 <<if this.won>>
@@ -728,7 +752,30 @@ Judy: Don't be stupid. Who else would pilot that piece of garbage?
 Songbird: I don't even know how to use this thing!
 >
 Judy: You always were a coward, Garcia! You're not getting out of this one.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Hot of Head'] = false;
+	this.scene.locked['head Brisk of Body'] = false;
+	this.scene.locked['head Swift of Swipe'] = false;
+	this.scene.locked['head Fleet of Foot'] = false;
+	this.oldLocked = this.locked;
+	this.locked = {};
+	[].concat(this.scene.heads, this.scene.chests, this.scene.arms, this.scene.legs).forEach(i => {
+		this.locked[i] = true;
+	});
+	this.scene.locked['head Broken Away'] = false;
+	this.scene.locked['head Crashed Out'] = false;
+	this.scene.locked['head Made Escape'] = false;
+	this.scene.locked['head Devilled Run'] = false;
+	this.scene.loadMech('player', {
+		"head": "Broken Away",
+		"chest": "Crashed Out",
+		"arms": "Made Escape",
+		"legs": "Devilled Run",
+		"modules": [],
+	});
+	this.goto('close').then(() => this.scene.alert('Mech parts locked:\n"TEMPORARY ONE"', undefined, 0xff0000));
+>>
 
 ::cosmonaut prefight
 Songbird: Okay, I guess I don't have a choice. Time to fight.
