@@ -198,8 +198,9 @@ FOR "MECH JAM V"
 
 ::START
 <<do
-	this.showL('');
+	this.showL('black', { scale: 540, x: -160 });
 	this.showR('');
+	this.portrait = '';
 	this.music('bgm');
 	this.goto('main');
 >>
