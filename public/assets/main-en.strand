@@ -116,37 +116,39 @@
 	this.showR('');
 	this.portrait='';
 >>
-[[PLACING MODULES]]
-[[COMBAT]]
-[[BACK|this.back()]]
+[[BUILD CONTROLS]]
+[[COMBAT CONTROLS]]
+[[ABOUT MODULES]]
+[[ABOUT COMBAT]]
+[[BACK>start]]
 
-::PLACING MODULES
+::BUILD CONTROLS
 Select   LMB
 Deselect   RMB
 Rotate Module   SCROLL / Q / D
 Flip Module   MMB / F / V / H
- 
-Hold SHIFT to duplicate selected module.
+Duplicate Module   Hold CTRL / SHIFT
 [[ABOUT MODULES]]
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::ABOUT MODULES
-Modules provide abilities which you will use in battle.
+Modules add abilities used in battle.
  
-Every mech needs a cockpit. If this is destroyed you will lose.
+Every mech needs a cockpit.
+If this is destroyed, you lose.
  
 Weapons are used to attack the enemy.
 [[MORE ABOUT MODULES]]
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::MORE ABOUT MODULES
-Radars allow you to scan cells on the enemy mech, and tell you if it is occupied, and what module occupies it.
-
-Shields will block incoming attacks.
+Radars allow you to scan the enemy mech. They tell you what module occupies a cell.
  
-Heatsinks represents how many actions can be performed in a turn.
+Shields block attacks next turn.
+ 
+Heatsinks allow you to take more actions in a single turn.
 [[EVEN MORE ABOUT MODULES]]
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::EVEN MORE ABOUT MODULES
 Overheating has dire consequences!
@@ -154,27 +156,27 @@ Overheating has dire consequences!
 Joint extenders will add extra protection to your mech's limbs.
  
 Different mech parts and modules will cost different amounts. Make sure to optimize and not go over budget!
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
-::COMBAT
+::COMBAT CONTROLS
 Select - LMB
 Back - RMB
 Repeat Action - SHIFT + LMB
 [[ABOUT COMBAT]]
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::ABOUT COMBAT
 The aim of the game is to find your enemy's cockpit and destroy it.
  
-Per round you will be able to perform as many actions that your heat, and other ability modules will allow.
+Each round you will be able to take aim, scan, and toggle shields based on your available modules.
 [[MORE ABOUT COMBAT]]
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::MORE ABOUT COMBAT
 Severing a mech's joints will cut off communications between the limb and the enemy's cockpit. This renders all modules in the limb unusable.
  
 Modules will be revealed after all of its cells are destroyed and it is no longer operational.
-[[BACK|this.back()]]
+[[BACK>HOW TO PLAY]]
 
 ::ABOUT
 <<do
