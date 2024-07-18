@@ -1269,7 +1269,7 @@ Songbird: You have no power over me anymore.
 "Woman of 1000 Years": But now you're sending me away. Just as I hoped...
 >
 Songbird: What are you talking about? Diane??
-<<do this.goto('relax next')>>
+<<do this.goto('resurrection next')>>
 
 ::resurrection lost
 "Woman of 1000 Years": I've failed again.
