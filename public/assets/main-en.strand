@@ -178,6 +178,20 @@ this should never render
 		"legs": "Warbled Marsh",
 		"modules": [],
 	});
+
+	// initial locks
+	[].concat(this.scene.pieces.heads, this.scene.pieces.chests, this.scene.pieces.arms, this.scene.pieces.legs).forEach(i => {
+		if (this.scene.locked[i] === undefined) {
+			this.scene.locked[i] = true;
+		}
+	});
+
+	// unlock Songbird
+	this.scene.locked['head Bunted Snow'] = false;
+	this.scene.locked['chest Scrubbed Wren'] = false;
+	this.scene.locked['arm Maggoty Pie'] = false;
+	this.scene.locked['leg Warbled Marsh'] = false;
+	this.scene.saveLocks();
 >>
 
 

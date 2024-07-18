@@ -17,6 +17,7 @@ import { GameObject } from './GameObject';
 import { ScreenFilter } from './ScreenFilter';
 import { Updater } from './Scripts/Updater';
 import { Spr9 } from './Spr9';
+import { storage } from './Storage';
 import { StrandE } from './StrandE';
 import { Tween, TweenManager } from './Tweens';
 import { UIDialogue } from './UIDialogue';
@@ -253,7 +254,22 @@ export class GameScene {
 		this.containerUI.addChild(this.panelTip);
 	}
 
+	saveLocks() {
+		storage.setItem('locked', this.locked);
+	}
+
 	async start(playerMech: Parameters<GameScene['loadMech']>[1]) {
+		try {
+			const locked = await storage.getItem<GameScene['locked']>('locked');
+			if (locked) {
+				Object.entries(locked).forEach(([key, val]) => {
+					this.locked[key] = val;
+				});
+			}
+		} catch (err) {
+			error('failed to load', err);
+		}
+
 		this.mech = this.assembleParts(
 			this.pieces.heads[0],
 			this.pieces.chests[0],
