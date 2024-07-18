@@ -232,15 +232,7 @@ Songbird: Understood.
     "arms": "Year 0717",
     "legs": "Year 0999",
     "modules": [
-        {"name": "HSNK-U","x": 6,"y": 5,"flipH": false,"flipV": false,"turns": 3 },
         {"name": "Comfortable Cockpit","x": 8,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Cheap Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 1 },
-        {"name": "Enchanter","x": 1,"y": 6,"flipH": false,"flipV": false,"turns": 1 },
-        {"name": "Enchanter","x": 15,"y": 6,"flipH": false,"flipV": false,"turns": 3 },
-        {"name": "Standard Plating","x": 3,"y": 11,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Standard Plating","x": 14,"y": 11,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Standard Plating","x": 4,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
-        {"name": "Standard Plating","x": 13,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
     ],
 });>>
 
