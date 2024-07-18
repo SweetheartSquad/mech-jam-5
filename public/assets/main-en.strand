@@ -813,7 +813,9 @@ this.titleCard(['"TEMPORARY ONE"','VS','"PURPLE DANCER"']).then(() => this.goto(
 ::cosmonaut won
 Judy: I lost? There's no way! You've never won against me before!
 >
-Songbird: That's because I'm NOT GARCIA! I'm Songbird! My mech got destroyed, I just pulled this out of storage to try it.
+Songbird: That's because I'm NOT GARCIA!
+>
+Songbird: I'm Songbird! My mech got destroyed, I just pulled this out of storage to try it.
 >
 Judy: I... guess that makes sense.
 >
