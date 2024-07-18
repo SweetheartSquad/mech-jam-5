@@ -304,7 +304,7 @@ Songbird: We'll see about that.
 	this.scene.locked['head Year 0080'] = false;
 	this.scene.locked['head Year 0717'] = false;
 	this.scene.locked['head Year 0999'] = false;
-	this.saveLocks();
+	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"Woman of 1000 Years"', undefined, 0x00ff00));
 >>
 
