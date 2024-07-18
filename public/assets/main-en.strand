@@ -177,7 +177,6 @@ this should never render
 
 ::main
 <<do
-	this.sfx('voiceDefault');
 	this.goto('close');
 
 	this.next = 'diplomat';
