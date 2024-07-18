@@ -745,23 +745,60 @@ Songbird: Okay, I guess I don't have a choice. Time to fight.
 >
 Judy: I'm going to crush you, Garcia!
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
-    "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
+  "head": "The Crooked",
+  "chest": "The Beaten",
+  "arms": "The Spoken",
+  "legs": "The Put Down",
+  "modules": [
+    {
+      "name": "Enchanter",
+      "x": 8,
+      "y": 3,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Cheap Plating",
+      "x": 11,
+      "y": 8,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Comfortable Cockpit",
+      "x": 6,
+      "y": 9,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "HSNK-G",
+      "x": 8,
+      "y": 12,
+      "flipH": false,
+      "flipV": false,
+      "turns": 1
+    },
+    {
+      "name": "Enchanter",
+      "x": 5,
+      "y": 17,
+      "flipH": false,
+      "flipV": false,
+      "turns": 2
+    },
+    {
+      "name": "D.MOD-MKII",
+      "x": 12,
+      "y": 17,
+      "flipH": false,
+      "flipV": false,
+      "turns": 3
+    }
+  ]
 });>>
 
 [[>close]]
@@ -856,23 +893,52 @@ Songbird: Alright, let's just get this over with.
 >
 Sara: I'll get YOU over with!!
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
-    "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
+  "head": "The Blue Face",
+  "chest": "The Blackboiled Heart",
+  "arms": "The White Knuckles",
+  "legs": "The Dipped Toes",
+  "modules": [
+    {
+      "name": "Superior Plating",
+      "x": 7,
+      "y": 1,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Aerial Array",
+      "x": 7,
+      "y": 4,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "HSNK-L",
+      "x": 14,
+      "y": 10,
+      "flipH": false,
+      "flipV": false,
+      "turns": 2
+    },
+    {
+      "name": "Compact Cockpit",
+      "x": 8,
+      "y": 15,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Big Love",
+      "x": 5,
+      "y": 17,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    }
+  ]
 });>>
 
 [[>close]]
@@ -1002,33 +1068,76 @@ Murrow: And we wish you all the hate in the world.
 >
 Songbird: Did you rehearse this??
 <<do this.scene.loadMech('enemy', {
-	"head": "7",
-	"chest": "9",
-	"arms": "6",
-	"legs": "1",
-	"modules": [
-		{ "name": "debug cockpit", "x": 0, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 12, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 4, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 8, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 6, "y": 0, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 1, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 1, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 11, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 11, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
-	],
+  "head": "Compound Carapace",
+  "chest": "The Blackboiled Heart",
+  "arms": "Swift of Swipe",
+  "legs": "Hollowed Leap",
+  "modules": [
+    {
+      "name": "Aerial Array",
+      "x": 3,
+      "y": 1,
+      "flipH": false,
+      "flipV": false,
+      "turns": 1
+    },
+    {
+      "name": "Compact Cockpit",
+      "x": 0,
+      "y": 7,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "HSNK-L",
+      "x": 11,
+      "y": 7,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Compact Cockpit",
+      "x": 12,
+      "y": 9,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Heartless Challenge",
+      "x": 3,
+      "y": 13,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "HSNK-J",
+      "x": 8,
+      "y": 13,
+      "flipH": false,
+      "flipV": false,
+      "turns": 1
+    },
+    {
+      "name": "Compact Cockpit",
+      "x": 4,
+      "y": 15,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    },
+    {
+      "name": "Compact Cockpit",
+      "x": 9,
+      "y": 17,
+      "flipH": false,
+      "flipV": false,
+      "turns": 0
+    }
+  ]
 })>>
 [[>close]]
 
