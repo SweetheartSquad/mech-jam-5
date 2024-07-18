@@ -226,23 +226,21 @@ Diane: Standard match rules. I'll pull my punches a little, but I won't just let
 >
 Songbird: Understood. 
 <<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "Tallboy 0200",
-    "arms": "Tallboy 0020",
-    "legs": "Tallboy 0002",
+    "head": "Year 0001",
+    "chest": "Year 0080",
+    "arms": "Year 0717",
+    "legs": "Year 0999",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
+        {"name": "HSNK-U","x": 6,"y": 5,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Comfortable Cockpit","x": 8,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Cheap Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Enchanter","x": 1,"y": 6,"flipH": false,"flipV": false,"turns": 1 },
+        {"name": "Enchanter","x": 15,"y": 6,"flipH": false,"flipV": false,"turns": 3 },
+        {"name": "Standard Plating","x": 3,"y": 11,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 14,"y": 11,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 4,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
+        {"name": "Standard Plating","x": 13,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
+    ],
 });>>
 
 [[>close]]
@@ -306,7 +304,13 @@ Songbird: Okay. I didn't mean anything by it.
 Madge: I'll worry about my boyfriend. You worry about how I'm about to kick your ass.
 >
 Songbird: We'll see about that.
-[[>close]]
+<<do
+	this.scene.locked['head Year 0001'] = false;
+	this.scene.locked['head Year 0080'] = false;
+	this.scene.locked['head Year 0717'] = false;
+	this.scene.locked['head Year 0999'] = false;
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"Woman of 1000 Years"', undefined, 0x00ff00));
+>>
 
 ::time travel prefight
 Songbird: Alright, I'm ready to go.
