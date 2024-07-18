@@ -98,8 +98,13 @@
 	});
 >>
 <<endif>>
-<<do this.showL('title', { x: this.size.x/2-this.scene.dialogue.togglerL.container.x });this.portrait=''>>
-<<do this.showR('');this.portrait=''>>
+<<do
+	this.scene.dialogue.voice = 'voiceDefault';
+	this.sfx('voiceDefault');
+	this.showL('title', { x: this.size.x/2-this.scene.dialogue.togglerL.container.x });
+	this.showR('');
+	this.portrait='';
+>>
 BLOOD in the SKY
 DEAD OR ALIVE
 [[START]]
@@ -112,7 +117,12 @@ idk if we have any?
 [[BACK|this.back()]]
 
 ::ABOUT
-<<do this.showR('sweetheart squad')>>
+<<do
+	this.sfx('voiceDefault');
+	this.showL('');
+	this.showR('sweetheart squad');
+	this.portrait='';
+>>
 MADE BY
   SEAN
     MICHAEL
