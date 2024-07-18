@@ -129,15 +129,53 @@ Rotate Module   SCROLL / Q / D
 Flip Module   MMB / F / V / H
  
 Hold SHIFT to duplicate selected module.
+[[ABOUT MODULES]]
+[[BACK|this.back()]]
+
+::ABOUT MODULES
+Modules provide abilities which you will use in battle.
+ 
+Every mech needs a cockpit. If this is destroyed you will lose.
+ 
+Weapons are used to attack the enemy.
+[[MORE ABOUT MODULES]]
+[[BACK|this.back()]]
+
+::MORE ABOUT MODULES
+Radars allow you to scan cells on the enemy mech, and tell you if it is occupied, and what module occupies it.
+
+Shields will block incoming attacks.
+ 
+Heatsinks represents how many actions can be performed in a turn.
+[[EVEN MORE ABOUT MODULES]]
+[[BACK|this.back()]]
+
+::EVEN MORE ABOUT MODULES
+Overheating has dire consequences!
+ 
+Joint extenders will add extra protection to your mech's limbs.
+ 
+Different mech parts and modules will cost different amounts. Make sure to optimize and not go over budget!
 [[BACK|this.back()]]
 
 ::COMBAT
 Select - LMB
 Back - RMB
 Repeat Action - SHIFT + LMB
+[[ABOUT COMBAT]]
 [[BACK|this.back()]]
 
-	
+::ABOUT COMBAT
+The aim of the game is to find your enemy's cockpit and destroy it.
+ 
+Per round you will be able to perform as many actions that your heat, and other ability modules will allow.
+[[MORE ABOUT COMBAT]]
+[[BACK|this.back()]]
+
+::MORE ABOUT COMBAT
+Severing a mech's joints will cut off communications between the limb and the enemy's cockpit. This renders all modules in the limb unusable.
+ 
+Modules will be revealed after all of its cells are destroyed and it is no longer operational.
 [[BACK|this.back()]]
 
 ::ABOUT
