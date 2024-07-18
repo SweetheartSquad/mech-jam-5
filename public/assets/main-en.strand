@@ -101,8 +101,8 @@
 <<do
 	this.scene.dialogue.voice = 'voiceDefault';
 	this.sfx('voiceDefault');
-	this.showL('title', { x: this.size.x/2-this.scene.dialogue.togglerL.container.x });
-	this.showR('');
+	this.showL('black', { scale: 540, x: -160 });
+	this.showR('title', { x: -this.size.x/2+this.scene.dialogue.togglerL.container.x });
 	this.portrait='';
 >>
 [[START]]
@@ -112,8 +112,8 @@
 ::HOW TO PLAY
 <<do
 	this.sfx('voiceDefault');
-	this.showL('');
-	this.showR('');
+	this.showL('help1');
+	this.showR('help2');
 	this.portrait='';
 >>
 [[BUILD CONTROLS]]
@@ -181,7 +181,7 @@ Modules will be revealed after all of its cells are destroyed and it is no longe
 ::ABOUT
 <<do
 	this.sfx('voiceDefault');
-	this.showL('');
+	this.showL('black', { scale: 540, x: -160 });
 	this.showR('sweetheart squad');
 	this.portrait='';
 >>
