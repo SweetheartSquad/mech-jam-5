@@ -1248,9 +1248,9 @@ this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto
 
 ::resurrection postfight
 <<if this.won>>
-<<do this.goto('relax won')>>
+<<do this.goto('resurrection won')>>
 <<else>>
-<<do this.goto('relax lost')>>
+<<do this.goto('resurrection lost')>>
 <<endif>>
 
 ::resurrection won
