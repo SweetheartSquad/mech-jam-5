@@ -298,9 +298,9 @@ Songbird: We'll see about that.
 >
 <<do
 	this.scene.locked['head Year 0001'] = false;
-	this.scene.locked['head Year 0080'] = false;
-	this.scene.locked['head Year 0717'] = false;
-	this.scene.locked['head Year 0999'] = false;
+	this.scene.locked['chest Year 0080'] = false;
+	this.scene.locked['arm Year 0717'] = false;
+	this.scene.locked['leg Year 0999'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"WOMAN OF 1000 YEARS"', undefined, 0x00ff00));
 >>
@@ -401,9 +401,9 @@ Songbird: ...Fine.
 >
 <<do
 	this.scene.locked['head Masque D\'Or'] = false;
-	this.scene.locked['head Golden Casket'] = false;
-	this.scene.locked['head Sone ka Sparsh'] = false;
-	this.scene.locked['head Aurum Calcibus'] = false;
+	this.scene.locked['chest Golden Casket'] = false;
+	this.scene.locked['arm Sone ka Sparsh'] = false;
+	this.scene.locked['leg Aurum Calcibus'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"GOLD DUST WOMAN"', undefined, 0x00ff00));
 >>
@@ -515,9 +515,9 @@ Rhiannon: Get in your mech.
 >
 <<do
 	this.scene.locked['head Compound Carapace'] = false;
-	this.scene.locked['head Thoracic Trunk'] = false;
-	this.scene.locked['head Predatory Pincers'] = false;
-	this.scene.locked['head Beetle Boots'] = false;
+	this.scene.locked['chest Thoracic Trunk'] = false;
+	this.scene.locked['arm Predatory Pincers'] = false;
+	this.scene.locked['leg Beetle Boots'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"STATION MAN"', undefined, 0x00ff00));
 >>
@@ -641,9 +641,9 @@ Songbird: Alright, just get in the arena.
 >
 <<do
 	this.scene.locked['head Peckish Lump'] = false;
-	this.scene.locked['head Whet Appetite'] = false;
-	this.scene.locked['head Tarless Feather'] = false;
-	this.scene.locked['head Hollowed Leap'] = false;
+	this.scene.locked['chest Whet Appetite'] = false;
+	this.scene.locked['arm Tarless Feather'] = false;
+	this.scene.locked['leg Hollowed Leap'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"ROAD RUNNER"', undefined, 0x00ff00));
 >>
@@ -755,22 +755,22 @@ Judy: You always were a coward, Garcia! You're not getting out of this one.
 >
 <<do
 	this.scene.locked['head Hot of Head'] = false;
-	this.scene.locked['head Brisk of Body'] = false;
-	this.scene.locked['head Swift of Swipe'] = false;
-	this.scene.locked['head Fleet of Foot'] = false;
+	this.scene.locked['chest Brisk of Body'] = false;
+	this.scene.locked['arm Swift of Swipe'] = false;
+	this.scene.locked['leg Fleet of Foot'] = false;
 	this.scene.locked['head Broken Away'] = false;
-	this.scene.locked['head Crashed Out'] = false;
-	this.scene.locked['head Made Escape'] = false;
-	this.scene.locked['head Devilled Run'] = false;
+	this.scene.locked['chest Crashed Out'] = false;
+	this.scene.locked['arm Made Escape'] = false;
+	this.scene.locked['leg Devilled Run'] = false;
 	this.oldLocked = this.locked;
 	this.locked = {};
 	[].concat(this.scene.heads, this.scene.chests, this.scene.arms, this.scene.legs).forEach(i => {
 		this.locked[i] = true;
 	});
 	this.scene.locked['head Broken Away'] = false;
-	this.scene.locked['head Crashed Out'] = false;
-	this.scene.locked['head Made Escape'] = false;
-	this.scene.locked['head Devilled Run'] = false;
+	this.scene.locked['chest Crashed Out'] = false;
+	this.scene.locked['arm Made Escape'] = false;
+	this.scene.locked['leg Devilled Run'] = false;
 	this.scene.loadMech('player', {
 		"head": "Broken Away",
 		"chest": "Crashed Out",
@@ -888,9 +888,9 @@ Songbird: Ugh, here we go again...
 <<do
 	this.scene.locked = this.oldLocked;
 	this.scene.locked['head The Crooked'] = false;
-	this.scene.locked['head The Beaten'] = false;
-	this.scene.locked['head The Spoken'] = false;
-	this.scene.locked['head The Put Down'] = false;
+	this.scene.locked['chest The Beaten'] = false;
+	this.scene.locked['arm The Spoken'] = false;
+	this.scene.locked['leg The Put Down'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('Mech parts restored.\nNew mech parts:\n"FAMILY MAN", "PURPLE DANCER"', undefined, 0x00ff00));
 >>
@@ -1027,9 +1027,9 @@ Songbird: I'm going to put an end to this, once and for all.
 >
 <<do
 	this.scene.locked['head The Blue Face'] = false;
-	this.scene.locked['head The Blackboiled Heart'] = false;
-	this.scene.locked['head The White Knuckles'] = false;
-	this.scene.locked['head The Dipped Toes'] = false;
+	this.scene.locked['chest The Blackboiled Heart'] = false;
+	this.scene.locked['arm The White Knuckles'] = false;
+	this.scene.locked['leg The Dipped Toes'] = false;
 	this.scene.saveLocks();
 	this.goto('close').then(() => this.scene.alert('New mech parts:\n"SENTIMENTAL LADY"', undefined, 0x00ff00));
 >>
