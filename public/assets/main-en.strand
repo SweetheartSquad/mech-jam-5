@@ -171,14 +171,27 @@ this should never render
 	this.goto('close');
 
 	this.next = 'diplomat';
-	this.scene.start();
-	this.scene.loadMech('player', {
+	this.scene.start({
 		"head": "Bunted Snow",
 		"chest": "Scrubbed Wren",
 		"arms": "Maggoty Pie",
 		"legs": "Warbled Marsh",
 		"modules": [],
 	});
+
+	// initial locks
+	[].concat(this.scene.pieces.heads, this.scene.pieces.chests, this.scene.pieces.arms, this.scene.pieces.legs).forEach(i => {
+		if (this.scene.locked[i] === undefined) {
+			this.scene.locked[i] = true;
+		}
+	});
+
+	// unlock Songbird
+	this.scene.locked['head Bunted Snow'] = false;
+	this.scene.locked['chest Scrubbed Wren'] = false;
+	this.scene.locked['arm Maggoty Pie'] = false;
+	this.scene.locked['leg Warbled Marsh'] = false;
+	this.scene.saveLocks();
 >>
 
 
@@ -212,27 +225,19 @@ Songbird: Alright, I'm ready to go.
 Diane: Standard match rules. I'll pull my punches a little, but I won't just let you win.
 >
 Songbird: Understood. 
-<<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "Tallboy 0200",
-    "arms": "Tallboy 0020",
-    "legs": "Tallboy 0002",
+>
+<<do
+this.scene.loadMech('enemy', {
+    "head": "Year 0001",
+    "chest": "Year 0080",
+    "arms": "Year 0717",
+    "legs": "Year 0999",
     "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
-
-[[>close]]
+        {"name": "Comfortable Cockpit","x": 8,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
+    ],
+});
+this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
+>>
 
 ::diplomat postfight
 <<if this.won>>
@@ -267,9 +272,6 @@ Songbird: Whew. That match was intense.
 >
 Songbird: It reminds me of a match I had with Madge last week...
 <<do this.next = 'time travel'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -293,14 +295,24 @@ Songbird: Okay. I didn't mean anything by it.
 Madge: I'll worry about my boyfriend. You worry about how I'm about to kick your ass.
 >
 Songbird: We'll see about that.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Year 0001'] = false;
+	this.scene.locked['head Year 0080'] = false;
+	this.scene.locked['head Year 0717'] = false;
+	this.scene.locked['head Year 0999'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"WOMAN OF 1000 YEARS"', undefined, 0x00ff00));
+>>
 
 ::time travel prefight
 Songbird: Alright, I'm ready to go.
 >
 Madge: Ready to lose, you mean.
+>
+<<do
 // GOLD DUST WOMAN
-<<do this.scene.loadMech('enemy', {
+this.scene.loadMech('enemy', {
     "head": "Masque D'Or",
     "chest": "Golden Casket",
     "arms": "Sone ka Sparsh",
@@ -313,9 +325,9 @@ Madge: Ready to lose, you mean.
         { "name": "Comfortable Cockpit", "x": 3, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "Standard Plating", "x": 12, "y": 17,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"GOLD DUST WOMAN"']).then(() => this.goto('close'));
+>>
 
 ::time travel postfight
 <<if this.won>>
@@ -351,9 +363,6 @@ Songbird: Can't wait.
 ::time travel next
 Songbird: Alright, I'm gonna hit the showers. See you later.
 <<do this.next = 'weird fiction'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -389,14 +398,23 @@ Songbird: Danny, I seriously don't know what you're talking about.
 Danny: Prepare yourself, knave!
 >
 Songbird: ...Fine.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Masque D\'Or'] = false;
+	this.scene.locked['head Golden Casket'] = false;
+	this.scene.locked['head Sone ka Sparsh'] = false;
+	this.scene.locked['head Aurum Calcibus'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"GOLD DUST WOMAN"', undefined, 0x00ff00));
+>>
 
 ::weird fiction prefight
 Songbird: Okay, Danny. I'm ready. But I--
 >
 Danny: Homewrecker! You will taste defeat this day!!
-// STATION MAN
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Compound Carapace",
     "chest": "Thoracic Trunk",
     "arms": "Predatory Pincers",
@@ -409,9 +427,9 @@ Danny: Homewrecker! You will taste defeat this day!!
         { "name": "Comfortable Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
         { "name": "Standard Plating","x": 7,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"STATION MAN"']).then(() => this.goto('close'));
+>>
 
 ::weird fiction postfight
 <<if this.won>>
@@ -458,9 +476,6 @@ Songbird: That was... something.
 >
 Songbird: I wonder if it's true. Is Madge seeing someone else?
 <<do this.next = 'arena'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -497,14 +512,23 @@ Rhiannon: You were the one person I could trust, in and out of the ring.
 Rhiannon: But now, I'm going to destroy you.
 >
 Rhiannon: Get in your mech.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Compound Carapace'] = false;
+	this.scene.locked['head Thoracic Trunk'] = false;
+	this.scene.locked['head Predatory Pincers'] = false;
+	this.scene.locked['head Beetle Boots'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"STATION MAN"', undefined, 0x00ff00));
+>>
 
 ::arena prefight
 Songbird: Rhiannon, I swear I didn't say anything about you.
 >
 Rhiannon: You will take a bullet for every lie you've told.
-// ROAD RUNNER
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Peckish Lump",
     "chest": "Whet Appetite",
     "arms": "Tarless Feather",
@@ -521,9 +545,9 @@ Rhiannon: You will take a bullet for every lie you've told.
         {"name": "HSNK-J","x": 2,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Sweet Omega","x": 7,"y": 17,"flipH": false,"flipV": false,"turns": 1 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"ROAD RUNNER"']).then(() => this.goto('close'));
+>>
 
 ::arena postfight
 <<if this.won>>
@@ -586,9 +610,6 @@ Songbird: Wasn't Rhiannon dating Murrow?
 >
 Songbird: Wait... don't tell me.
 <<do this.next = 'shifting sands'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -617,14 +638,23 @@ Songbird: Okay, I don't have time for this. Are you going to fight me?
 Murrow: I'M GOING TO KILL YOU!!
 >
 Songbird: Alright, just get in the arena.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Peckish Lump'] = false;
+	this.scene.locked['head Whet Appetite'] = false;
+	this.scene.locked['head Tarless Feather'] = false;
+	this.scene.locked['head Hollowed Leap'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"ROAD RUNNER"', undefined, 0x00ff00));
+>>
 
 ::shifting sands prefight
 Songbird: Right. Let's do this.
 >
 Murrow: DIE!!!
-// FAMILY MAN
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Hot of Head",
     "chest": "Brisk of Body",
     "arms": "Swift of Swipe",
@@ -638,9 +668,9 @@ Murrow: DIE!!!
         {"name": "Standard Plating","x": 9,"y": 5,"flipH": false,"flipV": false,"turns": 0 },
         {"name": "Enchanter","x": 7,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
     ],
-})>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"FAMILY MAN"']).then(() => this.goto('close'));
+>>
 
 ::shifting sands postfight
 <<if this.won>>
@@ -696,9 +726,6 @@ Songbird: Jeez, it's going to cost a fortune to replace some of this.
 >
 Songbird: I didn't even do anything to him!
 <<do this.next = 'cosmonaut'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -725,33 +752,57 @@ Judy: Don't be stupid. Who else would pilot that piece of garbage?
 Songbird: I don't even know how to use this thing!
 >
 Judy: You always were a coward, Garcia! You're not getting out of this one.
-[[>close]]
+>
+<<do
+	this.scene.locked['head Hot of Head'] = false;
+	this.scene.locked['head Brisk of Body'] = false;
+	this.scene.locked['head Swift of Swipe'] = false;
+	this.scene.locked['head Fleet of Foot'] = false;
+	this.scene.locked['head Broken Away'] = false;
+	this.scene.locked['head Crashed Out'] = false;
+	this.scene.locked['head Made Escape'] = false;
+	this.scene.locked['head Devilled Run'] = false;
+	this.oldLocked = this.locked;
+	this.locked = {};
+	[].concat(this.scene.heads, this.scene.chests, this.scene.arms, this.scene.legs).forEach(i => {
+		this.locked[i] = true;
+	});
+	this.scene.locked['head Broken Away'] = false;
+	this.scene.locked['head Crashed Out'] = false;
+	this.scene.locked['head Made Escape'] = false;
+	this.scene.locked['head Devilled Run'] = false;
+	this.scene.loadMech('player', {
+		"head": "Broken Away",
+		"chest": "Crashed Out",
+		"arms": "Made Escape",
+		"legs": "Devilled Run",
+		"modules": [],
+	});
+	this.goto('close').then(() => this.scene.alert('Mech parts locked:\n"TEMPORARY ONE"', undefined, 0xff0000));
+>>
 
 ::cosmonaut prefight
 Songbird: Okay, I guess I don't have a choice. Time to fight.
 >
 Judy: I'm going to crush you, Garcia!
-<<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
-    "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
-
-[[>close]]
+>
+<<do
+this.scene.loadMech('enemy', {
+  "head": "The Crooked",
+  "chest": "The Beaten",
+  "arms": "The Spoken",
+  "legs": "The Put Down",
+  "modules": [
+    { "name": "Enchanter","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Cheap Plating","x": 11,"y": 8,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Comfortable Cockpit","x": 6,"y": 9,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-G","x": 8,"y": 12,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Enchanter","x": 5,"y": 17,"flipH": false,"flipV": false,"turns": 2 },
+    { "name": "D.MOD-MKII","x": 12,"y": 17,"flipH": false,"flipV": false,"turns": 3 },
+  ],
+});
+this.titleCard(['"TEMPORARY ONE"','VS','"PURPLE DANCER"']).then(() => this.goto('close'));
+>>
 
 ::cosmonaut postfight
 <<if this.won>>
@@ -805,9 +856,6 @@ Songbird: Well, I was just training, when--
 >
 Sara: Who the hell are you? And what are you doing to my sister?!
 <<do this.next = 'relax'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -836,33 +884,38 @@ Sara: But until you do, I'll pulverize every last one of them!!
 Sara: Get ready, loser! You just picked a fight with the Sisters of the Moon!!
 >
 Songbird: Ugh, here we go again...
-[[>close]]
+>
+<<do
+	this.scene.locked = this.oldLocked;
+	this.scene.locked['head The Crooked'] = false;
+	this.scene.locked['head The Beaten'] = false;
+	this.scene.locked['head The Spoken'] = false;
+	this.scene.locked['head The Put Down'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('Mech parts restored.\nNew mech parts:\n"FAMILY MAN", "PURPLE DANCER"', undefined, 0x00ff00));
+>>
 
 ::relax prefight
 Songbird: Alright, let's just get this over with.
 >
 Sara: I'll get YOU over with!!
-<<do this.scene.loadMech('enemy', {
-    "head": "Tallboy 2000",
-    "chest": "1",
-    "arms": "1",
-    "legs": "2",
-    "modules": [
-        { "name": "debug cockpit","x": 7,"y": 0,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug attack","x": 8,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 2,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug heat","x": 6,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 3,"flipH": false,"flipV": false,"turns": 0 },
-        { "name": "debug shield","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
-        { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
-    ]
-});>>
-
-[[>close]]
+>
+<<do
+this.scene.loadMech('enemy', {
+  "head": "The Blue Face",
+  "chest": "The Blackboiled Heart",
+  "arms": "The White Knuckles",
+  "legs": "The Dipped Toes",
+  "modules": [
+    { "name": "Superior Plating","x": 7,"y": 1,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Aerial Array","x": 7,"y": 4,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-L","x": 14,"y": 10,"flipH": false,"flipV": false,"turns": 2 },
+    { "name": "Compact Cockpit","x": 8,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Big Love","x": 5,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+  ],
+});
+this.titleCard(['"SONGBIRD"','VS','"SENTIMENTAL LADY"']).then(() => this.goto('close'));
+>>
 
 
 ::relax postfight
@@ -909,9 +962,6 @@ Songbird: I'm just here to battle mechs.
 >
 Songbird: Well, at least all of this is over.
 <<do this.next = 'signal failure'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
@@ -974,7 +1024,15 @@ Songbird: Apparently I can't wriggle out of ANY fight...
 Songbird: But fine. You guys have pissed me off for the last time.
 >
 Songbird: I'm going to put an end to this, once and for all.
-[[>close]]
+>
+<<do
+	this.scene.locked['head The Blue Face'] = false;
+	this.scene.locked['head The Blackboiled Heart'] = false;
+	this.scene.locked['head The White Knuckles'] = false;
+	this.scene.locked['head The Dipped Toes'] = false;
+	this.scene.saveLocks();
+	this.goto('close').then(() => this.scene.alert('New mech parts:\n"SENTIMENTAL LADY"', undefined, 0x00ff00));
+>>
 
 ::signal failure prefight
 Songbird: Okay. Time to end this.
@@ -988,36 +1046,26 @@ Rhiannon: We know the score...
 Murrow: And we wish you all the hate in the world.
 >
 Songbird: Did you rehearse this??
-<<do this.scene.loadMech('enemy', {
-	"head": "7",
-	"chest": "9",
-	"arms": "6",
-	"legs": "1",
-	"modules": [
-		{ "name": "debug cockpit", "x": 0, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 12, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 4, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 8, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug cockpit", "x": 6, "y": 0, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 1, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 1, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 2, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 11, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 11, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 10, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 11, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 10, "y": 12, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 5, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 20, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 19, "flipH": false, "flipV": false, "turns": 0 },
-		{ "name": "debug heat", "x": 7, "y": 18, "flipH": false, "flipV": false, "turns": 0 },
-	],
-})>>
-[[>close]]
+>
+<<do
+this.scene.loadMech('enemy', {
+  "head": "Compound Carapace",
+  "chest": "The Blackboiled Heart",
+  "arms": "Swift of Swipe",
+  "legs": "Hollowed Leap",
+  "modules": [
+    { "name": "Aerial Array","x": 3,"y": 1,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Compact Cockpit","x": 0,"y": 7,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-L","x": 11,"y": 7,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Compact Cockpit","x": 12,"y": 9,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Heartless Challenge","x": 3,"y": 13,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "HSNK-J","x": 8,"y": 13,"flipH": false,"flipV": false,"turns": 1 },
+    { "name": "Compact Cockpit","x": 4,"y": 15,"flipH": false,"flipV": false,"turns": 0 },
+    { "name": "Compact Cockpit","x": 9,"y": 17,"flipH": false,"flipV": false,"turns": 0 },
+  ],
+});
+this.titleCard(['"SONGBIRD"','VS','"PEACEKEEPER"']).then(() => this.goto('close'));
+>>
 
 ::signal failure postfight
 <<if this.won>>
@@ -1096,11 +1144,7 @@ Diane: I can answer that.
 >
 Songbird: Diane!
 <<do this.next = 'resurrection'>>
-<<do
-	this.scene.costMax += 1000;
-	this.scene.locked['module debug locked'] = false;
-	this.scene.locked['head debug locked'] = false;
->>
+[[>close]]
 
 
 
@@ -1165,7 +1209,10 @@ Songbird: I'll destroy you. I'll break your spell and free my friends from your 
 "Woman of 1000 Years": I like interesting.
 >
 "Woman of 1000 Years": Let's see how well you've learned your lessons.
-[[>close]]
+>
+<<do
+	this.goto('close').then(() => this.scene.alert('This is it.', undefined, 0x0000ff));
+>>
 
 ::resurrection prefight
 Songbird: Alright, Diane. You're going down.
@@ -1177,7 +1224,9 @@ Songbird: You're not my mother!
 "Woman of 1000 Years": My beautiful child. My sleepless child... so trusting. Too trusting.
 >
 "Woman of 1000 Years": Will you be the landslide that brings me down?
-<<do this.scene.loadMech('enemy', {
+>
+<<do
+this.scene.loadMech('enemy', {
     "head": "Tallboy 2000",
     "chest": "1",
     "arms": "1",
@@ -1195,9 +1244,9 @@ Songbird: You're not my mother!
         { "name": "debug radar","x": 7,"y": 5,"flipH": false,"flipV": false,"turns": 0  },
         { "name": "debug radar","x": 7,"y": 6,"flipH": false,"flipV": false,"turns": 0  },
     ]
-});>>
-
-[[>close]]
+});
+this.titleCard(['"SONGBIRD"','VS','"WOMAN OF 1000 YEARS"']).then(() => this.goto('close'));
+>>
 
 
 ::resurrection postfight
@@ -1285,9 +1334,6 @@ Songbird: ...
 >
 Songbird: I guess I need a new hobby.
 <<do this.next = 'end'>>
-<<do
-	this.scene.costMax += 1000;
->>
 [[>close]]
 
 
